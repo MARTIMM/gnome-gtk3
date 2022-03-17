@@ -44,30 +44,41 @@ subtest 'Manipulations1', {
   my Gnome::Gtk3::Grid $g .= new;
   $w.add($g);
 
-  my Gnome::Gtk3::Adjustment $a = $w.get-focus-hadjustment-rk;
-  nok $a.is-valid, '.get-focus-hadjustment-rk(): invalid';
+  my Gnome::Gtk3::Adjustment() $a = $w.get-focus-hadjustment;
+  nok $a.is-valid, '.get-focus-hadjustment(): invalid';
   $a .= new(
     :value(14), :lower(10), :upper(100), :step-increment(2),
     :page-increment(10), :page-size(20)
   );
   $w.set-focus-hadjustment($a);
-  $a = $w.get-focus-hadjustment-rk;
-  is $a.get-lower, 10, '.set-focus-hadjustment() .get-focus-hadjustment-rk()';
+  $a = $w.get-focus-hadjustment;
+  is $a.get-lower, 10, '.set-focus-hadjustment() .get-focus-hadjustment()';
 
-  $a = $w.get-focus-vadjustment-rk;
-  nok $a.is-valid, '.get-focus-vadjustment-rk(): invalid';
+  $a = $w.get-focus-vadjustment;
+  nok $a.is-valid, '.get-focus-vadjustment(): invalid';
   $a .= new(
     :value(14), :lower(10), :upper(100), :step-increment(2),
     :page-increment(10), :page-size(20)
   );
   $w.set-focus-vadjustment($a);
-  $a = $w.get-focus-vadjustment-rk;
-  is $a.get-lower, 10, '.set-focus-vadjustment() .get-focus-vadjustment-rk()';
+  $a = $w.get-focus-vadjustment;
+  is $a.get-lower, 10, '.set-focus-vadjustment() .get-focus-vadjustment()';
 
 # Travis returns other info e.g. 'window' here is 'GtkWindow' there
 #  my Gnome::Gtk3::WidgetPath $wp = $w.get-path-for-child-rk($g);
 #  like $wp.to-string, /window <-[\s]>+ \s grid/, '.get-path-for-child-rk()';
-  ok 1, '.get-path-for-child-rk(): ' ~ $w.get-path-for-child-rk($g).to-string;
+#my Gnome::Gtk3::WidgetPath() $wp =  $w.get-path-for-child($g);
+#note $wp.is-valid, ', ', $wp.to-string;
+#note $w.get-path-for-child($g).(Gnome::Gtk3::WidgetPath).to-string;
+#note $?LINE;
+
+#use Gnome::N::X;
+#Gnome::N::debug(:on);
+#note $w.get-path-for-child($g).();
+#note $?LINE;
+  ok 1, '.get-path-for-child(): '
+    ~ $w.get-path-for-child($g).(Gnome::Gtk3::WidgetPath).to-string;
+# $?LINE;
 
 #`{{
   my Int ( $rows, $cols) = ( 0, 0);
@@ -96,48 +107,20 @@ note $cols;
 subtest 'Manipulations2', {
   subtest 'container foreach', {
     class X {
-      method cb1 ( N-GObject $no, :$label ) {
-        my Gnome::Gtk3::Widget $w .= new(:native-object($no));
-        is $w.get-name, 'GtkLabel', '.foreach(): cb1()';
-        my Gnome::Gtk3::Label $l .= new(:native-object($no));
-        is $l.get-text, $label, 'label text';
-      }
-
-      method cb1-rk ( Gnome::Gtk3::Label $rk, :$label ) {
-        is $rk.get-name, 'GtkLabel', '.foreach(): cb1-rk()';
+      method cb2 ( Gnome::Gtk3::Label() $rk, :$label ) {
+        is $rk.get-name, 'GtkLabel', '.foreach(): cb2()';
         is $rk.get-text, $label, 'label text';
       }
 
-      method cb2 ( Gnome::Gtk3::Label $rk, :$label ) {
-        is $rk.get-name, 'GtkLabel',
-          '.foreach(): cb2() :give-raku-objects';
-        is $rk.get-text, $label, 'label text';
-      }
-
-      method cb3 ( $o, Str :$label, Bool :$give-raku-objects = False ) {
-        if $give-raku-objects {
-          is $o.get-name, 'GtkLabel',
-            '.foreach(): cb3() :give-raku-objects';
-          is $o.get-text, $label, 'label text';
-        }
-
-        else {
-          my Gnome::Gtk3::Widget $w .= new(:native-object($o));
-          is $w.get-name, 'GtkLabel', '.foreach(): cb3()';
-          my Gnome::Gtk3::Label $l .= new(:native-object($o));
-          is $l.get-text, $label, 'label text';
-        }
+      method cb3 ( N-GObject $o, Str :$label ) {
+        is $o.().get-name, 'GtkLabel', '.foreach(): cb3()';
+        is $o.().get-text, $label, 'label text';
       }
     }
 
-    #Gnome::N::debug(:on);
     $b .= new(:label<some-text>);
-    $b.foreach( X.new, 'cb1', :label<some-text>);
-    $b.foreach( X.new, 'cb1-rk', :label<some-text>);
-    $b.foreach( X.new, 'cb2', :label<some-text>, :give-raku-objects);
+    $b.foreach( X.new, 'cb2', :label<some-text>);
     $b.foreach( X.new, 'cb3', :label<some-text>);
-    $b.foreach( X.new, 'cb3', :label<some-text>, :give-raku-objects);
-    #Gnome::N::debug(:off);
   }
 
   subtest 'children', {

@@ -105,9 +105,9 @@ Adds *$widget* to this container. Typically used for simple containers such as *
 
 Note that some containers, such as **Gnome::Gtk3::ScrolledWindow** or **Gnome::Gtk3::ListBox**, may add intermediate children between the added widget and the container.
 
-    method add ( N-GObject $widget )
+    method add ( N-GObject() $widget )
 
-  * N-GObject $widget; a widget to be placed inside this container
+  * $widget; a widget to be placed inside this container
 
 foreach
 -------
@@ -122,60 +122,29 @@ Most applications should use `foreach()`, rather than `forall()`.
 
   * $callback-object; An object where the callback method is defined
 
-  * Str $callback-name; method name of the callback. A name ending in `-rk` gets a raku widget instead of a native object.
+  * $callback-name; method name of the callback. A name ending in `-rk` gets a raku widget instead of a native object.
 
   * %user-options; A list of named arguments which are provided to the callback. A special named argumend, `:give-raku-objects`, is used to provide raku objects instead of the native objects in the same way the extension `-rk` would do. This might be a better way because one can check the named argument if a raku object is provided or not, see examples below.
-
-**Note that this is an experiment, It might be that only the named argument name is used or the method name**.
 
 ### Example
 
 An example from the `t/Container.t` test program where both methods are used;
 
     class X {
-      method cb1 ( N-GObject $no, :$label ) {
-        my Gnome::Gtk3::Widget $w .= new(:native-object($no));
-        is $w.widget-get-name, 'GtkLabel', '.foreach(): callback()';
-        my Gnome::Gtk3::Label $l .= new(:native-object($no));
-        is $l.get-text, $label, 'label text';
-      }
-
-      # In this case we only expect a Label because a Container can hold
-      # many items but a Bin only one which is a label!
-      method cb1-rk ( Gnome::Gtk3::Label $rk, :$label ) {
-        is $rk.widget-get-name, 'GtkLabel', '.foreach(): callback-rk()';
+      method cb2 ( Gnome::Gtk3::Label() $rk, :$label ) {
+        is $rk.get-name, 'GtkLabel', '.foreach(): cb2()';
         is $rk.get-text, $label, 'label text';
       }
 
-      method cb2 ( Gnome::Gtk3::Label $rk, :$label ) {
-        is $rk.widget-get-name, 'GtkLabel', '.foreach(): :give-raku-objects';
-        is $rk.get-text, $label, 'label text';
-      }
-
-      method cb3 ( $o, Str :$label, Bool :$give-raku-objects = False ) {
-        if $give-raku-objects {
-          is $o.widget-get-name, 'GtkLabel',
-            '.foreach(): cb3() :give-raku-objects';
-          is $o.get-text, $label, 'label text';
-        }
-
-        else {
-          my Gnome::Gtk3::Widget $w .= new(:native-object($o));
-          is $w.widget-get-name, 'GtkLabel', '.foreach(): cb3()';
-          my Gnome::Gtk3::Label $l .= new(:native-object($o));
-          is $l.get-text, $label, 'label text';
-        }
+      method cb3 ( N-GObject $o, Str :$label ) {
+        is $o.().get-name, 'GtkLabel', '.foreach(): cb3()';
+        is $o.().get-text, $label, 'label text';
       }
     }
 
-    # The button has a Bin and a Container as its parent and grandparent.
-    # The label is a widget contained in the button.
     $b .= new(:label<some-text>);
-    $b.foreach( X.new, 'cb', :label<some-text>);
-    $b.foreach( X.new, 'cb-rk', :label<some-text>);
-    $b.foreach( X.new, 'cb2', :label<some-text>, :give-raku-objects);
+    $b.foreach( X.new, 'cb2', :label<some-text>);
     $b.foreach( X.new, 'cb3', :label<some-text>);
-    $b.foreach( X.new, 'cb3', :label<some-text>, :give-raku-objects);
 
 get-border-width
 ----------------
@@ -196,50 +165,43 @@ Returns: a newly-allocated list of the container’s non-internal children.
     method get-children ( --> N-GList )
     method get-children-rk ( --> Gnome::Glib::List )
 
-get-focus-child, get-focus-child-rk
------------------------------------
+get-focus-child
+---------------
 
 Returns the current focus child widget inside this container. This is not the currently focused widget. That can be obtained by calling `Gnome::Gtk3::Window.get-focus()`.
 
 Returns: The child widget which will receive the focus inside this container when the this container is focused, or `undefined` if none is set.
 
     method get-focus-child ( --> N-GObject )
-    method get-focus-child-rk ( --> Gnome::Gtk3::Widget )
 
-get-focus-hadjustment, get-focus-hadjustment-rk
------------------------------------------------
+get-focus-hadjustment
+---------------------
 
 Retrieves the horizontal focus adjustment for the container. See `set-focus-hadjustment()`.
 
-Returns: the horizontal focus adjustment, or `undefined` if none has been set. In the `-rk` case, an invalid Widget is returned.
+Returns: the horizontal focus adjustment, or `undefined` if none has been set. In the `-rk` case, an invalid Widget is returned. It is a native object for **Gnome::Gtk3::Adjustment**.
 
     method get-focus-hadjustment ( --> N-GObject )
-    method get-focus-hadjustment-rk ( --> Gnome::Gtk3::Adjustment )
 
-get-focus-vadjustment, get-focus-vadjustment-rk
------------------------------------------------
+get-focus-vadjustment
+---------------------
 
 Retrieves the vertical focus adjustment for the container. See `set-focus-vadjustment()`.
 
-Returns: the vertical focus adjustment, or `undefined` if none has been set.
+Returns: the vertical focus adjustment, or `undefined` if none has been set. It is a native object for **Gnome::Gtk3::Adjustment**.
 
     method get-focus-vadjustment ( --> N-GObject )
-    method get-focus-vadjustment-rk ( --> Gnome::Gtk3::Adjustment )
 
-get-path-for-child, get-path-for-child-rk
------------------------------------------
+get-path-for-child
+------------------
 
 Returns a newly created widget path representing all the widget hierarchy from the toplevel down to and including *child*.
 
-Returns: A newly created **Gnome::Gtk3::WidgetPath**
+Returns: A native object for **Gnome::Gtk3::WidgetPath**
 
-    method get-path-for-child ( N-GObject $child --> N-GObject )
+    method get-path-for-child ( N-GObject() $child --> N-GObject )
 
-    method get-path-for-child-rk (
-      N-GObject $child --> Gnome::Gtk3::WidgetPath
-    )
-
-  * N-GObject $child; a child of this container
+  * $child; a child of this container
 
 propagate-draw
 --------------
@@ -250,20 +212,20 @@ When a container receives a call to the draw function, it must send synthetic *d
 
 In most cases, a container can simply either inherit the *draw* implementation from **Gnome::Gtk3::Container**, or do some drawing and then chain to the *draw* implementation from **Gnome::Gtk3::Container**.
 
-    method propagate-draw ( N-GObject $child, cairo_t $cr )
+    method propagate-draw ( N-GObject() $child, cairo_t $cr )
 
-  * N-GObject $child; a child of this container
+  * $child; a child of this container
 
-  * cairo_t $cr; Cairo context as passed to the container. If you want to use *cr* in container’s draw function, consider using `cairo-save()` and `cairo-restore()` before calling this function.
+  * $cr; Cairo context as passed to the container. If you want to use *cr* in container’s draw function, consider using `cairo-save()` and `cairo-restore()` before calling this function.
 
 remove
 ------
 
 Removes *widget* from this container. *widget* must be inside this container. Note that this container will own a reference to *widget*, and that this may be the last reference held; so removing a widget from its container can destroy that widget. If you want to use *widget* again, you need to add a reference to it before removing it from a container, using `g-object-ref()`. If you don’t want to use *widget* again it’s usually more efficient to simply destroy it directly using `gtk-widget-destroy()` since this will remove it from the container and help break any circular reference count cycles.
 
-    method remove ( N-GObject $widget )
+    method remove ( N-GObject() $widget )
 
-  * N-GObject $widget; a current child of this container
+  * $widget; a current child of this container
 
 set-border-width
 ----------------
@@ -274,7 +236,7 @@ The border width of a container is the amount of space to leave around the outsi
 
     method set-border-width ( UInt $border_width )
 
-  * UInt $border_width; amount of blank space to leave outside the container. Valid values are in the range 0-65535 pixels.
+  * $border_width; amount of blank space to leave outside the container. Valid values are in the range 0-65535 pixels.
 
 set-focus-child
 ---------------
@@ -285,9 +247,9 @@ This function emits the GtkContainer::set-focus-child signal of this container. 
 
 This is function is mostly meant to be used by widgets. Applications can use `gtk-widget-grab-focus()` to manually set the focus to a specific widget.
 
-    method set-focus-child ( N-GObject $child )
+    method set-focus-child ( N-GObject() $child )
 
-  * N-GObject $child; a **Gnome::Gtk3::Widget**, or `undefined`
+  * $child; a **Gnome::Gtk3::Widget**, or `undefined`
 
 set-focus-hadjustment
 ---------------------
@@ -296,9 +258,9 @@ Hooks up an adjustment to focus handling in a container, so when a child of the 
 
 The adjustments have to be in pixel units and in the same coordinate system as the allocation for immediate children of the container.
 
-    method set-focus-hadjustment ( N-GObject $adjustment )
+    method set-focus-hadjustment ( N-GObject() $adjustment )
 
-  * N-GObject $adjustment; an adjustment which should be adjusted when the focus is moved among the descendents of this container
+  * $adjustment; an adjustment which should be adjusted when the focus is moved among the descendents of this container
 
 set-focus-vadjustment
 ---------------------
@@ -307,9 +269,9 @@ Hooks up an adjustment to focus handling in a container, so when a child of the 
 
 The adjustments have to be in pixel units and in the same coordinate system as the allocation for immediate children of the container.
 
-    method set-focus-vadjustment ( N-GObject $adjustment )
+    method set-focus-vadjustment ( N-GObject() $adjustment )
 
-  * N-GObject $adjustment; an adjustment which should be adjusted when the focus is moved among the descendents of this container
+  * $adjustment; an adjustment which should be adjusted when the focus is moved among the descendents of this container
 
 Signals
 =======
