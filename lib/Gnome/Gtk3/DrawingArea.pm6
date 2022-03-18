@@ -182,21 +182,48 @@ submethod BUILD ( *%options ) {
   }
 }
 
+#`{{
 #-------------------------------------------------------------------------------
 # no pod. user does not have to know about it.
 method _fallback ( $native-sub is copy --> Callable ) {
 
+  my Str $new-patt = $native-sub.subst( '_', '-', :g);
+
   my Callable $s;
   try { $s = &::("gtk_drawing_area_$native-sub"); };
-# check for gtk_, gdk_, g_, pango_, cairo_ !!!
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  if ?$s {
+    Gnome::N::deprecate(
+      "gtk-drawing-area-$native-sub", $new-patt, '0.47.4', '0.50.0'
+    );
+  }
+
+  else {
+    #TODO check for gtk_, gdk_, g_, pango_, cairo_ !!!
+    try { $s = &::("gtk_$native-sub"); } unless ?$s;
+    if ?$s {
+      Gnome::N::deprecate(
+        "gtk_$native-sub", $new-patt.subst('drawing-area-'),
+        '0.47.4', '0.50.0'
+      );
+    }
+
+    else {
+      try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+      if ?$s {
+        Gnome::N::deprecate(
+          "$native-sub", $new-patt.subst('gtk-drawing-area-'),
+          '0.47.4', '0.50.0'
+        );
+      }
+    }
+  }
 
   self._set-class-name-of-sub('GtkDrawingArea');
   $s = callsame unless ?$s;
 
   $s;
 }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:1:_gtk_drawing_area_new:new()

@@ -126,12 +126,12 @@ ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 Container                 |  | ✗| ✓| ✓| ✓| ✓| ✓| ½| ⅔| ½| ✓| ✓| ✓| _fallback
 CssProvider               |  |  | ✓| ✓| ✓| ✓| ✗| ⅞| ✓| ✗| ✓| ✓| ✓|
-CssSection                |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓| no -rk :v T
+CssSection                |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
 DragDest                  |S | ✗|  |  |  |  |  |  |  |  |  |  |  |  
 DragSource                |S | ✗|  |  |  |  |  |  |  |  |  |  |  |  
-DrawingArea               |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
+DrawingArea               |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| no -rk :v T
 Dialog                    |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  
-Editable                  |  | ✓| ✓| ✓| ✓| ✓| ✗|  |  | ✗| ✓| ✓| ✓|  
+Editable                  |  | ✓| ✓| ✓| ✓| ✓| ✗|  |  | ✗| ✓| ✓| ✓|
 Entry                     |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  
 EntryCompletion           |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅖|  | ⅗| ✓| ✓| ✓|  
 Enums                     |S |  |  |  |  | ✗| ✗|  | ✗| ✗|  |  |  |  
