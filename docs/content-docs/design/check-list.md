@@ -125,8 +125,8 @@ ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 Container                 |  | ✗| ✓| ✓| ✓| ✓| ✓| ½| ⅔| ½| ✓| ✓| ✓| _fallback
-CssProvider               |  |  | ✓| ✓| ✓| ✓| ✗| ⅞| ✓| ✗| ✓| ✓| ✓| no -rk :v T
-CssSection                |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
+CssProvider               |  |  | ✓| ✓| ✓| ✓| ✗| ⅞| ✓| ✗| ✓| ✓| ✓|
+CssSection                |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓| no -rk :v T
 DragDest                  |S | ✗|  |  |  |  |  |  |  |  |  |  |  |  
 DragSource                |S | ✗|  |  |  |  |  |  |  |  |  |  |  |  
 DrawingArea               |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
