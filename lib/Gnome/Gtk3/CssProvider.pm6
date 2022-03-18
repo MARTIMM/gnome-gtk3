@@ -243,10 +243,36 @@ submethod BUILD ( *%options ) {
 #-------------------------------------------------------------------------------
 method _fallback ( $native-sub is copy --> Callable ) {
 
+  my Str $new-patt = $native-sub.subst( '_', '-', :g);
+
   my Callable $s;
   try { $s = &::("gtk_css_provider_$native-sub"); };
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  if ?$s {
+    Gnome::N::deprecate(
+      "gtk_css_provider_$native-sub", $new-patt, '0.47.4', '0.50.0'
+    );
+  }
+
+  else {
+    try { $s = &::("gtk_$native-sub"); } unless ?$s;
+    if ?$s {
+      Gnome::N::deprecate(
+        "gtk_$native-sub", $new-patt.subst('css-provider-'),
+        '0.47.4', '0.50.0'
+      );
+    }
+
+    else {
+      try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+      if ?$s {
+        Gnome::N::deprecate(
+          "$native-sub", $new-patt.subst('gtk-css-provider-'),
+          '0.47.4', '0.50.0'
+        );
+      }
+    }
+  }
+
   $s = self._style_provider_interface($native-sub) unless ?$s;
 
   self._set-class-name-of-sub('GtkCssProvider');
@@ -288,8 +314,8 @@ Returns: a B<Gnome::Gtk3::CssProvider> with the theme loaded. This memory is own
 
   method get-named ( Str $name, Str $variant --> N-GObject )
 
-=item Str $name; A theme name
-=item Str $variant; variant to load, for example, "dark", or C<undefined> for the default
+=item $name; A theme name
+=item $variant; variant to load, for example, "dark", or C<undefined> for the default
 =end pod
 
 method get-named ( Str $name, Str $variant --> N-GObject ) {
@@ -323,17 +349,32 @@ A way to track errors while loading CSS is to connect to the sig C<parsing-error
 
 method load-from-data ( Str $data --> Gnome::Glib::Error ) {
   my CArray[N-GError] $ga .= new(N-GError);
-  gtk_css_provider_load_from_data(
-    self._get-native-object-no-reffing, $data, $data.encode.bytes, $ga
+
+  _gtk_css_provider_load_from_data(
+    self._get-native-object-no-reffing, $data, $data.chars, $ga
   );
 
-  Gnome::Glib::Error.new(:native-object($ga[0]));
+  Gnome::Glib::Error.new(:native-object($ga[0]))
 }
 
+#TODO; temporary sub to cope with $length when using old type routines
+# remove after version 0.50.0, rename _gtk_css_provider_load_from_data
+# above also!!
+
 sub gtk_css_provider_load_from_data (
+  N-GObject $css_provider, gchar-ptr $data --> Gnome::Glib::Error
+) {
+  my CArray[N-GError] $ga .= new(N-GError);
+  _gtk_css_provider_load_from_data( $css_provider, $data, $data.chars, $ga);
+  note $?LINE, ', ', $ga[0].defined;
+  Gnome::Glib::Error.new(:native-object($ga[0]))
+}
+
+sub _gtk_css_provider_load_from_data (
   N-GObject $css_provider, gchar-ptr $data, gssize $length,
   CArray[N-GError] $error --> gboolean
 ) is native(&gtk-lib)
+  is symbol('gtk_css_provider_load_from_data')
   { * }
 
 #-------------------------------------------------------------------------------
@@ -345,13 +386,12 @@ Loads the data contained in I<file> into I<css-provider>, making it clear any pr
 
 Returns: Gnome::Glib::Error. Test `.is-valid()` of that object to see if there was an error.
 
-  method load-from-file ( N-GObject $file --> Gnome::Glib::Error )
+  method load-from-file ( N-GObject() $file --> Gnome::Glib::Error )
 
 =item $file; a B<Gnome::Gio::File> pointing to a file to load
 =end pod
 
-method load-from-file ( $file is copy --> Gnome::Glib::Error ) {
-  $file .= _get-native-object-no-reffing unless $file ~~ N-GObject;
+method load-from-file ( N-GObject() $file --> Gnome::Glib::Error ) {
   my CArray[N-GError] $ga .= new(N-GError);
 
   gtk_css_provider_load_from_file(
@@ -527,289 +567,5 @@ than when a loading function was called.
 =item $error; the parsing error.
 =item $_handle_id; the registered event handler id.
 =item $_widget: the widget on which the event was registered .
-
-=end pod
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=finish
-#-------------------------------------------------------------------------------
-#TM:1:gtk_css_provider_error_quark:
-=begin pod
-=head2 [[gtk_] css_provider_] error_quark
-
-Return the domain code of the builder error domain.
-
-  method gtk_css_provider_error_quark ( --> Int )
-
-=end pod
-
-sub gtk_css_provider_error_quark (  )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:1:gtk_css_provider_new:
-=begin pod
-=head2 [gtk_] css_provider_new
-
-Returns a newly created B<Gnome::Gtk3::CssProvider>.
-
-  method gtk_css_provider_new ( --> N-GObject )
-
-=end pod
-
-sub gtk_css_provider_new (  )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:1:gtk_css_provider_to_string:
-=begin pod
-=head2 [[gtk_] css_provider_] to_string
-
-Converts the provider into a string representation in CSS
-format.
-
-Using C<gtk_css_provider_load_from_data()> with the return value
-from this function on a new provider created with
-C<gtk_css_provider_new()> will basically create a duplicate of
-the provider.
-
-Returns: a new string representing the I<provider>.
-  method gtk_css_provider_to_string ( --> char  )
-
-=end pod
-
-sub gtk_css_provider_to_string ( N-GObject $provider )
-  returns Str
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:1:gtk_css_provider_load_from_data:
-=begin pod
-=head2 [[gtk_] css_provider_] load_from_data
-
-Loads I<$data> into the provider, and by doing so clears any previously loaded information.
-
-Returns: Gnome::Glib::Error. Test `.is-valid()` of that object to see if there was an error.
-
-A way to track errors while loading CSS is to connect to the sig C<parsing-error> signal.
-
-  method gtk_css_provider_load_from_data (
-    Str $data
-    --> Gnome::Glib::Error
-  )
-
-=item Str $data; (array length=length) (element-type guint8): CSS data loaded in memory
-
-=end pod
-
-sub gtk_css_provider_load_from_data (
-  N-GObject $css_provider, Str $data
-  --> Gnome::Glib::Error
-) {
-  my CArray[N-GError] $ga .= new(N-GError);
-  _gtk_css_provider_load_from_data(
-    $css_provider, $data, $data.encode.bytes #`{{$data.chars}}, $ga
-  );
-  Gnome::Glib::Error.new(:native-object($ga[0]));
-}
-
-sub _gtk_css_provider_load_from_data (
-  N-GObject $css_provider, Str $data, int64 $length, CArray[N-GError] $error
-  --> int32
-) is native(&gtk-lib)
-  is symbol('gtk_css_provider_load_from_data')
-  { * }
-
-#`{{
-#-------------------------------------------------------------------------------
-#TM:0:gtk_css_provider_load_from_file:
-=begin pod
-=head2 [[gtk_] css_provider_] load_from_file
-
-Loads the data contained in I<$file> into I<css_provider>, making it
-clear any previously loaded information.
-
-Returns: C<1>. The return value is deprecated and C<0> will only be
-returned for backwards compatibility reasons if an I<error> is not
-C<Any> and a loading error occurred. To track errors while loading
-CSS, connect to the sig C<parsing-error> signal.
-
-  method gtk_css_provider_load_from_file ( N-GObject $file, N-GObject $error --> Int  )
-
-=item N-GObject $file; C<GFile> pointing to a file to load
-=item N-GObject $error; (out) (allow-none): return location for a C<GError>, or C<Any>
-
-=end pod
-
-sub gtk_css_provider_load_from_file ( N-GObject $css_provider, N-GObject $file, N-GObject $error )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-}}
-
-#-------------------------------------------------------------------------------
-#TM:1:gtk_css_provider_load_from_path:
-=begin pod
-=head2 [[gtk_] css_provider_] load_from_path
-
-Loads the data contained in I<$path> into the provider, clearing any previously loaded information.
-
-Returns: Gnome::Glib::Error. Test `.is-valid() of that object to see if there was an error.
-
-A way to track errors while loading CSS is to connect to the sig C<parsing-error> signal.
-
-  method gtk_css_provider_load_from_path ( Str $path --> Gnome::Glib::Error )
-
-=item Str $path; the path of a filename to load, in the GLib filename encoding
-
-=end pod
-
-sub gtk_css_provider_load_from_path (
-  N-GObject $css_provider, Str $path
-  --> Gnome::Glib::Error
-) {
-  my CArray[N-GError] $ga .= new(N-GError);
-  _gtk_css_provider_load_from_path( $css_provider, $path, $ga);
-  Gnome::Glib::Error.new(:native-object($ga[0]));
-}
-
-sub _gtk_css_provider_load_from_path (
-  N-GObject $css_provider, Str $path, CArray[N-GError] $error
-  --> int32 )
-  is native(&gtk-lib)
-  is symbol('gtk_css_provider_load_from_path')
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:4:gtk_css_provider_load_from_resource:QAManager package
-=begin pod
-=head2 [[gtk_] css_provider_] load_from_resource
-
-Loads the data contained in the resource at I<$resource_path> into
-the B<Gnome::Gtk3::CssProvider>, clearing any previously loaded information.
-
-To track errors while loading CSS, connect to the sig C<parsing-error> signal.
-  method gtk_css_provider_load_from_resource ( Str $resource_path )
-
-=item Str $resource_path; a C<GResource> resource path
-
-=end pod
-
-sub gtk_css_provider_load_from_resource (
-  N-GObject $css_provider, Str $resource_path
-) is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_css_provider_get_named:
-=begin pod
-=head2 [[gtk_] css_provider_] get_named
-
-Loads a theme from the usual theme paths
-
-Returns: (transfer none): a B<Gnome::Gtk3::CssProvider> with the theme loaded.
-This memory is owned by GTK+, and you must not free it.
-
-  method gtk_css_provider_get_named ( Str $name, Str $variant --> N-GObject  )
-
-=item Str $name; A theme name
-=item Str $variant; (allow-none): variant to load, for example, "dark", or C<Any> for the default
-
-=end pod
-
-sub gtk_css_provider_get_named ( Str $name, Str $variant )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Signals
-
-There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<g_signal_connect_object()> directly from B<Gnome::GObject::Signal>.
-
-=head2 First method
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
-
-  # handler method
-  method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
-
-  # connect a signal on window object
-  my Gnome::Gtk3::Window $w .= new( ... );
-  $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-=head2 Second method
-
-  my Gnome::Gtk3::Window $w .= new( ... );
-  my Callable $handler = sub (
-    N-GObject $native, N-GdkEvent $event, OpaquePointer $data
-  ) {
-    ...
-  }
-
-  $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<g_signal_connect_object()> are using the signatures of the handler routines to setup the native call interface.
-
-=head2 Supported signals
-
-
-=comment #TS:1:parsing-error:
-=head3 parsing-error
-
-Signals that a parsing error occurred. the I<path>, I<line> and I<position>
-describe the actual location of the error as accurately as possible.
-
-Parsing errors are never fatal, so the parsing will resume after
-the error. Errors may however cause parts of the given
-data or even all of it to not be parsed at all. So it is a useful idea
-to check that the parsing succeeds by connecting to this signal.
-
-Note that this signal may be emitted at any time as the css provider
-may opt to defer parsing parts or all of the input to a later time
-than when a loading function was called.
-
-  method handler (
-    N-GObject $section,
-    N-GError $error,
-    Int :$_handler_id,
-    Gnome::GObject::Object :_widget($provider),
-    *%user-options
-  );
-
-=item $provider; the provider that had a parsing error
-
-=item $section; a native (GtkCssSection) section the error happened in
-
-=item $error; The parsing error
-
 
 =end pod

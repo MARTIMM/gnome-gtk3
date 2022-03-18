@@ -117,7 +117,7 @@ Loads the data contained in *file* into *css-provider*, making it clear any prev
 
 Returns: Gnome::Glib::Error. Test `.is-valid()` of that object to see if there was an error.
 
-    method load-from-file ( N-GObject $file --> Gnome::Glib::Error )
+    method load-from-file ( N-GObject() $file --> Gnome::Glib::Error )
 
   * $file; a **Gnome::Gio::File** pointing to a file to load
 
