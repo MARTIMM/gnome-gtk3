@@ -84,7 +84,7 @@ table {
 
 | Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|
-AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓| ✓| _fallback
+AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓| ✓|
 AccelGroup                |  | ✗| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓|
 AccelLabel                |  | ✓| ✓| ✓| ✓| ✗| ✓| ⅞| ✗|  | ✓| ✓| ✓|
 AccelMap                  |  | ✗| ✓| ✓| ✓| ✓| ✗| ✓| ½| ✗| ✓| ✓| ✓|
@@ -95,7 +95,7 @@ AppChooser                |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|
 AppChooserButton          |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  |  | ✓| ✓| ✓|
 AppChooserDialog          |  | ✓| ✓| ✓| ✓| ✗| ✗| ⅞| ✗| ✗| ✓| ✓| ✓|
 AppChooserWidget          |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓|
-Application               |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅕|  |  | ✓| ✓| ✓|
+Application               |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  |  | ✓| ✓| ✓| _fallback
 ApplicationWindow         |  | ✓| ✓| ✓| ✓|  | ✓| ⅓|  |  | ✓| ✓| ✓|
 AspectFrame               |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ¾| ✓| ✓| ✓|
 Assistant                 |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅘|  |  | ✓| ✓| ✓|
@@ -125,7 +125,7 @@ ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 Container                 |  | ✗| ✓| ✓| ✓| ✓| ✓| ½| ⅔| ½| ✓| ✓| ✓| _fallback
-CssProvider               |  |  | ✓| ✓| ✓| ✓| ✗| ⅞| ✓| ✗| ✓| ✓| ✓|
+CssProvider               |  |  | ✓| ✓| ✓| ✓| ✗| ⅞| ✓| ✗| ✓| ✓| ✓| _fallback
 CssSection                |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
 DragDest                  |S | ✗|  |  |  |  |  |  |  |  |  |  |  |  
 DragSource                |S | ✗|  |  |  |  |  |  |  |  |  |  |  |  
