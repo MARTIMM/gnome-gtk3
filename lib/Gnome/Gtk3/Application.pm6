@@ -243,11 +243,36 @@ submethod BUILD ( *%options ) {
 # no pod. user does not have to know about it.
 method _fallback ( $native-sub is copy --> Callable ) {
 
+  my Str $new-patt = $native-sub.subst( '_', '-', :g);
+
   my Callable $s;
   try { $s = &::("gtk_application_$native-sub"); };
-# check for gtk_, gdk_, g_, pango_, cairo_ !!!
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  if ?$s {
+    Gnome::N::deprecate(
+      "gtk_application_$native-sub", $new-patt, '0.47.4', '0.50.0'
+    );
+  }
+
+  else {
+    #TODO check for gtk_, gdk_, g_, pango_, cairo_ !!!
+    try { $s = &::("gtk_$native-sub"); } unless ?$s;
+    if ?$s {
+      Gnome::N::deprecate(
+        "gtk_$native-sub", $new-patt.subst('application-'),
+        '0.47.4', '0.50.0'
+      );
+    }
+
+    else {
+      try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+      if ?$s {
+        Gnome::N::deprecate(
+          "$native-sub", $new-patt.subst('gtk-application-'),
+          '0.47.4', '0.50.0'
+        );
+      }
+    }
+  }
 
   self._set-class-name-of-sub('GtkApplication');
   $s = callsame unless ?$s;
@@ -293,16 +318,23 @@ Gets the accelerators that are currently associated with the given action.
 
 Returns: accelerators for I<detailed-action-name>, as a C<undefined>-terminated array. Free with C<g-strfreev()> when no longer needed
 
-  method get-accels-for-action ( Str $detailed_action_name --> CArray[Str] )
+  method get-accels-for-action ( Str $detailed_action_name --> Array )
 
 =item $detailed_action_name; a detailed action name, specifying an action and target to obtain accelerators for
 =end pod
 
-method get-accels-for-action ( Str $detailed_action_name --> CArray[Str] ) {
-
-  gtk_application_get_accels_for_action(
+method get-accels-for-action ( Str $detailed_action_name --> Array ) {
+  my CArray[Str] $na = gtk_application_get_accels_for_action(
     self._get-native-object-no-reffing, $detailed_action_name
-  )
+  );
+
+  my Array $a = [];
+  my Int $c = 0;
+  while ?$na[$c] {
+    $a.push: $na[$c];
+  }
+
+  $a
 }
 
 sub gtk_application_get_accels_for_action (
@@ -311,7 +343,7 @@ sub gtk_application_get_accels_for_action (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-actions-for-accel:
+#TM:1:get-actions-for-accel:
 =begin pod
 =head2 get-actions-for-accel
 
@@ -325,16 +357,23 @@ It is a programmer error to pass an invalid accelerator string. If you are unsur
 
 Returns: a C<undefined>-terminated array of actions for I<accel>
 
-  method get-actions-for-accel ( Str $accel --> CArray[Str] )
+  method get-actions-for-accel ( Str $accel --> Array )
 
 =item $accel; an accelerator that can be parsed by C<gtk-accelerator-parse()>
 =end pod
 
-method get-actions-for-accel ( Str $accel --> CArray[Str] ) {
-
-  gtk_application_get_actions_for_accel(
+method get-actions-for-accel ( Str $accel --> Array ) {
+  my CArray[Str] $na = gtk_application_get_actions_for_accel(
     self._get-native-object-no-reffing, $accel
-  )
+  );
+
+  my Array $a = [];
+  my Int $c = 0;
+  while ?$na[$c] {
+    $a.push: $na[$c];
+  }
+
+  $a
 }
 
 sub gtk_application_get_actions_for_accel (
@@ -343,7 +382,7 @@ sub gtk_application_get_actions_for_accel (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-active-window:
+#TM:1:get-active-window:
 =begin pod
 =head2 get-active-window
 
@@ -382,7 +421,7 @@ sub gtk_application_get_active_window (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-app-menu:
+#TM:1:get-app-menu:
 =begin pod
 =head2 get-app-menu
 
@@ -419,7 +458,7 @@ sub gtk_application_get_app_menu (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-menu-by-id:
+#TM:1:get-menu-by-id:
 =begin pod
 =head2 get-menu-by-id
 
@@ -452,7 +491,7 @@ sub gtk_application_get_menu_by_id (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-menubar:
+#TM:1:get-menubar:
 =begin pod
 =head2 get-menubar
 
@@ -488,7 +527,7 @@ sub gtk_application_get_menubar (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-window-by-id:
+#TM:1:get-window-by-id:
 =begin pod
 =head2 get-window-by-id
 
@@ -525,7 +564,7 @@ sub gtk_application_get_window_by_id (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-windows:
+#TM:1:get-windows:
 =begin pod
 =head2 get-windows
 
@@ -542,10 +581,7 @@ Returns: (element-type GtkWindow) : a B<Gnome::Gtk3::List> of B<Gnome::Gtk3::Win
 =end pod
 
 method get-windows ( --> N-GList ) {
-
-  gtk_application_get_windows(
-    self._get-native-object-no-reffing,
-  )
+  gtk_application_get_windows( self._get-native-object-no-reffing)
 }
 
 sub gtk_application_get_windows (

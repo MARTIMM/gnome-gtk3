@@ -8,6 +8,8 @@ use Gnome::Gio::Enums;
 use Gnome::Gtk3::Application;
 use Gnome::Gtk3::ApplicationWindow;
 use Gnome::Gtk3::Button;
+
+use Gnome::Glib::List;
 #ok 1, 'loads ok';
 
 #use Gnome::N::X;
@@ -33,13 +35,25 @@ unless %*ENV<raku_test_all>:exists {
   exit;
 }
 
-#`{{
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  $aw .= new(:application($a));
-  $a.add-window(Gnome::Gtk3::Button.new(:label<Start>));
+#  $aw .= new(:application($a));
+#  $a.add-window(Gnome::Gtk3::Button.new(:label<Start>));
+
+  is $a.get-accels-for-action('test')[0], Any,
+     '.get-accels-for-action()';
+
+  is $a.get-actions-for-accel('<Control>a')[0], Any,
+     '.get-actions-for-accel()';
+
+  nok $a.get-active-window.defined, '.get-active-window()';
+  nok $a.get-app-menu.defined, '.get-app-menu()';
+  nok $a.get-menu-by-id('no-menu'), '.get-menu-by-id()';
+  nok $a.get-menubar, '.get-menubar()';
+  nok $a.get-window-by-id(1).defined, '.get-window-by-id()';
+  my Gnome::Glib::List $l .= new(:native-object($a.get-windows));
+  is $l.length, 0, '.get-windows()';
 }
-}}
 
 #-------------------------------------------------------------------------------
 subtest 'Inherit Gnome::Gtk3::Application', {
