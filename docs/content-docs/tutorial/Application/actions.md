@@ -31,21 +31,21 @@ There are some steps involved to make use of Actions.
 
 ## Advantages
 
-* Used with GMenu. This might not be very interesting to Raku because of the menu widgets provided in GTK. However, Gtk version 4 does not have any support for menu items because they depend on GMenu.
+* Used with **Gnome::Gio::Menu**. This might not be very interesting to Raku because of the menu widgets provided in GTK. However, Gtk version 4 does not have any support for menu items because they did depend on **Gnome::Gio::Menu** and therefore not really necessary.
 
-* Used with Actionable widgets. There are menu and button widgets using this interface.
-* They can be remotely activated from a remote Application instance. This works only for application actions, those with a 'app.' prefix. A SimpleAction is stored with Application.
-* Can be listed as "Additional application actions" in desktop files. This also works only for application actions.
+* Used with **Gnome::Gtk3::Actionable** widgets. There are menu and button widgets using this interface.
+* They can be remotely activated from a remote **Gnome::Gio::Application** instance. This works only for application actions, those with a 'app.' prefix. A **Gnome::Gio::SimpleAction** is stored in an Application.
+* Can be listed as "additional application actions" in desktop files. This also works only for application actions.
 * Can be remotely activated from other D-Bus callers.
-* Can be used with Notification notifications but works only for application actions.
+* Can be used with **Gnome::Gio::Notification** notifications but works only for application actions.
 
-From the Inkscape migration web page
-* Less code to write: we only need one signal handler for the "activate" signal; not multiple handlers for each GUI event.
+Other remarks from the Inkscape migration web page;
+* Less code to write: we only need one signal handler for the "activate" signal for a particular action; not multiple handlers for each GUI event. So, no need to register a handler on a button, menu entry, d-bus or whatever, if they need to do the same action.
 * Easier look-up: Each action is identified by a unique text ID, and so we can access it by name.
 * It is trivial to allow actions (with or without arguments) to be called from the command line.
 * There is a built in DBus interface.
 
-Action signals can also be fired by calling `.activate()`. A value, if needed, can be set by `.set-action-target-value()` before calling. State changes can be done by calling `.change-state()` which in turn trigger a `change-state` signal. Without a handler, it always sets the new state. If there is a handler, the handler is called with the new state and the handler must set it explicitly using a call to `.set-state()`.
+Action signals can also be fired by calling `.activate()`. A value, if needed, can be set by `.set-action-target-value()` before calling. State changes can be done by calling `.change-state()` which in turn trigger a `change-state` signal. Without a handler, it always sets the new state. If there is a handler, the handler is called with the new state and the handler must set it explicitly using a call to `.set-state()` and return a success code.
 As I understand it, `action` signals can come from other sources then your current running program (it might come from a second instance of the same program) and also from a call to `.action()`. `change-state` signals, however, always are initiated by a call from `.change-state()`.
 
 ### Raku model
