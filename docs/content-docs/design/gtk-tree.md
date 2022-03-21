@@ -40,7 +40,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   │   ├── GtkAssistant            Assistant
 │   │   │   │   │   ├── GtkOffscreenWindow      OffscreenWindow
 │   │   │   │   │   ├── GtkPlug                 ⁇ Depends on X11, No Wayland/W10
-│   │   │   │   │   ╰── GtkShortcutsWindow
+│   │   │   │   │   ╰── GtkShortcutsWindow      ShortcutsWindow
 │   │   │   │   ├── GtkActionBar                ActionBar
 │   │   │   │   ├─✗ GtkAlignment                ⛔
 │   │   │   │   ├── GtkComboBox                 ComboBox

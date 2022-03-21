@@ -375,17 +375,21 @@
     type: widget
     url: "/content-docs/reference/Gtk3/Scale.html"
 
-  - title: "ScrolledWindow"
-    type: widget
-    url: "/content-docs/reference/Gtk3/ScrolledWindow.html"
-
   - title: "Scrollable"
     type: interface
     url: "/content-docs/reference/Gtk3/Scrollable.html"
 
+  - title: "ScrolledWindow"
+    type: widget
+    url: "/content-docs/reference/Gtk3/ScrolledWindow.html"
+
   - title: "SearchEntry"
     type: widget
     url: "/content-docs/reference/Gtk3/SearchEntry.html"
+
+  - title: "SelectionData"
+    type: widget
+    url: "/content-docs/reference/Gtk3/SelectionData.html"
 
   - title: "Separator"
     type: widget
@@ -395,17 +399,17 @@
     type: widget
     url: "/content-docs/reference/Gtk3/SeparatorMenuItem.html"
 
-  - title: "SelectionData"
+  - title: "ShortcutsWindow"
     type: widget
-    url: "/content-docs/reference/Gtk3/SelectionData.html"
-
-  - title: "Spinner"
-    type: widget
-    url: "/content-docs/reference/Gtk3/Spinner.html"
+    url: "/content-docs/reference/Gtk3/ShortcutsWindow.html"
 
   - title: "SpinButton"
     type: widget
     url: "/content-docs/reference/Gtk3/SpinButton.html"
+
+  - title: "Spinner"
+    type: widget
+    url: "/content-docs/reference/Gtk3/Spinner.html"
 
   - title: "Stack"
     type: widget

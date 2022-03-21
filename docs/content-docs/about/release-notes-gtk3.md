@@ -5,9 +5,10 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
-* 2022-03-19 0.47.5
+* 2022-03-19 0.48.0
+  * Add module **Gnome::Gtk3::ShortcutsWindow**.
   * More modules converted and more routines deprecated.
-  * Bugfix in **Gnome::Gtk3::Application** method `get-actions-for-accel()` and `get-accels-for-action()`.
+  * Bugfix in **Gnome::Gtk3::Application** method `get-actions-for-accel()` and `get-accels-for-action()`. In some cases, native routines return `CArray[Str]` while the newer methods return `Array`. This can produce errors like `Don't know how many elements a C array returned from a library` if you want the number of elements to traverse the array. The methods, which return an `Array` do not pose this problem.
 
 * 2022-03-13 0.47.4
   * Structure `GdkRGBA` from **Gnome::Gdk3::RGBA** is renamed into `N-GdkRGBA`. Unfortunately, it was not possible to set deprecation messages first because of the large overhead of extra software coping with coercion. Also `N-GdkRGBA` structure will be used internally only and casted to `N-GObject` before returning to the user.

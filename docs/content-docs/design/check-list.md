@@ -95,7 +95,7 @@ AppChooser                |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|
 AppChooserButton          |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  |  | ✓| ✓| ✓|
 AppChooserDialog          |  | ✓| ✓| ✓| ✓| ✗| ✗| ⅞| ✗| ✗| ✓| ✓| ✓|
 AppChooserWidget          |  | ✓| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓|
-Application               |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  |  | ✓| ✓| ✓| _fallback
+Application               |  | ✓| ✓| ✓| ✓| ✓| ✓|⁹⁄₁₀|  |  | ✓| ✓| ✓| _fallback
 ApplicationWindow         |  | ✓| ✓| ✓| ✓|  | ✓| ⅓|  |  | ✓| ✓| ✓|
 AspectFrame               |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ¾| ✓| ✓| ✓|
 Assistant                 |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅘|  |  | ✓| ✓| ✓|
@@ -189,6 +189,7 @@ SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |  |  |
 SelectionData             |Bx|  |  |  |  |  |  |  |  |  |  |  |  |  
 Separator                 |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 SeparatorMenuItem         |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |  
+ShortcutsWindow           |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| _fallback
 SpinButton                |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |  |  |  
 Spinner                   |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 Stack                     |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |  |  |  
