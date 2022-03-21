@@ -12,6 +12,7 @@ use Gnome::Gtk3::Button;
 use Gnome::Glib::List;
 #ok 1, 'loads ok';
 
+use Gnome::N::N-GObject;
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
@@ -51,8 +52,29 @@ subtest 'Manipulations', {
   nok $a.get-menu-by-id('no-menu'), '.get-menu-by-id()';
   nok $a.get-menubar, '.get-menubar()';
   nok $a.get-window-by-id(1).defined, '.get-window-by-id()';
+
   my Gnome::Glib::List $l .= new(:native-object($a.get-windows));
   is $l.length, 0, '.get-windows()';
+
+  # registering is necessary for next few tests
+  $a.register;
+  my UInt $cookie = $a.inhibit(
+    N-GObject, GTK_APPLICATION_INHIBIT_LOGOUT, 'dont wanna logout'
+  );
+  ok $cookie > 0, '.inhibit(): cookie = ' ~ $cookie;
+
+  #TODO inhibit gives int > 0 but is-inhibited returns False on al flags set
+  #ok $a.is-inhibited(0xff), '.is-inhibited()';
+  lives-ok { $a.uninhibit($cookie); }, '.uninhibit()';
+
+  my Str $actname = 'app.start';
+  $a.set-accels-for-action( $actname, [ '<Control><Shift>s',]);
+  is $a.list-action-descriptions[0], $actname,
+    '.set-accels-for-action() / .list-action-descriptions()';
+
+  is $a.get-accels-for-action($actname).elems, 1, '.get-accels-for-action()';
+
+  lives-ok {$a.prefers-app-menu}, '.prefers-app-menu()';
 }
 
 #-------------------------------------------------------------------------------

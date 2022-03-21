@@ -310,7 +310,7 @@ sub gtk_application_add_window (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-accels-for-action:
+#TM:1:get-accels-for-action:
 =begin pod
 =head2 get-accels-for-action
 
@@ -331,7 +331,7 @@ method get-accels-for-action ( Str $detailed_action_name --> Array ) {
   my Array $a = [];
   my Int $c = 0;
   while ?$na[$c] {
-    $a.push: $na[$c];
+    $a.push: $na[$c++];
   }
 
   $a
@@ -370,7 +370,7 @@ method get-actions-for-accel ( Str $accel --> Array ) {
   my Array $a = [];
   my Int $c = 0;
   while ?$na[$c] {
-    $a.push: $na[$c];
+    $a.push: $na[$c++];
   }
 
   $a
@@ -590,21 +590,21 @@ sub gtk_application_get_windows (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:inhibit:
+#TM:1:inhibit:
 =begin pod
 =head2 inhibit
 
 Inform the session manager that certain types of actions should be inhibited. This is not guaranteed to work on all platforms and for all types of actions.
 
-Applications should invoke this method when they begin an operation that should not be interrupted, such as creating a CD or DVD. The types of actions that may be blocked are specified by the I<flags> parameter. When the application completes the operation it should call C<uninhibit()> to remove the inhibitor. Note that an application can have multiple inhibitors, and all of them must be individually removed. Inhibitors are also cleared when the application exits.
+Applications should invoke this method when they begin an operation that should not be interrupted, such as creating a CD or DVD. The types of actions that may be blocked are specified by the I<$flags> parameter. When the application completes the operation it should call C<uninhibit()> to remove the inhibitor. Note that an application can have multiple inhibitors, and all of them must be individually removed. Inhibitors are also cleared when the application exits.
 
 Applications should not expect that they will always be able to block the action. In most cases, users will be given the option to force the action to take place.
 
 Reasons should be short and to the point.
 
-If I<window> is given, the session manager may point the user to this window to find out more about why the action is inhibited.
+If I<$window> is given, the session manager may point the user to this window to find out more about why the action is inhibited.
 
-Returns: A non-zero cookie that is used to uniquely identify this request. It should be used as an argument to C<gtk-application-uninhibit()> in order to remove the request. If the platform does not support inhibiting or the request failed for some reason, 0 is returned.
+Returns: A non-zero cookie that is used to uniquely identify this request. It should be used as an argument to C<uninhibit()> in order to remove the request. If the platform does not support inhibiting or the request failed for some reason, 0 is returned.
 
   method inhibit ( N-GObject() $window, Int $flags, Str $reason --> UInt )
 
@@ -625,15 +625,15 @@ sub gtk_application_inhibit (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:is-inhibited:
+#TM:1:is-inhibited:
 =begin pod
 =head2 is-inhibited
 
-Determines if any of the actions specified in I<flags> are currently inhibited (possibly by another application).
+Determines if any of the actions specified in I<$flags> are currently inhibited (possibly by another application).
 
 Note that this information may not be available (for example when the application is running in a sandbox).
 
-Returns: C<True> if any of the actions specified in I<flags> are inhibited
+Returns: C<True> if any of the actions specified in I<$flags> are inhibited
 
   method is-inhibited ( Int $flags --> Bool )
 
@@ -652,23 +652,30 @@ sub gtk_application_is_inhibited (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:list-action-descriptions:
+#TM:1:list-action-descriptions:
 =begin pod
 =head2 list-action-descriptions
 
 Lists the detailed action names which have associated accelerators. See C<set-accels-for-action()>.
 
-Returns: a C<undefined>-terminated array of strings, free with C<g-strfreev()> when done
+Returns: an array of strings
 
-  method list-action-descriptions ( --> CArray[Str] )
+  method list-action-descriptions ( --> Array )
 
 =end pod
 
-method list-action-descriptions ( --> CArray[Str] ) {
-
-  gtk_application_list_action_descriptions(
+method list-action-descriptions ( --> Array ) {
+  my CArray[Str] $na = gtk_application_list_action_descriptions(
     self._get-native-object-no-reffing,
-  )
+  );
+
+  my Array $a = [];
+  my Int $c = 0;
+  while ?$na[$c] {
+    $a.push: $na[$c++];
+  }
+
+  $a
 }
 
 sub gtk_application_list_action_descriptions (
@@ -677,7 +684,7 @@ sub gtk_application_list_action_descriptions (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:prefers-app-menu:
+#TM:1:prefers-app-menu:
 =begin pod
 =head2 prefers-app-menu
 
@@ -685,7 +692,7 @@ Determines if the desktop environment in which the application is running would 
 
 If this function returns C<True> then the application should call C<set-app-menu()> with the contents of an application menu, which will be shown by the desktop environment. If it returns C<False> then you should consider using an alternate approach, such as a menubar.
 
-The value returned by this function is purely advisory and you are free to ignore it. If you call C<gtk-application-set-app-menu()> even if the desktop environment doesn't support app menus, then a fallback will be provided.
+The value returned by this function is purely advisory and you are free to ignore it. If you call C<set-app-menu()> even if the desktop environment doesn't support app menus, then a fallback will be provided.
 
 Applications are similarly free not to set an app menu even if the desktop environment wants to show one. In that case, a fallback will also be created by the desktop environment (GNOME, for example, uses a menu with only a "Quit" item in it).
 
@@ -702,10 +709,7 @@ Returns: C<True> if you should set an app menu
 =end pod
 
 method prefers-app-menu ( --> Bool ) {
-
-  gtk_application_prefers_app_menu(
-    self._get-native-object-no-reffing,
-  ).Bool
+  gtk_application_prefers_app_menu( self._get-native-object-no-reffing).Bool
 }
 
 sub gtk_application_prefers_app_menu (
@@ -741,29 +745,35 @@ sub gtk_application_remove_window (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-accels-for-action:
+#TM:1:set-accels-for-action:
 =begin pod
 =head2 set-accels-for-action
 
-Sets zero or more keyboard accelerators that will trigger the given action. The first item in I<accels> will be the primary accelerator, which may be displayed in the UI.
+Sets zero or more keyboard accelerators that will trigger the given action. The first item in I<$accels> will be the primary accelerator, which may be displayed in the UI.
 
-To remove all accelerators for an action, use an empty, zero-terminated array for I<accels>.
+To remove all accelerators for an action, use an empty array I<$accels>.
 
-For the I<detailed-action-name>, see C<g-action-parse-detailed-name()> and C<g-action-print-detailed-name()>.
+For the I<$detailed-action-name>, see C<Gnome::Gio::Action.parse-detailed-name()> and C<Gnome::Gio::Action.print-detailed-name()>.
 
   method set-accels-for-action (
-    Str $detailed_action_name, CArray[Str] $accels
+    Str $detailed_action_name, Array $accels
   )
 
 =item $detailed_action_name; a detailed action name, specifying an action and target to associate accelerators with
 =item $accels; a list of accelerators in the format understood by C<gtk-accelerator-parse()>
 =end pod
 
-method set-accels-for-action (
-  Str $detailed_action_name, CArray[Str] $accels
-) {
+method set-accels-for-action ( Str $detailed_action_name, Array $accels ) {
+  my $na = CArray[Str].new;
+  my Int $c = 0;
+  for @$accels -> $a {
+    $na[$c++] = $a;
+  }
+
+  $na[$c] = Str;
+
   gtk_application_set_accels_for_action(
-    self._get-native-object-no-reffing, $detailed_action_name, $accels
+    self._get-native-object-no-reffing, $detailed_action_name, $na
   );
 }
 
@@ -773,7 +783,7 @@ sub gtk_application_set_accels_for_action (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-app-menu:
+#TM:4:set-app-menu:*
 =begin pod
 =head2 set-app-menu
 
@@ -834,7 +844,7 @@ sub gtk_application_set_menubar (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:uninhibit:
+#TM:1:uninhibit:
 =begin pod
 =head2 uninhibit
 

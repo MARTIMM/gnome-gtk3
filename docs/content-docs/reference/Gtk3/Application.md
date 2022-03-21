@@ -132,7 +132,7 @@ Gets the accelerators that are currently associated with the given action.
 
 Returns: accelerators for *detailed-action-name*, as a `undefined`-terminated array. Free with `g-strfreev()` when no longer needed
 
-    method get-accels-for-action ( Str $detailed_action_name --> CArray[Str] )
+    method get-accels-for-action ( Str $detailed_action_name --> Array )
 
   * $detailed_action_name; a detailed action name, specifying an action and target to obtain accelerators for
 
@@ -149,7 +149,7 @@ It is a programmer error to pass an invalid accelerator string. If you are unsur
 
 Returns: a `undefined`-terminated array of actions for *accel*
 
-    method get-actions-for-accel ( Str $accel --> CArray[Str] )
+    method get-actions-for-accel ( Str $accel --> Array )
 
   * $accel; an accelerator that can be parsed by `gtk-accelerator-parse()`
 
@@ -226,15 +226,15 @@ inhibit
 
 Inform the session manager that certain types of actions should be inhibited. This is not guaranteed to work on all platforms and for all types of actions.
 
-Applications should invoke this method when they begin an operation that should not be interrupted, such as creating a CD or DVD. The types of actions that may be blocked are specified by the *flags* parameter. When the application completes the operation it should call `uninhibit()` to remove the inhibitor. Note that an application can have multiple inhibitors, and all of them must be individually removed. Inhibitors are also cleared when the application exits.
+Applications should invoke this method when they begin an operation that should not be interrupted, such as creating a CD or DVD. The types of actions that may be blocked are specified by the *$flags* parameter. When the application completes the operation it should call `uninhibit()` to remove the inhibitor. Note that an application can have multiple inhibitors, and all of them must be individually removed. Inhibitors are also cleared when the application exits.
 
 Applications should not expect that they will always be able to block the action. In most cases, users will be given the option to force the action to take place.
 
 Reasons should be short and to the point.
 
-If *window* is given, the session manager may point the user to this window to find out more about why the action is inhibited.
+If *$window* is given, the session manager may point the user to this window to find out more about why the action is inhibited.
 
-Returns: A non-zero cookie that is used to uniquely identify this request. It should be used as an argument to `gtk-application-uninhibit()` in order to remove the request. If the platform does not support inhibiting or the request failed for some reason, 0 is returned.
+Returns: A non-zero cookie that is used to uniquely identify this request. It should be used as an argument to `uninhibit()` in order to remove the request. If the platform does not support inhibiting or the request failed for some reason, 0 is returned.
 
     method inhibit ( N-GObject() $window, Int $flags, Str $reason --> UInt )
 
@@ -247,11 +247,11 @@ Returns: A non-zero cookie that is used to uniquely identify this request. It sh
 is-inhibited
 ------------
 
-Determines if any of the actions specified in *flags* are currently inhibited (possibly by another application).
+Determines if any of the actions specified in *$flags* are currently inhibited (possibly by another application).
 
 Note that this information may not be available (for example when the application is running in a sandbox).
 
-Returns: `True` if any of the actions specified in *flags* are inhibited
+Returns: `True` if any of the actions specified in *$flags* are inhibited
 
     method is-inhibited ( Int $flags --> Bool )
 
@@ -262,9 +262,9 @@ list-action-descriptions
 
 Lists the detailed action names which have associated accelerators. See `set-accels-for-action()`.
 
-Returns: a `undefined`-terminated array of strings, free with `g-strfreev()` when done
+Returns: an array of strings
 
-    method list-action-descriptions ( --> CArray[Str] )
+    method list-action-descriptions ( --> Array )
 
 prefers-app-menu
 ----------------
@@ -273,7 +273,7 @@ Determines if the desktop environment in which the application is running would 
 
 If this function returns `True` then the application should call `set-app-menu()` with the contents of an application menu, which will be shown by the desktop environment. If it returns `False` then you should consider using an alternate approach, such as a menubar.
 
-The value returned by this function is purely advisory and you are free to ignore it. If you call `gtk-application-set-app-menu()` even if the desktop environment doesn't support app menus, then a fallback will be provided.
+The value returned by this function is purely advisory and you are free to ignore it. If you call `set-app-menu()` even if the desktop environment doesn't support app menus, then a fallback will be provided.
 
 Applications are similarly free not to set an app menu even if the desktop environment wants to show one. In that case, a fallback will also be created by the desktop environment (GNOME, for example, uses a menu with only a "Quit" item in it).
 
@@ -303,14 +303,14 @@ The application may stop running as a result of a call to this function.
 set-accels-for-action
 ---------------------
 
-Sets zero or more keyboard accelerators that will trigger the given action. The first item in *accels* will be the primary accelerator, which may be displayed in the UI.
+Sets zero or more keyboard accelerators that will trigger the given action. The first item in *$accels* will be the primary accelerator, which may be displayed in the UI.
 
-To remove all accelerators for an action, use an empty, zero-terminated array for *accels*.
+To remove all accelerators for an action, use an empty array *$accels*.
 
-For the *detailed-action-name*, see `g-action-parse-detailed-name()` and `g-action-print-detailed-name()`.
+For the *$detailed-action-name*, see `Gnome::Gio::Action.parse-detailed-name()` and `Gnome::Gio::Action.print-detailed-name()`.
 
     method set-accels-for-action (
-      Str $detailed_action_name, CArray[Str] $accels
+      Str $detailed_action_name, Array $accels
     )
 
   * $detailed_action_name; a detailed action name, specifying an action and target to associate accelerators with
