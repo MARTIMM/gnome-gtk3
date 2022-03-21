@@ -1452,7 +1452,7 @@ sub get-signals ( Str:D $source-content is copy ) {
 
     $item-count = 0;
     if $has-doc {
-      $items-src-doc = [];
+#      $items-src-doc = [];
       for $sdoc.lines -> $line {
 #note "L: $line";
 
@@ -1521,13 +1521,20 @@ sub get-signals ( Str:D $source-content is copy ) {
 
 
     $signal-doc ~= "\n  method handler (\n";
-    $item-count = 0;
+#    $item-count = 0;
     my Str $first-arg = '';
+    my Str $widget-var-name = '';
+#    my Str $first-arg = "Int :\$_handle_id,\n    $idoc<item-type>" ~
+#           "\:_widget\(\$$idoc<item-name>\)";
     for @$items-src-doc -> $idoc {
 #note "IDoc: $item-count, ", $idoc;
       if $item-count == 0 {
-        $first-arg =
-          "Int :\$_handle_id,\n    $idoc<item-type> \:_widget\(\$$idoc<item-name>\)";
+        $widget-var-name = $idoc<item-name>;
+        $first-arg = [~]
+          "Int :\$_handle_id,\n",
+          "    $idoc<item-type> \:_widget\(\$$widget-var-name\)\n",
+          "    N-GObject :\$_native-object"
+          ;
       }
 
       else {
@@ -1542,10 +1549,16 @@ sub get-signals ( Str:D $source-content is copy ) {
     $signal-doc ~= "  );\n\n";
 
     for @$items-src-doc -> $idoc {
+note "$idoc<item-name> eq $widget-var-name";
+      next if $idoc<item-name> eq $widget-var-name;
       $signal-doc ~= "=item \$$idoc<item-name>; $idoc<item-doc>\n";
     }
     # add an item
-    $signal-doc ~= "=item \$_handle_id; the registered event handler id\n";
+#    $signal-doc ~= "=item \$_handle_id; the registered event handler id\n";
+#    $signal-doc ~= "=item \$_widget; the Raku widget used to register\n";
+    $signal-doc ~= "=item \$_handler-id; The handler id which is returned from the registration\n";
+    $signal-doc ~= "=item \$_widget; The instance which registered the signal\n";
+    $signal-doc ~= "=item \$_native-object; The native object provided by the caller wrapped in the Raku object.\n";
 
     $signal-doc-entries{$signal-name} = $signal-doc;
 
