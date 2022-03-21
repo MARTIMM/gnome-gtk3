@@ -194,10 +194,35 @@ submethod BUILD ( *%options ) {
 # no pod. user does not have to know about it.
 method _fallback ( $native-sub is copy --> Callable ) {
 
+  my Str $new-patt = $native-sub.subst( '_', '-', :g);
+
   my Callable $s;
   try { $s = &::("gtk_application_window_$native-sub"); };
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  if ?$s {
+    Gnome::N::deprecate(
+      "gtk_application_window_$native-sub", $new-patt, '0.47.4', '0.50.0'
+    );
+  }
+
+  else {
+    try { $s = &::("gtk_$native-sub"); } unless ?$s;
+    if ?$s {
+      Gnome::N::deprecate(
+        "gtk_$native-sub", $new-patt.subst('application-window-'),
+        '0.47.4', '0.50.0'
+      );
+    }
+
+    else {
+      try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+      if ?$s {
+        Gnome::N::deprecate(
+          "$native-sub", $new-patt.subst('gtk-application-window-'),
+          '0.47.4', '0.50.0'
+        );
+      }
+    }
+  }
 
   self._set-class-name-of-sub('GtkApplicationWindow');
   $s = callsame unless ?$s;
@@ -290,13 +315,13 @@ sub gtk_application_window_get_show_menubar (
 =begin pod
 =head2 set-help-overlay
 
-Associates a shortcuts window with the application window, and sets up an action with the name win.show-help-overlay to present it.
+Associates a shortcuts window with the application window, and sets up an action name C<win.show-help-overlay> to present it.
 
-I<window> takes resposibility for destroying I<help-overlay>.
+This I<window> takes resposibility for destroying I<$help-overlay>.
 
-  method set-help-overlay ( N-GObject() $help_overlay )
+  method set-help-overlay ( N-GObject() $help-overlay )
 
-=item $help_overlay; a B<Gnome::Gtk3::ShortcutsWindow>
+=item $help_overlay; a B<Gnome::Gtk3::ShortcutsWindow>.
 =end pod
 
 method set-help-overlay ( N-GObject() $help_overlay ) {
