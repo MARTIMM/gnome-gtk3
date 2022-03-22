@@ -100,7 +100,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   ├─✗ GtkHBox                     ⛔
 │   │   │   │   ├── GtkInfoBar
 │   │   │   │   ├── GtkRecentChooserWidget      RecentChooserWidget
-│   │   │   │   ├── GtkShortcutsSection
+│   │   │   │   ├── GtkShortcutsSection         ShortcutsSection
 │   │   │   │   ├── GtkShortcutsGroup
 │   │   │   │   ├── GtkShortcutsShortcut
 │   │   │   │   ├── GtkStackSwitcher            StackSwitcher

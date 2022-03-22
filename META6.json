@@ -150,6 +150,10 @@
     "Gnome::Gtk3::Window": "lib/Gnome/Gtk3/Window.pm6"
   },
 
+  "X-Provides": {
+    "Gnome::Gtk3::ShortcutsSection": "lib/Gnome/Gtk3/ShortcutsSection.rakumod"
+  },
+
   "source-url": "git://github.com/MARTIMM/gnome-gtk3.git",
 
   "depends": [

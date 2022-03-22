@@ -399,6 +399,10 @@
     type: widget
     url: "/content-docs/reference/Gtk3/SeparatorMenuItem.html"
 
+#  - title: "ShortcutsSection"
+#    type: widget
+#    url: "/content-docs/reference/Gtk3/ShortcutsSection.html"
+
   - title: "ShortcutsWindow"
     type: widget
     url: "/content-docs/reference/Gtk3/ShortcutsWindow.html"
