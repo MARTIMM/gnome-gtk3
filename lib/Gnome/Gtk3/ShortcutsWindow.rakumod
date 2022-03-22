@@ -54,11 +54,12 @@ This example shows a B<Gnome::Gtk3::ShortcutsWindow> with two sections, "Editor 
   also is Gnome::Gtk3::Window;
 
 
-=comment head2 Uml Diagram
+=head2 Uml Diagram
 
-=comment ![](plantuml/ShortcutsWindow.svg)
+![](plantuml/ShortcutsWindow.svg)
 
 
+=begin comment
 =head2 Inheriting this class
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
@@ -77,6 +78,7 @@ Inheriting is done in a special way in that it needs a call from new() to get th
     ...
   }
 
+=end comment
 
 =comment head2 Example
 
@@ -147,7 +149,7 @@ submethod BUILD ( *%options ) {
 
 
   # prevent creating wrong native-objects
-  if self.^name eq 'Gnome::Gtk3::ShortcutsWindow' or %options<GtkShortcutsWindow> {
+  if self.^name eq 'Gnome::Gtk3::ShortcutsWindow' #`{{  or %options<GtkShortcutsWindow> }} {
 
     # check if native object is set by a parent class
     if self.is-valid { }
@@ -165,7 +167,7 @@ submethod BUILD ( *%options ) {
         #$no = _gtk_shortcuts_window_new___x___($no);
       }
 
-      #`{{ use this when the module is not made inheritable
+      ##`{{ use this when the module is not made inheritable
       # check if there are unknown options
       elsif %options.elems {
         die X::Gnome.new(
@@ -175,14 +177,14 @@ submethod BUILD ( *%options ) {
           )
         );
       }
-      }}
+      #}}
 
-      #`{{ when there are no defaults use this
+      ##`{{ when there are no defaults use this
       # check if there are any options
       elsif %options.elems == 0 {
         die X::Gnome.new(:message('No options specified ' ~ self.^name));
       }
-      }}
+      #}}
 
       #`{{ when there are defaults use this instead
       # create default object
