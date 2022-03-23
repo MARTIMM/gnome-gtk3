@@ -2,19 +2,30 @@ use v6;
 use NativeCall;
 use Test;
 
+use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Builder;
 use Gnome::Gtk3::ShortcutsWindow;
+use Gnome::Gtk3::ShortcutsSection;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
+my Gnome::Gtk3::Main $main .= new;
 my Gnome::Gtk3::ShortcutsWindow() $sw;
+my Gnome::Gtk3::ShortcutsSection() $ss;
 #-------------------------------------------------------------------------------
 #subtest 'ISA test', {
 #  $sw .= new;
 #  isa-ok $sw, Gnome::Gtk3::ShortcutsWindow, '.new()';
 #}
+
+#-------------------------------------------------------------------------------
+# set environment variable 'raku-test-all' if rest must be tested too.
+unless %*ENV<raku_test_all>:exists {
+  done-testing;
+  exit;
+}
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
@@ -24,7 +35,7 @@ subtest 'Manipulations', {
       <object class="GtkShortcutsWindow" id="shortcuts-clocks">
         <property name="modal">1</property>
         <child>
-          <object class="GtkShortcutsSection">
+          <object class="GtkShortcutsSection" id="shortcuts-section">
             <property name="section-name">shortcuts</property>
             <property name="max-height">10</property>
             <child>
@@ -164,13 +175,47 @@ subtest 'Manipulations', {
 
   my Gnome::Gtk3::Builder $builder .= new(:string($build-xml));
   $sw = $builder.get-object('shortcuts-clocks');
-  note $sw.gist;
+  $ss = $builder.get-object('shortcuts-section');
+  diag $ss.gist;
+
+  # must show before changing properties, section name cannot change before
+  $sw.show-all;
+  $ss.show;
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
+  while $main.gtk-events-pending() { $main.iteration-do(False); }
+  sleep 1;
+
   my @r = $sw.get-properties( 'section-name', Str, 'view-name', Str);
-  is-deeply @r, [ 'internal-search', ""], 'section-name, view-name';
+  is-deeply @r, [ 'internal-search', ""],
+    "section-name, view-name: @r.gist()";
+
+  $sw.set-properties( :section-name<shortcuts>, :view-name<stopwatch>);
+  @r = $sw.get-properties( 'section-name', Str, 'view-name', Str);
+  is-deeply @r, [ 'shortcuts', "stopwatch"],
+    "section-name, view-name: @r.gist()";
+
+  # this show is needed to update the window for selected section and view
+  # $sw.show-all() will show everything while $ss.show() shows the selected
+  # view only.
+  $ss.show;
+
+  @r = $ss.get-properties(
+    'max-height', UInt, 'section-name', Str, 'title', Str, 'view-name', Str
+  );
+  ok @r[0] > 1, 'max-height';
+  is @r[1], 'shortcuts', 'section-name';
+  is @r[2], '', 'title';
+  is @r[3], 'stopwatch', 'view-name';
+
+  while $main.gtk-events-pending() { $main.iteration-do(False); }
+  sleep 1;
+  while $main.gtk-events-pending() { $main.iteration-do(False); }
+  sleep 1;
+  while $main.gtk-events-pending() { $main.iteration-do(False); }
+  sleep 5;
 }
 
 #-------------------------------------------------------------------------------
@@ -178,13 +223,6 @@ done-testing;
 
 =finish
 
-
-#-------------------------------------------------------------------------------
-# set environment variable 'raku-test-all' if rest must be tested too.
-unless %*ENV<raku_test_all>:exists {
-  done-testing;
-  exit;
-}
 
 #-------------------------------------------------------------------------------
 subtest 'Inherit Gnome::Gtk3::ShortcutsWindow', {

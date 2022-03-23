@@ -189,7 +189,8 @@ SearchEntry               |  |  |  |  |  |  |  |  |  |  |  |  |  |
 SelectionData             |Bx|  |  |  |  |  |  |  |  |  |  |  |  |  
 Separator                 |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 SeparatorMenuItem         |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |  
-ShortcutsWindow           |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓| ✓| N
+ShortcutsWindow           |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗|  | ✓| ✓| ✓| ✓| N
+ShortcutsSection          |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗|  | ✓| ✓| ✓| ✓| N
 SpinButton                |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |  |  |  
 Spinner                   |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 Stack                     |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓|  |  |  |  

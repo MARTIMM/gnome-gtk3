@@ -113,6 +113,7 @@
     "Gnome::Gtk3::SelectionData": "lib/Gnome/Gtk3/SelectionData.pm6",
     "Gnome::Gtk3::Separator": "lib/Gnome/Gtk3/Separator.pm6",
     "Gnome::Gtk3::SeparatorMenuItem": "lib/Gnome/Gtk3/SeparatorMenuItem.pm6",
+    "Gnome::Gtk3::ShortcutsSection": "lib/Gnome/Gtk3/ShortcutsSection.rakumod",
     "Gnome::Gtk3::ShortcutsWindow": "lib/Gnome/Gtk3/ShortcutsWindow.rakumod",
     "Gnome::Gtk3::SpinButton": "lib/Gnome/Gtk3/SpinButton.pm6",
     "Gnome::Gtk3::Spinner": "lib/Gnome/Gtk3/Spinner.pm6",
@@ -148,10 +149,6 @@
     "Gnome::Gtk3::Widget": "lib/Gnome/Gtk3/Widget.pm6",
     "Gnome::Gtk3::WidgetPath": "lib/Gnome/Gtk3/WidgetPath.pm6",
     "Gnome::Gtk3::Window": "lib/Gnome/Gtk3/Window.pm6"
-  },
-
-  "X-Provides": {
-    "Gnome::Gtk3::ShortcutsSection": "lib/Gnome/Gtk3/ShortcutsSection.rakumod"
   },
 
   "source-url": "git://github.com/MARTIMM/gnome-gtk3.git",
