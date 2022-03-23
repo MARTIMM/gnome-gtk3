@@ -6,6 +6,7 @@ use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Builder;
 use Gnome::Gtk3::ShortcutsWindow;
 use Gnome::Gtk3::ShortcutsSection;
+use Gnome::Gtk3::ShortcutsGroup;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
@@ -14,6 +15,7 @@ use Gnome::Gtk3::ShortcutsSection;
 my Gnome::Gtk3::Main $main .= new;
 my Gnome::Gtk3::ShortcutsWindow() $sw;
 my Gnome::Gtk3::ShortcutsSection() $ss;
+my Gnome::Gtk3::ShortcutsGroup() $sg;
 #-------------------------------------------------------------------------------
 #subtest 'ISA test', {
 #  $sw .= new;
@@ -39,7 +41,7 @@ subtest 'Manipulations', {
             <property name="section-name">shortcuts</property>
             <property name="max-height">10</property>
             <child>
-              <object class="GtkShortcutsGroup">
+              <object class="GtkShortcutsGroup" id="shortcuts-group">
                 <property name="title" translatable="yes">General</property>
                 <child>
                   <object class="GtkShortcutsShortcut">
@@ -176,7 +178,8 @@ subtest 'Manipulations', {
   my Gnome::Gtk3::Builder $builder .= new(:string($build-xml));
   $sw = $builder.get-object('shortcuts-clocks');
   $ss = $builder.get-object('shortcuts-section');
-  diag $ss.gist;
+  $sg = $builder.get-object('shortcuts-group');
+  diag $sg.gist;
 
   # must show before changing properties, section name cannot change before
   $sw.show-all;
@@ -189,13 +192,13 @@ subtest 'Properties ...', {
   sleep 1;
 
   my @r = $sw.get-properties( 'section-name', Str, 'view-name', Str);
-  is-deeply @r, [ 'internal-search', ""],
-    "section-name, view-name: @r.gist()";
+  is @r[0], 'internal-search', 'SC Window: section-name';
+  is @r[1], '', 'SC Window: view-name';
 
   $sw.set-properties( :section-name<shortcuts>, :view-name<stopwatch>);
   @r = $sw.get-properties( 'section-name', Str, 'view-name', Str);
-  is-deeply @r, [ 'shortcuts', "stopwatch"],
-    "section-name, view-name: @r.gist()";
+  is @r[0], 'shortcuts', 'SC Window: section-name';
+  is @r[1], 'stopwatch', 'SC Window: view-name';
 
   # this show is needed to update the window for selected section and view
   # $sw.show-all() will show everything while $ss.show() shows the selected
@@ -205,10 +208,18 @@ subtest 'Properties ...', {
   @r = $ss.get-properties(
     'max-height', UInt, 'section-name', Str, 'title', Str, 'view-name', Str
   );
-  ok @r[0] > 1, 'max-height';
-  is @r[1], 'shortcuts', 'section-name';
-  is @r[2], '', 'title';
-  is @r[3], 'stopwatch', 'view-name';
+  is @r[0], 10, 'max-height';
+  is @r[1], 'shortcuts', 'SC Section: section-name';
+  is @r[2], '', 'SC Section: title';
+  is @r[3], 'stopwatch', 'SC Section: view-name';
+
+  $sg.show;
+#TODO won't set  $sg.set-properties(:view<stopwatch>);
+  @r = $sg.get-properties( 'height', UInt, 'title', Str, 'view', Str);
+  ok @r[0] > 1, 'SC Group: height';
+  is @r[1], 'General', 'SC Group: title';
+#  is @r[3], 'stopwatch', 'view';
+  is @r[3], Any, 'view';
 
   while $main.gtk-events-pending() { $main.iteration-do(False); }
   sleep 1;

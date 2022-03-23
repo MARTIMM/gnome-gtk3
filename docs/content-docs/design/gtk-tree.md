@@ -101,7 +101,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   ├── GtkInfoBar
 │   │   │   │   ├── GtkRecentChooserWidget      RecentChooserWidget
 │   │   │   │   ├── GtkShortcutsSection         ShortcutsSection
-│   │   │   │   ├── GtkShortcutsGroup
+│   │   │   │   ├── GtkShortcutsGroup           ShortcutsGroup
 │   │   │   │   ├── GtkShortcutsShortcut
 │   │   │   │   ├── GtkStackSwitcher            StackSwitcher
 │   │   │   │   ├── GtkStatusbar                Statusbar
