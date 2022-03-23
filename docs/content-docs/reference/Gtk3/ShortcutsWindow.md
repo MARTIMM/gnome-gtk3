@@ -62,12 +62,6 @@ Methods
 new
 ---
 
-### default, no options
-
-Create a new ShortcutsWindow object.
-
-    multi method new ( )
-
 ### :native-object
 
 Create a ShortcutsWindow object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.

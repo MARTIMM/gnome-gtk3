@@ -33,12 +33,6 @@ Methods
 new
 ---
 
-### default, no options
-
-Create a new ShortcutsSection object.
-
-    multi method new ( )
-
 ### :native-object
 
 Create a ShortcutsSection object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.

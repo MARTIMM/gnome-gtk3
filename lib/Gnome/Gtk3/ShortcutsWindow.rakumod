@@ -108,13 +108,6 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-=head3 default, no options
-
-Create a new ShortcutsWindow object.
-
-  multi method new ( )
-
-
 =head3 :native-object
 
 Create a ShortcutsWindow object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
@@ -131,10 +124,8 @@ Create a ShortcutsWindow object using a native object returned from a builder. S
 =end pod
 
 #TM:0:new():inheriting
-#TM:1:new():
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 #TM:4:new(:build-id):Gnome::GObject::Object
-
 submethod BUILD ( *%options ) {
 
   # add signal info in the form of w*<signal-name>.

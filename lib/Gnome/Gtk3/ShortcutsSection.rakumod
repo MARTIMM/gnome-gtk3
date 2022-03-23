@@ -83,12 +83,6 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-=head3 default, no options
-
-Create a new ShortcutsSection object.
-
-  multi method new ( )
-
 
 =head3 :native-object
 
@@ -106,7 +100,6 @@ Create a ShortcutsSection object using a native object returned from a builder. 
 =end pod
 
 #TM:0:new():inheriting
-#TM:1:new():
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 #TM:4:new(:build-id):Gnome::GObject::Object
 submethod BUILD ( *%options ) {
