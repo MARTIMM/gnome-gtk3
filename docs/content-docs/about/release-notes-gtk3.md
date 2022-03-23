@@ -6,7 +6,7 @@ layout: sidebar
 ---
 # Release notes
 * 2022-03-19 0.48.0
-  * Add modules **Gnome::Gtk3::ShortcutsWindow**, **Gnome::Gtk3::ShortcutsSection**, **Gnome::Gtk3::ShortcutsGroup**.
+  * Add modules **Gnome::Gtk3::ShortcutsWindow**, **Gnome::Gtk3::ShortcutsSection**, **Gnome::Gtk3::ShortcutsGroup**, **Gnome::Gtk3::ShortcutsShortcut**.
   * More modules converted and more routines deprecated.
   * Bugfix in **Gnome::Gtk3::Application** method `get-actions-for-accel()` and `get-accels-for-action()`. In some cases, native routines return `CArray[Str]` while the newer methods return `Array`. This can produce errors like `Don't know how many elements a C array returned from a library` if you want the number of elements to traverse the array. The methods, which return an `Array` do not pose this problem.
 

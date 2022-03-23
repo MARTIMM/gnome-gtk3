@@ -102,7 +102,7 @@ GObject                                         Gnome::GObject::Object
 │   │   │   │   ├── GtkRecentChooserWidget      RecentChooserWidget
 │   │   │   │   ├── GtkShortcutsSection         ShortcutsSection
 │   │   │   │   ├── GtkShortcutsGroup           ShortcutsGroup
-│   │   │   │   ├── GtkShortcutsShortcut
+│   │   │   │   ├── GtkShortcutsShortcut        ShortcutsShortcut
 │   │   │   │   ├── GtkStackSwitcher            StackSwitcher
 │   │   │   │   ├── GtkStatusbar                Statusbar
 │   │   │   │   ╰─✗ GtkVBox                     ⛔

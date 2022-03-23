@@ -115,6 +115,7 @@
     "Gnome::Gtk3::SeparatorMenuItem": "lib/Gnome/Gtk3/SeparatorMenuItem.pm6",
     "Gnome::Gtk3::ShortcutsGroup": "lib/Gnome/Gtk3/ShortcutsGroup.rakumod",
     "Gnome::Gtk3::ShortcutsSection": "lib/Gnome/Gtk3/ShortcutsSection.rakumod",
+    "Gnome::Gtk3::ShortcutsShortcut": "lib/Gnome/Gtk3/ShortcutsShortcut.rakumod",
     "Gnome::Gtk3::ShortcutsWindow": "lib/Gnome/Gtk3/ShortcutsWindow.rakumod",
     "Gnome::Gtk3::SpinButton": "lib/Gnome/Gtk3/SpinButton.pm6",
     "Gnome::Gtk3::Spinner": "lib/Gnome/Gtk3/Spinner.pm6",

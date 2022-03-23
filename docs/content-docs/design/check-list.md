@@ -191,6 +191,7 @@ Separator                 |  |  |  |  |  |  |  |  |  |  |  |  |  |
 SeparatorMenuItem         |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|  |  
 ShortcutsGroup            |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗|  | ⅗| ✓| ✓| ✓| N
 ShortcutsSection          |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗|  | ✓| ✓| ✓| ✓| N
+ShortcutsShortcut         |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗|  | ✓| ✓| ✓| ✓| N
 ShortcutsWindow           |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗|  | ✓| ✓| ✓| ✓| N
 SpinButton                |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓|  |  |  |  
 Spinner                   |  |  |  |  |  |  |  |  |  |  |  |  |  |  
