@@ -123,7 +123,7 @@ Create a ShortcutsWindow object using a native object returned from a builder. S
 
 =end pod
 
-#TM:0:new():inheriting
+# TM:0:new():inheriting
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 #TM:4:new(:build-id):Gnome::GObject::Object
 submethod BUILD ( *%options ) {
