@@ -4,6 +4,12 @@ use Test;
 
 use Gnome::Gtk3::ShortcutsShortcut;
 
+#-------------------------------------------------------------------------------
+# other tests are in ShortcutsWindow.rakutest
+done-testing;
+
+=finish
+
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
@@ -170,4 +176,3 @@ subtest 'Signals ...', {
 
   is $p.result, 'done', 'emitter finished';
 }
-

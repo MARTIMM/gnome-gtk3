@@ -3,11 +3,14 @@ use NativeCall;
 use Test;
 
 use Gnome::Gtk3::Main;
+use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Builder;
 use Gnome::Gtk3::ShortcutsWindow;
 use Gnome::Gtk3::ShortcutsSection;
 use Gnome::Gtk3::ShortcutsGroup;
+use Gnome::Gtk3::ShortcutsShortcut;
 
+use Gnome::N::GlibToRakuTypes;
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
@@ -16,6 +19,8 @@ my Gnome::Gtk3::Main $main .= new;
 my Gnome::Gtk3::ShortcutsWindow() $sw;
 my Gnome::Gtk3::ShortcutsSection() $ss;
 my Gnome::Gtk3::ShortcutsGroup() $sg;
+my Gnome::Gtk3::ShortcutsShortcut() $scut1;
+my Gnome::Gtk3::ShortcutsShortcut() $scut2;
 #-------------------------------------------------------------------------------
 #subtest 'ISA test', {
 #  $sw .= new;
@@ -44,13 +49,13 @@ subtest 'Manipulations', {
               <object class="GtkShortcutsGroup" id="shortcuts-group">
                 <property name="title" translatable="yes">General</property>
                 <child>
-                  <object class="GtkShortcutsShortcut">
+                  <object class="GtkShortcutsShortcut" id="scut1">
                     <property name="accelerator">&lt;ctrl&gt;Page_Down</property>
                     <property name="title" translatable="yes">Go to the next section</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkShortcutsShortcut">
+                  <object class="GtkShortcutsShortcut" id="scut2">
                     <property name="accelerator">&lt;ctrl&gt;Page_Up</property>
                     <property name="title" translatable="yes">Go to the previous section</property>
                   </object>
@@ -179,7 +184,9 @@ subtest 'Manipulations', {
   $sw = $builder.get-object('shortcuts-clocks');
   $ss = $builder.get-object('shortcuts-section');
   $sg = $builder.get-object('shortcuts-group');
-  diag $sg.gist;
+  $scut1 = $builder.get-object('scut1');
+  $scut2 = $builder.get-object('scut2');
+#  diag $sg.gist;
 
   # must show before changing properties, section name cannot change before
   $sw.show-all;
@@ -214,12 +221,28 @@ subtest 'Properties ...', {
   is @r[3], 'stopwatch', 'SC Section: view-name';
 
   $sg.show;
-#TODO won't set  $sg.set-properties(:view<stopwatch>);
+#TODO won't set;  $sg.set-properties(:view<stopwatch>);
   @r = $sg.get-properties( 'height', UInt, 'title', Str, 'view', Str);
   ok @r[0] > 1, 'SC Group: height';
   is @r[1], 'General', 'SC Group: title';
 #  is @r[3], 'stopwatch', 'view';
   is @r[3], Any, 'view';
+
+  @r = $scut1.get-properties( 'accelerator', Str);
+  is @r[0], '<ctrl>Page_Down', 'SC Shortcut 1: accelerator';
+  @r = $scut2.get-properties(
+    'accelerator', Str, 'action-name', Str, 'direction', GEnum,
+    'icon-set', gboolean, 'subtitle', Str, 'subtitle-set', gboolean,
+    'title', Str
+  );
+  is @r[0], '<ctrl>Page_Up', 'SC Shortcut 2: accelerator';
+  is @r[1], '', 'SC Shortcut 2: action-name';
+  is GtkTextDirection(@r[2]), GTK_TEXT_DIR_NONE, 'SC Shortcut 2: direction';
+  is @r[3], 0, 'SC Shortcut 2: icon-set';
+  is @r[4], '', 'SC Shortcut 2: subtitle';
+  is @r[5], 0, 'SC Shortcut 2: subtitle-set';
+  is @r[6], 'Go to the previous section', 'SC Shortcut 2: title';
+#note @r.gist;
 
   while $main.gtk-events-pending() { $main.iteration-do(False); }
   sleep 1;
