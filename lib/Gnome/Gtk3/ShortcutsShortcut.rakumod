@@ -238,7 +238,7 @@ The B<Gnome::GObject::Value> type of property I<action-name> is C<G_TYPE_STRING>
 =comment #TP:1:direction:
 =head3 Direction: direction
 
-The text direction for which this shortcut is active. If the shortcut is used regardless of the text direction, set this property to  B<Gnome::Gtk3::TK_TEXT_DIR_NONE>.Widget type: GTK_TYPE_TEXT_DIRECTION
+The text direction for which this shortcut is active. If the shortcut is used regardless of the text direction, set this property to  C<GTK_TEXT_DIR_NONE>. Widget enum type: C<GtkTextDirection>
 
 The B<Gnome::GObject::Value> type of property I<direction> is C<G_TYPE_ENUM>.
 
