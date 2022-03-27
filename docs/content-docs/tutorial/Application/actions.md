@@ -1,3 +1,9 @@
+---
+title: Tutorial - Actions
+nav_menu: default-nav
+sidebar_menu: tutorial-sidebar
+layout: sidebar
+---
 
 # GIO Actions
 
@@ -10,13 +16,14 @@ The purpose of this document is to get an overview of the Action module interact
 A signal is sent after a call to `.activate()` or `.change-state()`. The activation takes also place, at a button click on e.g. RadioButton or a menu entry click, in short, all widgets inheriting the Actionable interface.
 
 
-# GIO Actions Model
+# Actions Model
 
 ## UML diagram
 
 In the diagram below, the Button class inherit indirectly from Widget and Application has a Button somewhere as a child object on its UI. The UML diagram is like shown below. It's a one to one mapping from the C-libraries setup.
 
 ![actions diagram](images/actions.svg)
+
 
 ## User Programming Steps
 
