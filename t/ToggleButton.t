@@ -48,10 +48,10 @@ subtest 'Inherit ...', {
 subtest 'Signals ...', {
   my Bool $triggered = False;
   class X {
-    method t-event ( :$widget ) {
-      isa-ok $widget, Gnome::Gtk3::ToggleButton,
+    method t-event ( :$_widget ) {
+      isa-ok $_widget, Gnome::Gtk3::ToggleButton,
              'signal received on proper widget';
-      is $widget.get-label, 'Underline', 'new label ok';
+      is $_widget.get-label, 'Underline', 'new label ok';
       $triggered = True;
     }
   }
