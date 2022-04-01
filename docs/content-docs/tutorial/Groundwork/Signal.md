@@ -193,6 +193,9 @@ There are other ways to run code and keep the interface responsive as is shown i
 4) Initialization and configuration of the user interface
 5) Enter the main loop
 
+<!-- TODO Add another example to use the method Gnome::Glib::MainLoop.timeout_add() which can be much simpler in many cases
+-->
+
 
 ## Sending Events
 
