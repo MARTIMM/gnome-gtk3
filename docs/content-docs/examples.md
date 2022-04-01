@@ -4,6 +4,7 @@ title: Raku GTK+ Examples
 nav_menu: example-nav
 sidebar_menu: example-todo-viewer-sidebar
 #layout: sidebar
+layout: default
 ---
 
 # Examples
