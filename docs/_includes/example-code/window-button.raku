@@ -10,6 +10,7 @@ class AppSignalHandlers {
   method button-exit ( ) { $m.quit; }                                   # 2
   method exit-program ( ) { $m.quit; }
 }
+my AppSignalHandlers $ash .= new;
 
 my Gnome::Gtk3::Window $top-window .= new;
 $top-window.set-title('With Button');                                   # 3
