@@ -1,5 +1,3 @@
-# Welcome to Jekyll!
-#
 # This config file is meant for settings that affect your whole blog, values
 # which you are expected to set up once and rarely edit after that. If you find
 # yourself editing this file very often, consider using Jekyll's data files
@@ -8,41 +6,87 @@
 # For technical reasons, this file is *NOT* reloaded automatically when you use
 # 'bundle exec jekyll serve'. If you change this file, please restart the server process.
 
-# Site settings
-# These are used to personalize your new site. If you look in the HTML files,
-# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
-# You can create any custom variable you would like, and they will be accessible
-# in the templates via {{ site.myvariable }}.
-#title: Your awesome title
-#email: your-email@example.com
-#description: >- # this means to ignore newlines until "baseurl:"
-#  Write an awesome description for your new site here. You can edit this
-#  line in _config.yml. It will appear in your document head meta (for
-#  Google search results) and in your feed.xml site description.
-#baseurl: "" # the subpath of your site, e.g. /blog
-#url: "" # the base hostname & protocol for your site, e.g. http://example.com
-#twitter_username: jekyllrb
-#github_username:  jekyll
+# Github Specifics: https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll
 
-# Build settings
-#markdown: kramdown
-#theme: minima
+# All default settings from https://jekyllrb.com/docs/configuration/default/
+# and changed when needed
+
+# Be aware of directory paths!
+# In general, make directory path values in configuration keys like plugins_dir
+# relative to the current working directory, not the site source. The sass
+# configuration key is an exception, where values must be relative to the site
+# source.
+
+# More
+#  http://kramdown.gettalong.org/quickref.html
+#  http://kramdown.gettalong.org/options.html
+#  https://stackoverflow.com/questions/6615415/add-syntax-highlighting-to-gh-pages
+# https://github.com/jekyll/jekyll/pull/4090
+# Rouge Highlighter in Kramdown › http://kramdown.gettalong.org/syntax_highlighter/rouge.html
+
+
+# Where things are
+#-----------------
+#source              : .
+#destination         : ./_site
+#collections_dir     : .
+#plugins_dir         : _plugins # takes an array of strings and loads plugins in that order
+#layouts_dir         : _layouts
+#data_dir            : _data
+#includes_dir        : _includes
+#sass:
+#  sass_dir: _sass
+#collections:
+#  posts:
+#    output          : true
+
+
+# Handling Reading
+#-----------------
+safe                : true # (no caching)      # false
+#include             : [".htaccess"]
+#exclude             : ["Gemfile", "Gemfile.lock", "node_modules", "vendor/bundle/", "vendor/cache/", "vendor/gems/", "vendor/ruby/"]
+#keep_files          : [".git", ".svn"]
+#encoding            : "utf-8"
+#markdown_ext        : "markdown,mkdown,mkdn,mkd,md"
+#strict_front_matter : true      # false
+
+# Filtering Content
+#------------------
+#show_drafts         : null
+#limit_posts         : 0
+#future              : false
+#unpublished         : false
+
+# Plugins
+#--------
+#whitelist           : []
 plugins:
   - jekyll-feed
   - kramdown
 #  - kramdown-plantuml
 
-# Exclude from processing.
-# The following items will not be processed, by default. Create a custom list
-# to override the default setting.
-# exclude:
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
+# Conversion
+#-----------
+#markdown            : kramdown
+#highlighter         : rouge
+#lsi                 : false
+#excerpt_separator   : "\n\n"
+#incremental         : false
+
+# https://github.com/benbalter/jekyll-optional-front-matter
+optional_front_matter:
+  remove_originals: true
+  enabled: true
+
+# Serving
+#--------
+#detach              : false
+#port                : 4000
+#host                : 127.0.0.1
+baseurl: "/gnome-gtk3"
+#show_dir_listing    : false
+#url: "https://martimm.github.io"
 
 #theme: jekyll-theme-tactile
 title: Raku Interface to Gnome GTK+
@@ -52,61 +96,36 @@ email: mt1957@gmail.com
 github_username:  MARTIMM
 github: [metadata]
 
-baseurl: "/gnome-gtk3"
-#url: "https://martimm.github.io"
 
-markdown: kramdown
-highlighter: rouge
+# Outputting
+#-----------
+#permalink           : date
+#paginate_path       : /page:num
+#timezone            : null
 
-# More
-#  http://kramdown.gettalong.org/quickref.html
-#  http://kramdown.gettalong.org/options.html
-#  https://stackoverflow.com/questions/6615415/add-syntax-highlighting-to-gh-pages
-# https://github.com/jekyll/jekyll/pull/4090
-# Rouge Highlighter in Kramdown › http://kramdown.gettalong.org/syntax_highlighter/rouge.html
-kramdown:
-  # Use GitHub flavored markdown, including triple backtick fenced code blocks
-  input:          GFM
-  syntax_highlighter: rouge
-  syntax_highlighter_opts:
-    # Use existing pygments syntax highlighting css
-    css_class: 'highlight'
-#
-#
-#  # span, block element options fall back to global
-#  syntax_highlighter_opts:
-#    # Rouge Options › https://github.com/jneen/rouge#full-options
-#    css_class: 'highlight'
-#    #line_numbers: true # bad idea, spans don't need linenos and would inherit this option
-#    span:
-#      line_numbers: false
-#    block:
-#      line_numbers: true
-#      start_line: 1
-
-# show_downloads: true
-
+#quiet               : false
+#verbose             : true      # false
 defaults:
-  -
-    scope:
+  - scope:
       path: content-docs/reference/Gtk3
+      type: pages
     values:
       layout: reference-page
 #      title: Gnome::Gtk3 Reference module {{ page.name }}
       part-title: Gtk3 reference module
       nav_menu: references-nav
       sidebar_menu: references-gtk3-sidebar
-  -
-    scope:
-      path: content-docs/reference/Gdk3
+
+  - scope:
+      path: "content-docs/reference/Gdk3"
     values:
       layout: reference-page
 #      title: References to the Gdk3 package modules
       part-title: Gdk3 reference module
       nav_menu: references-nav
       sidebar_menu: references-gdk3-sidebar
-  -
-    scope:
+
+  - scope:
       path: "content-docs/reference/GObject"
     values:
       layout: reference-page
@@ -114,8 +133,8 @@ defaults:
       part-title: GObject reference module
       nav_menu: references-nav
       sidebar_menu: references-gobject-sidebar
-  -
-    scope:
+
+  - scope:
       path: "content-docs/reference/Gio"
     values:
       layout: reference-page
@@ -123,8 +142,8 @@ defaults:
       part-title: Gio reference module
       nav_menu: references-nav
       sidebar_menu: references-gio-sidebar
-  -
-    scope:
+
+  - scope:
       path: "content-docs/reference/Glib"
     values:
       layout: reference-page
@@ -132,8 +151,8 @@ defaults:
       part-title: Glib reference module
       nav_menu: references-nav
       sidebar_menu: references-glib-sidebar
-  -
-    scope:
+
+  - scope:
       path: "content-docs/reference/Native"
     values:
       layout: reference-page
@@ -141,8 +160,8 @@ defaults:
       part-title: Native reference - module
       nav_menu: references-nav
       sidebar_menu: references-native-sidebar
-#  -
-#    scope:
+
+#  - scope:
 #      path: "content-docs/reference/Glade"
 #    values:
 #      layout: reference-page
@@ -150,8 +169,8 @@ defaults:
 #      part-title: Gnome::Gtk3 - module
 #      nav_menu: references-nav
 #      sidebar_menu: references-glade-sidebar
-  -
-    scope:
+
+  - scope:
       path: "content-docs/reference/Pango"
     values:
       layout: reference-page
@@ -159,8 +178,8 @@ defaults:
       part-title: Pango reference module
       nav_menu: references-nav
       sidebar_menu: references-pango-sidebar
-  -
-    scope:
+
+  - scope:
       path: "content-docs/reference/Cairo"
     values:
       layout: reference-page
@@ -168,3 +187,34 @@ defaults:
       part-title: Cairo reference module
       nav_menu: references-nav
       sidebar_menu: references-cairo-sidebar
+
+
+#liquid:
+#  error_mode        : warn
+#  strict_filters    : false
+#  strict_variables  : false
+
+# Markdown Processors
+#--------------------
+kramdown:
+#  auto_ids          : true
+#  entity_output     : as_char
+#  toc_levels        : [1, 2, 3, 4, 5, 6]
+#  smart_quotes      : lsquo,rsquo,ldquo,rdquo
+#  input             : GFM
+#  hard_wrap         : false
+#  footnote_nr       : 1
+#  show_warnings     : false
+
+  syntax_highlighter: rouge
+#  syntax_highlighter_opts:
+#    css_class: 'highlight' # Use existing pygments syntax highlighting css
+
+#  syntax_highlighter: coderay
+#  syntax_highlighter_opts:
+#    line_numbers: table
+#    bold_every: 5
+
+
+
+# show_downloads: true
