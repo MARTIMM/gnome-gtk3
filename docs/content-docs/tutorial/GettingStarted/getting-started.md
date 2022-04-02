@@ -31,7 +31,24 @@ To get an idea of how the modules from the `Gnome::Gtk3` package work, a simple 
 ![example window](images/simple-example.png)
 
 ```raku
-{% include example-code/window-event.raku %}
+use Gnome::Gtk3::Main;                                                  # 1
+use Gnome::Gtk3::Window;
+
+my Gnome::Gtk3::Main $m .= new;                                         # 2
+
+class AppSignalHandlers {                                               # 3
+  method exit-program ( ) { $m.quit; }
+}
+
+my Gnome::Gtk3::Window $top-window .= new;                              # 4
+$top-window.set-title('Example');
+
+my AppSignalHandlers $ash .= new;                                       # 5
+$top-window.register-signal( $ash, 'exit-program', 'destroy');
+
+$top-window.show-all;                                                   # 6
+
+$m.main;                                                                # 7
 ```
 
 Lets explain some of the code displayed above. To start with, load the modules used in this program. These are **Gnome::Gtk3::Main** and **Gnome::Gtk3::Window** `(1`. They will load class definitions to control the main loop and to handle a plain window.
