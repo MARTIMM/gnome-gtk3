@@ -543,4 +543,3 @@ Returns: `1` if the link has been activated.
   * $widget; The object on which the signal was emitted.
 
   * $uri; the URI that is activated.
-
