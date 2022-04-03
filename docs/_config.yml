@@ -207,14 +207,5 @@ kramdown:
 #  show_warnings     : false
 
   syntax_highlighter: rouge
-#  syntax_highlighter_opts:
-#    css_class: 'highlight' # Use existing pygments syntax highlighting css
-
-#  syntax_highlighter: coderay
-#  syntax_highlighter_opts:
-#    line_numbers: table
-#    bold_every: 5
-
-
-
-# show_downloads: true
+  syntax_highlighter_opts:
+    css_class: 'highlight' # Use existing pygments syntax highlighting css

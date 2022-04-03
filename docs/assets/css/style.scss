@@ -1,6 +1,6 @@
 ---
 ---
-@import "jekyll-theme-tactile";
+//@import "jekyll-theme-tactile";
 
 $menu-bgcolor:              #9696bf;
 $menu-bgcolor-active:       #e6e6ef;
@@ -92,11 +92,13 @@ a:hover {
   color: $hx-link-color;
 }
 
+/*
 pre {
   padding: 10px;
   background-color: $code-color;
   border: $pre-border-width solid $pre-border-color;
 }
+*/
 
 header {
   padding-top: 5px;
@@ -179,9 +181,11 @@ div.inner {
   width: 95%;
 }
 
+/*
 div.highlight, div.highlighter-rouge, pre {
   border-radius: $border-width;
 }
+*/
 
 .tutorial-image {
   float:          right;
@@ -213,11 +217,13 @@ td {
   text-align: left;
 }
 
+/*
 pre code {
   background-color: $code-color;
   //line-height: 0.9;
   margin: 0;
 }
+*/
 
 code {
   background-color: transparent;
@@ -228,7 +234,8 @@ code {
 td.code {
   pre {
 /*   background-color: transparent;
-    color: #8e280e;*/
+    color: #8e280e;
+*/
     font-size: $code-font-size;
     scrollbar-width: thin;
   }
@@ -240,7 +247,8 @@ td.code {
 td.gutter {
   pre.lineno {
 /*   background-color: transparent;
-  color: #8e280e;*/
+  color: #8e280e;
+*/
     font-size: $code-font-size;
     scrollbar-width: thin;
   }
@@ -525,6 +533,7 @@ p {
   filter: alpha(opacity=$opacity-ie); //IE8
 }
 
+/*
 // having a lineno-container made it easier to style line number
 // code blocks without impacting normal code blocks
 .lineno-container > figure > pre {
@@ -557,11 +566,17 @@ p {
     }
   }
 }
+*/
 
 table th {
   font-weight: bold;
 }
 
+/*
 .highlight table, .highlight td {
   border: none;
 }
+*/
+
+// Import rouge highlight style
+@import "highlight-style.css"
