@@ -309,7 +309,7 @@ use Gnome::Cairo::Types;
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/gtkwidget.h
 # https://developer.gnome.org/gtk3/stable/GtkWidget.html
-unit class Gnome::Gtk3::Widget:auth<github:MARTIMM>:ver<0.4.0>;
+unit class Gnome::Gtk3::Widget:auth<github:MARTIMM>;
 also is Gnome::GObject::InitiallyUnowned;
 also does Gnome::Gtk3::Buildable;
 
