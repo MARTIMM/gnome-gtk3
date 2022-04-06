@@ -212,13 +212,14 @@ header {
   /*
   */
   pre code {
-    background-color: $code-color;
+    //background-color: $code-color;
     //line-height: 0.9;
     margin: 0;
+    //padding-left: 3px;
   }
 
   code {
-    background-color: transparent;
+    //background-color: transparent;
     color: #8e280e;
     font-size: $code-font-size;
   }
