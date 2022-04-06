@@ -35,11 +35,18 @@ nav_menus:
     - title: "Cairo"
       url: "/content-docs/reference-cairo.html"
 
-  - nav_pages:
-#    - title: "Glade"
-#      url: "/content-docs/reference-glade.html"
     - title: "N"
       url: "/content-docs/reference-native.html"
+      right: true
+#    - title: "T"
+#      url: "/content-docs/reference-test.html"
+#      right: true
+
+#  - nav_pages:
+#    - title: "Glade"
+#      url: "/content-docs/reference-glade.html"
+#    - title: "N"
+#      url: "/content-docs/reference-native.html"
 #    - title: "XML gui"
 #      url: "/content-docs/.html"
 #    - title: "XML menu"

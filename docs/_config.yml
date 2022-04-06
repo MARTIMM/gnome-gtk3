@@ -61,7 +61,9 @@ safe                : true # (no caching)      # false
 # Plugins
 #--------
 #whitelist           : []
+#remote_theme: pages-themes/tactile@v0.2.0
 plugins:
+#  - jekyll-remote-theme
   - jekyll-feed
   - kramdown
 #  - kramdown-plantuml

@@ -1,5 +1,7 @@
 ---
 ---
+<!-- this file is used when 'layout: sidebar' is used in front matter -->
+
 <!DOCTYPE html>
 <html lang="{{ site.lang | default: "en-US" }}">
   <head>
@@ -23,7 +25,6 @@
     <div id="container">
       <div class="inner">
 
-
         {% include header-section.html %}
 
         <div id="reference-container">
@@ -31,6 +32,7 @@
             {% include sidebar-section.html %}
           </div>
 
+          <!-- rest is content from page -->
           <div id="reference-content">
             {{ content }}
           </div>
