@@ -34,19 +34,16 @@ To get an idea of how the modules from the `Gnome::Gtk3` package work, a simple 
 {% include example-code/window-event.raku %}
 ```
 
-Lets explain some of the code displayed above. To start with, load the modules used in this program. These are **Gnome::Gtk3::Main** and **Gnome::Gtk3::Window** `(1`. They will load class definitions to control the main loop and to handle a plain window.
+Lets explain some of the code displayed above.
 
-Next, we initialize the **Main** object `$m` which is used later on to control the so called, event loop `(2`.
-
-Then we will setup a class to handle signals. These signals are registered after all widgets are setup and laid out `(3`. There is only one method defined in that class to stop the program. Our first GTK method is used here, `.quit()` from the **Main** class to stop our program.
-Later, when your applications grow bigger, you will see that you will need more than one class to handle all signals so you can separate the different tasks of your program. E.g. a class to handle a file menu, or one to handle an input form.
-
-Now we can start creating the widgets. There is always a toplevel widget wherein other widgets are placed. Examples of toplevel widgets are **Window** or **Gnome::Gtk3::Dialog**.
-Here we have used only one widget, a Window and set its title to 'Example' `(4`. This text is shown at the top of the window in an area called titlebar.
-
-Initialize the handler class and register signals. We use the `destroy` signal to call the `.exit-program()` method in the handler object `$ash` `(5`.
-
-Then show the window and everything in it `(6` and start the main loop `(7`.
+1. To start with, load the modules used in this program. These are **Gnome::Gtk3::Main** and **Gnome::Gtk3::Window**. They will load class definitions to control the main loop and to handle a plain window.
+2. Next, we initialize the **Main** object `$m` which is used later on to control the so called, event loop.
+3. Then we will setup a class to handle signals. These signals are registered after all widgets are setup and laid out. There is only one method defined in that class to stop the program. Our first GTK method is used here, `.quit()` from the **Main** class to stop our program.
+  Later, when your applications grow bigger, you will see that you will need more than one class to handle all signals so you can separate the different tasks of your program. For example, a class to handle a file menu, or one to handle an input form.
+4. Now we can start creating the widgets. There is always a toplevel widget wherein other widgets are placed. Examples of toplevel widgets are **Window** or **Gnome::Gtk3::Dialog**. Here we have used only one widget, a window and its title is set to 'Example'. This title text is shown at the top of the window in an area called titlebar.
+5. Initialize the handler class and register signals. We use the `destroy` signal to call the `.exit-program()` method using the handler object `$ash`.
+6. Then show the window and everything in it.
+7. Finally we must start the main loop.
 
 To run the program, save the code in a file called `simple-example.raku` and type the following on the command line (in windows you can double click on the filename).
 
@@ -74,18 +71,22 @@ The next step is to put something in the window, for example a button. We will m
 {% include example-code/window-button.raku %}
 ```
 
-You see that the layout of the program is more or less the same as in our previous example. We need to load an extra module **Gnome::Gtk3::Button** `(1`. We also have added another method to the handler class to handle the button click `(2`. We could also have used the same method `.exit-program()` in this case.
+You see that the layout of the program is more or less the same as in our previous example.
 
-We have also have used `.set-title()` to set the title of the window `(3`.
-
-What is new is the creation of a button `(4` and how it is added to the window `(5`. Later on the signal handler `.button-exit()` is registered to handle the _clicked_ event `(6`.
+1. We need to load an extra module **Gnome::Gtk3::Button**.
+2. We also have added another method to the handler class to handle the button click but could also have used the same method `.exit-program()` in this case.
+3. We have also have used `.set-title()` to set the title of the window.
+4. What is new is the creation of a button
+5. and how it is added to the window.
+6. Later on the signal handler `.button-exit()` is registered to handle the _clicked_ event .
 
 Now save the code in `window-button.raku` and run it. Pressing the button will stop the program.
 
+
 The order of creating widgets is often not important so we could also do
 
-```raku
 
+```raku
 my AppSignalHandlers $ash .= new;
 
 with my Gnome::Gtk3::Button $button .= new(
@@ -100,14 +101,12 @@ with my Gnome::Gtk3::Window $top-window .= new {
   .add($button);
   .show-all;
 }
-
 ```
 
 
 ## Simple Window with two Buttons
 
 Lets go on quickly and add a second button with the `.add()` method. The relevant part is shown below.
-
 
 ```raku
 …
@@ -161,17 +160,13 @@ Ok. Need to do things differently then. Lets look at our next attempt which is a
 
 We will use a **Gnome::Gtk3::Grid** to add the buttons to and the grid will be added to the window. Maybe you have heard of GtkVBox and GtkHBox. These are container classes where you can layout other widgets vertically or horizontally. They still exist in Gtk version 3 but are deprecated and therefore not supported by the Raku packages. However, the **Grid** class can do it all for you and much easier.
 
-When creating the buttons, we start with the lower one because we need the object in the registration of the handler of the upper button `(1` The lower button is disabled using `.set-sensitive()` `(2` and is visible as a grayed-out button.
-
-The upper button handler is `.upper-button-click()`. We see that there is a named argument added called `:$lower-button` to the registration call `(3`. You are totally free to add any named argument except for names starting with an underscore. Those names are reserved. The arguments are provided to the handler as is. The reserved naqmed argument `:$_widget` will hold the object on which the handler is registered.
-
-Then an empty grid is created `(4`. Add the buttons to the **Grid** using `.attach()`. The integers 0, 0, 1, 1 in the first call mean; first column, first row and take up 1 grid location in width and height. The lower button is placed below the first one taking up the same space. The grid is molded around the buttons taking the minimum space needed.
-
-The method `.set-border-width()` on the **Window** is used to get some space around our buttons `(5`. Also the **Grid** is added on the next line.
-
-The first handler `.upper-button-click()` `(6` is called when the top button is clicked. It uses the object `$b1` provided by `:_widget` to make that object insensitive . This is the top button and will now become grayed out. The other button `$b2` given by `:lower-button` is made sensitive. You will see that it 'returns from its grayness' so to speak.
-
-The second handler `.lower-button-click()` `(7` is called when the bottom button is clicked and will call `.quit()` to stop the program.
+1. When creating the buttons, we start with the lower one because we need the object in the registration of the handler of the upper button.
+2. The lower button is disabled using `.set-sensitive()` and is visible as a grayed-out button.
+3. The upper button handler is `.upper-button-click()`. We see that there is a named argument added called `:$lower-button` to the registration call. You are totally free to add any named argument except for names starting with an underscore. Those names are reserved. The arguments are provided to the handler as is. The reserved named argument `:$_widget` will hold the object on which the handler is registered.
+4. Then an empty grid is created. Add the buttons to the **Grid** using `.attach()`. The integers 0, 0, 1, 1 in the first call mean; first column, first row and take up 1 grid location in width and height. The lower button is placed below the first one taking up the same space. The grid is molded around the buttons taking the minimum space needed.
+5. The method `.set-border-width()` on the **Window** is used to get some space around our buttons. Also the **Grid** is added on the next line.
+6. The first handler `.upper-button-click()` is called when the top button is clicked. It uses the object `$b1` provided by `:_widget` to make that object insensitive. This is the top button and will now become grayed out. The other button `$b2` given by `:lower-button` is made sensitive. You will see that it 'returns from its grayness' so to speak.
+7. The second handler `.lower-button-click()` is called when the bottom button is clicked and will call `.quit()` to stop the program.
 
 
 ### What we have learned
