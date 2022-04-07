@@ -26,6 +26,10 @@ $code-color:                #46465f;
 $link-color:                #207f9f;
 $hx-link-color:             #20507f;
 
+$list-marker-color:         #8e280e;
+$list-text-color:           #8e6d6d;
+$list-text-font-size: 14px;
+
 $h1-link-color:             #20a07f;
 $h2-link-color:             #20907f;
 $h3-link-color:             #20807f;
@@ -40,12 +44,15 @@ $border-width:              6px;
 $pre-border-width:          0px;
 
 $menu-text-font-size: 15px;
-$sbar-text-font-size: 13px;
-$sbarhdr-text-font-size: 15px;
 $text-font-size: 14px;
 $code-font-size: 11px;
-$text-strong-font-weight: lighter;
+//$text-strong-font-weight: lighter;
 
+$sbar-text-font-size: 13px;
+$sbarhdr-text-font-size: 15px;
+
+$em-strong-color:         #8e280e;
+$em-strong-weight:        lighter;
 
 body {
   line-height: 1.1;
@@ -180,55 +187,36 @@ header {
     color: $hx-link-color;
   }
 
-  /*
+  em, strong {
+    color: $em-strong-color;
+    font-weight: $em-strong-weight;
+    //font-size: inherit;
+  }
+
+  // `backticks` is code without pre
+  code {
+    background-color: inherit;
+    color: #8e280e;
+    margin: 0 0 10px 0;
+    font-size: $text-font-size;
+  }
+
   pre {
+    border-radius: $border-width;
     padding: 10px;
     background-color: $code-color;
     border: $pre-border-width solid $pre-border-color;
-  }
-  */
 
-  em, strong {
-    color: #8e280e;
-  }
-
-  div.highlight, div.highlighter-rouge, pre {
-    border-radius: $border-width;
-    margin: 2px;
-    padding: 2px;
+    code {
+      background-color: $code-color;
+      margin: 0 0 10px 0;
+      font-size: $code-font-size;
+    }
   }
 
-  /*
-  table.rouge-table {
-    max-height: 200px;
-    overflow: auto
-  }
-  */
-
-  td {
-    text-align: left;
-  }
-
-  /*
-  */
-  pre code {
-    //background-color: $code-color;
-    //line-height: 0.9;
-    margin: 0;
-    //padding-left: 3px;
-  }
-
-  code {
-    //background-color: transparent;
-    color: #8e280e;
-    font-size: $code-font-size;
-  }
-
+/*
   td.code {
     pre {
-  /*   background-color: transparent;
-      color: #8e280e;
-  */
       font-size: $code-font-size;
       scrollbar-width: thin;
     }
@@ -239,15 +227,29 @@ header {
 
   td.gutter {
     pre.lineno {
-  /*   background-color: transparent;
-    color: #8e280e;
-  */
       font-size: $code-font-size;
       scrollbar-width: thin;
     }
 
-  //  padding: 0;
     padding: 0 5px 0 2px;
+  }
+*/
+
+  /*
+  div.highlight, div.highlighter-rouge, pre {
+    border-radius: $border-width;
+    margin: 2px;
+    padding: 2px;
+  }
+
+  table.rouge-table {
+    max-height: 200px;
+    overflow: auto
+  }
+  */
+
+  td {
+    text-align: left;
   }
 
   div.release-notes {
@@ -258,12 +260,25 @@ header {
   }
 
   ul {
+    font-size:  $list-text-font-size;
+
+    li::marker {
+      color: $list-marker-color;
+    }
+
     li {
   //    list-style-position: inside;
   //    list-style: disc;
+      color: $list-text-color;
       list-style-type: square;
-      padding-left: 15px;
-      margin-left: 15px;
+      padding-left: 3px;
+//      margin-left: 15px;
+//      font-size: 90%;
+
+      // `backticks` is code without pre
+      code {
+        font-size: $list-text-font-size;
+      }
     }
 
     .task-list-item {
@@ -278,10 +293,25 @@ header {
     }
   }
 
-  ol li {
-    list-style-position: inside;
-    list-style: decimal;
-    padding-left: 3px;
+  ol {
+    font-size:  $list-text-font-size;
+
+    li::marker {
+      color: $list-marker-color;
+    }
+
+    li {
+      color: $list-text-color;
+//      list-style-position: inside;
+      list-style: decimal;
+      padding-left: 3px;
+//      font-size: 90%;
+
+      // `backticks` is code without pre
+      code {
+        font-size: $list-text-font-size;
+      }
+    }
   }
 
   .tutorial-image {
@@ -421,9 +451,9 @@ header {
   }
 }
 
-.tooltiptext strong {
-//  color: #8e280e;
-  color: #afffff; //#fff;
+//.tooltiptext strong {
+.tooltiptext {
+  color: #afffff;
 }
 
 // From w3schools
@@ -479,10 +509,11 @@ header {
 p {
   margin-bottom: 10px;
   font-size: $text-font-size;
-
+/*
   strong {
     font-weight: $text-strong-font-weight;
   }
+*/
 }
 
 #reference-page {
@@ -549,13 +580,13 @@ p {
 }
 
 /*
-*/
 // having a lineno-container made it easier to style line number
 // code blocks without impacting normal code blocks
 .lineno-container > figure > pre {
 //  padding: 0px;
   padding: 0 5px 0 2px;
 }
+*/
 
 /*
 .highlight {

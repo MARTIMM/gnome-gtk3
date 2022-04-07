@@ -70,8 +70,8 @@ plugins:
 
 # Conversion
 #-----------
-#markdown            : kramdown
-#highlighter         : rouge
+markdown            : kramdown
+highlighter         : rouge
 #lsi                 : false
 #excerpt_separator   : "\n\n"
 #incremental         : false
@@ -203,11 +203,11 @@ kramdown:
 #  entity_output     : as_char
 #  toc_levels        : [1, 2, 3, 4, 5, 6]
 #  smart_quotes      : lsquo,rsquo,ldquo,rdquo
-#  input             : GFM
+  input             : GFM
 #  hard_wrap         : false
 #  footnote_nr       : 1
 #  show_warnings     : false
 
-  syntax_highlighter: rouge
-  syntax_highlighter_opts:
-    css_class: 'highlight' # Use existing pygments syntax highlighting css
+#  syntax_highlighter: rouge
+#  syntax_highlighter_opts:
+#    css_class: 'highlight' # Use existing pygments syntax highlighting css
