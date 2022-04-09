@@ -15,7 +15,7 @@ Many properties of **Gnome::Gtk3::CellRenderer** and its subclasses have a corre
 See Also
 --------
 
-**Gnome::Gtk3::CellRendererText**, **Gnome::Gtk3::CellRendererPixbuf**, **Gnome::Gtk3::CellRendererToggle**
+**Gnome::Gtk3::CellRendererText**, **Gnome::Gtk3::CellRendererPixbuf**, **Gnome::Gtk3::CellRendererToggle**, **Gnome::Gtk3::CellRendererProgress**, **Gnome::Gtk3::CellRendererSpinner**
 
 Synopsis
 ========
@@ -28,6 +28,17 @@ Declaration
 
 Types
 =====
+
+enum GtkCellRendererMode
+------------------------
+
+Identifies how the user can interact with a particular cell.
+
+  * GTK_CELL_RENDERER_MODE_INERT: The cell is just for display and cannot be interacted with. Note that this doesn’t mean that eg. the row being drawn can’t be selected -- just that a particular element of it cannot be individually modified.
+
+  * GTK_CELL_RENDERER_MODE_ACTIVATABLE: The cell can be clicked.
+
+  * GTK_CELL_RENDERER_MODE_EDITABLE: The cell can be edited or otherwise modified.
 
 enum GtkCellRendererState
 -------------------------
@@ -44,20 +55,18 @@ Tells how a cell is to be rendered.
 
   * GTK_CELL_RENDERER_FOCUSED: The cell is in the focus row.
 
-  * GTK_CELL_RENDERER_EXPANDABLE: The cell is in a row that can be expanded. Since 3.4
+  * GTK_CELL_RENDERER_EXPANDABLE: The cell is in a row that can be expanded.
 
-  * GTK_CELL_RENDERER_EXPANDED: The cell is in a row that is expanded. Since 3.4
+  * GTK_CELL_RENDERER_EXPANDED: The cell is in a row that is expanded.
 
-enum GtkCellRendererMode
-------------------------
+N-GtkRequisition
+----------------
 
-Identifies how the user can interact with a particular cell.
+A N-GtkRequisition represents the desired size of a widget. See GtkWidget’s geometry management section for more information.
 
-  * GTK_CELL_RENDERER_MODE_INERT: The cell is just for display and cannot be interacted with. Note that this doesn’t mean that eg. the row being drawn can’t be selected -- just that a particular element of it cannot be individually modified.
+  * Int width; the widget’s desired width
 
-  * GTK_CELL_RENDERER_MODE_ACTIVATABLE: The cell can be clicked.
-
-  * GTK_CELL_RENDERER_MODE_EDITABLE: The cell can be edited or otherwise modified.
+  * Int height; the widget’s desired height
 
 Methods
 =======
@@ -65,278 +74,340 @@ Methods
 new
 ---
 
-Create a new plain object.
+### default, no options
+
+Create a new CellRenderer object.
 
     multi method new ( )
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :native-object
+
+Create a CellRenderer object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
     multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+activate
+--------
 
-    multi method new ( Str :$build-id! )
+Passes an activate event to the cell renderer for possible processing. Some cell renderers may use events; for example, **Gnome::Gtk3::CellRendererToggle** toggles when it gets a mouse click.
 
-[[gtk_] cell_renderer_] get_request_mode
-----------------------------------------
+Returns: `True` if the event was consumed/handled
 
-Gets whether the cell renderer prefers a height-for-width layout or a width-for-height layout.
+    method activate ( N-GdkEvent $event, N-GObject() $widget, Str $path, N-GObject() $background_area, N-GObject() $cell_area, GtkCellRendererState $flags --> Bool )
 
-Returns: The **GtkSizeRequestMode** enum preferred by this renderer.
+  * $event; a **Gnome::Gtk3::Event**
 
-Since: 3.0
+  * $widget; widget that received the event
 
-    method gtk_cell_renderer_get_request_mode ( --> GtkSizeRequestMode  )
+  * $path; widget-dependent string representation of the event location; e.g. for **Gnome::Gtk3::TreeView**, a string representation of **Gnome::Gtk3::TreePath**
 
-[[gtk_] cell_renderer_] get_preferred_width
--------------------------------------------
+  * $background_area; background area as passed to `render()`
 
-Retreives a renderer’s natural size when rendered to *$widget*.
+  * $cell_area; cell area as passed to `render()`
 
-Since: 3.0
+  * $flags; render flags
 
-    method gtk_cell_renderer_get_preferred_width ( N-GObject $widget --> List )
+get-aligned-area
+----------------
 
-  * N-GObject $widget; the widget this cell will be rendering to
+Gets the aligned area used by *cell* inside *cell_area*. Used for finding the appropriate edit and focus rectangle.
 
-The method returns a list with
+    method get-aligned-area ( N-GObject() $widget, UInt $flags, N-GObject() $cell_area, N-GObject() $aligned_area )
 
-  * Int $minimum_size; the minimum size
+  * $widget; the **Gnome::Gtk3::Widget** this cell will be rendering to
 
-  * Int $natural_size; the natural size
+  * $flags; render flags. Mask of bits from GtkCellRendererState
 
-[[gtk_] cell_renderer_] get_preferred_height_for_width
-------------------------------------------------------
+  * $cell_area; cell area which would be passed to `render()`
 
-Retreives a cell renderers’s minimum and natural height if it were rendered to *$widget* with the specified *$width*.
+  * $aligned_area; the return location for the space inside *cell_area* that would acually be used to render.
 
-Since: 3.0
+get-alignment
+-------------
 
-    method gtk_cell_renderer_get_preferred_height_for_width (
-      N-GObject $widget, Int $width
-      --> List
-    )
+Fills in *xalign* and *yalign* with the appropriate values of *cell*.
 
-  * N-GObject $widget; the widget this cell will be rendering to
+    method get-alignment ( --> List )
 
-  * Int $width; the size which is available for allocation
+List returns
 
-Returns a list with
+  * Num; the x alignment of the cell, or `undefined`
 
-  * Int $minimum_height; the minimum size
+  * Num; the y alignment of the cell, or `undefined`
 
-  * Int $natural_height; the preferred size
-
-[[gtk_] cell_renderer_] get_preferred_height
---------------------------------------------
-
-Retreives a renderer’s natural size when rendered to *$widget*.
-
-Since: 3.0
-
-    method gtk_cell_renderer_get_preferred_height ( N-GObject $widget --> List )
-
-  * N-GObject $widget; the widget this cell will be rendering to
-
-Returns a list with
-
-  * Int $minimum_size; the minimum size
-
-  * Int $natural_size; the natural size
-
-[[gtk_] cell_renderer_] get_preferred_width_for_height
-------------------------------------------------------
-
-Retreives a cell renderers’s minimum and natural width if it were rendered to *$widget* with the specified *$height*.
-
-Since: 3.0
-
-    method gtk_cell_renderer_get_preferred_width_for_height (
-      N-GObject $widget, Int $height
-      --> List
-    )
-
-  * N-GObject $widget; the widget this cell will be rendering to
-
-  * Int $height; the size which is available for allocation
-
-Returns a list with
-
-  * Int $minimum_width; the minimum size
-
-  * Int $natural_width; the preferred size
-
-[[gtk_] cell_renderer_] get_preferred_size
-------------------------------------------
-
-Retrieves the minimum and natural size of a cell taking into account the widget’s preference for height-for-width management.
-
-Since: 3.0
-
-    method gtk_cell_renderer_get_preferred_size ( N-GObject $widget --> List )
-
-  * N-GObject $widget; the widget this cell will be rendering to
-
-Returns a list with
-
-  * N-GtkRequisition $minimum_size; the minimum size
-
-  * N-GtkRequisition $natural_size; the natural size
-
-[[gtk_] cell_renderer_] set_fixed_size
---------------------------------------
-
-Sets the renderer size to be explicit, independent of the properties set.
-
-    method gtk_cell_renderer_set_fixed_size ( Int $width, Int $height )
-
-  * Int $width; the width of the cell renderer, or -1
-
-  * Int $height; the height of the cell renderer, or -1
-
-[[gtk_] cell_renderer_] get_fixed_size
---------------------------------------
+get-fixed-size
+--------------
 
 Fills in *width* and *height* with the appropriate size of *cell*.
 
-    method gtk_cell_renderer_get_fixed_size ( --> List )
+    method get-fixed-size ( --> List )
 
-Returns a list with
+List returns
 
-  * Int $width; the fixed width of the cell
+  * Int; the fixed width of the cell, or `undefined`
 
-  * Int $height; the fixed height of the cell
+  * Int; the fixed height of the cell, or `undefined`
 
-[[gtk_] cell_renderer_] set_alignment
--------------------------------------
+get-padding
+-----------
 
-Sets the renderer’s alignment within its available space.
+Fills in *xpad* and *ypad* with the appropriate values of *cell*.
 
-Since: 2.18
+    method get-padding ( --> List )
 
-    method gtk_cell_renderer_set_alignment ( Num $xalign, Num $yalign )
+List returns
 
-  * Num $xalign; the x alignment of the cell renderer
+  * Int; the x padding of the cell, or `undefined`
 
-  * Num $yalign; the y alignment of the cell renderer
+  * Int; the y padding of the cell, or `undefined`
 
-[[gtk_] cell_renderer_] get_alignment
--------------------------------------
+get-preferred-height
+--------------------
 
-Returns xalign and yalign with the appropriate values of this cell.
+Retreives a renderer’s natural size when rendered to *widget*.
 
-Since: 2.18
+    method get-preferred-height ( N-GObject() $widget --> List )
 
-    method gtk_cell_renderer_get_alignment ( --> List )
+  * $widget; the **Gnome::Gtk3::Widget** this cell will be rendering to
 
-Returns a list with
+List returns
 
-  * Num $xalign; x alignment of the cell
+  * Int; the minimum size, or `undefined`
 
-  * Num $yalign; y alignment of the cell
+  * Int; the natural size, or `undefined`
 
-[[gtk_] cell_renderer_] set_padding
------------------------------------
+get-preferred-height-for-width
+------------------------------
 
-Sets the renderer’s padding.
+Retreives a cell renderers’s minimum and natural height if it were rendered to *widget* with the specified *width*.
 
-Since: 2.18
+    method get-preferred-height-for-width (
+      N-GObject() $widget, Int() $width --> List
+    )
 
-    method gtk_cell_renderer_set_padding ( Int $xpad, Int $ypad )
+  * $widget; the **Gnome::Gtk3::Widget** this cell will be rendering to
 
-  * Int $xpad; the x padding of the cell renderer
+  * $width; the size which is available for allocation
 
-  * Int $ypad; the y padding of the cell renderer
+List returns
 
-[[gtk_] cell_renderer_] get_padding
------------------------------------
+  * Int; the minimum size, or `undefined`
 
-Returns xpad and ypad with the appropriate values of this cell.
+  * Int; the preferred size, or `undefined`
 
-Since: 2.18
+get-preferred-size
+------------------
 
-    method gtk_cell_renderer_get_padding ( --> List )
+Retrieves the minimum and natural size of a cell taking into account the widget’s preference for height-for-width management.
 
-Returns list with
+    method get-preferred-size ( N-GObject() $widget --> List )
 
-  * Int $xpad; x padding of the cell
+  * $widget; the **Gnome::Gtk3::Widget** this cell will be rendering to
 
-  * Int $ypad; y padding of the cell
+List returns
 
-[[gtk_] cell_renderer_] set_visible
------------------------------------
+  * N-GtkRequisition; the minimum size, or `undefined`
 
-Sets the cell renderer’s visibility.
+  * N-GtkRequisition; the natural size, or `undefined`
 
-Since: 2.18
+get-preferred-width
+-------------------
 
-    method gtk_cell_renderer_set_visible ( Int $visible )
+Retreives a renderer’s natural size when rendered to *widget*.
 
-  * Int $visible; the visibility of the cell
+    method get-preferred-width ( N-GObject() $widget --> List )
 
-[[gtk_] cell_renderer_] get_visible
------------------------------------
+  * $widget; the **Gnome::Gtk3::Widget** this cell will be rendering to
 
-Returns the cell renderer’s visibility.
+List returns
 
-Returns: `1` if the cell renderer is visible
+  * Int; the minimum size, or `undefined`
 
-Since: 2.18
+  * Int; the natural size, or `undefined`
 
-    method gtk_cell_renderer_get_visible ( --> Int  )
+get-preferred-width-for-height
+------------------------------
 
-[[gtk_] cell_renderer_] set_sensitive
--------------------------------------
+Retreives a cell renderers’s minimum and natural width if it were rendered to *widget* with the specified *height*.
 
-Sets the cell renderer’s sensitivity.
+    method get-preferred-width-for-height (
+      N-GObject() $widget, Int() $height --> List
+    )
 
-Since: 2.18
+  * $widget; the **Gnome::Gtk3::Widget** this cell will be rendering to
 
-    method gtk_cell_renderer_set_sensitive ( Int $sensitive )
+  * $height; the size which is available for allocation
 
-  * Int $sensitive; the sensitivity of the cell
+List returns
 
-[[gtk_] cell_renderer_] get_sensitive
--------------------------------------
+  * $minimum_width; location for storing the minimum size, or `undefined`
+
+  * $natural_width; location for storing the preferred size, or `undefined`
+
+get-request-mode
+----------------
+
+Gets whether the cell renderer prefers a height-for-width layout or a width-for-height layout.
+
+Returns: The enum `GtkSizeRequestMode` preferred by this renderer.
+
+    method get-request-mode ( --> GtkSizeRequestMode )
+
+get-sensitive
+-------------
 
 Returns the cell renderer’s sensitivity.
 
-Returns: `1` if the cell renderer is sensitive
+Returns: `True` if the cell renderer is sensitive
 
-Since: 2.18
+    method get-sensitive ( --> Bool )
 
-    method gtk_cell_renderer_get_sensitive ( --> Int  )
+get-state
+---------
 
-[[gtk_] cell_renderer_] is_activatable
---------------------------------------
+Translates the cell renderer state to a mask of `GtkStateFlags`, based on the cell renderer and widget sensitivity, and the given **Gnome::Gtk3::CellRendererState**.
+
+Returns: the widget state flags applying to *cell*
+
+    method get-state (
+      N-GObject() $widget, GtkCellRendererState $cell_state
+      --> UInt
+    )
+
+  * $widget; a **Gnome::Gtk3::Widget**, or `undefined`
+
+  * $cell_state; cell renderer state
+
+get-visible
+-----------
+
+Returns the cell renderer’s visibility.
+
+Returns: `True` if the cell renderer is visible
+
+    method get-visible ( --> Bool )
+
+is-activatable
+--------------
 
 Checks whether the cell renderer can do something when activated.
 
-Returns: `1` if the cell renderer can do anything when activated
+Returns: `True` if the cell renderer can do anything when activated
 
-Since: 3.0
+    method is-activatable ( --> Bool )
 
-    method gtk_cell_renderer_is_activatable ( --> Int  )
+render
+------
 
-[[gtk_] cell_renderer_] get_state
----------------------------------
+Invokes the virtual render function of the **Gnome::Gtk3::CellRenderer**. The three passed-in rectangles are areas in *cr*. Most renderers will draw within *cell_area*; the xalign, yalign, xpad, and ypad fields of the **Gnome::Gtk3::CellRenderer** should be honored with respect to *cell_area*. *background_area* includes the blank space around the cell, and also the area containing the tree expander; so the *background_area* rectangles for all cells tile to cover the entire *window*.
 
-Translates the cell renderer state to **GtkStateFlags**, based on the cell renderer and widget sensitivity, and the given **GtkCellRendererState**.
+    method render (
+      cairo_t $cr, N-GObject() $widget, N-GObject() $background_area,
+      N-GObject() $cell_area, GtkCellRendererState $flags
+    )
 
-Returns: the widget state flags applying to this cell
+  * $cr; a cairo context to draw to
 
-Since: 3.0
+  * $widget; the widget owning *window*
 
-    method gtk_cell_renderer_get_state ( N-GObject $widget, GtkCellRendererState $cell_state --> GtkStateFlags  )
+  * $background_area; entire cell area (including tree expanders and maybe padding on the sides)
 
-  * N-GObject $widget; a widget
+  * $cell_area; area normally rendered by a cell renderer
 
-  * GtkCellRendererState $cell_state; cell renderer state
+  * $flags; flags that affect rendering
+
+set-alignment
+-------------
+
+Sets the renderer’s alignment within its available space.
+
+    method set-alignment ( Num() $xalign, Num() $yalign )
+
+  * $xalign; the x alignment of the cell renderer
+
+  * $yalign; the y alignment of the cell renderer
+
+set-fixed-size
+--------------
+
+Sets the renderer size to be explicit, independent of the properties set.
+
+    method set-fixed-size ( Int() $width, Int() $height )
+
+  * $width; the width of the cell renderer, or -1
+
+  * $height; the height of the cell renderer, or -1
+
+set-padding
+-----------
+
+Sets the renderer’s padding.
+
+    method set-padding ( Int() $xpad, Int() $ypad )
+
+  * $xpad; the x padding of the cell renderer
+
+  * $ypad; the y padding of the cell renderer
+
+set-sensitive
+-------------
+
+Sets the cell renderer’s sensitivity.
+
+    method set-sensitive ( Bool $sensitive )
+
+  * $sensitive; the sensitivity of the cell
+
+set-visible
+-----------
+
+Sets the cell renderer’s visibility.
+
+    method set-visible ( Bool $visible )
+
+  * $visible; the visibility of the cell
+
+start-editing
+-------------
+
+Starts editing the contents of this *cell*, through a new **Gnome::Gtk3::CellEditable** widget created by the **Gnome::Gtk3::CellRendererClass**.start_editing virtual function.
+
+Returns: A new **Gnome::Gtk3::CellEditable** for editing this *cell*, or `undefined` if editing is not possible
+
+    method start-editing (
+      N-GdkEvent $event, N-GObject() $widget, Str $path,
+      N-GObject() $background_area, N-GObject() $cell_area,
+      GtkCellRendererState $flags
+      --> N-GObject
+    )
+
+  * $event; a **Gnome::Gtk3::Event**
+
+  * $widget; widget that received the event
+
+  * $path; widget-dependent string representation of the event location; e.g. for **Gnome::Gtk3::TreeView**, a string representation of **Gnome::Gtk3::TreePath**
+
+  * $background_area; background area as passed to `render()`
+
+  * $cell_area; cell area as passed to `render()`
+
+  * $flags; render flags
+
+stop-editing
+------------
+
+Informs the cell renderer that the editing is stopped. If *canceled* is `True`, the cell renderer will emit the *editing-canceled* signal.
+
+This function should be called by cell renderer implementations in response to the *editing-done* signal of **Gnome::Gtk3::CellEditable**.
+
+    method stop-editing ( Bool $canceled )
+
+  * $canceled; `True` if the editing has been canceled
 
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
+There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
 
 First method
 ------------
@@ -362,7 +433,7 @@ Second method
 
     $w.connect-object( 'button-press-event', $handler);
 
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
+Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
 
 Supported signals
 -----------------
@@ -371,33 +442,52 @@ Supported signals
 
 This signal gets emitted when the user cancels the process of editing a cell. For example, an editable cell renderer could be written to cancel editing when the user presses Escape.
 
-See also: `gtk_cell_renderer_stop_editing()`.
-
-Since: 2.4
+See also: `stop_editing()`.
 
     method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($renderer),
+      Gnome::GObject::Object $renderer,
+      Int :$_handle_id,
+      Gnome::GObject::Object :_widget($cellrenderer)
+      N-GObject :$_native-object,
       *%user-options
     );
 
   * $renderer; the object which received the signal
 
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_widget; The instance which registered the signal
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
 ### editing-started
 
 This signal gets emitted when a cell starts to be edited. The intended use of this signal is to do special setup on *editable*, e.g. adding a **Gnome::Gtk3::EntryCompletion** or setting up additional columns in a **Gnome::Gtk3::ComboBox**.
 
-Note that GTK+ doesn't guarantee that cell renderers will continue to use the same kind of widget for editing in future releases, therefore you should check the type of *editable* before doing any specific setup, as in the following example:
+See `gtk_cell_editable_start_editing()` for information on the lifecycle of the *editable* and a way to do setup that doesn’t depend on the *renderer*.
 
-Since: 2.6
+Note that GTK+ doesn't guarantee that cell renderers will continue to use the same kind of widget for editing in future releases, therefore you should check the type of *editable* before doing any specific setup, as in the following example: |[<!-- language="C" --> static void text_editing_started (GtkCellRenderer *cell, GtkCellEditable *editable, const gchar *path, gpointer data) { if (GTK_IS_ENTRY (editable)) { GtkEntry *entry = GTK_ENTRY (editable);
+
+// ... create a GtkEntryCompletion
+
+gtk_entry_set_completion (entry, completion); } } ]|
 
     method handler (
+      Gnome::GObject::Object $cellrenderer,
+      Unknown type GTK_TYPE_CELL_EDITABLE $unknown type gtk_type_cell_editable,
+      Str $str,
+      Gnome::GObject::Object $renderer,
       Unknown type GTK_TYPE_CELL_EDITABLE $editable,
       Str $path,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($renderer),
+      ,
       *%user-options
     );
+
+  * $cellrenderer;
+
+  * $unknown type gtk_type_cell_editable;
+
+  * $str;
 
   * $renderer; the object which received the signal
 
@@ -405,88 +495,88 @@ Since: 2.6
 
   * $path; the path identifying the edited cell
 
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_widget; The instance which registered the signal
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use `new(:label('my text label'))` or `.set-text('my text label')`.
 
     my Gnome::Gtk3::Label $label .= new;
     my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
+    $label.get-property( 'label', $gv);
+    $gv.set-string('my text label');
 
 Supported properties
 --------------------
 
-### mode
-
-Editable mode of the CellRenderer. Its an enumeration value of GtkCellRendererMode. To retrieve value use G_TYPE_INT.
-
-Default value: GTK_CELL_RENDERER_MODE_INERT
-
-The **Gnome::GObject::Value** type of property *mode* is `G_TYPE_INT`.
-
-### visible
-
-Display the cell Default value: `1`
-
-The **Gnome::GObject::Value** type of property *visible* is `G_TYPE_BOOLEAN`.
-
-### Sensitive
-
-Display the cell sensitive Default value: True
-
-The **Gnome::GObject::Value** type of property *sensitive* is `G_TYPE_BOOLEAN`.
-
-### xalign
-
-The **Gnome::GObject::Value** type of property *xalign* is `G_TYPE_FLOAT`.
-
-### yalign
-
-The **Gnome::GObject::Value** type of property *yalign* is `G_TYPE_FLOAT`.
-
-### xpad
-
-The **Gnome::GObject::Value** type of property *xpad* is `G_TYPE_UINT`.
-
-### ypad
-
-The **Gnome::GObject::Value** type of property *ypad* is `G_TYPE_UINT`.
-
-### width
-
-The **Gnome::GObject::Value** type of property *width* is `G_TYPE_INT`.
-
-### height
-
-The **Gnome::GObject::Value** type of property *height* is `G_TYPE_INT`.
-
-### Is Expander
-
-Row has children Default value: False
-
-The **Gnome::GObject::Value** type of property *is-expander* is `G_TYPE_BOOLEAN`.
-
-### Is Expanded
-
-Row is an expander row, and is expanded Default value: False
-
-The **Gnome::GObject::Value** type of property *is-expanded* is `G_TYPE_BOOLEAN`.
-
-### Cell background color name
+### Cell background color name: cell-background
 
 Cell background color as a string Default value: Any
 
 The **Gnome::GObject::Value** type of property *cell-background* is `G_TYPE_STRING`.
 
-### Editing
+### Editing: editing
 
 Whether the cell renderer is currently in editing mode Default value: False
 
 The **Gnome::GObject::Value** type of property *editing* is `G_TYPE_BOOLEAN`.
 
-### propval
+### height: height
 
-The **Gnome::GObject::Value** type of property *g_object_class_install_property (object_class* is `G_TYPE_`.
+The **Gnome::GObject::Value** type of property *height* is `G_TYPE_INT`.
+
+### Is Expanded: is-expanded
+
+Row is an expander row, and is expanded Default value: False
+
+The **Gnome::GObject::Value** type of property *is-expanded* is `G_TYPE_BOOLEAN`.
+
+### Is Expander: is-expander
+
+Row has children Default value: False
+
+The **Gnome::GObject::Value** type of property *is-expander* is `G_TYPE_BOOLEAN`.
+
+### mode: mode
+
+Editable mode of the CellRenderer Default value: False
+
+The **Gnome::GObject::Value** type of property *mode* is `G_TYPE_ENUM`.
+
+### Sensitive: sensitive
+
+Display the cell sensitive Default value: True
+
+The **Gnome::GObject::Value** type of property *sensitive* is `G_TYPE_BOOLEAN`.
+
+### visible: visible
+
+Display the cell Default value: True
+
+The **Gnome::GObject::Value** type of property *visible* is `G_TYPE_BOOLEAN`.
+
+### width: width
+
+The **Gnome::GObject::Value** type of property *width* is `G_TYPE_INT`.
+
+### xalign: xalign
+
+The **Gnome::GObject::Value** type of property *xalign* is `G_TYPE_FLOAT`.
+
+### xpad: xpad
+
+The **Gnome::GObject::Value** type of property *xpad* is `G_TYPE_UINT`.
+
+### yalign: yalign
+
+The **Gnome::GObject::Value** type of property *yalign* is `G_TYPE_FLOAT`.
+
+### ypad: ypad
+
+The **Gnome::GObject::Value** type of property *ypad* is `G_TYPE_UINT`.
 

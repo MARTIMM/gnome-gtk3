@@ -24,13 +24,42 @@ Many properties of B<Gnome::Gtk3::CellRenderer> and its subclasses have a corres
 
 =head2 See Also
 
-B<Gnome::Gtk3::CellRendererText>, B<Gnome::Gtk3::CellRendererPixbuf>, B<Gnome::Gtk3::CellRendererToggle>
+B<Gnome::Gtk3::CellRendererText>, B<Gnome::Gtk3::CellRendererPixbuf>, B<Gnome::Gtk3::CellRendererToggle>, B<Gnome::Gtk3::CellRendererProgress>, B<Gnome::Gtk3::CellRendererSpinner>
+
+=comment TODO, B<Gnome::Gtk3::CellEditable>,
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::CellRenderer;
   also is Gnome::GObject::InitiallyUnowned;
+
+
+=comment head2 Uml Diagram
+
+=comment ![](plantuml/CellRenderer-ea.svg)
+
+
+=begin comment
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::CellRenderer;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::CellRenderer;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::CellRenderer class process the options
+    self.bless( :GtkCellRenderer, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
+
+=end comment
 
 =comment head2 Example
 
@@ -41,10 +70,17 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+use Gnome::N::GlibToRakuTypes;
+
 use Gnome::GObject::InitiallyUnowned;
+
 use Gnome::Gdk3::Events;
 use Gnome::Gdk3::Types;
-use Gnome::Gtk3::Widget;
+
+#use Gnome::Gtk3::Widget;
+use Gnome::Gtk3::Enums;
+
+use Gnome::Cairo::Types;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
@@ -58,6 +94,24 @@ also is Gnome::GObject::InitiallyUnowned;
 =end pod
 #-------------------------------------------------------------------------------
 =begin pod
+=head2 enum GtkCellRendererMode
+
+Identifies how the user can interact with a particular cell.
+
+=item GTK_CELL_RENDERER_MODE_INERT: The cell is just for display and cannot be interacted with.  Note that this doesn’t mean that eg. the row being drawn can’t be selected -- just that a particular element of it cannot be individually modified.
+=item GTK_CELL_RENDERER_MODE_ACTIVATABLE: The cell can be clicked.
+=item GTK_CELL_RENDERER_MODE_EDITABLE: The cell can be edited or otherwise modified.
+=end pod
+
+#TE:0:GtkCellRendererMode:
+enum GtkCellRendererMode is export (
+  'GTK_CELL_RENDERER_MODE_INERT',
+  'GTK_CELL_RENDERER_MODE_ACTIVATABLE',
+  'GTK_CELL_RENDERER_MODE_EDITABLE'
+);
+
+#-------------------------------------------------------------------------------
+=begin pod
 =head2 enum GtkCellRendererState
 
 Tells how a cell is to be rendered.
@@ -67,10 +121,8 @@ Tells how a cell is to be rendered.
 =item GTK_CELL_RENDERER_INSENSITIVE: The cell is drawn in an insensitive manner
 =item GTK_CELL_RENDERER_SORTED: The cell is in a sorted row
 =item GTK_CELL_RENDERER_FOCUSED: The cell is in the focus row.
-=item GTK_CELL_RENDERER_EXPANDABLE: The cell is in a row that can be expanded. Since 3.4
-=item GTK_CELL_RENDERER_EXPANDED: The cell is in a row that is expanded. Since 3.4
-
-
+=item GTK_CELL_RENDERER_EXPANDABLE: The cell is in a row that can be expanded.
+=item GTK_CELL_RENDERER_EXPANDED: The cell is in a row that is expanded.
 =end pod
 
 #TE:0:GtkCellRendererState:t/CellRendererText.t
@@ -84,27 +136,6 @@ enum GtkCellRendererState is export (
   'GTK_CELL_RENDERER_EXPANDED'    => 1 +< 6
 );
 
-#-------------------------------------------------------------------------------
-=begin pod
-=head2 enum GtkCellRendererMode
-
-Identifies how the user can interact with a particular cell.
-
-=item GTK_CELL_RENDERER_MODE_INERT: The cell is just for display and cannot be interacted with.  Note that this doesn’t mean that eg. the row being drawn can’t be selected -- just that a particular element of it cannot be individually modified.
-=item GTK_CELL_RENDERER_MODE_ACTIVATABLE: The cell can be clicked.
-=item GTK_CELL_RENDERER_MODE_EDITABLE: The cell can be edited or otherwise modified.
-
-
-=end pod
-
-#TE:0:GtkCellRendererMode:
-enum GtkCellRendererMode is export (
-  'GTK_CELL_RENDERER_MODE_INERT',
-  'GTK_CELL_RENDERER_MODE_ACTIVATABLE',
-  'GTK_CELL_RENDERER_MODE_EDITABLE'
-);
-
-#`{{
 #-------------------------------------------------------------------------------
 =begin pod
 =head2 N-GtkRequisition
@@ -121,31 +152,32 @@ class N-GtkRequisition is repr('CStruct') is export {
   has int32 $.width;
   has int32 $.height;
 }
-}}
+
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
 #-------------------------------------------------------------------------------
-
 =begin pod
 =head1 Methods
 =head2 new
 
-Create a new plain object.
+=head3 default, no options
+
+Create a new CellRenderer object.
 
   multi method new ( )
 
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+
+=head3 :native-object
+
+Create a CellRenderer object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
   multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
-
-  multi method new ( Str :$build-id! )
-
 =end pod
 
-#TM:1:new():inheriting
-
+# TM:1:new():inheriting
+#TM:1:new():
+#TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 submethod BUILD ( *%options ) {
 
   # add signal info in the form of group<signal-name>.
@@ -154,41 +186,91 @@ submethod BUILD ( *%options ) {
     :w0<editing-canceled>, :w2<editing-started>,
   ) unless $signals-added;
 
+  # prevent creating wrong native-objects
+  if self.^name eq 'Gnome::Gtk3::CellRenderer' #`{{ or %options<GtkCellRenderer> }} {
 
-  # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::CellRenderer';
+    # check if native object is set by a parent class
+    if self.is-valid { }
 
-#`{{
-  # process all named arguments
-  if ? %options<empty> {
-    # self._set-native-object(gtk_cell_renderer_new());
+    # check if common options are handled by some parent
+    elsif %options<native-object>:exists { }
+
+    # process all other options
+    else {
+      my $no;
+      if ? %options<___x___> {
+        $no = %options<___x___>;
+        $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
+        #$no = _gtk_cell_renderer_new___x___($no);
+      }
+
+      ##`{{ use this when the module is not made inheritable
+      # check if there are unknown options
+      elsif %options.elems {
+        die X::Gnome.new(
+          :message(
+            'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+            self.^name ~ ': ' ~ %options.keys.join(', ')
+          )
+        );
+      }
+      #}}
+
+      ##`{{ when there are no defaults use this
+      # check if there are any options
+      elsif %options.elems == 0 {
+        die X::Gnome.new(:message('No options specified ' ~ self.^name));
+      }
+      #}}
+
+      #`{{ when there are defaults use this instead
+      # create default object
+      else {
+        $no = _gtk_cell_renderer_new();
+      }
+      }}
+
+      self.set-native-object($no);
+    }
+
+    # only after creating the native-object, the gtype is known
+    self._set-class-info('GtkCellRenderer');
   }
-
-  elsif ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in Gnome::GObject::Object
-  }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-}}
-
-  # only after creating the native-object, the gtype is known
-  self._set-class-info('GtkCellRenderer');
 }
 
 #-------------------------------------------------------------------------------
 # no pod. user does not have to know about it.
 method _fallback ( $native-sub is copy --> Callable ) {
 
+  my Str $new-patt = $native-sub.subst( '_', '-', :g);
+
   my Callable $s;
   try { $s = &::("gtk_cell_renderer_$native-sub"); };
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  if ?$s {
+    Gnome::N::deprecate(
+      "gtk_cell_renderer_$native-sub", $new-patt, '0.47.4', '0.50.0'
+    );
+  }
+
+  else {
+    try { $s = &::("gtk_$native-sub"); } unless ?$s;
+    if ?$s {
+      Gnome::N::deprecate(
+        "gtk_$native-sub", $new-patt.subst('cell_renderern-'),
+        '0.47.4', '0.50.0'
+      );
+    }
+
+    else {
+      try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+      if ?$s {
+        Gnome::N::deprecate(
+          "$native-sub", $new-patt.subst('gtk-cell_renderer-'),
+          '0.47.4', '0.50.0'
+        );
+      }
+    }
+  }
 
   self._set-class-name-of-sub('GtkCellRenderer');
   $s = callsame unless ?$s;
@@ -197,665 +279,673 @@ method _fallback ( $native-sub is copy --> Callable ) {
 }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_get_request_mode:t/CellRendererText.t
+#TM:0:activate:
 =begin pod
-=head2 [[gtk_] cell_renderer_] get_request_mode
+=head2 activate
 
-Gets whether the cell renderer prefers a height-for-width layout
-or a width-for-height layout.
+Passes an activate event to the cell renderer for possible processing. Some cell renderers may use events; for example, B<Gnome::Gtk3::CellRendererToggle> toggles when it gets a mouse click.
 
-Returns: The B<GtkSizeRequestMode> enum preferred by this renderer.
+Returns: C<True> if the event was consumed/handled
 
-Since: 3.0
+  method activate ( N-GdkEvent $event, N-GObject() $widget, Str $path, N-GObject() $background_area, N-GObject() $cell_area, GtkCellRendererState $flags --> Bool )
 
-  method gtk_cell_renderer_get_request_mode ( --> GtkSizeRequestMode  )
-
+=item $event; a B<Gnome::Gtk3::Event>
+=item $widget; widget that received the event
+=item $path; widget-dependent string representation of the event location;  e.g. for B<Gnome::Gtk3::TreeView>, a string representation of B<Gnome::Gtk3::TreePath>
+=item $background_area; background area as passed to C<render()>
+=item $cell_area; cell area as passed to C<render()>
+=item $flags; render flags
 =end pod
 
-sub gtk_cell_renderer_get_request_mode ( N-GObject $cell )
-  returns int32
-  is native(&gtk-lib)
+method activate ( N-GdkEvent $event, N-GObject() $widget, Str $path, N-GObject() $background_area, N-GObject() $cell_area, GtkCellRendererState $flags --> Bool ) {
+
+  gtk_cell_renderer_activate(
+    self._f('GtkCellRenderer'), $event, $widget, $path, $background_area, $cell_area, $flags
+  ).Bool
+}
+
+sub gtk_cell_renderer_activate (
+  N-GObject $cell, N-GdkEvent $event, N-GObject $widget, gchar-ptr $path, N-GObject $background_area, N-GObject $cell_area, GEnum $flags --> gboolean
+) is native(&gtk-lib)
+  { * }
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:class-set-accessible-type:
+=begin pod
+=head2 class-set-accessible-type
+
+Sets the type to be used for creating accessibles for cells rendered by cell renderers of I<renderer_class>. Note that multiple accessibles will be created.
+
+This function should only be called from class init functions of cell renderers.
+
+=comment TODO GtkCellRendererClass ~~ N-GObject from this class?
+  method class-set-accessible-type ( GtkCellRendererClass $renderer_class, N-GObject() $type )
+
+=item $renderer_class; class to set the accessible type for
+=item $type; The object type that implements the accessible for I<widget_class>. The type must be a subtype of B<Gnome::Gtk3::RendererCellAccessible>
+=end pod
+
+method class-set-accessible-type ( GtkCellRendererClass $renderer_class, N-GObject() $type ) {
+
+  gtk_cell_renderer_class_set_accessible_type(
+    self._f('GtkCellRenderer'), $renderer_class, $type
+  );
+}
+
+sub gtk_cell_renderer_class_set_accessible_type (
+  GtkCellRendererClass $renderer_class, N-GObject $type
+) is native(&gtk-lib)
+  { * }
+}}
+#-------------------------------------------------------------------------------
+#TM:0:get-aligned-area:
+=begin pod
+=head2 get-aligned-area
+
+Gets the aligned area used by I<cell> inside I<cell_area>. Used for finding the appropriate edit and focus rectangle.
+
+  method get-aligned-area ( N-GObject() $widget, UInt $flags, N-GObject() $cell_area, N-GObject() $aligned_area )
+
+=item $widget; the B<Gnome::Gtk3::Widget> this cell will be rendering to
+=item $flags; render flags. Mask of bits from GtkCellRendererState
+=item $cell_area; cell area which would be passed to C<render()>
+=item $aligned_area; the return location for the space inside I<cell_area> that would acually be used to render.
+=end pod
+
+method get-aligned-area ( N-GObject() $widget, UInt $flags, N-GObject() $cell_area, N-GObject() $aligned_area ) {
+
+  gtk_cell_renderer_get_aligned_area(
+    self._f('GtkCellRenderer'), $widget, $flags, $cell_area, $aligned_area
+  );
+}
+
+sub gtk_cell_renderer_get_aligned_area (
+  N-GObject $cell, N-GObject $widget, GFlag $flags, N-GObject $cell_area, N-GObject $aligned_area
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_get_preferred_width:t/CellRendererText.t - visual
+#TM:1:get-alignment:
 =begin pod
-=head2 [[gtk_] cell_renderer_] get_preferred_width
+=head2 get-alignment
 
-Retreives a renderer’s natural size when rendered to I<$widget>.
+Fills in I<xalign> and I<yalign> with the appropriate values of I<cell>.
 
-Since: 3.0
+  method get-alignment ( --> List )
 
-  method gtk_cell_renderer_get_preferred_width ( N-GObject $widget --> List )
-
-=item N-GObject $widget; the widget this cell will be rendering to
-
-The method returns a list with
-=item Int $minimum_size; the minimum size
-=item Int $natural_size; the natural size
-
+List returns
+=item Num; the x alignment of the cell, or C<undefined>
+=item Num; the y alignment of the cell, or C<undefined>
 =end pod
 
-sub gtk_cell_renderer_get_preferred_width (
-  N-GObject $cell, N-GObject $widget
-  --> List
-) {
-  my int32 $minimum_size;
-  my int32 $natural_size;
-  _gtk_cell_renderer_get_preferred_width(
-    $cell, $widget, $minimum_size, $natural_size
+method get-alignment ( --> List ) {
+  gtk_cell_renderer_get_alignment(
+    self._f('GtkCellRenderer'), my gfloat $xalign, my gfloat $yalign
   );
 
+  ( $xalign.Num, $yalign.Num)
+}
+
+sub gtk_cell_renderer_get_alignment (
+  N-GObject $cell, gfloat $xalign, gfloat $yalign
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:get-fixed-size:
+=begin pod
+=head2 get-fixed-size
+
+Fills in I<width> and I<height> with the appropriate size of I<cell>.
+
+  method get-fixed-size ( --> List )
+
+List returns
+=item Int; the fixed width of the cell, or C<undefined>
+=item Int; the fixed height of the cell, or C<undefined>
+=end pod
+
+method get-fixed-size ( --> List ) {
+  gtk_cell_renderer_get_fixed_size(
+    self._f('GtkCellRenderer'), my gint $width, my gint $height
+  );
+
+  ( $width, $height)
+}
+
+sub gtk_cell_renderer_get_fixed_size (
+  N-GObject $cell, gint $width is rw, gint $height is rw
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:get-padding:
+=begin pod
+=head2 get-padding
+
+Fills in I<xpad> and I<ypad> with the appropriate values of I<cell>.
+
+  method get-padding ( --> List )
+
+List returns
+=item Int; the x padding of the cell, or C<undefined>
+=item Int; the y padding of the cell, or C<undefined>
+=end pod
+
+method get-padding ( --> List ) {
+  gtk_cell_renderer_get_padding(
+    self._f('GtkCellRenderer'), my gint $xpad, my gint $ypad
+  );
+
+  ( $xpad, $ypad)
+}
+
+sub gtk_cell_renderer_get_padding (
+  N-GObject $cell, gint $xpad is rw, gint $ypad is rw
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:get-preferred-height:
+=begin pod
+=head2 get-preferred-height
+
+Retreives a renderer’s natural size when rendered to I<widget>.
+
+  method get-preferred-height ( N-GObject() $widget --> List )
+
+=item $widget; the B<Gnome::Gtk3::Widget> this cell will be rendering to
+
+List returns
+=item Int; the minimum size, or C<undefined>
+=item Int; the natural size, or C<undefined>
+=end pod
+
+method get-preferred-height ( N-GObject() $widget --> List ) {
+  gtk_cell_renderer_get_preferred_height(
+    self._f('GtkCellRenderer'), $widget,
+    my gint $minimum_size, my gint $natural_size
+  );
   ( $minimum_size, $natural_size)
 }
 
-sub _gtk_cell_renderer_get_preferred_width (
-  N-GObject $cell, N-GObject $widget,
-  int32 $minimum_size is rw, int32 $natural_size is rw
+sub gtk_cell_renderer_get_preferred_height (
+  N-GObject $cell, N-GObject $widget, gint $minimum_size is rw, gint $natural_size is rw
 ) is native(&gtk-lib)
-  is symbol('gtk_cell_renderer_get_preferred_width')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_get_preferred_height_for_width:t/CellRendererText.t - visual
+#TM:1:get-preferred-height-for-width:
 =begin pod
-=head2 [[gtk_] cell_renderer_] get_preferred_height_for_width
+=head2 get-preferred-height-for-width
 
-Retreives a cell renderers’s minimum and natural height if it were rendered to
-I<$widget> with the specified I<$width>.
+Retreives a cell renderers’s minimum and natural height if it were rendered to I<widget> with the specified I<width>.
 
-Since: 3.0
-
-  method gtk_cell_renderer_get_preferred_height_for_width (
-    N-GObject $widget, Int $width
-    --> List
+  method get-preferred-height-for-width (
+    N-GObject() $widget, Int() $width --> List
   )
-=item N-GObject $widget; the widget this cell will be rendering to
-=item Int $width; the size which is available for allocation
 
-Returns a list with
-=item Int $minimum_height; the minimum size
-=item Int $natural_height; the preferred size
+=item $widget; the B<Gnome::Gtk3::Widget> this cell will be rendering to
+=item $width; the size which is available for allocation
 
+List returns
+=item Int; the minimum size, or C<undefined>
+=item Int; the preferred size, or C<undefined>
 =end pod
 
-sub gtk_cell_renderer_get_preferred_height_for_width (
-  N-GObject $cell, N-GObject $widget, Int $width
-  --> List
+method get-preferred-height-for-width (
+  N-GObject() $widget, Int() $width --> List
 ) {
-  my int32 $minimum_height;
-  my int32 $natural_height;
-  _gtk_cell_renderer_get_preferred_height_for_width(
-    $cell, $widget, $width, $minimum_height, $natural_height
+  gtk_cell_renderer_get_preferred_height_for_width(
+    self._f('GtkCellRenderer'), $widget, $width,
+    my gint $minimum_height, my gint $natural_height
   );
 
   ( $minimum_height, $natural_height)
 }
 
-sub _gtk_cell_renderer_get_preferred_height_for_width (
-  N-GObject $cell, N-GObject $widget, int32 $width,
-  int32 $minimum_height is rw, int32 $natural_height is rw
+sub gtk_cell_renderer_get_preferred_height_for_width (
+  N-GObject $cell, N-GObject $widget, gint $width, gint $minimum_height is rw, gint $natural_height is rw
 ) is native(&gtk-lib)
-  is symbol('gtk_cell_renderer_get_preferred_height_for_width')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_get_preferred_height:t/CellRendererText.t - visual
+#TM:1:get-preferred-size:
 =begin pod
-=head2 [[gtk_] cell_renderer_] get_preferred_height
+=head2 get-preferred-size
 
-Retreives a renderer’s natural size when rendered to I<$widget>.
+Retrieves the minimum and natural size of a cell taking into account the widget’s preference for height-for-width management.
 
-Since: 3.0
+  method get-preferred-size ( N-GObject() $widget --> List )
 
-  method gtk_cell_renderer_get_preferred_height ( N-GObject $widget --> List )
+=item $widget; the B<Gnome::Gtk3::Widget> this cell will be rendering to
 
-=item N-GObject $widget; the widget this cell will be rendering to
-
-Returns a list with
-=item Int $minimum_size; the minimum size
-=item Int $natural_size; the natural size
-
+List returns
+=item N-GtkRequisition; the minimum size, or C<undefined>
+=item N-GtkRequisition; the natural size, or C<undefined>
 =end pod
 
-sub gtk_cell_renderer_get_preferred_height (
-  N-GObject $cell, N-GObject $widget
-  --> List
-) {
-  my int32 $minimum_size;
-  my int32 $natural_size;
-  _gtk_cell_renderer_get_preferred_height(
-    $cell, $widget, $minimum_size, $natural_size
+method get-preferred-size ( N-GObject() $widget --> List ) {
+  my N-GtkRequisition $minimum_size .= new;
+  my N-GtkRequisition $natural_size .= new;
+  gtk_cell_renderer_get_preferred_size(
+    self._f('GtkCellRenderer'), $widget, $minimum_size, $natural_size
   );
 
   ( $minimum_size, $natural_size)
 }
 
-sub _gtk_cell_renderer_get_preferred_height (
-  N-GObject $cell, N-GObject $widget, int32 $minimum_size is rw,
-  int32 $natural_size is rw
+sub gtk_cell_renderer_get_preferred_size (
+  N-GObject $cell, N-GObject $widget, N-GtkRequisition $minimum_size, N-GtkRequisition $natural_size
 ) is native(&gtk-lib)
-  is symbol('gtk_cell_renderer_get_preferred_height')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_get_preferred_width_for_height:t/CellRendererText.t - visual
+#TM:1:get-preferred-width:
 =begin pod
-=head2 [[gtk_] cell_renderer_] get_preferred_width_for_height
+=head2 get-preferred-width
 
-Retreives a cell renderers’s minimum and natural width if it were rendered to
-I<$widget> with the specified I<$height>.
+Retreives a renderer’s natural size when rendered to I<widget>.
 
-Since: 3.0
+  method get-preferred-width ( N-GObject() $widget --> List )
 
-  method gtk_cell_renderer_get_preferred_width_for_height (
-    N-GObject $widget, Int $height
-    --> List
-  )
+=item $widget; the B<Gnome::Gtk3::Widget> this cell will be rendering to
 
-=item N-GObject $widget; the widget this cell will be rendering to
-=item Int $height; the size which is available for allocation
-
-Returns a list with
-=item Int $minimum_width; the minimum size
-=item Int $natural_width; the preferred size
-
+List returns
+=item Int; the minimum size, or C<undefined>
+=item Int; the natural size, or C<undefined>
 =end pod
 
-sub gtk_cell_renderer_get_preferred_width_for_height (
-  N-GObject $cell, N-GObject $widget, Int $height
-  --> List
+method get-preferred-width ( N-GObject() $widget --> List ) {
+  gtk_cell_renderer_get_preferred_width(
+    self._f('GtkCellRenderer'), $widget, my gint $minimum_size, my gint $natural_size
+  );
+
+  ( $minimum_size, $natural_size)
+}
+
+sub gtk_cell_renderer_get_preferred_width (
+  N-GObject $cell, N-GObject $widget, gint $minimum_size is rw, gint $natural_size is rw
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:get-preferred-width-for-height:
+=begin pod
+=head2 get-preferred-width-for-height
+
+Retreives a cell renderers’s minimum and natural width if it were rendered to I<widget> with the specified I<height>.
+
+  method get-preferred-width-for-height (
+    N-GObject() $widget, Int() $height --> List
+  )
+
+=item $widget; the B<Gnome::Gtk3::Widget> this cell will be rendering to
+=item $height; the size which is available for allocation
+
+List returns
+=item $minimum_width; location for storing the minimum size, or C<undefined>
+=item $natural_width; location for storing the preferred size, or C<undefined>
+=end pod
+
+method get-preferred-width-for-height (
+  N-GObject() $widget, Int() $height --> List
 ) {
-  my int32 $minimum_width;
-  my int32 $natural_width;
-  _gtk_cell_renderer_get_preferred_width_for_height(
-    $cell, $widget, $height, $minimum_width, $natural_width
+  gtk_cell_renderer_get_preferred_width_for_height(
+    self._f('GtkCellRenderer'), $widget, $height,
+    my gint $minimum_width, my gint $natural_width
   );
 
   ( $minimum_width, $natural_width)
 }
 
-sub _gtk_cell_renderer_get_preferred_width_for_height (
-  N-GObject $cell, N-GObject $widget, int32 $height,
-  int32 $minimum_width is rw, int32 $natural_width is rw
+sub gtk_cell_renderer_get_preferred_width_for_height (
+  N-GObject $cell, N-GObject $widget, gint $height, gint $minimum_width is rw, gint $natural_width is rw
 ) is native(&gtk-lib)
-  is symbol('gtk_cell_renderer_get_preferred_width_for_height')
   { * }
 
-
 #-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_get_preferred_size:t/CellRendererText.t - visual
+#TM:1:get-request-mode:
 =begin pod
-=head2 [[gtk_] cell_renderer_] get_preferred_size
+=head2 get-request-mode
 
-Retrieves the minimum and natural size of a cell taking into account the widget’s preference for height-for-width management.
+Gets whether the cell renderer prefers a height-for-width layout or a width-for-height layout.
 
-Since: 3.0
+Returns: The enum C<GtkSizeRequestMode> preferred by this renderer.
 
-  method gtk_cell_renderer_get_preferred_size ( N-GObject $widget --> List )
-
-=item N-GObject $widget; the widget this cell will be rendering to
-
-Returns a list with
-=item N-GtkRequisition $minimum_size; the minimum size
-=item N-GtkRequisition $natural_size; the natural size
+  method get-request-mode ( --> GtkSizeRequestMode )
 
 =end pod
-sub gtk_cell_renderer_get_preferred_size (
-  N-GObject $cell, N-GObject $widget
-  --> List
-) {
-  my N-GtkRequisition $minimum_size .= new;
-  my N-GtkRequisition $natural_size .= new;
-  _gtk_cell_renderer_get_preferred_size(
-    $cell, $widget, $minimum_size, $natural_size
-  );
-  ( $minimum_size, $natural_size)
-}
 
-sub _gtk_cell_renderer_get_preferred_size (
-  N-GObject $cell, N-GObject $widget,
-  N-GtkRequisition $minimum_size, N-GtkRequisition $natural_size
-) is native(&gtk-lib)
-  is symbol('gtk_cell_renderer_get_preferred_size')
-  { * }
-
-#`{{
-#-------------------------------------------------------------------------------
-#TM:0:gtk_cell_renderer_get_aligned_area:
-=begin pod
-=head2 [[gtk_] cell_renderer_] get_aligned_area
-
-Gets the aligned area used by I<$cell> inside I<$cell_area>. Used for finding the appropriate edit and focus rectangle.
-
-Since: 3.0
-
-  method gtk_cell_renderer_get_aligned_area (
-    N-GObject $widget, GtkCellRendererState $flags, N-GObject $cell_area,
-    N-GObject $aligned_area
+method get-request-mode ( --> GtkSizeRequestMode ) {
+  GtkSizeRequestMode(
+    gtk_cell_renderer_get_request_mode(self._f('GtkCellRenderer'))
   )
-
-=item N-GObject $widget; the widget this cell will be rendering to
-=item GtkCellRendererState $flags; render flags
-=item N-GObject $cell_area; cell area which would be passed to C<gtk_cell_renderer_render()>
-=item N-GObject $aligned_area; (out): the return location for the space inside I<cell_area> that would acually be used to render.
-
-=end pod
-
-sub gtk_cell_renderer_get_aligned_area ( N-GObject $cell, N-GObject $widget, int32 $flags, N-GObject $cell_area, N-GObject $aligned_area )
-  is native(&gtk-lib)
-  { * }
-}}
-
-#`{{
-#-------------------------------------------------------------------------------
-#TM:0:gtk_cell_renderer_render:
-=begin pod
-=head2 [gtk_] cell_renderer_render
-
-Invokes the virtual render function of the B<Gnome::Gtk3::CellRenderer>. The three
-passed-in rectangles are areas in I<cr>. Most renderers will draw within
-I<cell_area>; the xalign, yalign, xpad, and ypad fields of the B<Gnome::Gtk3::CellRenderer>
-should be honored with respect to I<cell_area>. I<background_area> includes the
-blank space around the cell, and also the area containing the tree expander;
-so the I<background_area> rectangles for all cells tile to cover the entire
-I<window>.
-
-  method gtk_cell_renderer_render ( cairo_t $cr, N-GObject $widget, N-GObject $background_area, N-GObject $cell_area, GtkCellRendererState $flags )
-
-=item cairo_t $cr; a cairo context to draw to
-=item N-GObject $widget; the widget owning I<window>
-=item N-GObject $background_area; entire cell area (including tree expanders and maybe  padding on the sides)
-=item N-GObject $cell_area; area normally rendered by a cell renderer
-=item GtkCellRendererState $flags; flags that affect rendering
-
-=end pod
-
-sub gtk_cell_renderer_render ( N-GObject $cell, cairo_t $cr, N-GObject $widget, N-GObject $background_area, N-GObject $cell_area, int32 $flags )
-  is native(&gtk-lib)
-  { * }
-}}
-
-#`{{
-#-------------------------------------------------------------------------------
-#TM:0:gtk_cell_renderer_activate:
-=begin pod
-=head2 [gtk_] cell_renderer_activate
-
-Passes an activate event to the cell renderer for possible processing.
-Some cell renderers may use events; for example, B<Gnome::Gtk3::CellRendererToggle>
-toggles when it gets a mouse click.
-
-Returns: C<1> if the event was consumed/handled
-
-  method gtk_cell_renderer_activate ( N-GdkEvent $event, N-GObject $widget, Str $path, N-GObject $background_area, N-GObject $cell_area, GtkCellRendererState $flags --> Int  )
-
-=item N-GdkEvent $event; a B<Gnome::Gdk3::Event>
-=item N-GObject $widget; widget that received the event
-=item Str $path; widget-dependent string representation of the event location;  e.g. for B<Gnome::Gtk3::TreeView>, a string representation of B<Gnome::Gtk3::TreePath>
-=item N-GObject $background_area; background area as passed to C<gtk_cell_renderer_render()>
-=item N-GObject $cell_area; cell area as passed to C<gtk_cell_renderer_render()>
-=item GtkCellRendererState $flags; render flags
-
-=end pod
-
-sub gtk_cell_renderer_activate ( N-GObject $cell, N-GdkEvent $event, N-GObject $widget, Str $path, N-GObject $background_area, N-GObject $cell_area, int32 $flags )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-}}
-
-#`{{
-#-------------------------------------------------------------------------------
-#TM:0:gtk_cell_renderer_start_editing:
-=begin pod
-=head2 [[gtk_] cell_renderer_] start_editing
-
-Passes an activate event to the cell renderer for possible processing.
-
-Returns: (nullable) (transfer none): A new B<Gnome::Gtk3::CellEditable>, or C<Any>
-
-  method gtk_cell_renderer_start_editing ( N-GdkEvent $event, N-GObject $widget, Str $path, N-GObject $background_area, N-GObject $cell_area, GtkCellRendererState $flags --> N-GObject  )
-
-=item N-GdkEvent $event; a B<Gnome::Gdk3::Event>
-=item N-GObject $widget; widget that received the event
-=item Str $path; widget-dependent string representation of the event location; e.g. for B<Gnome::Gtk3::TreeView>, a string representation of B<Gnome::Gtk3::TreePath>
-=item N-GObject $background_area; background area as passed to C<gtk_cell_renderer_render()>
-=item N-GObject $cell_area; cell area as passed to C<gtk_cell_renderer_render()>
-=item GtkCellRendererState $flags; render flags
-
-=end pod
-
-sub gtk_cell_renderer_start_editing ( N-GObject $cell, N-GdkEvent $event, N-GObject $widget, Str $path, N-GObject $background_area, N-GObject $cell_area, int32 $flags )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-}}
-
-#-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_set_fixed_size:t/CellRendererText.t
-=begin pod
-=head2 [[gtk_] cell_renderer_] set_fixed_size
-
-Sets the renderer size to be explicit, independent of the properties set.
-
-  method gtk_cell_renderer_set_fixed_size ( Int $width, Int $height )
-
-=item Int $width; the width of the cell renderer, or -1
-=item Int $height; the height of the cell renderer, or -1
-
-=end pod
-
-sub gtk_cell_renderer_set_fixed_size ( N-GObject $cell, int32 $width, int32 $height )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_get_fixed_size:t/CellRendererText.t
-=begin pod
-=head2 [[gtk_] cell_renderer_] get_fixed_size
-
-Fills in I<width> and I<height> with the appropriate size of I<cell>.
-
-  method gtk_cell_renderer_get_fixed_size ( --> List )
-
-Returns a list with
-=item Int $width; the fixed width of the cell
-=item Int $height; the fixed height of the cell
-
-=end pod
-
-sub gtk_cell_renderer_get_fixed_size ( N-GObject $cell --> List ) {
-  _gtk_cell_renderer_get_fixed_size( $cell, my int32 $w, my int32 $h);
-
-  ( $w, $h)
 }
 
-sub _gtk_cell_renderer_get_fixed_size (
-  N-GObject $cell, int32 $width is rw, int32 $height is rw
+sub gtk_cell_renderer_get_request_mode (
+  N-GObject $cell --> GEnum
 ) is native(&gtk-lib)
-  is symbol('gtk_cell_renderer_get_fixed_size')
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_set_alignment:t/CellRendererText.t
+#TM:1:get-sensitive:
 =begin pod
-=head2 [[gtk_] cell_renderer_] set_alignment
-
-Sets the renderer’s alignment within its available space.
-
-Since: 2.18
-
-  method gtk_cell_renderer_set_alignment ( Num $xalign, Num $yalign )
-
-=item Num $xalign; the x alignment of the cell renderer
-=item Num $yalign; the y alignment of the cell renderer
-
-=end pod
-
-sub gtk_cell_renderer_set_alignment ( N-GObject $cell, num32 $xalign, num32 $yalign )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_get_alignment:t/CellRendererText.t
-=begin pod
-=head2 [[gtk_] cell_renderer_] get_alignment
-
-Returns xalign and yalign with the appropriate values of this cell.
-
-Since: 2.18
-
-  method gtk_cell_renderer_get_alignment ( --> List )
-
-Returns a list with
-=item Num $xalign; x alignment of the cell
-=item Num $yalign; y alignment of the cell
-
-=end pod
-
-sub gtk_cell_renderer_get_alignment ( N-GObject $cell --> List ) {
-  _gtk_cell_renderer_get_alignment( $cell, my num32 $xa, my num32 $ya);
-
-  ( $xa, $ya)
-}
-
-sub _gtk_cell_renderer_get_alignment (
-  N-GObject $cell, num32 $xalign is rw, num32 $yalign is rw
-) is native(&gtk-lib)
-  is symbol('gtk_cell_renderer_get_alignment')
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_set_padding:t/CellRendererText.t
-=begin pod
-=head2 [[gtk_] cell_renderer_] set_padding
-
-Sets the renderer’s padding.
-
-Since: 2.18
-
-  method gtk_cell_renderer_set_padding ( Int $xpad, Int $ypad )
-
-=item Int $xpad; the x padding of the cell renderer
-=item Int $ypad; the y padding of the cell renderer
-
-=end pod
-
-sub gtk_cell_renderer_set_padding ( N-GObject $cell, int32 $xpad, int32 $ypad )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_get_padding:t/CellRendererText.t
-=begin pod
-=head2 [[gtk_] cell_renderer_] get_padding
-
-Returns xpad and ypad with the appropriate values of this cell.
-
-Since: 2.18
-
-  method gtk_cell_renderer_get_padding ( --> List )
-
-Returns list with
-=item Int $xpad; x padding of the cell
-=item Int $ypad; y padding of the cell
-
-=end pod
-sub gtk_cell_renderer_get_padding ( N-GObject $cell --> List ) {
-  _gtk_cell_renderer_get_padding( $cell, my int32 $xp, my int32 $yp);
-
-  ( $xp, $yp)
-}
-
-sub _gtk_cell_renderer_get_padding (
-  N-GObject $cell, int32 $xpad is rw, int32 $ypad is rw
-) is native(&gtk-lib)
-  is symbol('gtk_cell_renderer_get_padding')
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_set_visible:t/CellRendererText.t
-=begin pod
-=head2 [[gtk_] cell_renderer_] set_visible
-
-Sets the cell renderer’s visibility.
-
-Since: 2.18
-
-  method gtk_cell_renderer_set_visible ( Int $visible )
-
-=item Int $visible; the visibility of the cell
-
-=end pod
-
-sub gtk_cell_renderer_set_visible ( N-GObject $cell, int32 $visible )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_get_visible:t/CellRendererText.t
-=begin pod
-=head2 [[gtk_] cell_renderer_] get_visible
-
-Returns the cell renderer’s visibility.
-
-Returns: C<1> if the cell renderer is visible
-
-Since: 2.18
-
-  method gtk_cell_renderer_get_visible ( --> Int  )
-
-
-=end pod
-
-sub gtk_cell_renderer_get_visible ( N-GObject $cell )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_set_sensitive:t/CellRendererText.t
-=begin pod
-=head2 [[gtk_] cell_renderer_] set_sensitive
-
-Sets the cell renderer’s sensitivity.
-
-Since: 2.18
-
-  method gtk_cell_renderer_set_sensitive ( Int $sensitive )
-
-=item Int $sensitive; the sensitivity of the cell
-
-=end pod
-
-sub gtk_cell_renderer_set_sensitive ( N-GObject $cell, int32 $sensitive )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_get_sensitive:t/CellRendererText.t
-=begin pod
-=head2 [[gtk_] cell_renderer_] get_sensitive
+=head2 get-sensitive
 
 Returns the cell renderer’s sensitivity.
 
-Returns: C<1> if the cell renderer is sensitive
+Returns: C<True> if the cell renderer is sensitive
 
-Since: 2.18
-
-  method gtk_cell_renderer_get_sensitive ( --> Int  )
-
+  method get-sensitive ( --> Bool )
 
 =end pod
 
-sub gtk_cell_renderer_get_sensitive ( N-GObject $cell )
-  returns int32
-  is native(&gtk-lib)
+method get-sensitive ( --> Bool ) {
+  gtk_cell_renderer_get_sensitive(self._f('GtkCellRenderer')).Bool
+}
+
+sub gtk_cell_renderer_get_sensitive (
+  N-GObject $cell --> gboolean
+) is native(&gtk-lib)
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_cell_renderer_is_activatable:
+#TM:1:get-state:
 =begin pod
-=head2 [[gtk_] cell_renderer_] is_activatable
+=head2 get-state
+
+Translates the cell renderer state to a mask of C<GtkStateFlags>, based on the cell renderer and widget sensitivity, and the given B<Gnome::Gtk3::CellRendererState>.
+
+Returns: the widget state flags applying to I<cell>
+
+  method get-state (
+    N-GObject() $widget, GtkCellRendererState $cell_state
+    --> UInt
+  )
+
+=item $widget; a B<Gnome::Gtk3::Widget>, or C<undefined>
+=item $cell_state; cell renderer state
+=end pod
+
+method get-state (
+  N-GObject() $widget, GtkCellRendererState $cell_state --> UInt
+) {
+  gtk_cell_renderer_get_state(
+    self._f('GtkCellRenderer'), $widget, $cell_state
+  )
+}
+
+sub gtk_cell_renderer_get_state (
+  N-GObject $cell, N-GObject $widget, GEnum $cell_state --> GEnum
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:get-visible:
+=begin pod
+=head2 get-visible
+
+Returns the cell renderer’s visibility.
+
+Returns: C<True> if the cell renderer is visible
+
+  method get-visible ( --> Bool )
+
+=end pod
+
+method get-visible ( --> Bool ) {
+  gtk_cell_renderer_get_visible(self._f('GtkCellRenderer')).Bool
+}
+
+sub gtk_cell_renderer_get_visible (
+  N-GObject $cell --> gboolean
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:is-activatable:
+=begin pod
+=head2 is-activatable
 
 Checks whether the cell renderer can do something when activated.
 
-Returns: C<1> if the cell renderer can do anything when activated
+Returns: C<True> if the cell renderer can do anything when activated
 
-Since: 3.0
-
-  method gtk_cell_renderer_is_activatable ( --> Int  )
-
+  method is-activatable ( --> Bool )
 
 =end pod
 
-sub gtk_cell_renderer_is_activatable ( N-GObject $cell )
-  returns int32
-  is native(&gtk-lib)
+method is-activatable ( --> Bool ) {
+  gtk_cell_renderer_is_activatable(self._f('GtkCellRenderer')).Bool
+}
+
+sub gtk_cell_renderer_is_activatable (
+  N-GObject $cell --> gboolean
+) is native(&gtk-lib)
   { * }
-
-#`{{
-#-------------------------------------------------------------------------------
-#TM:0:gtk_cell_renderer_stop_editing:
-=begin pod
-=head2 [[gtk_] cell_renderer_] stop_editing
-
-Informs the cell renderer that the editing is stopped.
-If I<canceled> is C<1>, the cell renderer will emit the
- I<editing-canceled> signal.
-
-This function should be called by cell renderer implementations
-in response to the  I<editing-done> signal of
-B<Gnome::Gtk3::CellEditable>.
-
-Since: 2.6
-
-  method gtk_cell_renderer_stop_editing ( Int $canceled )
-
-=item Int $canceled; C<1> if the editing has been canceled
-
-=end pod
-
-sub gtk_cell_renderer_stop_editing ( N-GObject $cell, int32 $canceled )
-  is native(&gtk-lib)
-  { * }
-}}
 
 #-------------------------------------------------------------------------------
-#TM:0:gtk_cell_renderer_get_state:
+#TM:0:render:
 =begin pod
-=head2 [[gtk_] cell_renderer_] get_state
+=head2 render
 
-Translates the cell renderer state to B<GtkStateFlags>,
-based on the cell renderer and widget sensitivity, and
-the given B<GtkCellRendererState>.
+Invokes the virtual render function of the B<Gnome::Gtk3::CellRenderer>. The three passed-in rectangles are areas in I<cr>. Most renderers will draw within I<cell_area>; the xalign, yalign, xpad, and ypad fields of the B<Gnome::Gtk3::CellRenderer> should be honored with respect to I<cell_area>. I<background_area> includes the blank space around the cell, and also the area containing the tree expander; so the I<background_area> rectangles for all cells tile to cover the entire I<window>.
 
-Returns: the widget state flags applying to this cell
+  method render (
+    cairo_t $cr, N-GObject() $widget, N-GObject() $background_area,
+    N-GObject() $cell_area, GtkCellRendererState $flags
+  )
 
-Since: 3.0
-
-  method gtk_cell_renderer_get_state ( N-GObject $widget, GtkCellRendererState $cell_state --> GtkStateFlags  )
-
-=item N-GObject $widget; a widget
-=item GtkCellRendererState $cell_state; cell renderer state
-
+=item $cr; a cairo context to draw to
+=item $widget; the widget owning I<window>
+=item $background_area; entire cell area (including tree expanders and maybe  padding on the sides)
+=item $cell_area; area normally rendered by a cell renderer
+=item $flags; flags that affect rendering
 =end pod
 
-sub gtk_cell_renderer_get_state ( N-GObject $cell, N-GObject $widget, int32 $cell_state )
-  returns int32
-  is native(&gtk-lib)
+method render ( cairo_t $cr, N-GObject() $widget, N-GObject() $background_area, N-GObject() $cell_area, GtkCellRendererState $flags ) {
+
+  gtk_cell_renderer_render(
+    self._f('GtkCellRenderer'), $cr, $widget, $background_area,
+    $cell_area, $flags
+  );
+}
+
+sub gtk_cell_renderer_render (
+  N-GObject $cell, cairo_t $cr, N-GObject $widget, N-GObject $background_area, N-GObject $cell_area, GEnum $flags
+) is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:gtk_cell_renderer_class_set_accessible_type:
+#TM:1:set-alignment:
 =begin pod
-=head2 [[gtk_] cell_renderer_] class_set_accessible_type
+=head2 set-alignment
 
-Sets the type to be used for creating accessibles for cells rendered by
-cell renderers of I<renderer_class>. Note that multiple accessibles will
-be created.
+Sets the renderer’s alignment within its available space.
 
-This function should only be called from class init functions of cell
-renderers.
+  method set-alignment ( Num() $xalign, Num() $yalign )
 
-  method gtk_cell_renderer_class_set_accessible_type ( GtkCellRendererClass $renderer_class, uInt $type )
-
-=item GtkCellRendererClass $renderer_class; class to set the accessible type for
-=item uInt $type; The object type that implements the accessible for I<widget_class>. The type must be a subtype of B<Gnome::Gtk3::RendererCellAccessible>
-
+=item $xalign; the x alignment of the cell renderer
+=item $yalign; the y alignment of the cell renderer
 =end pod
 
-sub gtk_cell_renderer_class_set_accessible_type ( GtkCellRendererClass $renderer_class, uint64 $type )
-  is native(&gtk-lib)
+method set-alignment ( Num() $xalign, Num() $yalign ) {
+  gtk_cell_renderer_set_alignment(
+    self._f('GtkCellRenderer'), $xalign, $yalign
+  );
+}
+
+sub gtk_cell_renderer_set_alignment (
+  N-GObject $cell, gfloat $xalign, gfloat $yalign
+) is native(&gtk-lib)
   { * }
-}}
+
+#-------------------------------------------------------------------------------
+#TM:1:set-fixed-size:
+=begin pod
+=head2 set-fixed-size
+
+Sets the renderer size to be explicit, independent of the properties set.
+
+  method set-fixed-size ( Int() $width, Int() $height )
+
+=item $width; the width of the cell renderer, or -1
+=item $height; the height of the cell renderer, or -1
+=end pod
+
+method set-fixed-size ( Int() $width, Int() $height ) {
+  gtk_cell_renderer_set_fixed_size(
+    self._f('GtkCellRenderer'), $width, $height
+  );
+}
+
+sub gtk_cell_renderer_set_fixed_size (
+  N-GObject $cell, gint $width, gint $height
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:set-padding:
+=begin pod
+=head2 set-padding
+
+Sets the renderer’s padding.
+
+  method set-padding ( Int() $xpad, Int() $ypad )
+
+=item $xpad; the x padding of the cell renderer
+=item $ypad; the y padding of the cell renderer
+=end pod
+
+method set-padding ( Int() $xpad, Int() $ypad ) {
+  gtk_cell_renderer_set_padding(
+    self._f('GtkCellRenderer'), $xpad, $ypad
+  );
+}
+
+sub gtk_cell_renderer_set_padding (
+  N-GObject $cell, gint $xpad, gint $ypad
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:set-sensitive:
+=begin pod
+=head2 set-sensitive
+
+Sets the cell renderer’s sensitivity.
+
+  method set-sensitive ( Bool $sensitive )
+
+=item $sensitive; the sensitivity of the cell
+=end pod
+
+method set-sensitive ( Bool $sensitive ) {
+  gtk_cell_renderer_set_sensitive(
+    self._f('GtkCellRenderer'), $sensitive
+  );
+}
+
+sub gtk_cell_renderer_set_sensitive (
+  N-GObject $cell, gboolean $sensitive
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:set-visible:
+=begin pod
+=head2 set-visible
+
+Sets the cell renderer’s visibility.
+
+  method set-visible ( Bool $visible )
+
+=item $visible; the visibility of the cell
+=end pod
+
+method set-visible ( Bool $visible ) {
+  gtk_cell_renderer_set_visible(
+    self._f('GtkCellRenderer'), $visible
+  );
+}
+
+sub gtk_cell_renderer_set_visible (
+  N-GObject $cell, gboolean $visible
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:start-editing:
+=begin pod
+=head2 start-editing
+
+Starts editing the contents of this I<cell>, through a new B<Gnome::Gtk3::CellEditable> widget created by the B<Gnome::Gtk3::CellRendererClass>.start_editing virtual function.
+
+Returns: A new B<Gnome::Gtk3::CellEditable> for editing this I<cell>, or C<undefined> if editing is not possible
+
+  method start-editing (
+    N-GdkEvent $event, N-GObject() $widget, Str $path,
+    N-GObject() $background_area, N-GObject() $cell_area,
+    GtkCellRendererState $flags
+    --> N-GObject
+  )
+
+=item $event; a B<Gnome::Gtk3::Event>
+=item $widget; widget that received the event
+=item $path; widget-dependent string representation of the event location; e.g. for B<Gnome::Gtk3::TreeView>, a string representation of B<Gnome::Gtk3::TreePath>
+=item $background_area; background area as passed to C<render()>
+=item $cell_area; cell area as passed to C<render()>
+=item $flags; render flags
+=end pod
+
+#TODO make a role for Gnome::Gtk3::CellEditable
+method start-editing (
+  N-GdkEvent $event, N-GObject() $widget, Str $path,
+  N-GObject() $background_area, N-GObject() $cell_area,
+  GtkCellRendererState $flags
+  --> N-GObject
+) {
+  gtk_cell_renderer_start_editing(
+    self._f('GtkCellRenderer'), $event, $widget, $path,
+    $background_area, $cell_area, $flags
+  )
+}
+
+sub gtk_cell_renderer_start_editing (
+  N-GObject $cell, N-GdkEvent $event, N-GObject $widget, gchar-ptr $path, N-GObject $background_area, N-GObject $cell_area, GEnum $flags --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:stop-editing:
+=begin pod
+=head2 stop-editing
+
+Informs the cell renderer that the editing is stopped. If I<canceled> is C<True>, the cell renderer will emit the  I<editing-canceled> signal.
+
+This function should be called by cell renderer implementations in response to the  I<editing-done> signal of B<Gnome::Gtk3::CellEditable>.
+
+  method stop-editing ( Bool $canceled )
+
+=item $canceled; C<True> if the editing has been canceled
+=end pod
+
+method stop-editing ( Bool $canceled ) {
+  gtk_cell_renderer_stop_editing( self._f('GtkCellRenderer'), $canceled);
+}
+
+sub gtk_cell_renderer_stop_editing (
+  N-GObject $cell, gboolean $canceled
+) is native(&gtk-lib)
+  { * }
+
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Signals
 
-There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<g_signal_connect_object()> directly from B<Gnome::GObject::Signal>.
+There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
 
 =head2 First method
 
@@ -879,71 +969,94 @@ The positional arguments of the signal handler are all obligatory as well as the
 
   $w.connect-object( 'button-press-event', $handler);
 
-Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<g_signal_connect_object()> are using the signatures of the handler routines to setup the native call interface.
+Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<connect-object()> are using the signatures of the handler routines to setup the native call interface.
 
 =head2 Supported signals
 
 
+=comment -----------------------------------------------------------------------
 =comment #TS:0:editing-canceled:
 =head3 editing-canceled
 
-This signal gets emitted when the user cancels the process of editing a cell.  For example, an editable cell renderer could be written to cancel editing when the user presses Escape.
+This signal gets emitted when the user cancels the process of editing a
+cell.  For example, an editable cell renderer could be written to cancel
+editing when the user presses Escape.
 
-See also: C<gtk_cell_renderer_stop_editing()>.
+See also: C<stop_editing()>.
 
-Since: 2.4
 
   method handler (
-    Int :$_handler_id,
-    Gnome::GObject::Object :_widget($renderer),
+    Gnome::GObject::Object $renderer,
+    Int :$_handle_id,
+    Gnome::GObject::Object :_widget($cellrenderer)
+    N-GObject :$_native-object,
     *%user-options
   );
 
 =item $renderer; the object which received the signal
 
+=item $_handler-id; The handler id which is returned from the registration
+=item $_widget; The instance which registered the signal
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
 
+=comment -----------------------------------------------------------------------
 =comment #TS:0:editing-started:
 =head3 editing-started
 
-This signal gets emitted when a cell starts to be edited. The intended use of this signal is to do special setup on I<editable>, e.g. adding a B<Gnome::Gtk3::EntryCompletion> or setting up additional columns in a B<Gnome::Gtk3::ComboBox>.
+This signal gets emitted when a cell starts to be edited.
+The intended use of this signal is to do special setup
+on I<editable>, e.g. adding a B<Gnome::Gtk3::EntryCompletion> or setting
+up additional columns in a B<Gnome::Gtk3::ComboBox>.
 
-Note that GTK+ doesn't guarantee that cell renderers will continue to use the same kind of widget for editing in future releases, therefore you should check the type of I<editable> before doing any specific setup, as in the following example:
-=begin comment
+See C<gtk_cell_editable_start_editing()> for information on the lifecycle of
+the I<editable> and a way to do setup that doesn’t depend on the I<renderer>.
+
+Note that GTK+ doesn't guarantee that cell renderers will
+continue to use the same kind of widget for editing in future
+releases, therefore you should check the type of I<editable>
+before doing any specific setup, as in the following example:
 |[<!-- language="C" -->
 static void
-text_editing_started (B<Gnome::Gtk3::CellRenderer> *cell,
-B<Gnome::Gtk3::CellEditable> *editable,
+text_editing_started (GtkCellRenderer *cell,
+GtkCellEditable *editable,
 const gchar     *path,
 gpointer         data)
 {
 if (GTK_IS_ENTRY (editable))
 {
-B<Gnome::Gtk3::Entry> *entry = GTK_ENTRY (editable);
+GtkEntry *entry = GTK_ENTRY (editable);
 
-// ... create a B<Gnome::Gtk3::EntryCompletion>
+// ... create a GtkEntryCompletion
 
 gtk_entry_set_completion (entry, completion);
 }
 }
 ]|
-=end comment
 
-Since: 2.6
 
   method handler (
+    Gnome::GObject::Object $cellrenderer,
+    Unknown type GTK_TYPE_CELL_EDITABLE $unknown type gtk_type_cell_editable,
+    Str $str,
+    Gnome::GObject::Object $renderer,
     Unknown type GTK_TYPE_CELL_EDITABLE $editable,
     Str $path,
-    Int :$_handler_id,
-    Gnome::GObject::Object :_widget($renderer),
+    ,
     *%user-options
   );
 
+=item $cellrenderer;
+=item $unknown type gtk_type_cell_editable;
+=item $str;
 =item $renderer; the object which received the signal
 
 =item $editable; the B<Gnome::Gtk3::CellEditable>
 
 =item $path; the path identifying the edited cell
 
+=item $_handler-id; The handler id which is returned from the registration
+=item $_widget; The instance which registered the signal
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
 
 =end pod
 
@@ -952,124 +1065,117 @@ Since: 2.6
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use C<new(:label('my text label'))> or C<.set-text('my text label')>.
 
   my Gnome::Gtk3::Label $label .= new;
   my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.g-object-get-property( 'label', $gv);
-  $gv.g-value-set-string('my text label');
+  $label.get-property( 'label', $gv);
+  $gv.set-string('my text label');
 
 =head2 Supported properties
 
-=comment #TP:2:mode:t/CellRendererText.t
-=head3 mode
-
-Editable mode of the CellRenderer. Its an enumeration value of GtkCellRendererMode. To retrieve value use G_TYPE_INT.
-
-Default value: GTK_CELL_RENDERER_MODE_INERT
-
-The B<Gnome::GObject::Value> type of property I<mode> is C<G_TYPE_INT>.
-
-=comment #TP:0:visible:
-=head3 visible
-
-Display the cell
-Default value: C<1>
-
-
-The B<Gnome::GObject::Value> type of property I<visible> is C<G_TYPE_BOOLEAN>.
-
-=comment #TP:2:sensitive:t/CellRendererText.t
-=head3 Sensitive
-
-Display the cell sensitive
-Default value: True
-
-
-The B<Gnome::GObject::Value> type of property I<sensitive> is C<G_TYPE_BOOLEAN>.
-
-=comment #TP:0:xalign:
-=head3 xalign
-
-
-
-The B<Gnome::GObject::Value> type of property I<xalign> is C<G_TYPE_FLOAT>.
-
-=comment #TP:0:yalign:
-=head3 yalign
-
-
-
-The B<Gnome::GObject::Value> type of property I<yalign> is C<G_TYPE_FLOAT>.
-
-=comment #TP:0:xpad:
-=head3 xpad
-
-
-
-The B<Gnome::GObject::Value> type of property I<xpad> is C<G_TYPE_UINT>.
-
-=comment #TP:0:ypad:
-=head3 ypad
-
-
-
-The B<Gnome::GObject::Value> type of property I<ypad> is C<G_TYPE_UINT>.
-
-=comment #TP:0:width:
-=head3 width
-
-
-
-The B<Gnome::GObject::Value> type of property I<width> is C<G_TYPE_INT>.
-
-=comment #TP:0:height:
-=head3 height
-
-
-
-The B<Gnome::GObject::Value> type of property I<height> is C<G_TYPE_INT>.
-
-=comment #TP:0:is-expander:
-=head3 Is Expander
-
-Row has children
-Default value: False
-
-
-The B<Gnome::GObject::Value> type of property I<is-expander> is C<G_TYPE_BOOLEAN>.
-
-=comment #TP:0:is-expanded:
-=head3 Is Expanded
-
-Row is an expander row, and is expanded
-Default value: False
-
-
-The B<Gnome::GObject::Value> type of property I<is-expanded> is C<G_TYPE_BOOLEAN>.
-
-=comment #TP:0:cell-background:
-=head3 Cell background color name
+=comment -----------------------------------------------------------------------
+=comment #TP:1:cell-background:
+=head3 Cell background color name: cell-background
 
 Cell background color as a string
 Default value: Any
 
-
 The B<Gnome::GObject::Value> type of property I<cell-background> is C<G_TYPE_STRING>.
 
-=comment #TP:0:editing:
-=head3 Editing
+=comment -----------------------------------------------------------------------
+=comment #TP:1:editing:
+=head3 Editing: editing
 
 Whether the cell renderer is currently in editing mode
 Default value: False
 
-
 The B<Gnome::GObject::Value> type of property I<editing> is C<G_TYPE_BOOLEAN>.
 
-=comment #TP:0: g_object_class_install_property (object_class:
-=head3 propval
+=comment -----------------------------------------------------------------------
+=comment #TP:1:height:
+=head3 height: height
 
 
+The B<Gnome::GObject::Value> type of property I<height> is C<G_TYPE_INT>.
 
-The B<Gnome::GObject::Value> type of property I< g_object_class_install_property (object_class> is C<G_TYPE_>.
+=comment -----------------------------------------------------------------------
+=comment #TP:1:is-expanded:
+=head3 Is Expanded: is-expanded
+
+Row is an expander row, and is expanded
+Default value: False
+
+The B<Gnome::GObject::Value> type of property I<is-expanded> is C<G_TYPE_BOOLEAN>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:is-expander:
+=head3 Is Expander: is-expander
+
+Row has children
+Default value: False
+
+The B<Gnome::GObject::Value> type of property I<is-expander> is C<G_TYPE_BOOLEAN>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:mode:
+=head3 mode: mode
+
+Editable mode of the CellRenderer
+Default value: False
+
+The B<Gnome::GObject::Value> type of property I<mode> is C<G_TYPE_ENUM>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:sensitive:
+=head3 Sensitive: sensitive
+
+Display the cell sensitive
+Default value: True
+
+The B<Gnome::GObject::Value> type of property I<sensitive> is C<G_TYPE_BOOLEAN>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:visible:
+=head3 visible: visible
+
+Display the cell
+Default value: True
+
+The B<Gnome::GObject::Value> type of property I<visible> is C<G_TYPE_BOOLEAN>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:width:
+=head3 width: width
+
+
+The B<Gnome::GObject::Value> type of property I<width> is C<G_TYPE_INT>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:xalign:
+=head3 xalign: xalign
+
+
+The B<Gnome::GObject::Value> type of property I<xalign> is C<G_TYPE_FLOAT>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:xpad:
+=head3 xpad: xpad
+
+
+The B<Gnome::GObject::Value> type of property I<xpad> is C<G_TYPE_UINT>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:yalign:
+=head3 yalign: yalign
+
+
+The B<Gnome::GObject::Value> type of property I<yalign> is C<G_TYPE_FLOAT>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:ypad:
+=head3 ypad: ypad
+
+
+The B<Gnome::GObject::Value> type of property I<ypad> is C<G_TYPE_UINT>.
 =end pod
