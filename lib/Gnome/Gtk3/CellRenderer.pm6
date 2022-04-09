@@ -35,9 +35,9 @@ B<Gnome::Gtk3::CellRendererText>, B<Gnome::Gtk3::CellRendererPixbuf>, B<Gnome::G
   also is Gnome::GObject::InitiallyUnowned;
 
 
-=comment head2 Uml Diagram
+=head2 Uml Diagram
 
-=comment ![](plantuml/CellRenderer-ea.svg)
+![](plantuml/CellRenderer-ea.svg)
 
 
 =begin comment

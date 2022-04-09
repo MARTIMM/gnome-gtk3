@@ -26,6 +26,11 @@ Declaration
     unit class Gnome::Gtk3::CellRenderer;
     also is Gnome::GObject::InitiallyUnowned;
 
+Uml Diagram
+-----------
+
+![](plantuml/CellRenderer-ea.svg)
+
 Types
 =====
 
