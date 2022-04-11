@@ -641,147 +641,99 @@ sub _gtk_adjustment_new ( gdouble $value, gdouble $lower, gdouble $upper, gdoubl
 =begin pod
 =head1 Signals
 
-There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
-
-=head2 First method
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
-
-  # handler method
-  method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-  # connect a signal on window object
-  my Gnome::Gtk3::Window $w .= new( ... );
-  $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-=head2 Second method
-
-  my Gnome::Gtk3::Window $w .= new( ... );
-  my Callable $handler = sub (
-    N-GObject $native, GdkEvent $event, OpaquePointer $data
-  ) {
-    ...
-  }
-
-  $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<connect-object()> are using the signatures of the handler routines to setup the native call interface.
-
-=head2 Supported signals
-
 
 =comment -----------------------------------------------------------------------
 =comment #TS:1:changed:
-=head3 changed
+=head2 changed
 
 Emitted when one or more of the B<Gnome::Gtk3::Adjustment> properties have been
 changed, other than the  I<value> property.
 
   method handler (
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($adjustment),
+    Gnome::Gtk3::Adjustment :_widget($adjustment),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
-  );
+  )
 
-=item $adjustment; the object which received the signal
-
-=item $_handle_id; the registered event handler id
+=item $adjustment; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =comment -----------------------------------------------------------------------
 =comment #TS:1:value-changed:
-=head3 value-changed
+=head2 value-changed
 
 Emitted when the  I<value> property has been changed.
 
   method handler (
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($adjustment),
+    Gnome::Gtk3::Adjustment :_widget($adjustment),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
-  );
+  )
 
-=item $adjustment; the object which received the signal
-
-=item $_handle_id; the registered event handler id
+=item $adjustment; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =end pod
-
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
-
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.get-property( 'label', $gv);
-  $gv.set-string('my text label');
-
-=head2 Supported properties
-
 =comment -----------------------------------------------------------------------
 =comment #TP:1:lower:
-=head3 Minimum Value: lower
-
+=head2 lower
 
 The minimum value of the adjustment.
-
 
 The B<Gnome::GObject::Value> type of property I<lower> is C<G_TYPE_DOUBLE>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:page-increment:
-=head3 Page Increment: page-increment
-
+=head2 page-increment
 
 The page increment of the adjustment.
-
 
 The B<Gnome::GObject::Value> type of property I<page-increment> is C<G_TYPE_DOUBLE>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:page-size:
-=head3 Page Size: page-size
-
+=head2 page-size
 
 The page size of the adjustment.
-Note that the page-size is irrelevant and should be set to zero
-if the adjustment is used for a simple scalar value, e.g. in a
-B<Gnome::Gtk3::SpinButton>.
 
+Note that the page-size is irrelevant and should be set to zero if the adjustment is used for a simple scalar value, e.g. in a B<Gnome::Gtk3::SpinButton>.
 
 The B<Gnome::GObject::Value> type of property I<page-size> is C<G_TYPE_DOUBLE>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:step-increment:
-=head3 Step Increment: step-increment
-
+=head2 step-increment
 
 The step increment of the adjustment.
-
 
 The B<Gnome::GObject::Value> type of property I<step-increment> is C<G_TYPE_DOUBLE>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:upper:
-=head3 Maximum Value: upper
-
+=head2 upper
 
 The maximum value of the adjustment.
-Note that values will be restricted by
-`upper - page-size` if the page-size
-property is nonzero.
 
+Note that values will be restricted by upper - page-size` if the page-size property is nonzero.
 
 The B<Gnome::GObject::Value> type of property I<upper> is C<G_TYPE_DOUBLE>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:value:
-=head3 Value: value
-
+=head2 value
 
 The value of the adjustment.
-
 
 The B<Gnome::GObject::Value> type of property I<value> is C<G_TYPE_DOUBLE>.
 =end pod

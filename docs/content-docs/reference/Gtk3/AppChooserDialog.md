@@ -128,20 +128,17 @@ Sets the text to display at the top of the dialog. If the heading is not set, th
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
+gfile
+-----
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.get-property( 'label', $gv);
-    $gv.set-string('my text label');
+The GFile used by the **Gnome::Gtk3::AppChooserDialog**. The dialog's **Gnome::Gtk3::AppChooserWidget** content type will be guessed from the file, if present.
 
-Supported properties
---------------------
+The **Gnome::GObject::Value** type of property *gfile* is `G_TYPE_OBJECT`.
 
-### PROP_GFILE: g_object_class_install_property (gobject_class
+heading
+-------
 
-    g-object-class-install-property (gobject-class, PROP-GFILE, pspec);
-    /**
+The text to show at the top of the dialog. The string may contain Pango markup.
 
-The text to show at the top of the dialog. * The string may contain Pango markup. The **Gnome::GObject::Value** type of property * g_object_class_install_property (gobject_class* is `G_TYPE_`.
+The **Gnome::GObject::Value** type of property *heading* is `G_TYPE_STRING`.
 

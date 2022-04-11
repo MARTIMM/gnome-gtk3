@@ -228,109 +228,90 @@ Note that for adjustments which are used in a **Gnome::Gtk3::Scrollbar**, the ef
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
-
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
--------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### changed
+changed
+-------
 
 Emitted when one or more of the **Gnome::Gtk3::Adjustment** properties have been changed, other than the *value* property.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($adjustment),
+      Gnome::Gtk3::Adjustment :_widget($adjustment),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $adjustment; the object which received the signal
+  * $adjustment; The instance which registered the signal
 
-  * $_handle_id; the registered event handler id
+  * $_handler-id; The handler id which is returned from the registration
 
-### value-changed
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+value-changed
+-------------
 
 Emitted when the *value* property has been changed.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($adjustment),
+      Gnome::Gtk3::Adjustment :_widget($adjustment),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $adjustment; the object which received the signal
+  * $adjustment; The instance which registered the signal
 
-  * $_handle_id; the registered event handler id
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
-
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.get-property( 'label', $gv);
-    $gv.set-string('my text label');
-
-Supported properties
---------------------
-
-### Minimum Value: lower
+lower
+-----
 
 The minimum value of the adjustment.
 
 The **Gnome::GObject::Value** type of property *lower* is `G_TYPE_DOUBLE`.
 
-### Page Increment: page-increment
+page-increment
+--------------
 
 The page increment of the adjustment.
 
 The **Gnome::GObject::Value** type of property *page-increment* is `G_TYPE_DOUBLE`.
 
-### Page Size: page-size
+page-size
+---------
 
-The page size of the adjustment. Note that the page-size is irrelevant and should be set to zero if the adjustment is used for a simple scalar value, e.g. in a **Gnome::Gtk3::SpinButton**.
+The page size of the adjustment.
+
+Note that the page-size is irrelevant and should be set to zero if the adjustment is used for a simple scalar value, e.g. in a **Gnome::Gtk3::SpinButton**.
 
 The **Gnome::GObject::Value** type of property *page-size* is `G_TYPE_DOUBLE`.
 
-### Step Increment: step-increment
+step-increment
+--------------
 
 The step increment of the adjustment.
 
 The **Gnome::GObject::Value** type of property *step-increment* is `G_TYPE_DOUBLE`.
 
-### Maximum Value: upper
+upper
+-----
 
-The maximum value of the adjustment. Note that values will be restricted by `upper - page-size` if the page-size property is nonzero.
+The maximum value of the adjustment.
+
+Note that values will be restricted by upper - page-size` if the page-size property is nonzero.
 
 The **Gnome::GObject::Value** type of property *upper* is `G_TYPE_DOUBLE`.
 
-### Value: value
+value
+-----
 
 The value of the adjustment.
 

@@ -407,59 +407,30 @@ sub _gtk_app_chooser_button_new ( gchar-ptr $content_type --> N-GObject )
   is symbol('gtk_app_chooser_button_new')
   { * }
 
+
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Signals
 
-There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
-
-=head2 First method
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
-
-  # handler method
-  method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-  # connect a signal on window object
-  my Gnome::Gtk3::Window $w .= new( ... );
-  $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-=head2 Second method
-
-  my Gnome::Gtk3::Window $w .= new( ... );
-  my Callable $handler = sub (
-    N-GObject $native, GdkEvent $event, OpaquePointer $data
-  ) {
-    ...
-  }
-
-  $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<connect-object()> are using the signatures of the handler routines to setup the native call interface.
-
-=head2 Supported signals
-
-
 =comment -----------------------------------------------------------------------
 =comment #TS:0:custom-item-activated:
-=head3 custom-item-activated
+=head2 custom-item-activated
 
-Emitted when a custom item, previously added with
-C<append-custom-item()>, is activated from the
-dropdown menu.
+Emitted when a custom item, previously added with C<append_custom_item()>, is activated from the dropdown menu.
 
   method handler (
     Str $item_name,
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($self),
+    Gnome::Gtk3::AppChooserButton :_widget($button),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
-  );
-
-=item $self; the object which received the signal
+  )
 
 =item $item_name; the name of the activated item
-
-=item $_handle_id; the registered event handler id
+=item $button; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =end pod
 
@@ -468,43 +439,27 @@ dropdown menu.
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
-
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.get-property( 'label', $gv);
-  $gv.set-string('my text label');
-
-=head2 Supported properties
-
 =comment -----------------------------------------------------------------------
 =comment #TP:0:heading:
-=head3 Heading: heading
+=head2 heading
 
+The text to show at the top of the dialog that can be  opened from the button. The string may contain Pango markup.
 
-The text to show at the top of the dialog that can be
-   * opened from the button. The string may contain Pango markup.
 The B<Gnome::GObject::Value> type of property I<heading> is C<G_TYPE_STRING>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:show-default-item:
-=head3 Show default item: show-default-item
+=head2 show-default-item
 
-
-The  I<show-default-item> property determines
-whether the dropdown menu should show the default application
-on top for the provided content type.
-
+The  I<show-default-item> property determines whether the dropdown menu should show the default application on top for the provided content type.
 
 The B<Gnome::GObject::Value> type of property I<show-default-item> is C<G_TYPE_BOOLEAN>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:show-dialog-item:
-=head3 Include an 'Other…' item: show-dialog-item
+=head2 show-dialog-item
 
+The  I<show-dialog-item> property determines whether the dropdown menu should show an item that triggers a B<Gnome::Gtk3::AppChooserDialog> when clicked.
 
-The  I<show-dialog-item> property determines
-whether the dropdown menu should show an item that triggers
-   * a B<Gnome::Gtk3::AppChooserDialog> when clicked.
 The B<Gnome::GObject::Value> type of property I<show-dialog-item> is C<G_TYPE_BOOLEAN>.
 =end pod

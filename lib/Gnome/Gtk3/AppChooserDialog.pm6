@@ -332,6 +332,43 @@ sub _gtk_app_chooser_dialog_new_for_content_type ( N-GObject $parent, GEnum $fla
   { * }
 
 #-------------------------------------------------------------------------------
+# Note; entered by hand. generator does not find info
+=begin pod
+=head1 Properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:gfile:
+=head2 gfile
+
+The GFile used by the B<Gnome::Gtk3::AppChooserDialog>. The dialog's B<Gnome::Gtk3::AppChooserWidget> content type will be guessed from the file, if present.
+
+The B<Gnome::GObject::Value> type of property I<gfile> is C<G_TYPE_OBJECT>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:heading:
+=head2 heading
+
+The text to show at the top of the dialog. The string may contain Pango markup.
+
+The B<Gnome::GObject::Value> type of property I<heading> is C<G_TYPE_STRING>.
+
+=end pod
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=finish
+#-------------------------------------------------------------------------------
 =begin pod
 =head1 Properties
 
