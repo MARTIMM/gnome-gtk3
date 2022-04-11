@@ -8,8 +8,6 @@ Description
 
 **Gnome::Gtk3::CellRendererAccel** displays a keyboard accelerator (i.e. a key combination like `Control + a`). If the cell renderer is editable, the accelerator can be changed by simply typing the new combination.
 
-The **Gnome::Gtk3::CellRendererAccel** cell renderer was added in GTK+ 2.10.
-
 Synopsis
 ========
 
@@ -18,6 +16,11 @@ Declaration
 
     unit class Gnome::Gtk3::CellRendererAccel;
     also is Gnome::Gtk3::CellRendererText;
+
+Uml Diagram
+-----------
+
+![](plantuml/CellRenderer-ea.svg)
 
 Types
 =====
@@ -37,153 +40,106 @@ Methods
 new
 ---
 
+### default, no options
+
 Create a new plain object.
 
     multi method new ( )
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :native-object
 
-    multi method new ( N-GObject :$widget! )
+Create a CellRendererAccel object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
-
-    multi method new ( Str :$build-id! )
-
-gtk_cell_renderer_accel_new
----------------------------
-
-Creates a new **Gnome::Gtk3::CellRendererAccel**.
-
-Returns: the new cell renderer
-
-Since: 2.10
-
-    method gtk_cell_renderer_accel_new ( --> N-GObject  )
+    multi method new ( N-GObject :$native-object! )
 
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
-
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
+accel-cleared
 -------------
 
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### accel-edited
-
-Gets emitted when the user has selected a new accelerator.
-
-Since: 2.10
+Gets emitted when the user has removed the accelerator.
 
     method handler (
       Str $path_string,
-      uint32 $accel_key,
-      uint32 $accel_mods,
-      uint32 $hardware_keycode,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($accel),
+      Gnome::Gtk3::CellRendererAccel :_widget($accel),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-      --> Int
-    );
+    )
 
-  * $accel; the object reveiving the signal
+  * $path_string; the path identifying the row of the edited cell
+
+  * $accel; The instance which registered the signal
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+accel-edited
+------------
+
+Gets emitted when the user has selected a new accelerator.
+
+    method handler (
+      Str $path_string,
+      Int $accel_key,
+      GdkModifierType #`{ from Gnome::Gdk3::Window } $accel_mods,
+      Int $hardware_keycode,
+      Gnome::Gtk3::CellRendererAccel :_widget($accel),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
 
   * $path_string; the path identifying the row of the edited cell
 
   * $accel_key; the new accelerator keyval
 
-  * $accel_mods; the new acclerator modifier mask defined in Gnome::Gdk3::Window as enum GdkModifierType
+  * $accel_mods; the new acclerator modifier mask
 
   * $hardware_keycode; the keycode of the new accelerator
 
-### accel-cleared
+  * $accel; The instance which registered the signal
 
-Gets emitted when the user has removed the accelerator.
+  * $_handler-id; The handler id which is returned from the registration
 
-Since: 2.10
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
 
-    method handler (
-      Str $path_string,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($accel),
-      *%user-options
-    );
-
-  * $accel; the object reveiving the signal
-
-  * $path_string; the path identifying the row of the edited cell
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+Accelerator key: accel-key
+--------------------------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
-
-Supported properties
---------------------
-
-### Accelerator key
-
-The keyval of the accelerator. Since: 2.10
+The keyval of the accelerator.
 
 The **Gnome::GObject::Value** type of property *accel-key* is `G_TYPE_UINT`.
 
-### Accelerator modifiers
+accel-mode
+----------
 
-The modifier mask of the accelerator. Since: 2.10
+Determines if the edited accelerators are GTK+ accelerators. If they are, consumed modifiers are suppressed, only accelerators accepted by GTK+ are allowed, and the accelerators are rendered in the same way as they are in menus.
+
+Default value: False
+
+The **Gnome::GObject::Value** type of property *accel-mode* is `G_TYPE_ENUM`.
+
+Accelerator modifiers: accel-mods
+---------------------------------
+
+The modifier mask of the accelerator.
 
 The **Gnome::GObject::Value** type of property *accel-mods* is `G_TYPE_FLAGS`.
 
-### Accelerator keycode
+Accelerator keycode: keycode
+----------------------------
 
-The hardware keycode of the accelerator. Note that the hardware keycode is only relevant if the key does not have a keyval. Normally, the keyboard configuration should assign keyvals to all keys. Since: 2.10
+The hardware keycode of the accelerator. Note that the hardware keycode is only relevant if the key does not have a keyval. Normally, the keyboard configuration should assign keyvals to all keys.
 
 The **Gnome::GObject::Value** type of property *keycode* is `G_TYPE_UINT`.
-
-### Accelerator Mode
-
-Determines if the edited accelerators are GTK+ accelerators. If they are, consumed modifiers are suppressed, only accelerators accepted by GTK+ are allowed, and the accelerators are rendered in the same way as they are in menus. Since: 2.10 Widget type: GTK_TYPE_CELL_RENDERER_ACCEL_MODE
-
-The **Gnome::GObject::Value** type of property *accel-mode* is `G_TYPE_ENUM`.
-
-### NULL
-
-NULL Default value: False
-
-The **Gnome::GObject::Value** type of property *accel-mode* is `G_TYPE_ENUM`.
-
-### NULL
-
-NULL Default value: Any
-
-The **Gnome::GObject::Value** type of property *path* is `G_TYPE_STRING`.
 

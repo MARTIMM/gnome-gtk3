@@ -160,13 +160,6 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-=head3 default, no options
-
-Create a new CellRenderer object.
-
-  multi method new ( )
-
-
 =head3 :native-object
 
 Create a CellRenderer object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
@@ -945,76 +938,37 @@ sub gtk_cell_renderer_stop_editing (
 =begin pod
 =head1 Signals
 
-There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
-
-=head2 First method
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
-
-  # handler method
-  method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
-
-  # connect a signal on window object
-  my Gnome::Gtk3::Window $w .= new( ... );
-  $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-=head2 Second method
-
-  my Gnome::Gtk3::Window $w .= new( ... );
-  my Callable $handler = sub (
-    N-GObject $native, N-GdkEvent $event, OpaquePointer $data
-  ) {
-    ...
-  }
-
-  $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<connect-object()> are using the signatures of the handler routines to setup the native call interface.
-
-=head2 Supported signals
-
-
 =comment -----------------------------------------------------------------------
 =comment #TS:0:editing-canceled:
-=head3 editing-canceled
+=head2 editing-canceled
 
-This signal gets emitted when the user cancels the process of editing a
-cell.  For example, an editable cell renderer could be written to cancel
-editing when the user presses Escape.
+This signal gets emitted when the user cancels the process of editing a cell.  For example, an editable cell renderer could be written to cancel editing when the user presses Escape.
 
 See also: C<stop_editing()>.
 
-
   method handler (
-    Gnome::GObject::Object $renderer,
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($cellrenderer)
+    Gnome::Gtk3::CellRenderer :_widget($renderer),
+    Int :$_handler-id,
     N-GObject :$_native-object,
     *%user-options
-  );
+  )
 
-=item $renderer; the object which received the signal
-
+=item $renderer; The instance which registered the signal
 =item $_handler-id; The handler id which is returned from the registration
-=item $_widget; The instance which registered the signal
 =item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:editing-started:
-=head3 editing-started
+=head2 editing-started
 
-This signal gets emitted when a cell starts to be edited.
-The intended use of this signal is to do special setup
-on I<editable>, e.g. adding a B<Gnome::Gtk3::EntryCompletion> or setting
-up additional columns in a B<Gnome::Gtk3::ComboBox>.
+This signal gets emitted when a cell starts to be edited. The intended use of this signal is to do special setup on I<editable>, e.g. adding a B<Gnome::Gtk3::EntryCompletion> or setting up additional columns in a B<Gnome::Gtk3::ComboBox>.
 
-See C<gtk_cell_editable_start_editing()> for information on the lifecycle of
-the I<editable> and a way to do setup that doesn’t depend on the I<renderer>.
+See C<gtk_cell_editable_start_editing()> for information on the lifecycle of the I<editable> and a way to do setup that doesn’t depend on the I<renderer>.
 
-Note that GTK+ doesn't guarantee that cell renderers will
-continue to use the same kind of widget for editing in future
-releases, therefore you should check the type of I<editable>
-before doing any specific setup, as in the following example:
+=begin comment
+Note that GTK+ doesn't guarantee that cell renderers will continue to use the same kind of widget for editing in future releases, therefore you should check the type of I<editable> before doing any specific setup, as in the following example:
+
 |[<!-- language="C" -->
 static void
 text_editing_started (GtkCellRenderer *cell,
@@ -1032,51 +986,33 @@ gtk_entry_set_completion (entry, completion);
 }
 }
 ]|
-
+=end comment
 
   method handler (
-    Gnome::GObject::Object $cellrenderer,
-    Unknown type GTK_TYPE_CELL_EDITABLE $unknown type gtk_type_cell_editable,
-    Str $str,
-    Gnome::GObject::Object $renderer,
-    Unknown type GTK_TYPE_CELL_EDITABLE $editable,
+    N-GObject $editable,
     Str $path,
-    ,
+    Gnome::Gtk3::CellRenderer :_widget($renderer),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
-  );
-
-=item $cellrenderer;
-=item $unknown type gtk_type_cell_editable;
-=item $str;
-=item $renderer; the object which received the signal
+  )
 
 =item $editable; the B<Gnome::Gtk3::CellEditable>
-
 =item $path; the path identifying the edited cell
-
+=item $renderer; The instance which registered the signal
 =item $_handler-id; The handler id which is returned from the registration
-=item $_widget; The instance which registered the signal
 =item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =end pod
-
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use C<new(:label('my text label'))> or C<.set-text('my text label')>.
-
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.get-property( 'label', $gv);
-  $gv.set-string('my text label');
-
-=head2 Supported properties
-
 =comment -----------------------------------------------------------------------
 =comment #TP:1:cell-background:
-=head3 Cell background color name: cell-background
+=head2 Cell background color name: cell-background
 
 Cell background color as a string
 Default value: Any
@@ -1085,7 +1021,7 @@ The B<Gnome::GObject::Value> type of property I<cell-background> is C<G_TYPE_STR
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:editing:
-=head3 Editing: editing
+=head2 Editing: editing
 
 Whether the cell renderer is currently in editing mode
 Default value: False
@@ -1094,14 +1030,14 @@ The B<Gnome::GObject::Value> type of property I<editing> is C<G_TYPE_BOOLEAN>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:height:
-=head3 height: height
+=head2 height: height
 
 
 The B<Gnome::GObject::Value> type of property I<height> is C<G_TYPE_INT>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:is-expanded:
-=head3 Is Expanded: is-expanded
+=head2 Is Expanded: is-expanded
 
 Row is an expander row, and is expanded
 Default value: False
@@ -1110,7 +1046,7 @@ The B<Gnome::GObject::Value> type of property I<is-expanded> is C<G_TYPE_BOOLEAN
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:is-expander:
-=head3 Is Expander: is-expander
+=head2 Is Expander: is-expander
 
 Row has children
 Default value: False
@@ -1119,7 +1055,7 @@ The B<Gnome::GObject::Value> type of property I<is-expander> is C<G_TYPE_BOOLEAN
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:mode:
-=head3 mode: mode
+=head2 mode: mode
 
 Editable mode of the CellRenderer
 Default value: False
@@ -1128,7 +1064,7 @@ The B<Gnome::GObject::Value> type of property I<mode> is C<G_TYPE_ENUM>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:sensitive:
-=head3 Sensitive: sensitive
+=head2 Sensitive: sensitive
 
 Display the cell sensitive
 Default value: True
@@ -1137,7 +1073,7 @@ The B<Gnome::GObject::Value> type of property I<sensitive> is C<G_TYPE_BOOLEAN>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:visible:
-=head3 visible: visible
+=head2 visible: visible
 
 Display the cell
 Default value: True
@@ -1146,35 +1082,35 @@ The B<Gnome::GObject::Value> type of property I<visible> is C<G_TYPE_BOOLEAN>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:width:
-=head3 width: width
+=head2 width: width
 
 
 The B<Gnome::GObject::Value> type of property I<width> is C<G_TYPE_INT>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:xalign:
-=head3 xalign: xalign
+=head2 xalign: xalign
 
 
 The B<Gnome::GObject::Value> type of property I<xalign> is C<G_TYPE_FLOAT>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:xpad:
-=head3 xpad: xpad
+=head2 xpad: xpad
 
 
 The B<Gnome::GObject::Value> type of property I<xpad> is C<G_TYPE_UINT>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:yalign:
-=head3 yalign: yalign
+=head2 yalign: yalign
 
 
 The B<Gnome::GObject::Value> type of property I<yalign> is C<G_TYPE_FLOAT>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:ypad:
-=head3 ypad: ypad
+=head2 ypad: ypad
 
 
 The B<Gnome::GObject::Value> type of property I<ypad> is C<G_TYPE_UINT>.

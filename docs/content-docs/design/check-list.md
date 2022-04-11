@@ -102,16 +102,16 @@ Assistant                 |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅘|  |  | ✓| ✓
 Bin                       |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
 Border                    |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
 Box                       |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
-Buildable                 |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| _fallback
+Buildable                 |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
 Builder                   |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
 Button                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 ButtonBox                 |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
 CellLayout                |R | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
-CellRenderer              |  |  |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererAccel         |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+CellRenderer              |  | ✗| ✓| ✓| ✓| ✓| ✓| ¾|  | ✓| ✓| ✓| ✓|
+CellRendererAccel         |  | ✗| ✓| ✓| ✓| ✓| ✓| ½|  |  | ✓| ✓| ✓|  
 CellRendererCombo         |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 CellRendererPixbuf        |  |  |  |  |  |  |  |  |  |  |  |  |  |  
-CellRendererProgress      |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+CellRendererProgress      |  |  |  |  |  |  |  |  |  |  |  |  |  | _fallback
 CellRendererSpin          |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 CellRendererSpinner       |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 CellRendererText          |  |  |  |  |  |  |  |  |  |  |  |  |  |  

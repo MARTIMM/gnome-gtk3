@@ -79,12 +79,6 @@ Methods
 new
 ---
 
-### default, no options
-
-Create a new CellRenderer object.
-
-    multi method new ( )
-
 ### :native-object
 
 Create a CellRenderer object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
@@ -412,176 +406,135 @@ This function should be called by cell renderer implementations in response to t
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
-
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
--------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### editing-canceled
+editing-canceled
+----------------
 
 This signal gets emitted when the user cancels the process of editing a cell. For example, an editable cell renderer could be written to cancel editing when the user presses Escape.
 
 See also: `stop_editing()`.
 
     method handler (
-      Gnome::GObject::Object $renderer,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($cellrenderer)
+      Gnome::Gtk3::CellRenderer :_widget($renderer),
+      Int :$_handler-id,
       N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $renderer; the object which received the signal
+  * $renderer; The instance which registered the signal
 
   * $_handler-id; The handler id which is returned from the registration
 
-  * $_widget; The instance which registered the signal
-
   * $_native-object; The native object provided by the caller wrapped in the Raku object.
 
-### editing-started
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+editing-started
+---------------
 
 This signal gets emitted when a cell starts to be edited. The intended use of this signal is to do special setup on *editable*, e.g. adding a **Gnome::Gtk3::EntryCompletion** or setting up additional columns in a **Gnome::Gtk3::ComboBox**.
 
 See `gtk_cell_editable_start_editing()` for information on the lifecycle of the *editable* and a way to do setup that doesn’t depend on the *renderer*.
 
-Note that GTK+ doesn't guarantee that cell renderers will continue to use the same kind of widget for editing in future releases, therefore you should check the type of *editable* before doing any specific setup, as in the following example: |[<!-- language="C" --> static void text_editing_started (GtkCellRenderer *cell, GtkCellEditable *editable, const gchar *path, gpointer data) { if (GTK_IS_ENTRY (editable)) { GtkEntry *entry = GTK_ENTRY (editable);
-
-// ... create a GtkEntryCompletion
-
-gtk_entry_set_completion (entry, completion); } } ]|
-
     method handler (
-      Gnome::GObject::Object $cellrenderer,
-      Unknown type GTK_TYPE_CELL_EDITABLE $unknown type gtk_type_cell_editable,
-      Str $str,
-      Gnome::GObject::Object $renderer,
-      Unknown type GTK_TYPE_CELL_EDITABLE $editable,
+      N-GObject $editable,
       Str $path,
-      ,
+      Gnome::Gtk3::CellRenderer :_widget($renderer),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
-
-  * $cellrenderer;
-
-  * $unknown type gtk_type_cell_editable;
-
-  * $str;
-
-  * $renderer; the object which received the signal
+    )
 
   * $editable; the **Gnome::Gtk3::CellEditable**
 
   * $path; the path identifying the edited cell
 
+  * $renderer; The instance which registered the signal
+
   * $_handler-id; The handler id which is returned from the registration
 
-  * $_widget; The instance which registered the signal
-
   * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use `new(:label('my text label'))` or `.set-text('my text label')`.
-
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.get-property( 'label', $gv);
-    $gv.set-string('my text label');
-
-Supported properties
---------------------
-
-### Cell background color name: cell-background
+Cell background color name: cell-background
+-------------------------------------------
 
 Cell background color as a string Default value: Any
 
 The **Gnome::GObject::Value** type of property *cell-background* is `G_TYPE_STRING`.
 
-### Editing: editing
+Editing: editing
+----------------
 
 Whether the cell renderer is currently in editing mode Default value: False
 
 The **Gnome::GObject::Value** type of property *editing* is `G_TYPE_BOOLEAN`.
 
-### height: height
+height: height
+--------------
 
 The **Gnome::GObject::Value** type of property *height* is `G_TYPE_INT`.
 
-### Is Expanded: is-expanded
+Is Expanded: is-expanded
+------------------------
 
 Row is an expander row, and is expanded Default value: False
 
 The **Gnome::GObject::Value** type of property *is-expanded* is `G_TYPE_BOOLEAN`.
 
-### Is Expander: is-expander
+Is Expander: is-expander
+------------------------
 
 Row has children Default value: False
 
 The **Gnome::GObject::Value** type of property *is-expander* is `G_TYPE_BOOLEAN`.
 
-### mode: mode
+mode: mode
+----------
 
 Editable mode of the CellRenderer Default value: False
 
 The **Gnome::GObject::Value** type of property *mode* is `G_TYPE_ENUM`.
 
-### Sensitive: sensitive
+Sensitive: sensitive
+--------------------
 
 Display the cell sensitive Default value: True
 
 The **Gnome::GObject::Value** type of property *sensitive* is `G_TYPE_BOOLEAN`.
 
-### visible: visible
+visible: visible
+----------------
 
 Display the cell Default value: True
 
 The **Gnome::GObject::Value** type of property *visible* is `G_TYPE_BOOLEAN`.
 
-### width: width
+width: width
+------------
 
 The **Gnome::GObject::Value** type of property *width* is `G_TYPE_INT`.
 
-### xalign: xalign
+xalign: xalign
+--------------
 
 The **Gnome::GObject::Value** type of property *xalign* is `G_TYPE_FLOAT`.
 
-### xpad: xpad
+xpad: xpad
+----------
 
 The **Gnome::GObject::Value** type of property *xpad* is `G_TYPE_UINT`.
 
-### yalign: yalign
+yalign: yalign
+--------------
 
 The **Gnome::GObject::Value** type of property *yalign* is `G_TYPE_FLOAT`.
 
-### ypad: ypad
+ypad: ypad
+----------
 
 The **Gnome::GObject::Value** type of property *ypad* is `G_TYPE_UINT`.
 
