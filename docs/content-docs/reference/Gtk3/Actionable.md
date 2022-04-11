@@ -52,7 +52,9 @@ Specifies the name of the action with which this widget should be associated. If
 
 Usually this function is used when the widget is located (or will be located) within the hierarchy of a **Gnome::Gtk3::ApplicationWindow**.
 
-Names are of the form “win.save” or “app.quit” for actions on the containing **Gnome::Gtk3::ApplicationWindow** or its associated **Gnome::Gtk3::Application**, respectively. This is the same form used for actions in the **GMenu** associated with the window.
+Names are of the form “win.save” or “app.quit” for actions on the containing **Gnome::Gtk3::ApplicationWindow** or its associated **Gnome::Gtk3::Application**, respectively.
+
+This is the same form used for actions in the **GMenu** associated with the window.
 
     method set-action-name ( Str $action_name )
 
@@ -69,9 +71,9 @@ The target value has two purposes. First, it is used as the parameter to activat
 
 Consider the example of associating a set of buttons with a **N-GAction** with string state in a typical “radio button” situation. Each button will be associated with the same action, but with a different target value for that action. Clicking on a particular button will activate the action with the target of that button, which will typically cause the action’s state to change to that value. Since the action’s state is now equal to the target value of the button, the button will now be rendered as active (and the other buttons, with different targets, rendered inactive).
 
-    method set-action-target-value ( N-GObject $target_value )
+    method set-action-target-value ( N-GObject() $target_value )
 
-  * $target_value; a **GVariant** to set as the target value, or `undefined`
+  * $target_value; a native **Gnome::Glib::Variant** to set as the target value, or `undefined`
 
 set-detailed-action-name
 ------------------------
@@ -87,23 +89,17 @@ Sets the action-name and associated string target value of an actionable widget.
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
-
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
-
-Supported properties
---------------------
-
-### Action name: action-name
+action-name
+-----------
 
 The name of the associated action, like 'app.quit' Default value: Any
 
 The **Gnome::GObject::Value** type of property *action-name* is `G_TYPE_STRING`.
 
-### Action target value: action-target
+action-target
+-------------
+
+The parameter for action invocations.
 
 The **Gnome::GObject::Value** type of property *action-target* is `G_TYPE_VARIANT`.
 

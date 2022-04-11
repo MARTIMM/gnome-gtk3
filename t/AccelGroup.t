@@ -216,15 +216,15 @@ subtest 'Manipulations', {
 
   $ag.set-data( 'name', 'acceleration-group-1');
 
-Gnome::N::debug(:on);
+#Gnome::N::debug(:on);
   my Gnome::GObject::Closure $c1 .= new(
     :handler-object($ctest), :handler-name<ctrl-a-pressed>,
     :handler-opts(:arg1<foo>)
   );
-note $?LINE;
+#note $?LINE;
 
   $ag.connect( $accelerator-key, $accelerator-mods, GTK_ACCEL_VISIBLE, $c1);
-note $?LINE;
+#note $?LINE;
 
   $am.add-entry( '<window>/File/Save', GDK_KEY_S, GDK_MOD1_MASK);
   $ag.connect-by-path(

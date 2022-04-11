@@ -56,10 +56,7 @@ Returns: the action name, or C<undefined> if none is set
 =end pod
 
 method get-action-name ( --> Str ) {
-
-  gtk_actionable_get_action_name(
-    self._f('GtkActionable'),
-  );
+  gtk_actionable_get_action_name(self._f('GtkActionable'));
 }
 
 sub gtk_actionable_get_action_name ( N-GObject $actionable --> gchar-ptr )
@@ -83,10 +80,7 @@ Returns: the current target value
 =end pod
 
 method get-action-target-value ( --> N-GObject ) {
-
-  gtk_actionable_get_action_target_value(
-    self._f('GtkActionable'),
-  );
+  gtk_actionable_get_action_target_value(self._f('GtkActionable'));
 }
 
 sub gtk_actionable_get_action_target_value ( N-GObject $actionable --> N-GObject )
@@ -98,20 +92,13 @@ sub gtk_actionable_get_action_target_value ( N-GObject $actionable --> N-GObject
 =begin pod
 =head2 set-action-name
 
+Specifies the name of the action with which this widget should be associated.  If I<action-name> is C<undefined> then the widget will be unassociated from any previous action.
 
-Specifies the name of the action with which this widget should be
-associated.  If I<action-name> is C<undefined> then the widget will be
-unassociated from any previous action.
+Usually this function is used when the widget is located (or will be located) within the hierarchy of a B<Gnome::Gtk3::ApplicationWindow>.
 
-Usually this function is used when the widget is located (or will be
-located) within the hierarchy of a B<Gnome::Gtk3::ApplicationWindow>.
+Names are of the form “win.save” or “app.quit” for actions on the containing B<Gnome::Gtk3::ApplicationWindow> or its associated B<Gnome::Gtk3::Application>, respectively.
 
-Names are of the form “win.save” or “app.quit” for actions on the
-containing B<Gnome::Gtk3::ApplicationWindow> or its associated B<Gnome::Gtk3::Application>,
-respectively.  This is the same form used for actions in the B<GMenu>
-associated with the window.
-
-
+This is the same form used for actions in the B<GMenu> associated with the window.
 
   method set-action-name ( Str $action_name )
 
@@ -120,10 +107,7 @@ associated with the window.
 =end pod
 
 method set-action-name ( Str $action_name ) {
-
-  gtk_actionable_set_action_name(
-    self._f('GtkActionable'), $action_name
-  );
+  gtk_actionable_set_action_name( self._f('GtkActionable'), $action_name);
 }
 
 sub gtk_actionable_set_action_name ( N-GObject $actionable, gchar-ptr $action_name  )
@@ -178,18 +162,15 @@ The target value has two purposes.  First, it is used as the parameter to activa
 
 Consider the example of associating a set of buttons with a B<N-GAction> with string state in a typical “radio button” situation.  Each button will be associated with the same action, but with a different target value for that action.  Clicking on a particular button will activate the action with the target of that button, which will typically cause the action’s state to change to that value.  Since the action’s state is now equal to the target value of the button, the button will now be rendered as active (and the other buttons, with different targets, rendered inactive).
 
-  method set-action-target-value ( N-GObject $target_value )
+  method set-action-target-value ( N-GObject() $target_value )
 
-=item $target_value; a B<GVariant> to set as the target value, or C<undefined>
+=item $target_value; a native B<Gnome::Glib::Variant> to set as the target value, or C<undefined>
 
 =end pod
 
-method set-action-target-value ( $target_value ) {
-  my $no = $target_value;
-  $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
-
+method set-action-target-value ( N-GObject() $target_value ) {
   gtk_actionable_set_action_target_value(
-    self._f('GtkActionable'), $no
+    self._f('GtkActionable'), $target_value
   );
 }
 
@@ -215,7 +196,6 @@ I<$detailed-action-name> is a string in the format accepted by C<g-action-parse-
 =end pod
 
 method set-detailed-action-name ( Str $detailed_action_name ) {
-
   gtk_actionable_set_detailed_action_name(
     self._f('GtkActionable'), $detailed_action_name
   );
@@ -229,28 +209,19 @@ sub gtk_actionable_set_detailed_action_name ( N-GObject $actionable, gchar-ptr $
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
-
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.g-object-get-property( 'label', $gv);
-  $gv.g-value-set-string('my text label');
-
-=head2 Supported properties
-
 =comment -----------------------------------------------------------------------
 =comment #TP:1:action-name:
-=head3 Action name: action-name
+=head2 action-name
 
-The name of the associated action, like 'app.quit'
-Default value: Any
+The name of the associated action, like 'app.quit' Default value: Any
 
 The B<Gnome::GObject::Value> type of property I<action-name> is C<G_TYPE_STRING>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:action-target:
-=head3 Action target value: action-target
+=head2 action-target
 
+The parameter for action invocations.
 
 The B<Gnome::GObject::Value> type of property I<action-target> is C<G_TYPE_VARIANT>.
 =end pod

@@ -430,27 +430,21 @@ sub _gtk_accel_label_new ( gchar-ptr $string --> N-GObject )
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
-
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.get-property( 'label', $gv);
-  $gv.set-string('my text label');
-
-=head2 Supported properties
-
 =comment -----------------------------------------------------------------------
 =comment #TP:0:accel-closure:
-=head3 Accelerator Closure: accel-closure
+=head2 accel-closure
+
+The closure to be monitored for accelerator changes.
 
 The B<Gnome::GObject::Value> type of property I<accel-closure> is C<G_TYPE_BOXED>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:accel-widget:
-=head3 Accelerator Widget: accel-widget
+=head2 accel-widget
 
 The widget to be monitored for accelerator changes
-Widget type: GTK-TYPE-WIDGET
+
+Widget type: GTK_TYPE_WIDGET
 
 The B<Gnome::GObject::Value> type of property I<accel-widget> is C<G_TYPE_OBJECT>.
 =end pod

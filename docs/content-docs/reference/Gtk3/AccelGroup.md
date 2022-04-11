@@ -313,38 +313,8 @@ Undoes the last call to `lock()` on this *accel-group*.
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
-
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
--------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### accel-activate
+accel-activate
+--------------
 
 The accel-activate signal is an implementation detail of **Gnome::Gtk3::AccelGroup** and not meant to be used by applications.
 
@@ -353,40 +323,44 @@ Returns: `True` if the accelerator was activated
     method handler (
       N-GObject $acceleratable,
       UInt $keyval,
-      UInt $modifier,
-      Int :$_handle_id,
+      UInt #`{ GdkModifierType flags from Gnome::Gdk3::Window } $modifier,
       Gnome::Gtk3::AccelGroup :_widget($accel_group),
+      Int :$_handler_id,
+      N-GObject :$_native-object,
       *%user-options
-      --> Int
-    );
 
-  * $accel_group; the **Gnome::Gtk3::AccelGroup** which received the signal
+      --> gboolean #`{ use Gnome::N::GlibToRakuTypes }
+    );
 
   * $acceleratable; the object on which the accelerator was activated
 
   * $keyval; the accelerator keyval
 
-  * $modifier; the modifier combination of the accelerator, a mask of GdkModifierType bits.
+  * $modifier; the modifier combination of the accelerator
 
-  * $_handle_id; the registered event handler id
+  * $accel_group; The instance which registered the signal
 
-### accel-changed
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+accel-changed
+-------------
 
 The accel-changed signal is emitted when an entry is added to or removed from the accel group.
 
 Widgets like **Gnome::Gtk3::AccelLabel** which display an associated accelerator should connect to this signal, and rebuild their visual representation if the *accel-closure* is theirs.
 
     method handler (
-       $keyval,
-      GdkModifierType #`{ from Gnome::Gdk3::Window } $modifier,
-      Unknown type G_TYPE_CLOSURE $accel_closure,
+      UInt $keyval,
+      UInt #`{ GdkModifierType flags from Gnome::Gdk3::Window } $modifier,
+      N-GObject #`{ native Gnome::GObject::Closure } $accel_closure,
+      Gnome::Gtk3::AccelGroup :_widget($accel_group),
       Int :$_handle_id,
-      Gnome::GObject::Object :_widget($accel_group),
       *%user-options
-      --> Int
     );
-
-  * $accel_group; the **Gnome::Gtk3::AccelGroup** which received the signal
 
   * $keyval; the accelerator keyval
 
@@ -394,5 +368,11 @@ Widgets like **Gnome::Gtk3::AccelLabel** which display an associated accelerator
 
   * $accel_closure; the **Gnome::Gtk3::Closure** of the accelerator
 
-  * $_handle_id; the registered event handler id
+  * $accel_group; The instance which registered the signal
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 

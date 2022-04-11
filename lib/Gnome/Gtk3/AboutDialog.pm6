@@ -1054,59 +1054,230 @@ sub _gtk_about_dialog_new ( --> N-GObject )
 
 #-------------------------------------------------------------------------------
 =begin pod
+=head1 Signals
+
+=comment -----------------------------------------------------------------------
+=comment #TS:1:activate-link:
+=head2 activate-link
+
+The signal which gets emitted to activate a URI. Applications may connect to it to override the default behaviour, which is to call C<gtk_show_uri()>.
+
+Returns: C<1> if the link has been activated.
+
+  method handler (
+    Str $uri,
+    Gnome::Gtk3::AboutDialog :_widget($dialog),
+    Int $_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+    --> gboolean #`{ use Gnome::N::GlibToRakuTypes }
+  );
+
+=item $uri; the URI that is activated.
+=item $dialog; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=end pod
+
+
+#-------------------------------------------------------------------------------
+=begin pod
 =head1 Properties
 
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+=comment -----------------------------------------------------------------------
+=comment #TP:0:artists:
+=head2 artists
 
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.g-object-get-property( 'label', $gv);
-  $gv.g-value-set-string('my text label');
+The people who contributed artwork to the program, as a C<undefined>-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
+
+The B<Gnome::GObject::Value> type of property I<artists> is C<G_TYPE_BOXED>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:authors:
+=head2 authors
+
+The authors of the program, as a C<undefined>-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
+
+The B<Gnome::GObject::Value> type of property I<authors> is C<G_TYPE_BOXED>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:comments:
+=head2 comments
+
+Comments about the program. This string is displayed in a label in the main dialog, thus it should be a short explanation of the main purpose of the program, not a detailed list of features.
+
+The B<Gnome::GObject::Value> type of property I<comments> is C<G_TYPE_STRING>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:copyright:
+=head2 copyright
+
+Copyright information for the program.
+
+The B<Gnome::GObject::Value> type of property I<copyright> is C<G_TYPE_STRING>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:documenters:
+=head2 documenters
+
+The people documenting the program, as a C<undefined>-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
+
+The B<Gnome::GObject::Value> type of property I<documenters> is C<G_TYPE_BOXED>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:license:
+=head2 license
+
+The license of the program. This string is displayed in a text view in a secondary dialog, therefore it is fine to use a long multi-paragraph text.
+
+Note that the text is only wrapped in the text view if the "wrap-license" property is set to C<True>; otherwise the text itself must contain the intended linebreaks.
+
+When setting this property to a non-C<undefined> value, the I<license-type> property is set to C<GTK_LICENSE_CUSTOM> as a side effect.
 
 
+The B<Gnome::GObject::Value> type of property I<license> is C<G_TYPE_STRING>.
 
+=comment -----------------------------------------------------------------------
+=comment #TP:1:license-type:
+=head2 license-type
+
+The license of the program, as a value of the C<GtkLicense> enumeration.
+
+The B<Gnome::Gtk3::AboutDialog> will automatically fill out a standard disclaimer and link the user to the appropriate online resource for the license text.
+
+If C<GTK_LICENSE_UNKNOWN> is used, the link used will be the same specified in the  I<website> property.
+
+If C<GTK_LICENSE_CUSTOM> is used, the current contents of the  I<license> property are used.
+
+For any other B<Gnome::Gtk3::License> value, the contents of the  I<license> property are also set by this property as a side effect.
+
+Widget type: GTK_TYPE_LICENSE
+
+The B<Gnome::GObject::Value> type of property I<license-type> is C<G_TYPE_ENUM>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:logo:
+=head2 logo
+
+A logo for the about box. If it is C<undefined>, the default window icon set with C<gtk_window_set_default_icon()> will be used.
+
+Widget type: GDK_TYPE_PIXBUF
+
+The B<Gnome::GObject::Value> type of property I<logo> is C<G_TYPE_OBJECT>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:logo-icon-name:
+=head2 logo-icon-name
+
+A named icon to use as the logo for the about box. This property overrides the  I<logo> property.
+
+The B<Gnome::GObject::Value> type of property I<logo-icon-name> is C<G_TYPE_STRING>.
+
+=comment -----------------------------------------------------------------------
 =comment #TP:1:program-name:
-=head3 Program name
+=head2 program-name
+
+The name of the program. If this is not set, it defaults to C<g_get_application_name()>.
+
+The B<Gnome::GObject::Value> type of property I<program-name> is C<G_TYPE_STRING>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:translator-credits:
+=head2 translator-credits
+
+Credits to the translators. This string should be marked as translatable. The string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
+
+The B<Gnome::GObject::Value> type of property I<translator-credits> is C<G_TYPE_STRING>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:version:
+=head2 version
+
+The version of the program.
+
+The B<Gnome::GObject::Value> type of property I<version> is C<G_TYPE_STRING>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:website:
+=head2 website
+
+The URL for the link to the website of the program. This should be a string starting with "http://.
+
+The B<Gnome::GObject::Value> type of property I<website> is C<G_TYPE_STRING>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:website-label:
+=head2 website-label
+
+The label for the link to the website of the program.
+
+The B<Gnome::GObject::Value> type of property I<website-label> is C<G_TYPE_STRING>.
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:wrap-license:
+=head2 wrap-license
+
+Whether to wrap the text in the license dialog.
+
+The B<Gnome::GObject::Value> type of property I<wrap-license> is C<G_TYPE_BOOLEAN>.
+=end pod
+
+
+
+
+
+
+=finish
+=comment -----------------------------------------------------------------------
+=comment #TP:1:program-name:
+=head2 Program name
 
 The name of the program. If this is not set, it defaults to C<g_get_application_name()>.
 
 The B<Gnome::GObject::Value> type of property I<program-name> is C<G_TYPE_STRING>.
 
 
+=comment -----------------------------------------------------------------------
 =comment #TP:1:version:
-=head3 Program version
+=head2 Program version
 
 The version of the program.
 
 The B<Gnome::GObject::Value> type of property I<version> is C<G_TYPE_STRING>.
 
 
+=comment -----------------------------------------------------------------------
 =comment #TP:1:copyright:
-=head3 Copyright string
+=head2 Copyright string
 
 Copyright information for the program.
 
 The B<Gnome::GObject::Value> type of property I<copyright> is C<G_TYPE_STRING>.
 
 
+=comment -----------------------------------------------------------------------
 =comment #TP:1:comments:
-=head3 Comments string
+=head2 Comments string
 
 Comments about the program. This string is displayed in a label in the main dialog, thus it should be a short explanation of the main purpose of the program, not a detailed list of features.
 
 The B<Gnome::GObject::Value> type of property I<comments> is C<G_TYPE_STRING>.
 
 
+=comment -----------------------------------------------------------------------
 =comment #TP:1:license:
-=head3 License
+=head2 License
 
 The license of the program. This string is displayed in a text view in a secondary dialog, therefore it is fine to use a long multi-paragraph text. Note that the text is only wrapped in the text view if the "wrap-license" property is set to C<1>; otherwise the text itself must contain the intended linebreaks. When setting this property to a non-C<Any> value, the sig I<license-type> property is set to C<GTK_LICENSE_CUSTOM> as a side effect.
 
 The B<Gnome::GObject::Value> type of property I<license> is C<G_TYPE_STRING>.
 
 
+=comment -----------------------------------------------------------------------
 =comment #TP:1:license-type:
-=head3 License Type
+=head2 License Type
 
 The license of the program, as a value of the C<GtkLicense> enumeration. The I<Gnome::Gtk3::AboutDialog> will automatically fill out a standard disclaimer and link the user to the appropriate online resource for the license text.
 
@@ -1121,57 +1292,64 @@ Widget type: GTK_TYPE_LICENSE
 The B<Gnome::GObject::Value> type of property I<license-type> is C<G_TYPE_ENUM>.
 
 
+=comment -----------------------------------------------------------------------
 =comment #TP:1:website:
-=head3 Website URL
+=head2 Website URL
 
 The URL for the link to the website of the program. This should be a string starting with "http://.
 
 The B<Gnome::GObject::Value> type of property I<website> is C<G_TYPE_STRING>.
 
 
+=comment -----------------------------------------------------------------------
 =comment #TP:1:website-label:
-=head3 Website label
+=head2 Website label
 
 The label for the link to the website of the program.
 
 The B<Gnome::GObject::Value> type of property I<website-label> is C<G_TYPE_STRING>.
 
 
+=comment -----------------------------------------------------------------------
 =comment #TP:0:translator-credits:
-=head3 Translator credits
+=head2 Translator credits
 
 Credits to the translators. This string should be marked as translatable. The string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
 The B<Gnome::GObject::Value> type of property I<translator-credits> is C<G_TYPE_STRING>.
 
 
+=comment -----------------------------------------------------------------------
 =begin comment
 =comment #TP:0:authors:
-=head3 Authors
+=head2 Authors
 
 The authors of the program, as an C<Any>-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
 The B<Gnome::GObject::Value> type of property I<authors> is C<G_TYPE_BOXED>.
 
 
+=comment -----------------------------------------------------------------------
 =comment #TP:0:documenters:
-=head3 Documenters
+=head2 Documenters
 
 The people documenting the program, as an C<Any>-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
 The B<Gnome::GObject::Value> type of property I<documenters> is C<G_TYPE_BOXED>.
 
 
+=comment -----------------------------------------------------------------------
 =comment #TP:0:artists:
-=head3 Artists
+=head2 Artists
 
 The people who contributed artwork to the program, as a C<Any>-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
 The B<Gnome::GObject::Value> type of property I<artists> is C<G_TYPE_BOXED>.
 
 
+=comment -----------------------------------------------------------------------
 =comment #TP:0:logo:
-=head3 Logo
+=head2 Logo
 
 A logo for the about box. If it is C<Any>, the default window icon set with C<gtk_window_set_default_icon()> will be used.
 
@@ -1181,71 +1359,21 @@ The B<Gnome::GObject::Value> type of property I<logo> is C<G_TYPE_OBJECT>.
 =end comment
 
 
+=comment -----------------------------------------------------------------------
 =comment #TP:1:logo-icon-name:
-=head3 Logo Icon Name
+=head2 Logo Icon Name
 
 A named icon to use as the logo for the about box. This property overrides the sig I<logo> property.
 
 The B<Gnome::GObject::Value> type of property I<logo-icon-name> is C<G_TYPE_STRING>.
 
 
+=comment -----------------------------------------------------------------------
 =comment #TP:1:wrap-license:
-=head3 Wrap license
+=head2 Wrap license
 
 Whether to wrap the text in the license dialog.
 
 The B<Gnome::GObject::Value> type of property I<wrap-license> is C<G_TYPE_BOOLEAN>.
-
-=end pod
-
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Signals
-
-There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<g_signal_connect_object()> directly from B<Gnome::GObject::Signal>.
-
-=head2 First method
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
-
-  # handler method
-  method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
-
-  # connect a signal on window object
-  my Gnome::Gtk3::Window $w .= new( ... );
-  $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-=head2 Second method
-
-  my Gnome::Gtk3::Window $w .= new( ... );
-  my Callable $handler = sub (
-    N-GObject $native, N-GdkEvent $event, OpaquePointer $data
-  ) {
-    ...
-  }
-
-  $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<g_signal_connect_object()> are using the signatures of the handler routines to setup the native call interface.
-
-=head2 Supported signals
-
-=comment #TS:1:activate-link:
-=head3 activate-link
-
-The signal which gets emitted to activate a URI. Applications may connect to it to override the default behaviour, which is to call C<gtk_show_uri()>.
-
-Returns: C<1> if the link has been activated.
-
-  method handler (
-    Str $uri,
-    Gnome::GObject::Object :$widget,
-    *%user-options
-    --> Int
-  );
-
-=item $widget; The object on which the signal was emitted.
-=item $uri; the URI that is activated.
 
 =end pod

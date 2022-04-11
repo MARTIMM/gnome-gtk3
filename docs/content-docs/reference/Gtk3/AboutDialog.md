@@ -409,125 +409,11 @@ Sets whether the license text in this about dialog is automatically wrapped.
 
   * $wrap_license; whether to wrap the license
 
-Properties
-==========
-
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
-
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
-
-### Program name
-
-The name of the program. If this is not set, it defaults to `g_get_application_name()`.
-
-The **Gnome::GObject::Value** type of property *program-name* is `G_TYPE_STRING`.
-
-### Program version
-
-The version of the program.
-
-The **Gnome::GObject::Value** type of property *version* is `G_TYPE_STRING`.
-
-### Copyright string
-
-Copyright information for the program.
-
-The **Gnome::GObject::Value** type of property *copyright* is `G_TYPE_STRING`.
-
-### Comments string
-
-Comments about the program. This string is displayed in a label in the main dialog, thus it should be a short explanation of the main purpose of the program, not a detailed list of features.
-
-The **Gnome::GObject::Value** type of property *comments* is `G_TYPE_STRING`.
-
-### License
-
-The license of the program. This string is displayed in a text view in a secondary dialog, therefore it is fine to use a long multi-paragraph text. Note that the text is only wrapped in the text view if the "wrap-license" property is set to `1`; otherwise the text itself must contain the intended linebreaks. When setting this property to a non-`Any` value, the sig *license-type* property is set to `GTK_LICENSE_CUSTOM` as a side effect.
-
-The **Gnome::GObject::Value** type of property *license* is `G_TYPE_STRING`.
-
-### License Type
-
-The license of the program, as a value of the `GtkLicense` enumeration. The *Gnome::Gtk3::AboutDialog* will automatically fill out a standard disclaimer and link the user to the appropriate online resource for the license text.
-
-If `GTK_LICENSE_UNKNOWN` is used, the link used will be the same specified in the sig *website* property.
-
-If `GTK_LICENSE_CUSTOM` is used, the current contents of the sig *license* property are used.
-
-For any other *Gnome::Gtk3::License* value, the contents of the sig *license* property are also set by this property as a side effect.
-
-Widget type: GTK_TYPE_LICENSE
-
-The **Gnome::GObject::Value** type of property *license-type* is `G_TYPE_ENUM`.
-
-### Website URL
-
-The URL for the link to the website of the program. This should be a string starting with "http://.
-
-The **Gnome::GObject::Value** type of property *website* is `G_TYPE_STRING`.
-
-### Website label
-
-The label for the link to the website of the program.
-
-The **Gnome::GObject::Value** type of property *website-label* is `G_TYPE_STRING`.
-
-### Translator credits
-
-Credits to the translators. This string should be marked as translatable. The string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
-
-The **Gnome::GObject::Value** type of property *translator-credits* is `G_TYPE_STRING`.
-
-### Logo Icon Name
-
-A named icon to use as the logo for the about box. This property overrides the sig *logo* property.
-
-The **Gnome::GObject::Value** type of property *logo-icon-name* is `G_TYPE_STRING`.
-
-### Wrap license
-
-Whether to wrap the text in the license dialog.
-
-The **Gnome::GObject::Value** type of property *wrap-license* is `G_TYPE_BOOLEAN`.
-
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
-
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
+activate-link
 -------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### activate-link
 
 The signal which gets emitted to activate a URI. Applications may connect to it to override the default behaviour, which is to call `gtk_show_uri()`.
 
@@ -535,11 +421,144 @@ Returns: `1` if the link has been activated.
 
     method handler (
       Str $uri,
-      Gnome::GObject::Object :$widget,
+      Gnome::Gtk3::AboutDialog :_widget($dialog),
+      Int $_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-      --> Int
+      --> gboolean #`{ use Gnome::N::GlibToRakuTypes }
     );
 
-  * $widget; The object on which the signal was emitted.
-
   * $uri; the URI that is activated.
+
+  * $dialog; The instance which registered the signal
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+Properties
+==========
+
+artists
+-------
+
+The people who contributed artwork to the program, as a `undefined`-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
+
+The **Gnome::GObject::Value** type of property *artists* is `G_TYPE_BOXED`.
+
+authors
+-------
+
+The authors of the program, as a `undefined`-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
+
+The **Gnome::GObject::Value** type of property *authors* is `G_TYPE_BOXED`.
+
+comments
+--------
+
+Comments about the program. This string is displayed in a label in the main dialog, thus it should be a short explanation of the main purpose of the program, not a detailed list of features.
+
+The **Gnome::GObject::Value** type of property *comments* is `G_TYPE_STRING`.
+
+copyright
+---------
+
+Copyright information for the program.
+
+The **Gnome::GObject::Value** type of property *copyright* is `G_TYPE_STRING`.
+
+documenters
+-----------
+
+The people documenting the program, as a `undefined`-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
+
+The **Gnome::GObject::Value** type of property *documenters* is `G_TYPE_BOXED`.
+
+license
+-------
+
+The license of the program. This string is displayed in a text view in a secondary dialog, therefore it is fine to use a long multi-paragraph text.
+
+Note that the text is only wrapped in the text view if the "wrap-license" property is set to `True`; otherwise the text itself must contain the intended linebreaks.
+
+When setting this property to a non-`undefined` value, the *license-type* property is set to `GTK_LICENSE_CUSTOM` as a side effect.
+
+The **Gnome::GObject::Value** type of property *license* is `G_TYPE_STRING`.
+
+license-type
+------------
+
+The license of the program, as a value of the `GtkLicense` enumeration.
+
+The **Gnome::Gtk3::AboutDialog** will automatically fill out a standard disclaimer and link the user to the appropriate online resource for the license text.
+
+If `GTK_LICENSE_UNKNOWN` is used, the link used will be the same specified in the *website* property.
+
+If `GTK_LICENSE_CUSTOM` is used, the current contents of the *license* property are used.
+
+For any other **Gnome::Gtk3::License** value, the contents of the *license* property are also set by this property as a side effect.
+
+Widget type: GTK_TYPE_LICENSE
+
+The **Gnome::GObject::Value** type of property *license-type* is `G_TYPE_ENUM`.
+
+logo
+----
+
+A logo for the about box. If it is `undefined`, the default window icon set with `gtk_window_set_default_icon()` will be used.
+
+Widget type: GDK_TYPE_PIXBUF
+
+The **Gnome::GObject::Value** type of property *logo* is `G_TYPE_OBJECT`.
+
+logo-icon-name
+--------------
+
+A named icon to use as the logo for the about box. This property overrides the *logo* property.
+
+The **Gnome::GObject::Value** type of property *logo-icon-name* is `G_TYPE_STRING`.
+
+program-name
+------------
+
+The name of the program. If this is not set, it defaults to `g_get_application_name()`.
+
+The **Gnome::GObject::Value** type of property *program-name* is `G_TYPE_STRING`.
+
+translator-credits
+------------------
+
+Credits to the translators. This string should be marked as translatable. The string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
+
+The **Gnome::GObject::Value** type of property *translator-credits* is `G_TYPE_STRING`.
+
+version
+-------
+
+The version of the program.
+
+The **Gnome::GObject::Value** type of property *version* is `G_TYPE_STRING`.
+
+website
+-------
+
+The URL for the link to the website of the program. This should be a string starting with "http://.
+
+The **Gnome::GObject::Value** type of property *website* is `G_TYPE_STRING`.
+
+website-label
+-------------
+
+The label for the link to the website of the program.
+
+The **Gnome::GObject::Value** type of property *website-label* is `G_TYPE_STRING`.
+
+wrap-license
+------------
+
+Whether to wrap the text in the license dialog.
+
+The **Gnome::GObject::Value** type of property *wrap-license* is `G_TYPE_BOOLEAN`.
+

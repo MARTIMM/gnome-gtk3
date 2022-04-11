@@ -142,8 +142,6 @@ The method receives the following arguments;
 
   * any options provided at the foreach call
 
-    * 
-
 foreach-unfiltered
 ------------------
 
@@ -227,58 +225,32 @@ Undoes the last call to `lock-path()` on this *accel-path*. Refer to `gtk-accel-
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
+changed
+-------
 
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
--------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### changed
-
-Notifies of a change in the global accelerator map. The path is also used as the detail for the signal, so it is possible to connect to changed::`accel-path`.
+Notifies of a change in the global accelerator map. The path is also used as the detail for the signal, so it is possible to connect to changed::`accel_path`.
 
     method handler (
-      Str $accel-path,
-      UInt $accel-key,
-      UInt $accel-mods,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($object),
+      Str $accel_path,
+      UInt $accel_key,
+      UInt #`{ GdkModifierType flags from Gnome::Gdk3::Window } $accel_mods,
+      Gnome::Gtk3::AccelMap :_widget($object),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-      --> Int
-    );
+    )
 
-  * $object; the global accel map object
+  * $accel_path; the path of the accelerator that changed
 
-  * $accel-path; the path of the accelerator that changed
+  * $accel_key; the key value for the new accelerator
 
-  * $accel-key; the key value for the new accelerator
+  * $accel_mods; the modifier mask for the new accelerator
 
-  * $accel-mods; the modifier mask for the new accelerator. A GdkModifierType mask from Gnome::Gdk3::Types
+  * $object; The instance which registered the signal
 
-  * $_handle_id; the registered event handler id
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
