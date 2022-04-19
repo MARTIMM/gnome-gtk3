@@ -163,10 +163,10 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
       my Str ( $arg, $arg-type, $raku-arg-type);
       ( $arg, $arg-type, $raku-arg-type, $type-is-class) =
         get-type( $raw-arg, :attr);
-#note "  $sub-name, $arg, $arg-type, $raku-arg-type";
+#note "  args: $arg, $arg-type, $raku-arg-type";
       if ?$arg {
         my Str $pod-doc-item-doc = $items-src-doc.shift if $items-src-doc.elems;
-#note "pod info: $raku-arg-type, $arg, $pod-doc-item-doc";
+#note "  pod info: $raku-arg-type, $arg, $pod-doc-item-doc";
 
         # skip first argument when type is also the class name
         if $first-arg and $type-is-class {
@@ -180,49 +180,50 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
         else {
 #note "  not skipped... $sub-name, $arg, $arg-type, $raku-arg-type";
+          given $raku-arg-type {
+            when 'N-GObject' {
+              $raku-arg-type ~= '()';
+              $convert-lines ~= "";
+              $method-args ~= ',' if ?$method-args;
+              $method-args ~= " $raku-arg-type \$$arg";
+              $call-args ~= ',' if ?$call-args;
+              $call-args ~= " \$$arg";
+              $pod-args ~= ',' if ?$pod-args;
+              $pod-args ~= " $raku-arg-type \$$arg";
+            }
 
-          if $raku-arg-type ~~ 'N-GObject' {
-            $raku-arg-type ~= '()';
-            $convert-lines ~= "";
-            $method-args ~= ',' if ?$method-args;
-            $method-args ~= " \$$arg";
-            $call-args ~= ',' if ?$call-args;
-            $call-args ~= " \$$arg";
-            $pod-args ~= ',' if ?$pod-args;
-            $pod-args ~= " $raku-arg-type\() \$$arg";
-          }
+            when any(
+              < N-GSList N-GList N-GOptionContext N-GOptionGroup
+                N-GOptionEntry N-GError
+              >
+            ) {
+              $convert-lines ~= "  \$$arg .= _get-native-object-no-reffing unless \$$arg ~~ $raku-arg-type;\n";
 
-          if $raku-arg-type ~~ any(
-            < N-GSList N-GList N-GOptionContext N-GOptionGroup
-              N-GOptionEntry N-GError
-            >
-          ) {
-            $convert-lines ~= "  \$$arg .= _get-native-object-no-reffing unless \$$arg ~~ $raku-arg-type;\n";
+              $method-args ~= ',' if ?$method-args;
+              $method-args ~= " \$$arg is copy";
+              $call-args ~= ',' if ?$call-args;
+              $call-args ~= " \$$arg";
+              $pod-args ~= ',' if ?$pod-args;
+              $pod-args ~= " $raku-arg-type \$$arg";
+            }
 
-            $method-args ~= ',' if ?$method-args;
-            $method-args ~= " \$$arg is copy";
-            $call-args ~= ',' if ?$call-args;
-            $call-args ~= " \$$arg";
-            $pod-args ~= ',' if ?$pod-args;
-            $pod-args ~= " $raku-arg-type \$$arg";
-          }
+            when 'Int-ptr' {
+              # don't define method args should insert '--> List' at the end
+              # also no pod args and also add '--> List' at the end, but how
+              # and not always if it only one
+              $raku-arg-type = 'Int';
+              $call-args ~= ',' if ?$call-args;
+              $call-args ~= " my gint \$$arg";
+            }
 
-          elsif $raku-arg-type eq 'Int-ptr' {
-            # don't define method args should insert '--> List' at the end
-            # also no pod args and also add '--> List' at the end, but how
-            # and not always if it only one
-            $raku-arg-type = 'Int';
-            $call-args ~= ',' if ?$call-args;
-            $call-args ~= " my gint \$$arg";
-          }
-
-          else {
-            $method-args ~= ',' if ?$method-args;
-            $method-args ~= " $raku-arg-type \$$arg";
-            $call-args ~= ',' if ?$call-args;
-            $call-args ~= " \$$arg";
-            $pod-args ~= ',' if ?$pod-args;
-            $pod-args ~= " $raku-arg-type \$$arg";
+            default {
+              $method-args ~= ',' if ?$method-args;
+              $method-args ~= " $raku-arg-type \$$arg";
+              $call-args ~= ',' if ?$call-args;
+              $call-args ~= " \$$arg";
+              $pod-args ~= ',' if ?$pod-args;
+              $pod-args ~= " $raku-arg-type \$$arg";
+            }
           }
 
 
@@ -520,6 +521,7 @@ sub get-type( Str:D $declaration is copy, Bool :$attr --> List ) {
     #$type = 'GQuark' if $type ~~ m/GQuark/;
     when /GList/ { $type = 'N-GList'; }
     when /GSList/ { $type = 'N-GSList'; }
+    when /GdkEvent/ { $type = 'N-GdkEvent'; }
     when /PangoItem/ { $type = 'N-PangoItem'; }
     when /GVariantType || GVariantDict || GVariant/ { $type = 'N-GObject'; }
     when /GtkTreePath/ { $type = 'N-GtkTreePath'; }
@@ -1247,14 +1249,18 @@ sub get-section ( Str:D $source-content --> List ) {
   my Str $see-also = ~($<text>//'');
   $section-doc ~~ s:i/ ^^ \s+ '*' \s+ '@See_also:' [.*?] \n //;
 
-
   # cleanup rest
+#note "get-section 0: $section-doc";
+
   $section-doc ~~ s:i/ ^^ \s+ '*' \s+ 'SECTION:' [.*?] \n //;
   $section-doc ~~ s:i/ ^^ \s+ '*' \s+ '@Title:' [.*?] \n //;
   $section-doc = cleanup-source-doc($section-doc);
-  $section-doc ~~ s:i/ ^^ '#' '#'? \s+ 'CSS' \s+ 'nodes'/\n=head2 Css Nodes\n/;
+  $section-doc ~~ s:i/ '#' \s+ CSS \s+ nodes
+                     /\n\n=head2 Css Nodes\n\n/;
+
+#note "get-section 1: $section-doc";
   $section-doc ~~ s:g:i/ ^^ '#' '#'? \s+ /\n=head2 /;
-  $section-doc ~~ s:g/ \n\s* '*' \s* / /;
+#  $section-doc ~~ s:g/ \n\s* '*' \s* / /;
 
 
 #note "doc 2: ", $section-doc;
@@ -1265,6 +1271,440 @@ sub get-section ( Str:D $source-content --> List ) {
   )
 }
 
+#-------------------------------------------------------------------------------
+sub get-signals ( Str:D $source-content is copy ) {
+  return unless $source-content;
+
+  print "Find signals ";
+
+  # In this case classes are groups of signals with the same number of arguments
+  # Use like:
+  #   my Str $signal-class = "w$arg-count";
+  #   $signal-classes{$signal-class}.push: $signal-name;
+  my Hash $signal-classes = %();
+
+  # Container for all signal docs
+  # Use like;
+  #   $signal-doc-entries{$signal-name} = $signal-doc;
+  my Hash $signal-doc-entries = %();
+
+  # Make a loop to go through the source code of GTK+. Found sections are
+  # removed and thus, when no sections are found, loop stops.
+  loop {
+#print "\n";
+    print ".";
+    $*OUT.flush;
+
+    my ( $signal-name, $function-doc, $signal-args) =
+      get-signal-function-declaration($source-content);
+
+    last unless $function-doc;
+
+    # Construct a class name for this signal and add signal to that class
+    my Str $signal-class = 'w' ~ @$signal-args[8];
+    $signal-classes{$signal-class} = []
+      unless $signal-classes{$signal-class}:exists;
+    $signal-classes{$signal-class}.push: $signal-name;
+
+#note "GS 0: $*lib-class-name, $function-doc, $signal-name, ", |$signal-args.gist;
+
+    my ( $signal-doc, $items-src-doc) = get-arg-doc($function-doc);
+#note "GS 1: $signal-doc, ", @$items-src-doc.gist;
+
+    my ( $return-type, $signal-arg-types) = get-arg-types(@$signal-args);
+#note "GS 2: $return-type", @$signal-arg-types.gist;
+
+
+    # start pod doc
+    $signal-doc = Q:qq:to/EOSIG/;
+
+      =comment -----------------------------------------------------------------------
+      =comment #TS:0:$signal-name:
+      =head2 $signal-name
+      $signal-doc
+        method handler (
+      EOSIG
+
+    my $arg-count;
+
+    # Show the argument list of the handler together with their types. Skip
+    # the first argument which is the object used to register the signal.
+    loop (
+      $arg-count = 1; $arg-count < $signal-arg-types.elems; $arg-count++
+    ) {
+      $signal-doc ~= "    $signal-arg-types[$arg-count] \$$items-src-doc[$arg-count][0],\n";
+    }
+
+    # Add the arguments given by the register-signal() method
+    $signal-doc ~= Q:qq:to/EOSIG/;
+          Gnome::{$*raku-lib-name}::{$*raku-class-name} :_widget(\$$items-src-doc[0][0]),
+          Int :\$_handler-id,
+          N-GObject :\$_native-object,
+          *\%user-options
+      EOSIG
+
+    # Add the return type
+    if ?$return-type {
+      $signal-doc ~= "\n    --> $return-type\n";
+    }
+
+    # Add finish handler method
+    $signal-doc ~= "  )\n\n";
+
+    # Add itemized argument documentation
+    loop ( $arg-count = 1; $arg-count < $items-src-doc.elems; $arg-count++ ) {
+      $signal-doc ~=
+       "=item \$$items-src-doc[$arg-count][0]; $items-src-doc[$arg-count][1]\n";
+    }
+
+    # And the extra provided arguments
+    $signal-doc ~= "=item \$$items-src-doc[0][0]; The instance which registered the signal\n";
+    $signal-doc ~= "=item \$_handler-id; The handler id which is returned from the registration\n";
+    $signal-doc ~= "=item \$_native-object; The native object provided by the caller wrapped in the Raku object.\n";
+    $signal-doc ~= "=item \%user-options; A list of named arguments provided at the C<register-signal\()> method\n";
+
+#note "GS 3: $signal-doc";
+    $signal-doc-entries{$signal-name} = $signal-doc;
+  }
+
+  # No output when there are no signals found
+  if ?$signal-doc-entries {
+    # Make one big signal doc
+    my Str $doc-total = Q:q:to/EOSIGDOC/;
+
+      #-------------------------------------------------------------------------------
+      =begin pod
+      =head1 Signals
+
+      EOSIGDOC
+
+    print "\n";
+    for $signal-doc-entries.keys.sort -> $signal-name {
+      note "add signal $signal-name";
+      $doc-total ~= $signal-doc-entries{$signal-name};
+    }
+
+    $doc-total ~= "\n=end pod\n";
+
+#    $doc-total = primary-doc-changes($doc-total);
+
+    # And append to output file
+    note "add signal information to $output-file";
+    $output-file.IO.spurt( $doc-total, :append);
+
+    # Now modify the new body to insert the signals
+    modify-newbody-for-signals($signal-classes);
+  }
+}
+
+#-------------------------------------------------------------------------------
+sub get-signal-function-declaration (
+  Str:D $source-content is rw --> List
+) {
+
+#  $items-src-doc = [];
+  my $signal-name = '';
+
+  # Search doc for function declaration. Then remove from source.
+  # Stop if none left
+  $source-content ~~ m/
+    $<signal-doc> = [ '/**' \s+ '*' \s+ $*lib-class-name '::'  .*? '*/' ]
+  /;
+
+  my Str $function-doc = ~($<signal-doc> // '');
+#note "FDoc 0 $*lib-class-name: \n", $function-doc;
+
+  # possibly no documentation
+  if ?$function-doc {
+    $source-content ~~ s/$function-doc//;
+
+    # Get lib class name and remove line from source
+    $function-doc ~~ m/
+      ^^ \s+ '*' \s+
+         $*lib-class-name '::' $<signal-name> = [ [<alnum> || '-']+ ]
+    /;
+    $signal-name = ~($<signal-name> // '');
+    $function-doc ~~ s/ ^^ \s+ '*' \s+ $*lib-class-name '::' $signal-name '::'? //;
+#note "FDoc 1 ", $function-doc;
+  }
+
+  # Get some more info from the function call
+  $source-content ~~ m/
+    'g_signal_new' '_class_handler'? \s* '('
+    $<signal-args> = [
+      [ <[A..Z]> '_('                     || # gtk sources
+        'g_intern_static_string' \s* '('     # gdk sources
+      ]
+      '"' <-[\"]>+ '"' .*?
+    ] ');'
+  /;
+#note "FDoc 2 ",  $\.Str;
+#note "FDoc 3 ",  ~($<signal-args>//'-');
+
+
+  # Save and remove from source
+  my Str $signal-args-text = ~($<signal-args>//'');
+  $function-doc = '' unless $signal-args-text;
+
+  $source-content ~~
+     s/ 'g_signal_new' '_class_handler'? \s* '(' $signal-args-text ');' //;
+
+    # When there's no doc, signal name must be retrieved from function argument.
+    # Mostly noted as I_("some name")
+    unless $signal-name {
+      $signal-args-text ~~ m/ '"' $<signal-name> = [ <-[\"]>+ ] '"' /;
+      $signal-name = ($<signal-name>//'').Str;
+    }
+
+    # process g_signal_new arguments, remove commas from specific macro
+    # by removing the complete argument list. it's not needed.
+    $signal-args-text ~~
+      s/ 'G_STRUCT_OFFSET' \s* \( <-[\)]>+ \) /G_STRUCT_OFFSET/;
+    my @signal-args = ();
+    for $signal-args-text.split(/ \s* ',' \s* /) -> $sarg {
+#note "  arg: '$sarg'";
+      @signal-args.push: $sarg;
+    }
+
+#note "FDoc 4 ", $signal-name, ', ', @signal-args.join(', ');
+
+  ( $signal-name, $function-doc, @signal-args)
+}
+
+#-------------------------------------------------------------------------------
+sub get-arg-doc ( Str $function-doc --> List ) {
+
+  my Str $signal-doc = '';
+
+  # True when scanning for arguments in document. It starts with it and
+  # ends after an empty line
+  my Bool $item-scan = True;
+
+  my Str $item-doc = '';
+  my Str $item-name = '';
+
+  my Array $items-src-doc = [];
+  my Int $item-count = 0;
+
+  for $function-doc.lines -> $line {
+#note "L: $line";
+
+    # Argument found when $item-scan still True and starts with '@'.
+    if $item-scan and $line ~~ m/^ \s* '*' \s+ '@' / {
+      # Get the argument info from the current line.
+      # Something like "* @argument-name: documentation".
+      $line ~~ m/ '*' \s+ '@' $<item-name> = [<alnum>+] ':'
+                  \s* $<item-doc> = [ .* ]
+                /;
+
+      $item-name = ~($<item-name> // '');
+      $item-doc = primary-doc-changes(~($<item-doc> // '')) ~ " ";
+#note "n, d: $item-name, $item-doc";
+
+      $items-src-doc.push: [ $item-name, $item-doc];
+    }
+
+    # continue previous argument doc
+    elsif $item-scan and
+          $line ~~ m/^ \s* '*' \s ** 2..* $<item-doc> = [ .* ] /
+    {
+      my Str $s = ~($<item-doc> // '');
+      $item-doc = primary-doc-changes($s);
+      $items-src-doc[*-1][1] ~= $item-doc ~ " ";
+#note "d: $item-doc";
+    }
+
+    # On empty line after '*' start sub doc
+    elsif $line ~~ m/^ \s* '*' \s* $/ {
+      # push last arg
+#note "ISD 1: $item-count, $item-name, $signal-args[$item-count]"
+#if $item-scan and ?$item-name;
+#      $items-src-doc.push: %(
+#        :item-type($signal-args[$item-count]), :$item-name, :$item-doc
+#      ) if $item-scan and ?$item-name;
+
+      $signal-doc ~= "\n";
+      $item-scan = False;
+    }
+
+    # rest is sub doc
+    elsif !$item-scan {
+      # skip end of document
+      last if $line ~~ m/ '*/' /;
+
+      my Str $l = $line;
+      $l ~~ s/^ \s* '*' \s* //;
+      $signal-doc ~= $l ~ "\n";
+    }
+  }
+
+  # when there is no sub doc, it might end a bit abdrupt
+  #note "ISD 2: $item-count, $item-name, $signal-args[$item-count]"
+  #if $item-scan and ?$item-name;
+
+#  $items-src-doc.push: %(
+#    :item-type($signal-args[$item-count]), :$item-name, :$item-doc
+#  ) if $item-scan and ?$item-name;
+
+  # Cleanup and drop the Since: version line
+  $signal-doc = primary-doc-changes($signal-doc);
+  $signal-doc ~~ s/\s+ 'Since:' \s+ \d+ \. \d+ //;
+
+#note "GAN: ", $items-src-doc.gist;
+  ( $signal-doc, $items-src-doc);
+}
+
+#-------------------------------------------------------------------------------
+sub get-arg-types ( @signal-args --> List ) {
+
+#note 'GAT: ', @signal-args.gist;
+
+  # get a return type from arg 7
+  my Str $return-type = raku-sig-type(@signal-args[7] // 'any');
+
+  # process handler argument types. nbr args at 8, types at 9 and further
+  my @signal-arg-types = 'N-GObject',;
+  my Int $arg-count = @signal-args[8].Int;
+  for ^$arg-count -> $i {
+#note "  A[9 + $i]: @signal-args[9 + $i]";
+
+    @signal-arg-types.push: raku-sig-type(@signal-args[9 + $i]);
+  }
+
+  ( $return-type, @signal-arg-types);
+}
+
+#-------------------------------------------------------------------------------
+sub raku-sig-type ( Str $native-type --> Str ) {
+  my Str $raku-type;
+
+  given $native-type {
+    when 'G_TYPE_NONE' { $raku-type = ''; }
+    when 'G_TYPE_BOOLEAN' { $raku-type = 'Bool'; }
+    when 'G_TYPE_INT' { $raku-type = 'Int'; }
+    when 'G_TYPE_UINT' { $raku-type = 'UInt'; }
+    when 'G_TYPE_STRING' { $raku-type = 'Str'; }
+    when 'GTK_TYPE_TREE_ITER' { $raku-type = 'N-GtkTreeIter'; }
+    when 'G_TYPE_LONG' {
+      $raku-type = 'glong #`{ use Gnome::N::GlibToRakuTypes }';
+    }
+    when 'G_TYPE_FLOAT' { $raku-type = 'Num'; }
+    when 'G_TYPE_DOUBLE' {
+      $raku-type = 'gdouble #`{ use Gnome::N::GlibToRakuTypes }';
+    }
+
+    when 'G_TYPE_ERROR' {
+      $raku-type = 'N-GError #`{ native Gnome::Glib::Error }';
+    }
+    when 'G_TYPE_CLOSURE' {
+      $raku-type = 'N-GObject #`{ native Gnome::GObject::Closure }';
+    }
+    when 'G_TYPE_APP_INFO' {
+      $raku-type = 'N-GObject #`{ native Gnome::Gio::AppInfo }';
+    }
+#    when 'G_TYPE_OBJECT' { $raku-type = 'N-GObject #`{ native object }'; }
+#    when 'GDK_TYPE_OBJECT' { $raku-type = 'N-GObject #`{ native object }'; }
+#    when 'GTK_TYPE_OBJECT' { $raku-type = 'N-GObject #`{ native object }'; }
+#    when 'GTK_TYPE_WIDGET' { $raku-type = 'N-GObject #`{ native widget }'; }
+    when any(<G_TYPE_OBJECT GDK_TYPE_OBJECT GTK_TYPE_OBJECT
+              GTK_TYPE_WIDGET GTK_TYPE_MENU
+            >) { $raku-type = 'N-GObject #`{ native widget }'; }
+
+    when 'GTK_TYPE_TEXT_ITER' {
+      $raku-type = 'N-GObject #`{ native Gnome::Gtk3::TextIter }';
+    }
+    when 'GTK_TYPE_TREE_ITER' {
+      $raku-type = 'N-GtkTreeIter #`{ native Gnome::Gtk3::TreeIter }';
+    }
+    when 'GDK_TYPE_DISPLAY' {
+      $raku-type = 'N-GObject #`{ native Gnome::Gdk3::Display }';
+    }
+    when 'GDK_TYPE_DEVICE' {
+      $raku-type = 'N-GObject #`{ native Gnome::Gdk3::Device }';
+    }
+    when 'GDK_TYPE_DEVICE_TOOL' {
+      $raku-type = 'N-GObject #`{ native Gnome::Gdk3::DeviceTool }';
+    }
+    when 'GDK_TYPE_MONITOR' {
+      $raku-type = 'N-GObject #`{ native Gnome::Gdk3::Monitor }';
+    }
+    when 'GDK_TYPE_SCREEN' {
+      $raku-type = 'N-GObject #`{ native Gnome::Gdk3::Screen }';
+    }
+    when 'GDK_TYPE_SEAT' {
+      $raku-type = 'N-GObject #`{ native Gnome::Gdk3::Seat }';
+    }
+    when 'GDK_TYPE_MODIFIER_TYPE' {
+      $raku-type = 'UInt #`{ GdkModifierType flags from Gnome::Gdk3::Window }';
+    }
+
+    # show that there is something if native type not recognized
+    default { $raku-type = "Unknown type: $native-type"; }
+  }
+
+  $raku-type
+}
+
+#-------------------------------------------------------------------------------
+sub modify-newbody-for-signals ( Hash $signal-classes ) {
+
+  my Str $bool-signals-added = '';
+  my Str $build-add-signals = '';
+
+  # Create the class definition string
+  my Str $sig-class-str = '';
+  for $signal-classes.kv -> $class, $signals {
+    $sig-class-str ~= "\:$class\<";
+    $sig-class-str ~= $signals.join(' ');
+    $sig-class-str ~= '>, ';
+  }
+
+  $bool-signals-added = Q:q:to/EOBOOL/;
+    my Bool $signals-added = False;
+    #-------------------------------------------------------------------------------
+    EOBOOL
+
+  if $class-is-role {
+    $build-add-signals = Q:q:to/EOBUILD/;
+        # add signal info in the form of w*<signal-name>.
+        self.add-signal-types( $?CLASS.^name,
+          SIG_CLASS_STR
+        );
+      EOBUILD
+      $build-add-signals ~~ s/SIG_CLASS_STR/$sig-class-str/;
+  }
+
+  else {
+    $build-add-signals = Q:q:to/EOBUILD/;
+        # add signal info in the form of w*<signal-name>.
+        unless $signals-added {
+          $signals-added = self.add-signal-types( $?CLASS.^name,
+            SIG_CLASS_STR
+          );
+
+          # signals from interfaces
+          #_add_..._signal_types($?CLASS.^name);
+        }
+      EOBUILD
+      $build-add-signals ~~ s/SIG_CLASS_STR/$sig-class-str/;
+  }
+
+  # and append signal data to result module
+  #$output-file.IO.spurt( $signal-doc, :append);
+
+  # load the module for substitutions
+  my Str $module = $output-file.IO.slurp;
+
+  # substitute
+  $module ~~ s/ 'BOOL-SIGNALS-ADDED' /$bool-signals-added/;
+  $module ~~ s/ 'BUILD-ADD-SIGNALS' /$build-add-signals/;
+
+  # rewrite
+  $output-file.IO.spurt($module);
+#  note "add signal information to $output-file";
+}
+
+#`{{
 #-------------------------------------------------------------------------------
 sub get-signals ( Str:D $source-content is copy ) {
 
@@ -1344,19 +1784,19 @@ sub get-signals ( Str:D $source-content is copy ) {
       =head3 $signal-name
       EOSIG
 
-#    note "get signal $signal-name";
+note "get signal $signal-name";
 
     # process g_signal_new arguments, remove commas from specific macro
     # by removing the complete argument list. it's not needed.
     $sig-args ~~ s/ 'G_STRUCT_OFFSET' \s* \( <-[\)]>+ \) /G_STRUCT_OFFSET/;
     my @args = ();
     for $sig-args.split(/ \s* ',' \s* /) -> $arg is copy {
-#note "arg: '$arg'";
+#note "  arg: '$arg'";
       @args.push($arg);
     }
 
-#note "Args: ", @args[7..*-1];
-    # get a return type
+note "  Args: ", @args[*];
+    # get a return type from arg 7
     my Str $return-type = '';
     given @args[7] {
       # most of the time it is a boolean ( == c int32)
@@ -1366,7 +1806,8 @@ sub get-signals ( Str:D $source-content is copy ) {
       when 'G_TYPE_STRING' { $return-type = 'Str'; }
       when 'G_TYPE_NONE' { $return-type = ''; }
       when 'GTK_TYPE_TREE_ITER' { $return-type = 'N-GtkTreeIter'; }
-      # show that there is something
+
+      # show that there is something if return type not recognized
       default { $return-type = "Unknown type @args[7]"; }
     }
 
@@ -1381,30 +1822,34 @@ sub get-signals ( Str:D $source-content is copy ) {
       :item-doc('')
     );
 
-    my Array $signal-args = ['Gnome::GObject::Object'];
+    # process handler argument types. nbr args at 8, types at 9 and further
+    my Array $signal-args = ['N-GObject'];
     my Int $arg-count = @args[8].Int;
-    loop ( my $i = 0; $i < $arg-count; $i++ ) {
+#    loop ( my $i = 0; $i < $arg-count; $i++ ) {
+    for ^$arg-count -> $i {
+
+#note "  A[9 + $i]: @args[9 + $i]";
 
       my Str $arg-type = '';
       given @args[9 + $i] {
         when 'G_TYPE_BOOLEAN' { $arg-type = 'Int'; }
         when 'G_TYPE_INT' { $arg-type = 'Int'; }
-        when 'G_TYPE_UINT' { $return-type = 'Int'; }
-        when 'G_TYPE_LONG' { $arg-type = 'int64 #`{ use NativeCall }'; }
+        when 'G_TYPE_UINT' { $arg-type = 'UInt'; }
+        when 'G_TYPE_LONG' { $arg-type = 'glong #`{ use Gnome::N::GlibToRakuTypes }'; }
         when 'G_TYPE_FLOAT' { $arg-type = 'Num'; }
-        when 'G_TYPE_DOUBLE' { $arg-type = 'num64 #`{ use NativeCall }'; }
+        when 'G_TYPE_DOUBLE' { $arg-type = 'gdouble #`{ use Gnome::N::GlibToRakuTypes }'; }
         when 'G_TYPE_STRING' { $arg-type = 'Str'; }
         when 'G_TYPE_ERROR' { $arg-type = 'N-GError'; }
 
         when 'GTK_TYPE_OBJECT' { $arg-type = 'N-GObject #`{ is object }'; }
         when 'GTK_TYPE_WIDGET' { $arg-type = 'N-GObject #`{ is widget }'; }
+
         when 'GTK_TYPE_TEXT_ITER' {
           $arg-type = 'N-GObject #`{ native Gnome::Gtk3::TextIter }';
         }
         when 'GTK_TYPE_TREE_ITER' {
           $arg-type = 'N-GtkTreeIter #`{ native Gnome::Gtk3::TreeIter }';
         }
-
         when 'GDK_TYPE_DISPLAY' {
           $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Display }';
         }
@@ -1436,7 +1881,7 @@ sub get-signals ( Str:D $source-content is copy ) {
         :item-doc('')
       );
 
-#note "AT: $i, $arg-type";
+note "  A Type: $i, $arg-type, $item-name";
       $signal-args.push: $arg-type;
     }
 
@@ -1454,7 +1899,7 @@ sub get-signals ( Str:D $source-content is copy ) {
     if $has-doc {
 #      $items-src-doc = [];
       for $sdoc.lines -> $line {
-#note "L: $line";
+note "L: $line";
 
         # argument doc start
         if $item-scan and $line ~~ m/^ \s* '*' \s+ '@' / {
@@ -1472,7 +1917,7 @@ sub get-signals ( Str:D $source-content is copy ) {
 
           $item-name = ~($<item-name> // '');
           $item-doc = primary-doc-changes(~($<item-doc> // '')) ~ "\n";
-#note "n, d: $item-name, $item-doc";
+note "n, d: $item-name, $item-doc";
         }
 
         # continue previous argument doc
@@ -1480,7 +1925,7 @@ sub get-signals ( Str:D $source-content is copy ) {
               $line ~~ m/^ \s* '*' \s ** 2..* $<item-doc> = [ .* ] / {
           my Str $s = ~($<item-doc> // '');
           $item-doc ~= primary-doc-changes($s);
-#note "d: $item-doc";
+note "d: $item-doc";
         }
 
         # on empty line after '*' start sub doc
@@ -1521,13 +1966,13 @@ sub get-signals ( Str:D $source-content is copy ) {
 
 
     $signal-doc ~= "\n  method handler (\n";
-#    $item-count = 0;
+    $item-count = 0;
     my Str $first-arg = '';
     my Str $widget-var-name = '';
 #    my Str $first-arg = "Int :\$_handle_id,\n    $idoc<item-type>" ~
 #           "\:_widget\(\$$idoc<item-name>\)";
     for @$items-src-doc -> $idoc {
-#note "IDoc: $item-count, ", $idoc;
+note "  IDoc1: $item-count, ", $idoc;
       if $item-count == 0 {
         $widget-var-name = $idoc<item-name>;
         $first-arg = [~]
@@ -1549,9 +1994,10 @@ sub get-signals ( Str:D $source-content is copy ) {
     $signal-doc ~= "  );\n\n";
 
     for @$items-src-doc -> $idoc {
-note "$idoc<item-name> eq $widget-var-name";
+note "  IDoc2: $idoc<item-name> eq $widget-var-name";
       next if $idoc<item-name> eq $widget-var-name;
-      $signal-doc ~= "=item \$$idoc<item-name>; $idoc<item-doc>\n";
+#      $signal-doc ~= "=item \$$idoc<item-name>; $idoc<item-doc>\n";
+      $signal-doc ~= "=item \$$widget-var-name; $idoc<item-doc>\n";
     }
     # add an item
 #    $signal-doc ~= "=item \$_handle_id; the registered event handler id\n";
@@ -1562,9 +2008,9 @@ note "$idoc<item-name> eq $widget-var-name";
 
     $signal-doc-entries{$signal-name} = $signal-doc;
 
-#note "next signal";
+note "next signal";
   }
-#note "last signal";
+note "last signal";
   print "\n";
 
   my Str $bool-signals-added = '';
@@ -1585,7 +2031,7 @@ note "$idoc<item-name> eq $widget-var-name";
       The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
 
         # handler method
-        method mouse-event ( GdkEvent $event, :$widget ) { ... }
+        method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
 
         # connect a signal on window object
         my Gnome::Gtk3::Window $w .= new( ... );
@@ -1595,7 +2041,7 @@ note "$idoc<item-name> eq $widget-var-name";
 
         my Gnome::Gtk3::Window $w .= new( ... );
         my Callable $handler = sub (
-          N-GObject $native, GdkEvent $event, OpaquePointer $data
+          N-GObject $native, N-GdkEvent $event, OpaquePointer $data
         ) {
           ...
         }
@@ -1670,31 +2116,134 @@ note "$idoc<item-name> eq $widget-var-name";
   $output-file.IO.spurt($module);
 #  note "add signal information to $output-file";
 }
+}}
 
 #-------------------------------------------------------------------------------
 sub get-properties ( Str:D $source-content is copy ) {
 
   return unless $source-content;
 
-  my Str $property-name;
   my Str $property-doc;
+  my Str $property-name;
 
   print "Find properties ";
   my Hash $property-doc-entries = %();
   loop {
-    $property-doc = '';
+#print "\n";
     print ".";
     $*OUT.flush;
 
+    $property-doc = '';
     $property-name = '';
 
+    my Str ( $search-prop-doc, $search-prop-spec) =
+      property-search($source-content);
+
+    last unless ?$search-prop-doc or ?$search-prop-spec;
+
+    # Skip deprecated properties
+    next if $search-prop-doc ~~ m/ '*' \s+ 'Deprecated:' / or
+            $search-prop-spec ~~ m/'G_PARAM_DEPRECATED'/;
+
+
+    my Str ( $prop-name, $prop-blurp);
+    my Str $prop-args-string;
+    ( $prop-name, $prop-blurp) = get-prop-doc($search-prop-doc);
+
+    my Array $flags;
+    my Str $gtype-string;
+    my $prop-default;
+    my Str $prop-g-type = '';
+    my Str ( $min, $max);
+    my Array $args;
+      ( $flags, $gtype-string, $prop-g-type, $prop-default, $min, $max, $args
+      ) = process-prop-args($search-prop-spec);   # if ?$search-prop-spec;
+note 'A1: ', $flags.gist;
+
+    # Arguments have also documentation. See if it is larger and if so,
+    # Take the larger part.
+
+  #note 'A2: ', @$args[2];
+    $prop-blurp = (($prop-blurp//'').chars > (@$args[2]//'').chars)
+                  ?? $prop-blurp !! @$args[2]//'';
+
+
+    my Str $flags-text = '';
+    for @$flags -> $ftext {
+      $flags-text ~= "=item $ftext.\n";
+    }
+
+    my Str $min-max-text = '';
+    $min-max-text ~= "=item Minimum value is $min.\n" if ?$min;
+    $min-max-text ~= "=item Maximum value is $max.\n" if ?$max;
+
+    my Str $default-text = '';
+    $default-text ~= "=item Default value is $prop-default.\n" if ?$prop-default;
+
+    $property-doc ~= Q:qq:to/EOHEADER/;
+
+      =comment -----------------------------------------------------------------------
+      =comment #TP:0:$prop-name:
+      =head2 $prop-name
+
+      $prop-blurp
+
+      The B<Gnome::GObject::Value> type of property I<$prop-name> is C<$prop-g-type>.
+
+      $flags-text$min-max-text$default-text
+      EOHEADER
+
+    $property-doc-entries{$prop-name} = $property-doc;
+#note "end prop";
+  }
+#note "end of all props";
+  print "\n";
+
+  if ?$property-doc-entries {
+    note "add property information to $output-file";
+    $output-file.IO.spurt( Q:to/EODOC/, :append);
+
+      #-------------------------------------------------------------------------------
+      =begin pod
+      =head1 Properties
+      EODOC
+
+    for $property-doc-entries.keys.sort -> $property {
+      note "save property $property";
+      $output-file.IO.spurt( $property-doc-entries{$property}, :append);
+    }
+
+    $output-file.IO.spurt( "=end pod\n", :append);
+  }
+}
+
+#`{{
+#-------------------------------------------------------------------------------
+sub get-properties ( Str:D $source-content is copy ) {
+
+  return unless $source-content;
+
+  my Str $property-doc;
+  my Str $property-name;
+
+  print "Find properties ";
+  my Hash $property-doc-entries = %();
+  loop {
+#print "\n";
+    print ".";
+    $*OUT.flush;
+
+    $property-doc = '';
+    $property-name = '';
+
+#`{{ Needed to find array-name?
     # Get the array name if g_object_class_install_properties() is used
     $source-content ~~ m/ 'g_object_class_install_propert' [ y || ies ]
                           \s* '(' \s* <alnum>+ \s* ',' \s* <alnum>+ \s* ','
                           \s* $<array-name> = (<alnum>+) \s* ')'
                         /;
     my Str $array-name = ($/<array-name> // '').Str;
-
+}}
 
 #`{{
     $source-content ~~ m/
@@ -1715,6 +2264,30 @@ sub get-properties ( Str:D $source-content is copy ) {
       ]
     /;
 }}
+
+#`{{
+    # Try to find a c-doc first followed by a g_param_spec_*()
+    $source-content ~~ m/
+      $<property-doc> = [
+        '/**'                               # start c-comment block
+        \s+ '*' \s+ [ <alnum> || '-' ]+     # first line has Gtk class name
+        ':' [ <alnum> || '-' ]+ ':'         # and a :property name:
+        .*? '*/'                            # till the end of c-comment
+      ]
+      \s* <alnum>+ \s* '=' \s*              # assign to variable
+      $<property-spec> = [
+        'g_param_spec_'                     # prop spec starts
+        .*? ');'                            # till the spec ends
+      ]
+    /;
+
+    my Str $search-prop-doc = ~($<property-doc> // '');
+}}
+
+
+#`{{
+    # Try next search if no doc
+    if !$search-prop-doc { .... }
     $source-content ~~ m/
       $<property-doc> = [
         [ '/**'                           # start c-comment block
@@ -1722,7 +2295,7 @@ sub get-properties ( Str:D $source-content is copy ) {
          ':' [<alnum>||'-']+ ':'          # and a :property name:
           .*? '*/'                        # till the end of c-comment
         ]?                                # sometimes there's no comment block
-                                          # optional comment block
+
         \s+ [ 'g_object_interface_install_property' .*? ||
                                           # sometimes a call for interfaces
          'g_object_class_install_property' .*? ||
@@ -1736,57 +2309,104 @@ sub get-properties ( Str:D $source-content is copy ) {
         .*? ');'                          # till the spec ends
       ]
     /;
+}}
 
-    my Str $sdoc = ~($<property-doc> // '');
-#note "sdoc: ", ?$sdoc;
-    last unless ?$sdoc;
+    my Str ( $search-prop-doc, $search-prop-spec) =
+      try-prop-search1($source-content);
 
-    # remove from source
-    $source-content ~~ s/$sdoc//;
+#    # Try next search if no doc
+#    unless (?$search-prop-doc and ?$search-prop-spec) {
+#      ( $search-prop-doc, $search-prop-spec) =
+#        try-prop-search2($source-content);
+#    }
 
-    # skip deprecated properties
-    next if $sdoc ~~ m/ '*' \s+ 'Deprecated:' /;
 
-    my Bool $has-doc = ($sdoc ~~ m/ '/**' / ?? True !! False);
-#note "\nHD: $has-doc: ", $sdoc;
+#note "pdoc 1: prop = $search-prop-doc\nspec = $search-prop-spec";
 
-    if $has-doc {
-      $sdoc ~~ m/
+    last unless ?$search-prop-doc or ?$search-prop-spec;
+
+    # Skip deprecated properties
+    next if $search-prop-doc ~~ m/ '*' \s+ 'Deprecated:' / or
+            $search-prop-spec ~~ m/'G_PARAM_DEPRECATED'/;
+
+
+#    my Bool $has-doc = ($search-prop-doc ~~ m/ '/**' / ?? True !! False);
+    my Str ( $prop-name, $prop-blurp);
+    my Str $prop-args-string;
+#`{{
+    if ?$search-prop-doc {
+      $search-prop-doc ~~ m/
         ^^ \s+ '*' \s+ $*lib-class-name ':'
         $<prop-name> = [ <-[:]> [<alnum> || '-']+ ]
       /;
       $property-name = ~($<prop-name> // '');
-    }
-# $property-name must come from call to param_spec
 
-# note "sdoc 2: $sdoc";
+      # Remove classname and property name
+      $search-prop-doc ~~
+        s/ \s+ '*' \s+ $*lib-class-name ':' $<prop-name> ':' \n //;
 
-    # modify and cleanup
-    $sdoc ~~ s/ ^^ \s+ '*' \s+ <alnum>+ ':' [ <alnum> || '-' ]+ ':' \n //
-      if $has-doc;
-
-    $sdoc ~~ m/ ^^ \s+ 'g_param_spec_' $<prop-type> = [ <alnum>+ ] \s* '(' /;
-    my Str $spec-type = ~($<prop-type> // '' );
-    my Str $prop-type = 'G_TYPE_' ~ $spec-type.uc;
-
-    my Str $prop-args = $sdoc;
-    my Str ( $prop-name, $prop-nick, $prop-blurp);
-
-    if $has-doc {
-#      $prop-name = $property-name;
-      $sdoc = primary-doc-changes($sdoc);
-      $sdoc = cleanup-source-doc($sdoc);
+      $search-prop-doc = primary-doc-changes($search-prop-doc);
+      $search-prop-doc = cleanup-source-doc($search-prop-doc);
     }
 
     else {
-      $sdoc = '';
+      $search-prop-doc = '';
     }
 
+#    $prop-blurp ~~ s/ \s* \* \s+ Since ':' \s+ \d+ \. \d+ \s*//;
+#note "blurp: $prop-blurp";
+}}
+  ( $prop-name, $prop-blurp) = get-prop-doc($search-prop-doc);
 
-    $prop-args ~~ s/ .*? 'g_param_spec_' $spec-type \s* '(' //;
+  my Array $flags;
+  my Str $gtype-string;
+  my $prop-default;
+  my Str $prop-g-type = '';
+  my Str ( $min, $max);
+  my Array $args;
+    ( $flags, $gtype-string, $prop-g-type, $prop-default, $min, $max, $args
+    ) = process-prop-args($search-prop-spec);   # if ?$search-prop-spec;
+
+  # Arguments have also documentation. See if it is larger and if so,
+  # Take the larger part.
+
+#note 'A2: ', @$args[2];
+  $prop-blurp = (($prop-blurp//'').chars > (@$args[2]//'').chars)
+                ?? $prop-blurp !! @$args[2]//'';
+
+#`{{
+    my Str $prop-spec-type = '';
+    my Str $prop-g-type = '';
+    if ?$search-prop-spec {
+      $search-prop-spec ~~
+        m/ \s+ 'g_param_spec_' $<prop-type> = [ <alnum>+ ] \s* '(' /;
+      $prop-spec-type = ~($<prop-type> // '' );
+      $prop-g-type = 'G_TYPE_' ~ $prop-spec-type.uc;
+note "property: $property-name, types: $prop-spec-type, $prop-g-type";
+      $prop-args-string = $search-prop-spec;
+    }
+}}
+
+#`{{
+    my Str $prop-args-string = $search-prop-doc;
+    my Str ( $prop-name, $prop-blurp);
+
+    if ?$search-prop-doc {
+#      $prop-name = $property-name;
+      $search-prop-doc = primary-doc-changes($search-prop-doc);
+      $search-prop-doc = cleanup-source-doc($search-prop-doc);
+    }
+
+    else {
+      $search-prop-doc = '';
+    }
+}}
+#`{{
+    $prop-args ~~ s/ .*? 'g_param_spec_' $prop-spec-type \s* '(' //;
     $prop-args ~~ s/ '));' //;
+#note 'prop-args 0: ', $prop-args;
 
-    # process arguments. first rename commas in string into _COMMA_
+    # process arguments. first rename commas in strings into _COMMA_
     my Bool $in-string = False;
     my Str $temp-prop-args = $prop-args;
     $prop-args = '';
@@ -1806,8 +2426,9 @@ sub get-properties ( Str:D $source-content is copy ) {
         $prop-args ~= $c;
       }
     }
-#note 'prop-args: ', $prop-args;
+note 'prop-args 1: ', $prop-args;
 
+    # Now we can split on the real commas and substitute the comma back in str
     my @args = ();
     for $prop-args.split(/ \s* ',' \s* /) -> $arg is copy {
       $arg ~~ s/ '_COMMA_' /,/;
@@ -1817,11 +2438,10 @@ sub get-properties ( Str:D $source-content is copy ) {
       $arg ~~ s:g/ \" //;
       @args.push($arg);
     }
-#note "args: ", @args.join(', ');
+note "prop args 2: ", @args.join(', ');
 
     $prop-name = @args[0];
-    $prop-nick = @args[1];
-    $prop-blurp = $has-doc ?? $sdoc !! @args[2];
+    $prop-blurp = ?$search-prop-doc ?? $search-prop-doc !! @args[2];
 #    $prop-blurp ~~ s/ \s* \* \s+ Since ':' \s+ \d+ \. \d+ \s*//;
 #note "blurp: $prop-blurp";
 
@@ -1829,7 +2449,7 @@ sub get-properties ( Str:D $source-content is copy ) {
     my Str $gtype-string;
     my $prop-default;
     my Str $prop-doc = '';
-    given $spec-type {
+    given $prop-spec-type {
 
       when 'boolean' {
         $prop-default = @args[3] ~~ 'TRUE' ?? True !! False;
@@ -1880,32 +2500,51 @@ sub get-properties ( Str:D $source-content is copy ) {
       }
 
     }
+}}
+#note "pdoc 2: $prop-blurp";
 
-    if $has-doc {
-      $sdoc ~= "Widget type: $gtype-string\n" if ?$gtype-string;
-#      $sdoc ~= "Flags: $flags\n" if ?$flags;
+#    if ?$search-prop-doc {
+#      $search-prop-doc ~= "Widget type: $gtype-string\n" if ?$gtype-string;
+#      $search-prop-doc ~= "Flags: $flags\n" if ?$flags;
+#    }
+
+#    else {
+#      $search-prop-doc = $prop-doc;
+#      $search-prop-doc = cleanup-source-doc(
+#        primary-doc-changes($search-prop-doc)
+#      );
+#    }
+
+#    $search-prop-doc ~~ s:g/\n\n/\n/;
+
+
+#note "pdoc 3: ", $prop-blurp;
+
+#    $search-prop-doc ~~ s/ \* \s* Since ':' \s* \d+\.\d+ \s* \*? //;
+
+    my Str $flags-text = '';
+    for @$flags -> $ftext {
+      $flags-text ~= "=item $ftext.\n";
     }
 
-    else {
-      $sdoc = $prop-doc;
-      $sdoc = primary-doc-changes($sdoc);
-      $sdoc = cleanup-source-doc($sdoc);
-    }
+    my Str $min-max-text = '';
+    $min-max-text ~= "=item Minimum value is $min.\n" if ?$min;
+    $min-max-text ~= "=item Maximum value is $max.\n" if ?$max;
 
-    $sdoc ~~ s:g/\n\n/\n/;;
+    my Str $default-text = '';
+    $default-text ~= "=item Default value is $prop-default.\n" if ?$prop-default;
 
-
-#note "sdoc 3: ", $sdoc if $has-doc;
-
-    $sdoc ~~ s/ \* \s* Since ':' \s* \d+\.\d+ \s* \*? //;
     $property-doc ~= Q:qq:to/EOHEADER/;
 
       =comment -----------------------------------------------------------------------
       =comment #TP:0:$prop-name:
-      =head3 $prop-nick: $prop-name
+      =head2 $prop-name
 
-      $sdoc
-      The B<Gnome::GObject::Value> type of property I<$prop-name> is C<$prop-type>.
+      $prop-blurp
+
+      The B<Gnome::GObject::Value> type of property I<$prop-name> is C<$prop-g-type>.
+
+      $flags-text$min-max-text$default-text
       EOHEADER
 
     $property-doc-entries{$prop-name} = $property-doc;
@@ -1921,6 +2560,14 @@ sub get-properties ( Str:D $source-content is copy ) {
       #-------------------------------------------------------------------------------
       =begin pod
       =head1 Properties
+      EODOC
+
+#`{{
+    $output-file.IO.spurt( Q:to/EODOC/, :append);
+
+      #-------------------------------------------------------------------------------
+      =begin pod
+      =head1 Properties
 
       An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use C<new(:label('my text label'))> or C<.set-text('my text label')>.
 
@@ -1931,6 +2578,7 @@ sub get-properties ( Str:D $source-content is copy ) {
 
       =head2 Supported properties
       EODOC
+}}
 
     for $property-doc-entries.keys.sort -> $property {
       note "save property $property";
@@ -1941,6 +2589,366 @@ sub get-properties ( Str:D $source-content is copy ) {
   }
 
 #  $output-file.IO.spurt( $property-doc, :append);
+}
+}}
+
+#-------------------------------------------------------------------------------
+# Try to find a c-doc first followed by a g_param_spec_*()
+sub property-search ( $source-content is rw --> List ) {
+  my Str ( $doc, $spec);
+
+  ( $doc, $spec) = try-prop-search1($source-content);
+  return ( $doc, $spec) if (?$doc and ?$spec);
+
+  ( $doc, $spec) = try-prop-search2($source-content);
+  return ( $doc, $spec) if (?$doc and ?$spec);
+
+  ( $doc, $spec) = try-prop-search3($source-content);
+  return ( $doc, $spec) if (?$doc and ?$spec);
+}
+
+#-------------------------------------------------------------------------------
+# Try to find a c-doc first followed by a g_param_spec_*()
+sub try-prop-search1 ( $source-content is rw --> List ) {
+  $source-content ~~ m/
+    $<property-doc> = [
+      '/**'                               # start c-comment block
+      \s+ '*' \s+ <alnum>+                # first line has a class name
+      ':' [ <alnum> || '-' ]+ ':'         # and a :property name:
+      .*? '*/'                            # till the end of c-comment
+    ]
+
+    $<T> = [\s* <alnum>+ \s* '=' \s*]     # assign to variable
+
+    $<property-spec> = [
+      'g_param_spec_'                     # prop spec starts
+      .*? ');'                            # till the spec ends
+    ]
+  /;
+
+  my Str $T = ~($<T> // '');
+  my Str $property-doc = ~($<property-doc> // '');
+  my Str $property-spec = ~($<property-spec> // '');
+
+  $source-content ~~ s/ $property-doc $T $property-spec//;
+
+  ( $property-doc, $property-spec)
+}
+
+#-------------------------------------------------------------------------------
+# Try to find a c-doc first followed by a g_param_spec_*()
+sub try-prop-search2 ( $source-content is rw --> List ) {
+
+#note "try-prop-search 2:, ", $source-content ~~ m/'/**' \s+ '*' \s+ <alnum>+ ':' [ <alnum> || '-' ]+ ':'/;
+
+  $source-content ~~ m/
+    $<property-doc> = [
+      '/**'                               # start c-comment block
+      \s+ '*' \s+ <alnum>+                # first line has a class name
+      ':' [ <alnum> || '-' ]+ ':'         # and a :property name:
+      .*? '*/'                            # till the end of c-comment
+    ]
+
+    $<T> = [
+      \s*
+      props '[' <-[\]]>+ ']' \s* '=' \s*  # sometimes there's an array def
+    ]
+
+    $<property-spec> = [
+      'g_param_spec_'                     # till prop spec starts
+      .*? ');'                            # till the spec ends
+    ]
+  /;
+
+  my Str $T = ~($<T> // '');
+  my Str $property-doc = ~($<property-doc> // '');
+  my Str $property-spec = ~($<property-spec> // '');
+#note "try-prop-search 2: $property-spec";
+
+  $source-content ~~ s/ $property-doc $T $property-spec//;
+
+  ( $property-doc, $property-spec)
+}
+
+#-------------------------------------------------------------------------------
+# Try to find g_param_spec_*() when nod doc available
+sub try-prop-search3 ( $source-content is rw --> List ) {
+
+#note "try-prop-search 2:, ", $source-content ~~ m/'/**' \s+ '*' \s+ <alnum>+ ':' [ <alnum> || '-' ]+ ':'/;
+
+  $source-content ~~ m/
+    $<property-spec> = [
+      'g_param_spec_'                     # till prop spec starts
+      .*? ');'                            # till the spec ends
+    ]
+  /;
+
+#  my Str $T = ~($<T> // '');
+  my Str $property-spec = ~($<property-spec> // '');
+#  my Array $flags;
+#  my Str $gtype-string;
+#  my $prop-default;
+#  my Str ( $min, $max);
+  my List $l = process-prop-args($property-spec);
+  my Array $args = $l[6];
+
+  # Create a doc c-wise from the spec. This causes process-prop-args-type()
+  # to be called twice unfortunately
+  my Str $property-doc = Q:qq:to/EOPROPDOC/;
+     /**
+      * {$*lib-class-name}:{$args[0]}:
+      *
+      * $args[2]
+      *
+      */
+    EOPROPDOC
+
+#note "try-prop-search 2: $property-spec";
+
+  $source-content ~~ s/$property-spec//;
+
+  ( $property-doc, $property-spec)
+}
+
+#-------------------------------------------------------------------------------
+# Get property documentation
+sub get-prop-doc ( Str $search-prop-doc is copy --> List ) {
+  $search-prop-doc ~~ m/
+    ^^ \s+ '*' \s+ $*lib-class-name ':'
+    $<prop-name> = [ <-[:]> [<alnum> || '-']+ ]
+  /;
+  my Str $property-name = ~($<prop-name> // '');
+
+  # Remove classname and property name
+  $search-prop-doc ~~
+    s/ \s+ '*' \s+ $*lib-class-name ':' $<prop-name> ':' \n //;
+  $search-prop-doc ~~ s/ \s* \* \s+ Since ':' \s+ \d+ \. \d+ \s*//;
+
+  $search-prop-doc = cleanup-source-doc(
+    primary-doc-changes($search-prop-doc)
+  );
+
+#note "get-prop-doc $property-name: $search-prop-doc";
+
+  ( $property-name, $search-prop-doc);
+}
+
+#-------------------------------------------------------------------------------
+# $search-prop-spec could be something like
+# pspec = g_param_spec_boolean ("show-other",
+#     P_("Show other apps"),
+#     P_("Whether the widget should show other applications"),
+#     FALSE,
+#     G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+#     G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
+#
+sub process-prop-args ( Str $search-prop-spec is copy --> List ) {
+  my Str $prop-spec-type = '';
+  my Str $prop-g-type = '';
+#  my Str $prop-name = '';
+
+#note "process-prop-args 0: $search-prop-spec";
+
+  # Get the type name from the call to property function. E.g. the call
+  # g_param_spec_boolean ( … ) gives a boolean.
+  $search-prop-spec ~~
+    m/ 'g_param_spec_' $<prop-spec-type> = [ <alnum>+ ] \s* '(' /;
+  $prop-spec-type = ~($<prop-spec-type> // '' );
+
+  # And its g-type is al uppercase with some prefix: E.g. G_TYPE_BOOLEAN
+  $prop-g-type = 'G_TYPE_' ~ $prop-spec-type.uc;
+
+  # Cleanup up to keep arguments only
+  $search-prop-spec ~~ s/ 'g_param_spec_' $prop-spec-type \s* '(' //;
+  $search-prop-spec ~~ s/ ');' //;
+  $search-prop-spec = $search-prop-spec;
+
+#note "process-prop-args 1: $search-prop-spec";
+
+#note "types: $prop-spec-type, $prop-g-type";
+
+  # Before splitting the arguments on the ',', we must first rename commas
+  # found in strings into a string '_COMMA_'.
+  my Bool $in-string = False;
+  my Str $temp-prop-args = $search-prop-spec;
+  $search-prop-spec = '';
+  for $temp-prop-args.comb -> $c {
+    if $c eq '"' {
+      $in-string = !$in-string;
+      $search-prop-spec ~= '"';
+    }
+
+    elsif $in-string and $c eq ',' {
+      $search-prop-spec ~= '_COMMA_';
+    }
+
+    else {
+      $search-prop-spec ~= $c;
+    }
+  }
+#note 'process-prop-args 2: ', $search-prop-spec;
+
+  # Now we can split on the real commas and substitute the comma back in str
+  my Array $args = [];
+  for $search-prop-spec.split(/ \s* ',' \s* /) -> $arg is copy {
+    # rename '_COMMA_' back to ','
+    $arg ~~ s/ '_COMMA_' /,/;
+
+    # Remove some translation calls
+    $arg ~~ s/ 'P_(' //;
+    $arg ~~ s/ ')' //;
+
+    # Some cleanup
+    $arg ~~ s:g/ \" \s+ \" //;
+    $arg ~~ s:g/ \" //;
+
+    # Save argument
+    $args.push($arg);
+  }
+
+#note 'process-prop-args 3: ', @$args.join("\n  ");
+
+#  $prop-name = $args[0];
+
+  my Array $flags;
+  my Str $gtype-string;
+  my $prop-default;
+  my Str ( $min, $max);
+  ( $flags, $gtype-string, $prop-default, $min, $max) =
+    process-prop-args-type( $prop-spec-type, $prop-g-type, $args);
+
+#note "Flags: $flags.gist()";
+  ( $flags, $gtype-string, $prop-g-type, $prop-default, $min, $max, $args)
+}
+
+#-------------------------------------------------------------------------------
+# See also https://www.freedesktop.org/software/gstreamer-sdk/data/docs/latest/gobject/gobject-Standard-Parameter-and-Value-Types.html
+
+sub process-prop-args-type (
+  Str $prop-spec-type, Str $prop-g-type, Array $args --> List
+) {
+  # Simple types have the types defined before. Only complex classes
+  # like G_TYPE_OBJECT have additional info like a gtype of GtkWindow.
+  my Str $gtype-string = $prop-g-type;
+  my Str $flags = '';
+  my Str $prop-default = '';
+  my Str $min = '';
+  my Str $max = '';
+
+#note "process-prop-args-type '$prop-spec-type': ", $args.join("\n  ");
+
+  # Get some info depending on the type of this property
+  given $prop-spec-type {
+    when 'boolean' {
+      $prop-default = $args[3].tc;
+      $flags = $args[4];
+    }
+
+    when any(<char uchar int uint long ulong int64 uint64 float double>) {
+      $min = $args[3];
+      $max = $args[4];
+      $prop-default = $args[5];
+      $flags = $args[6];
+    }
+
+    when any(<enum flags>) {
+      $gtype-string = $args[3];
+      $prop-default = $args[4];
+      $flags = $args[5];
+    }
+
+    when 'string' {
+      $prop-default = $args[3] ~~ 'NULL' ?? 'undefined' !! $args[3];
+      $flags = $args[4];
+    }
+
+    when any(<param boxed pointer>) {
+      note "Parameter type '$prop-spec-type' not processed";
+      $prop-default = '';
+      $flags = '';
+    }
+
+    when 'object' {
+      $gtype-string = $args[3];
+      $prop-default = '';
+      $flags = $args[4];
+    }
+
+    when any(<unichar array override gtype variant>) {
+      note "Parameter type '$prop-spec-type' not processed";
+      $prop-default = '';
+      $flags = '';
+    }
+
+    default {
+      note "Unknown parameter type '$prop-spec-type' not processed";
+      $prop-default = '';
+      $flags = '';
+    }
+  }
+
+  # Flags are ored into one value, a mask. Get the values by splitting the
+  # string on the C-or operation and translate into strings for the
+  # common ones.
+  my Array $f = [];
+  for $flags.split(/\s* '|' \s*/) {
+#.note;
+    when / [GTK || G] '_PARAM_READABLE'/ {
+      $f.push: 'Parameter is readable';
+    }
+
+    when / [GTK || G] '_PARAM_WRITABLE'/ {
+      $f.push: 'Parameter is writable';
+    }
+
+    # alias for 'G_PARAM_READABLE | G_PARAM_WRITABLE'
+    when / [GTK || G] '_PARAM_READWRITE'/  {
+      $f.push: 'Parameter is readable and writable';
+    }
+
+    when /[GTK | G] '_PARAM_CONSTRUCT'/ {
+      $f.push: 'Parameter is set on construction of object';
+    }
+
+    when /[GTK || G] '_PARAM_CONSTRUCT_ONLY'/ {
+      $f.push: 'Parameter is only set on construction of object';
+    }
+
+    when any(<
+      G_PARAM_LAX_VALIDATION G_PARAM_STATIC_NAME G_PARAM_PRIVATE
+      GTK_PARAM_LAX_VALIDATION GTK_PARAM_STATIC_NAME GTK_PARAM_PRIVATE
+      >) {
+    }
+
+    when any(<
+      G_PARAM_STATIC_NICK G_PARAM_STATIC_BLURB
+      GTK_PARAM_STATIC_NICK GTK_PARAM_STATIC_BLURB
+      >) {
+    }
+
+    # already filtered out
+    when / [GTK || G] '_PARAM_DEPRECATED'/ {
+    }
+
+    # G_PARAM_STATIC_STRINGS alias for
+    #    'G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB'
+    when any(<
+      G_PARAM_STATIC_STRINGS G_PARAM_MASK G_PARAM_USER_SHIFT
+      GTK_PARAM_STATIC_STRINGS GTK_PARAM_MASK GTK_PARAM_USER_SHIFT
+      >) {
+    }
+
+    # Comes from somewhere else
+    when / [GTK || G] '_PARAM_EXPLICIT_NOTIFY'/ {
+    }
+
+    default {
+      note "Unknown param_spec flag type '$_'" if ?$_;
+    }
+  }
+
+note "process-prop-args-type: $flags -> $f.gist()";
+  ( $f, $gtype-string, $prop-default, $min, $max)
 }
 
 #-------------------------------------------------------------------------------
@@ -2303,37 +3311,127 @@ sub get-structures ( Str:D $include-content is copy ) {
 #-------------------------------------------------------------------------------
 sub cleanup-source-doc ( Str:D $text is copy --> Str ) {
 
+#note "cleanup-source-doc 0: $text";
   # remove property and signal line
   $text ~~ s/ ^^ \s+ '*' \s+ $*lib-class-name ':'+ .*? \n //;
 #  $text ~~ s/ ^^ \s+ '*' \s+ $*lib-class-name ':' .*? \n //;
 
-  $text ~~ s/ ^^ '/**' .*? \n //;                       # Doc start
+  $text ~~ s/ '/**' .*? \n //;                          # Doc start
   $text ~~ s/ \s* '*/' .* $ //;                         # Doc end
-  $text ~~ s/ ^^ \s* '*'? \s* 'Since:' \d+\.\d+ \n //;  # Since: version
+  $text ~~ s/ \s* '*'? \s* 'Since:' \d+\.\d+ \n //;     # Since: version
 #  $text ~~ s/ ^^ \s+ '*' \s+ Deprecated: .*? \n //;    # Deprecated: version
 #  $text ~~ s/ ^^ \s+ '*' \s+ Stability: .*? \n //;     # Stability: status
-  $text ~~ s:g/ ^^ \s+ '*' \s+ '-' \s? (.*?) \n /=item $/[0]/; # doc star + dash
-  $text ~~ s:g/ ^^ \s+ '*' ' '? (.*?) \n /$/[0] \n/;    # doc star + doc
-  $text ~~ s:g/ ^^ \s+ '*' \s*? \n /\n/;                # doc star + empty
-#  $text ~~ s:g/ ^^ \s* \n //;
-#  $text ~~ s:g/ \n / /;
+  $text ~~ s:g/ \s+ '*' \s+ '-' \s? (.*?) \n /=item $/[0]\n/; # doc star + dash
+  $text ~~ s:g/ ' '+ '*' ' '*/ /;                       # doc star + something
 
-#  $text ~~ s/^ \s* /\n/;
+#note "\ncleanup-source-doc 1: $text";
 
-#  $text ~ "\n\n"
+  $text ~~ s:g/ \n**3 /\n\n/;                           # 3 x \n -> 2x \n
+  $text ~~ s:g/ ^^ ' '+ //;                             # prefixed spaces -> ''
+  $text ~~ s:g/ ( <-[\s]>) \n (<-[\s]>) /$/[0] $/[1]/;  # \n -> ' '
+  $text ~~ s:g/ ' '**2 / /;                             # more spaces -> ' '
+
+#note "\ncleanup-source-doc 2: $text";
   $text
 }
 
 #-------------------------------------------------------------------------------
 sub primary-doc-changes ( Str:D $text is copy --> Str ) {
 
-  $text = podding-class($text);
+#note "\nprimary-doc-changes 0: $text";
+
   $text = podding-signal($text);
+#note "\nprimary-doc-changes signal: $text";
+
   $text = podding-property($text);
+#note "\nprimary-doc-changes property: $text";
+
+  $text = podding-class($text);
+#note "\nprimary-doc-changes class: $text";
+
   $text = modify-at-vars($text);
+#note "\nprimary-doc-changes vars: $text";
+
   $text = modify-percent-types($text);
+#note "\nprimary-doc-changes % types: $text";
+
   $text = podding-function($text);
+#note "\nprimary-doc-changes function: $text";
+
   $text = adjust-image-path($text);
+#note "\nprimary-doc-changes image path: $text";
+
+  $text
+}
+
+#-------------------------------------------------------------------------------
+# change any :signal to I<signal>
+sub podding-signal ( Str:D $text is copy --> Str ) {
+
+  loop {
+    # When used with classname, e.g #GtkAppChooserWidget::application-selected
+    # change it to I<application-selected from Gnome::Gtk3::AppChooserWidget>
+    # Otherwise, when classname is empty, or the Raku classname is the
+    # same as for this module, write I<application-selected> only.
+    $text ~~ m/ '#'? $<gtk-classname> = [<alnum>+]? '::'
+                $<sig-name> = [<alnum> || '-']+/;
+
+    my Str $sig-name = ~($<sig-name>//'');
+
+    last unless ?$sig-name;
+
+    my Str $gtk-classname = ~($<gtk-classname>//'');
+    my Str $raku-classname = make-raku-classname($gtk-classname);
+
+    $raku-classname = '' if ?$raku-classname and
+       $raku-classname ~~ "Gnome\:\:{$*raku-lib-name}::{$*raku-class-name}";
+
+    if $raku-classname {
+      $text ~~ s/ '#' $gtk-classname '::' $sig-name
+                /I<$sig-name from $raku-classname>/;
+    }
+
+    else {
+      # gtk classname could still be there
+      $text ~~ s/ ['#' $gtk-classname]? '::' $sig-name
+                /I<$sig-name>/;
+    }
+  }
+
+  $text
+}
+
+#-------------------------------------------------------------------------------
+# change any :property to I<property>
+sub podding-property ( Str:D $text is copy --> Str ) {
+
+  loop {
+    # When used with classname, e.g #GtkAppChooserWidget:show-default
+    # change it to I<show-default from Gnome::Gtk3::AppChooserWidget>
+    # Otherwise, when classname is empty, or the Raku classname is
+    # the same as for this module, write I<show-default> only.
+    $text ~~ m/ '#' $<gtk-classname> = [<alnum>+]? ':'
+                $<prop-name> = [<alnum> || '-']+/;
+
+    my Str $prop-name = ~($<prop-name>//'');
+    last unless ?$prop-name;
+
+    my Str $gtk-classname = ~($<gtk-classname>//'');
+    my Str $raku-classname = make-raku-classname($gtk-classname);
+    $raku-classname = '' if ?$raku-classname and
+       $raku-classname ~~ "Gnome\:\:{$*raku-lib-name}::{$*raku-class-name}";
+
+    if $raku-classname {
+      $text ~~ s/ '#' $gtk-classname ':' $prop-name
+                /I<$prop-name from $raku-classname>/;
+    }
+
+    else {
+      # gtk classname could still be there
+      $text ~~ s/ [ '#' $gtk-classname]? ':' $prop-name
+                /I<$prop-name>/;
+    }
+  }
 
   $text
 }
@@ -2346,65 +3444,14 @@ sub primary-doc-changes ( Str:D $text is copy --> Str ) {
 sub podding-class ( Str:D $text is copy --> Str ) {
 
   loop {
-    # check for property spec with classname in doc
-    $text ~~ m/ '#' (<alnum>+) ':' ([<alnum> || '-']+) /;
-    my Str $oct = ~($/[1] // '');
-    last unless ?$oct;
+    $text ~~ m/ '#' $<gtk-classname> = [<alnum>+] /;
+    my Str $gtk-classname = ~($<gtk-classname>//'');
+    last unless ?$gtk-classname;
 
-    $text ~~ s/ '#' (<alnum>+) ':' [<alnum> || '-']+ / I\<$oct\>/;
-  }
-
-  loop {
-    # check for signal spec with classname in doc
-    $text ~~ m/ '#' (<alnum>+) '::' ([<alnum> || '-']+) /;
-    my Str $oct = ~($/[1] // '');
-    last unless ?$oct;
-
-    $text ~~ s/ '#' (<alnum>+) '::' [<alnum> || '-']+ / I\<$oct\>/;
-  }
-
-  loop {
-    # check for class specs
-    $text ~~ m/ '#' (<alnum>+) /;
-    my Str $oct = ~($/[0] // '');
-    last unless ?$oct;
-
-    my Str $part = $oct;
-
-    $oct ~~ s/^ ['Gtk' || 'Gdk' || 'G'] ( <alnum>+ )
-             /Gnome::$*raku-lib-name\:\:$/[0]/;
+    my Str $raku-classname = make-raku-classname($gtk-classname);
 
     # replace changed part in text
-    $text ~~ s/ '#' $part /B\<$oct\>/;
-  }
-
-  # convert a few without leading octagon (#)
-  #$text ~~ s:g/ <!after '%' > [ 'Gtk' || 'Gdk' || 'G'] (\D <alnum>+)
-  #            /B<Gnome::$*raku-lib-name\:\:$/[0]>/;
-
-  $text
-}
-
-
-#-------------------------------------------------------------------------------
-# change any :signal to I<signal>
-sub podding-signal ( Str:D $text is copy --> Str ) {
-
-  loop {
-    last unless $text ~~ m/ \s '::' [<alnum> || '-']+ /;
-    $text ~~ s/ \s '::' ([<alnum> || '-']+) / I<$/[0]>/;
-  }
-
-  $text
-}
-
-#-------------------------------------------------------------------------------
-# change any :property to I<property>
-sub podding-property ( Str:D $text is copy --> Str ) {
-
-  loop {
-    last unless $text ~~ m/ \s ':' [<alnum> || '-']+ /;
-    $text ~~ s/ \s ':' ([<alnum> || '-']+) / I<$/[0]>/;
+    $text ~~ s/ '#' $gtk-classname /B<$raku-classname>/;
   }
 
   $text
@@ -2450,6 +3497,44 @@ sub adjust-image-path ( Str:D $text is copy --> Str ) {
               /\!\[$/[0]\]\(images\/$/[1]\)/;
 
   $text
+}
+
+#-------------------------------------------------------------------------------
+sub make-raku-classname ( Str $gtk-classname --> Str ) {
+
+  my Str $raku-classname;
+#  $gtk-classname ~~ m/ '#' $<raku-classname> = (<alnum>+) /;
+#  $raku-classname = ~($<raku-classname> // '');
+#  return '' unless ?$raku-classname;
+
+  return '' unless ?$gtk-classname;
+
+#  $gtk-classname ~~ m/ '#' $<raku-classname> = (<alnum>+) /;
+
+  $raku-classname = $gtk-classname;
+  $raku-classname ~~ m/ $<classlibpart> = ['Gtk' || 'Gdk' || 'G'] <alnum>+ /;
+  given my Str $classlibpart = ~($<classlibpart>//'') {
+    when any(<Gtk Gdk>) {
+      $classlibpart ~= '3';
+    }
+
+    when 'G' {
+      # assume Gio but could be Glib or GObject
+      $classlibpart = 'Gio';
+    }
+
+    default {
+      note "Unknown $classlibpart from gtk class $raku-classname";
+    }
+  }
+
+  $raku-classname ~~ s/^ ['Gtk' || 'Gdk' || 'G'] ( <alnum>+ )
+                      /Gnome::$classlibpart\:\:$/[0]/;
+
+  # replace changed part in text
+  #$text ~~ s/ '#' $part /B\<$oct\>/;
+
+  $raku-classname
 }
 
 #-------------------------------------------------------------------------------
