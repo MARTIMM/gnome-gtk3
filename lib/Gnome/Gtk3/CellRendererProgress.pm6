@@ -66,8 +66,8 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 =end pod
 
 #TM:1:new():
-#TM:0:new(:native-object):
-#TM:0:new(:build-id):
+#TM:4:new(:native-object):
+#TM:4:new(:build-id):
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong widgets
@@ -87,13 +87,14 @@ submethod BUILD ( *%options ) {
   }
 
   else { #if ? %options<empty> {
-    self._set-native-object(gtk_cell_renderer_progress_new());
+    self._set-native-object(_gtk_cell_renderer_progress_new());
   }
 
   # only after creating the native-object, the gtype is known
   self._set-class-info('GtkCellRendererProgress');
 }
 
+#`{{ no methods
 #-------------------------------------------------------------------------------
 # no pod. user does not have to know about it.
 method _fallback ( $native-sub is copy --> Callable ) {
@@ -108,10 +109,11 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   $s;
 }
-
+}}
 
 #-------------------------------------------------------------------------------
 #TM:2:gtk_cell_renderer_progress_new:new()
+#`{{
 =begin pod
 =head2 [gtk_] cell_renderer_progress_new
 
@@ -124,10 +126,11 @@ Since: 2.6
   method gtk_cell_renderer_progress_new ( --> N-GObject  )
 
 =end pod
+}}
 
-sub gtk_cell_renderer_progress_new (  )
-  returns N-GObject
+sub _gtk_cell_renderer_progress_new ( --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_cell_renderer_progress_new')
   { * }
 
 #-------------------------------------------------------------------------------

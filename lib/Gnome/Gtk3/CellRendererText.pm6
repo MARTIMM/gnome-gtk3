@@ -100,10 +100,35 @@ submethod BUILD ( *%options ) {
 # no pod. user does not have to know about it.
 method _fallback ( $native-sub is copy --> Callable ) {
 
+  my Str $new-patt = $native-sub.subst( '_', '-', :g);
+
   my Callable $s;
   try { $s = &::("gtk_cell_renderer_text_$native-sub"); };
-  try { $s = &::("cell_renderer_text_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  if ?$s {
+    Gnome::N::deprecate(
+      "gtk_cell_renderer_text_$native-sub", $new-patt, '0.47.4', '0.50.0'
+    );
+  }
+
+  else {
+    try { $s = &::("cell_renderer_text_$native-sub"); } unless ?$s;
+    if ?$s {
+      Gnome::N::deprecate(
+        "gtk_$native-sub", $new-patt.subst('cell-renderer-text-'),
+        '0.47.4', '0.50.0'
+      );
+    }
+
+    else {
+      try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+      if ?$s {
+        Gnome::N::deprecate(
+          "$native-sub", $new-patt.subst('gtk-cell-renderer-textn-'),
+          '0.47.4', '0.50.0'
+        );
+      }
+    }
+  }
 
   self._set-class-name-of-sub('GtkCellRendererText');
   $s = callsame unless ?$s;
