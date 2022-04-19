@@ -474,6 +474,190 @@ sub _gtk_app_chooser_widget_new ( gchar-ptr $content_type --> N-GObject )
   is symbol('gtk_app_chooser_widget_new')
   { * }
 
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Signals
+
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:application-activated:
+=head2 application-activated
+
+Emitted when an application item is activated from the widget's list.
+
+This usually happens when the user double clicks an item, or an item
+is selected and the user presses one of the keys Space, Shift+Space,
+Return or Enter.
+
+  method handler (
+    N-GObject #`{ native Gnome::Gio::AppInfo } $application,
+    Gnome::Gtk3::AppChooserWidget :_widget($self),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $application; the activated B<Gnome::Gio::AppInfo>
+=item $self; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:application-selected:
+=head2 application-selected
+
+Emitted when an application item is selected from the widget's list.
+
+  method handler (
+    N-GObject #`{ native Gnome::Gio::AppInfo } $application,
+    Gnome::Gtk3::AppChooserWidget :_widget($self),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $application; the selected B<Gnome::Gio::AppInfo>
+=item $self; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:populate-popup:
+=head2 populate-popup
+
+Emitted when a context menu is about to popup over an application item.
+Clients can insert menu items into the provided B<Gnome::Gtk3::Menu> object in the
+callback of this signal; the context menu will be shown over the item
+if at least one item has been added to the menu.
+
+  method handler (
+    N-GObject #`{ native widget } $menu,
+    N-GObject #`{ native Gnome::Gio::AppInfo } $application,
+    Gnome::Gtk3::AppChooserWidget :_widget($self),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $menu; the B<Gnome::Gtk3::Menu> to populate
+=item $application; the current B<Gnome::Gio::AppInfo>
+=item $self; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=end pod
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:default-text:
+=head2 default-text
+
+GtkAppChooserWidgetI<default-text>:
+
+The I<default-text> property determines the text that appears in the widget when there are no applications for the given content type. See also C<set_default_text()>.
+
+The B<Gnome::GObject::Value> type of property I<default-text> is C<G_TYPE_STRING>.
+
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:show-all:
+=head2 show-all
+
+GtkAppChooserWidgetI<show-all>:
+
+If the I<show-all> property is C<True>, the app chooser presents all applications in a single list, without subsections for default, recommended or related applications.
+
+The B<Gnome::GObject::Value> type of property I<show-all> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Parameter is set on construction of object.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:show-default:
+=head2 show-default
+
+
+The I<show-default> property determines whether the app chooser should show the default handler for the content type in a separate section. If C<False>, the default handler is listed among the recommended applications.
+
+The B<Gnome::GObject::Value> type of property I<show-default> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Parameter is set on construction of object.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:show-fallback:
+=head2 show-fallback
+
+GtkAppChooserWidgetI<show-fallback>:
+
+The I<show-fallback> property determines whether the app chooser should show a section for fallback applications. If C<False>, the fallback applications are listed among the other applications.
+
+The B<Gnome::GObject::Value> type of property I<show-fallback> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Parameter is set on construction of object.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:show-other:
+=head2 show-other
+
+GtkAppChooserWidgetI<show-other>:
+
+The I<show-other> property determines whether the app chooser should show a section for other applications.
+
+The B<Gnome::GObject::Value> type of property I<show-other> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Parameter is set on construction of object.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:show-recommended:
+=head2 show-recommended
+
+GtkAppChooserWidgetI<show-recommended>:
+
+The I<show-recommended> property determines whether the app chooser should show a section for recommended applications. If C<False>, the recommended applications are listed among the other applications.
+
+The B<Gnome::GObject::Value> type of property I<show-recommended> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Parameter is set on construction of object.
+=item Default value is TRUE.
+
+=end pod
+
+=finish
+
+
+
+
+
+
+
+
+
+
+
+
+
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Signals
@@ -576,7 +760,88 @@ if at least one item has been added to the menu.
 
 =end pod
 
-=finish
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:default-text:
+=head2 default-text
+
+ The  I<default-text> property determines the text that appears in the widget when there are no applications for the given content type. See also C<set_default_text()>.
+
+The B<Gnome::GObject::Value> type of property I<default-text> is C<G_TYPE_STRING>.
+
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:show-all:
+=head2 show-all
+
+ If the  I<show-all> property is C<True>, the app chooser presents all applications in a single list, without subsections for default, recommended or related applications.
+
+The B<Gnome::GObject::Value> type of property I<show-all> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Parameter is set on construction of object.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:show-default:
+=head2 show-default
+
+ The I<show-default> property determines whether the app chooser should show the default handler for the content type in a separate section. If C<False>, the default handler is listed among the recommended applications.
+
+The B<Gnome::GObject::Value> type of property I<show-default> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Parameter is set on construction of object.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:show-fallback:
+=head2 show-fallback
+
+ The  I<show-fallback> property determines whether the app chooser should show a section for fallback applications. If C<False>, the fallback applications are listed among the other applications.
+
+The B<Gnome::GObject::Value> type of property I<show-fallback> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Parameter is set on construction of object.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:show-other:
+=head2 show-other
+
+ The  I<show-other> property determines whether the app chooser should show a section for other applications.
+
+The B<Gnome::GObject::Value> type of property I<show-other> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Parameter is set on construction of object.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:show-recommended:
+=head2 show-recommended
+
+ The  I<show-recommended> property determines whether the app chooser should show a section for recommended applications. If C<False>, the recommended applications are listed among the other applications.
+
+The B<Gnome::GObject::Value> type of property I<show-recommended> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Parameter is set on construction of object.
+=item Default value is TRUE.
+
+=end pod
 
 #-------------------------------------------------------------------------------
 =begin pod

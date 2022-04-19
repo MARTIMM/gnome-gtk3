@@ -136,7 +136,7 @@ Sets the text that is shown if there are not applications that can handle the co
 
     method set-default-text ( Str $text )
 
-  * Str $text; the new value for *default-text*
+  * $text; the new value for *default-text*
 
 set-show-all
 ------------
@@ -145,7 +145,7 @@ Sets whether the app chooser should show all applications in a flat list.
 
     method set-show-all ( Bool $setting )
 
-  * Bool $setting; the new value for *show-all*
+  * $setting; the new value for *show-all*
 
 set-show-default
 ----------------
@@ -154,7 +154,7 @@ Sets whether the app chooser should show the default handler for the content typ
 
     method set-show-default ( Bool $setting )
 
-  * Bool $setting; the new value for *show-default*
+  * $setting; the new value for *show-default*
 
 set-show-fallback
 -----------------
@@ -163,7 +163,7 @@ Sets whether the app chooser should show related applications for the content ty
 
     method set-show-fallback ( Bool $setting )
 
-  * Bool $setting; the new value for *show-fallback*
+  * $setting; the new value for *show-fallback*
 
 set-show-other
 --------------
@@ -172,7 +172,7 @@ Sets whether the app chooser should show applications which are unrelated to the
 
     method set-show-other ( Bool $setting )
 
-  * Bool $setting; the new value for *show-other*
+  * $setting; the new value for *show-other*
 
 set-show-recommended
 --------------------
@@ -181,95 +181,171 @@ Sets whether the app chooser should show recommended applications for the conten
 
     method set-show-recommended ( Bool $setting )
 
-  * Bool $setting; the new value for *show-recommended*
+  * $setting; the new value for *show-recommended*
 
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
-
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
--------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### application-activated
+application-activated
+---------------------
 
 Emitted when an application item is activated from the widget's list.
 
 This usually happens when the user double clicks an item, or an item is selected and the user presses one of the keys Space, Shift+Space, Return or Enter.
 
     method handler (
-      Unknown type G_TYPE_APP_INFO $application,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($self),
+      N-GObject #`{ native Gnome::Gio::AppInfo } $application,
+      Gnome::Gtk3::AppChooserWidget :_widget($self),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $self; the object which received the signal
+  * $application; the activated **Gnome::Gio::AppInfo**
 
-  * $application; the activated **Gnome::Gtk3::AppInfo**
+  * $self; The instance which registered the signal
 
-  * $_handle_id; the registered event handler id
+  * $_handler-id; The handler id which is returned from the registration
 
-### application-selected
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+application-selected
+--------------------
 
 Emitted when an application item is selected from the widget's list.
 
     method handler (
-      Unknown type G_TYPE_APP_INFO $application,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($self),
+      N-GObject #`{ native Gnome::Gio::AppInfo } $application,
+      Gnome::Gtk3::AppChooserWidget :_widget($self),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $self; the object which received the signal
+  * $application; the selected **Gnome::Gio::AppInfo**
 
-  * $application; the selected **Gnome::Gtk3::AppInfo**
+  * $self; The instance which registered the signal
 
-  * $_handle_id; the registered event handler id
+  * $_handler-id; The handler id which is returned from the registration
 
-### populate-popup
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+populate-popup
+--------------
 
 Emitted when a context menu is about to popup over an application item. Clients can insert menu items into the provided **Gnome::Gtk3::Menu** object in the callback of this signal; the context menu will be shown over the item if at least one item has been added to the menu.
 
     method handler (
-      Unknown type GTK_TYPE_MENU $menu,
-      Unknown type G_TYPE_APP_INFO $application,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($self),
+      N-GObject #`{ native widget } $menu,
+      N-GObject #`{ native Gnome::Gio::AppInfo } $application,
+      Gnome::Gtk3::AppChooserWidget :_widget($self),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
-
-  * $self; the object which received the signal
+    )
 
   * $menu; the **Gnome::Gtk3::Menu** to populate
 
-  * $application; the current **Gnome::Gtk3::AppInfo**
+  * $application; the current **Gnome::Gio::AppInfo**
 
-  * $_handle_id; the registered event handler id
+  * $self; The instance which registered the signal
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+Properties
+==========
+
+default-text
+------------
+
+GtkAppChooserWidget*default-text*:
+
+The *default-text* property determines the text that appears in the widget when there are no applications for the given content type. See also `set_default_text()`.
+
+The **Gnome::GObject::Value** type of property *default-text* is `G_TYPE_STRING`.
+
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
+
+show-all
+--------
+
+GtkAppChooserWidget*show-all*:
+
+If the *show-all* property is `True`, the app chooser presents all applications in a single list, without subsections for default, recommended or related applications.
+
+The **Gnome::GObject::Value** type of property *show-all* is `G_TYPE_BOOLEAN`.
+
+  * Parameter is readable and writable.
+
+  * Parameter is set on construction of object.
+
+  * Default value is FALSE.
+
+show-default
+------------
+
+The *show-default* property determines whether the app chooser should show the default handler for the content type in a separate section. If `False`, the default handler is listed among the recommended applications.
+
+The **Gnome::GObject::Value** type of property *show-default* is `G_TYPE_BOOLEAN`.
+
+  * Parameter is readable and writable.
+
+  * Parameter is set on construction of object.
+
+  * Default value is FALSE.
+
+show-fallback
+-------------
+
+GtkAppChooserWidget*show-fallback*:
+
+The *show-fallback* property determines whether the app chooser should show a section for fallback applications. If `False`, the fallback applications are listed among the other applications.
+
+The **Gnome::GObject::Value** type of property *show-fallback* is `G_TYPE_BOOLEAN`.
+
+  * Parameter is readable and writable.
+
+  * Parameter is set on construction of object.
+
+  * Default value is FALSE.
+
+show-other
+----------
+
+GtkAppChooserWidget*show-other*:
+
+The *show-other* property determines whether the app chooser should show a section for other applications.
+
+The **Gnome::GObject::Value** type of property *show-other* is `G_TYPE_BOOLEAN`.
+
+  * Parameter is readable and writable.
+
+  * Parameter is set on construction of object.
+
+  * Default value is FALSE.
+
+show-recommended
+----------------
+
+GtkAppChooserWidget*show-recommended*:
+
+The *show-recommended* property determines whether the app chooser should show a section for recommended applications. If `False`, the recommended applications are listed among the other applications.
+
+The **Gnome::GObject::Value** type of property *show-recommended* is `G_TYPE_BOOLEAN`.
+
+  * Parameter is readable and writable.
+
+  * Parameter is set on construction of object.
+
+  * Default value is TRUE.
 
