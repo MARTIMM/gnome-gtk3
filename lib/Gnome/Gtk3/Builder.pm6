@@ -349,9 +349,25 @@ submethod BUILD ( *%options ) {
 # no pod. user does not have to know about it.
 method _fallback ( $native-sub is copy --> Callable ) {
 
+  my Str $new-patt = $native-sub.subst( '_', '-', :g);
+
   my Callable $s;
   try { $s = &::("gtk_builder_$native-sub"); }
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  if ?$s {
+    Gnome::N::deprecate(
+      "gtk_buildern_$native-sub", $new-patt, '0.47.4', '0.50.0'
+    );
+  }
+
+  else {
+    try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+    if ?$s {
+      Gnome::N::deprecate(
+        "gtk_$native-sub", $new-patt.subst('builder-'),
+        '0.47.4', '0.50.0'
+      );
+    }
+  }
 
   self._set-class-name-of-sub('GtkBuilder');
   $s = callsame unless ?$s;

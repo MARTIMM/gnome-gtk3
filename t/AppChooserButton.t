@@ -4,10 +4,10 @@ use Test;
 
 use Gnome::Gtk3::AppChooserButton;
 
-use Gnome::Gio::Icon;
+#use Gnome::Gio::Icon;
 use Gnome::Gio::File;
 use Gnome::Gio::FileIcon;
-use Gnome::Gio::AppInfo;
+#use Gnome::Gio::AppInfo;
 
 use Gnome::Glib::Error;
 use Gnome::Glib::List;
