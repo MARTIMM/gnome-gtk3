@@ -1062,7 +1062,7 @@ sub _gtk_about_dialog_new ( --> N-GObject )
 
 The signal which gets emitted to activate a URI. Applications may connect to it to override the default behaviour, which is to call C<gtk_show_uri()>.
 
-Returns: C<1> if the link has been activated.
+Returns: C<True> if the link has been activated.
 
   method handler (
     Str $uri,
@@ -1070,7 +1070,8 @@ Returns: C<1> if the link has been activated.
     Int $_handler-id,
     N-GObject :$_native-object,
     *%user-options
-    --> gboolean #`{ use Gnome::N::GlibToRakuTypes }
+
+    --> Bool
   );
 
 =item $uri; the URI that is activated.
@@ -1110,6 +1111,9 @@ Comments about the program. This string is displayed in a label in the main dial
 
 The B<Gnome::GObject::Value> type of property I<comments> is C<G_TYPE_STRING>.
 
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:copyright:
 =head2 copyright
@@ -1117,6 +1121,9 @@ The B<Gnome::GObject::Value> type of property I<comments> is C<G_TYPE_STRING>.
 Copyright information for the program.
 
 The B<Gnome::GObject::Value> type of property I<copyright> is C<G_TYPE_STRING>.
+
+=item Parameter is readable and writable.
+=item Default value is undefined.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:documenters:
@@ -1139,6 +1146,9 @@ When setting this property to a non-C<undefined> value, the I<license-type> prop
 
 The B<Gnome::GObject::Value> type of property I<license> is C<G_TYPE_STRING>.
 
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:license-type:
 =head2 license-type
@@ -1157,6 +1167,9 @@ Widget type: GTK_TYPE_LICENSE
 
 The B<Gnome::GObject::Value> type of property I<license-type> is C<G_TYPE_ENUM>.
 
+=item Parameter is readable and writable.
+=item Default value is GTK_LICENSE_UNKNOWN.
+
 =comment -----------------------------------------------------------------------
 =comment #TP:0:logo:
 =head2 logo
@@ -1167,6 +1180,8 @@ Widget type: GDK_TYPE_PIXBUF
 
 The B<Gnome::GObject::Value> type of property I<logo> is C<G_TYPE_OBJECT>.
 
+=item Parameter is readable and writable.
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:logo-icon-name:
 =head2 logo-icon-name
@@ -1174,6 +1189,9 @@ The B<Gnome::GObject::Value> type of property I<logo> is C<G_TYPE_OBJECT>.
 A named icon to use as the logo for the about box. This property overrides the  I<logo> property.
 
 The B<Gnome::GObject::Value> type of property I<logo-icon-name> is C<G_TYPE_STRING>.
+
+=item Parameter is readable and writable.
+=item Default value is image-missing.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:program-name:
@@ -1183,6 +1201,9 @@ The name of the program. If this is not set, it defaults to C<g_get_application_
 
 The B<Gnome::GObject::Value> type of property I<program-name> is C<G_TYPE_STRING>.
 
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:translator-credits:
 =head2 translator-credits
@@ -1190,6 +1211,9 @@ The B<Gnome::GObject::Value> type of property I<program-name> is C<G_TYPE_STRING
 Credits to the translators. This string should be marked as translatable. The string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
 The B<Gnome::GObject::Value> type of property I<translator-credits> is C<G_TYPE_STRING>.
+
+=item Parameter is readable and writable.
+=item Default value is undefined.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:version:
@@ -1199,6 +1223,9 @@ The version of the program.
 
 The B<Gnome::GObject::Value> type of property I<version> is C<G_TYPE_STRING>.
 
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:website:
 =head2 website
@@ -1206,6 +1233,9 @@ The B<Gnome::GObject::Value> type of property I<version> is C<G_TYPE_STRING>.
 The URL for the link to the website of the program. This should be a string starting with "http://.
 
 The B<Gnome::GObject::Value> type of property I<website> is C<G_TYPE_STRING>.
+
+=item Parameter is readable and writable.
+=item Default value is undefined.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:website-label:
@@ -1215,6 +1245,9 @@ The label for the link to the website of the program.
 
 The B<Gnome::GObject::Value> type of property I<website-label> is C<G_TYPE_STRING>.
 
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:wrap-license:
 =head2 wrap-license
@@ -1222,6 +1255,10 @@ The B<Gnome::GObject::Value> type of property I<website-label> is C<G_TYPE_STRIN
 Whether to wrap the text in the license dialog.
 
 The B<Gnome::GObject::Value> type of property I<wrap-license> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
 =end pod
 
 

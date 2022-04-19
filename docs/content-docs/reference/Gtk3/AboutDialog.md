@@ -417,7 +417,7 @@ activate-link
 
 The signal which gets emitted to activate a URI. Applications may connect to it to override the default behaviour, which is to call `gtk_show_uri()`.
 
-Returns: `1` if the link has been activated.
+Returns: `True` if the link has been activated.
 
     method handler (
       Str $uri,
@@ -425,7 +425,8 @@ Returns: `1` if the link has been activated.
       Int $_handler-id,
       N-GObject :$_native-object,
       *%user-options
-      --> gboolean #`{ use Gnome::N::GlibToRakuTypes }
+
+      --> Bool
     );
 
   * $uri; the URI that is activated.
@@ -462,12 +463,20 @@ Comments about the program. This string is displayed in a label in the main dial
 
 The **Gnome::GObject::Value** type of property *comments* is `G_TYPE_STRING`.
 
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
+
 copyright
 ---------
 
 Copyright information for the program.
 
 The **Gnome::GObject::Value** type of property *copyright* is `G_TYPE_STRING`.
+
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
 
 documenters
 -----------
@@ -487,6 +496,10 @@ When setting this property to a non-`undefined` value, the *license-type* proper
 
 The **Gnome::GObject::Value** type of property *license* is `G_TYPE_STRING`.
 
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
+
 license-type
 ------------
 
@@ -504,6 +517,10 @@ Widget type: GTK_TYPE_LICENSE
 
 The **Gnome::GObject::Value** type of property *license-type* is `G_TYPE_ENUM`.
 
+  * Parameter is readable and writable.
+
+  * Default value is GTK_LICENSE_UNKNOWN.
+
 logo
 ----
 
@@ -513,12 +530,18 @@ Widget type: GDK_TYPE_PIXBUF
 
 The **Gnome::GObject::Value** type of property *logo* is `G_TYPE_OBJECT`.
 
+  * Parameter is readable and writable.
+
 logo-icon-name
 --------------
 
 A named icon to use as the logo for the about box. This property overrides the *logo* property.
 
 The **Gnome::GObject::Value** type of property *logo-icon-name* is `G_TYPE_STRING`.
+
+  * Parameter is readable and writable.
+
+  * Default value is image-missing.
 
 program-name
 ------------
@@ -527,12 +550,20 @@ The name of the program. If this is not set, it defaults to `g_get_application_n
 
 The **Gnome::GObject::Value** type of property *program-name* is `G_TYPE_STRING`.
 
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
+
 translator-credits
 ------------------
 
 Credits to the translators. This string should be marked as translatable. The string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
 The **Gnome::GObject::Value** type of property *translator-credits* is `G_TYPE_STRING`.
+
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
 
 version
 -------
@@ -541,12 +572,20 @@ The version of the program.
 
 The **Gnome::GObject::Value** type of property *version* is `G_TYPE_STRING`.
 
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
+
 website
 -------
 
 The URL for the link to the website of the program. This should be a string starting with "http://.
 
 The **Gnome::GObject::Value** type of property *website* is `G_TYPE_STRING`.
+
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
 
 website-label
 -------------
@@ -555,10 +594,18 @@ The label for the link to the website of the program.
 
 The **Gnome::GObject::Value** type of property *website-label* is `G_TYPE_STRING`.
 
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
+
 wrap-license
 ------------
 
 Whether to wrap the text in the license dialog.
 
 The **Gnome::GObject::Value** type of property *wrap-license* is `G_TYPE_BOOLEAN`.
+
+  * Parameter is readable and writable.
+
+  * Default value is FALSE.
 
