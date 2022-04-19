@@ -169,3 +169,5 @@ Widget type: GTK_TYPE_WIDGET
 
 The **Gnome::GObject::Value** type of property *accel-widget* is `G_TYPE_OBJECT`.
 
+  * Parameter is readable and writable.
+

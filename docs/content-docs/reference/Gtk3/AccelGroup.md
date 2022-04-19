@@ -329,7 +329,7 @@ Returns: `True` if the accelerator was activated
       N-GObject :$_native-object,
       *%user-options
 
-      --> gboolean #`{ use Gnome::N::GlibToRakuTypes }
+      --> Bool
     );
 
   * $acceleratable; the object on which the accelerator was activated

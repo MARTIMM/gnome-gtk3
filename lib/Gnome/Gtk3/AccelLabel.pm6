@@ -447,4 +447,7 @@ The widget to be monitored for accelerator changes
 Widget type: GTK_TYPE_WIDGET
 
 The B<Gnome::GObject::Value> type of property I<accel-widget> is C<G_TYPE_OBJECT>.
+
+=item Parameter is readable and writable.
+
 =end pod
