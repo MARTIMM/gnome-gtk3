@@ -103,7 +103,13 @@ layout: sidebar
       // Changing title can only be done this way. Normally set to frontmatter
       // title, _config.yml title, defaults in _config.yml or when nothing is
       // set to the first H1 on the page.
-      var title = $(document).prop( 'title', "{{ page.part-title }} {{ page.title }}");
+
+      // page.title not set on reference pages so pick filename and drop .md
+      var filename = "{{ page.name }}";
+      filename = filename.replace( ".md", "");
+      var title = $(document).prop(
+        'title', "{{ page.part-title }}: " + filename
+      );
 
     </script>
   </head>
