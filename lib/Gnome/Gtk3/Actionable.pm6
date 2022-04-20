@@ -217,6 +217,9 @@ The name of the associated action, like 'app.quit' Default value: Any
 
 The B<Gnome::GObject::Value> type of property I<action-name> is C<G_TYPE_STRING>.
 
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
 =comment -----------------------------------------------------------------------
 =comment #TP:0:action-target:
 =head2 action-target
@@ -224,4 +227,8 @@ The B<Gnome::GObject::Value> type of property I<action-name> is C<G_TYPE_STRING>
 The parameter for action invocations.
 
 The B<Gnome::GObject::Value> type of property I<action-target> is C<G_TYPE_VARIANT>.
+
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
 =end pod

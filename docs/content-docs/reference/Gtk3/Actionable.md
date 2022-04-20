@@ -96,10 +96,18 @@ The name of the associated action, like 'app.quit' Default value: Any
 
 The **Gnome::GObject::Value** type of property *action-name* is `G_TYPE_STRING`.
 
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
+
 action-target
 -------------
 
 The parameter for action invocations.
 
 The **Gnome::GObject::Value** type of property *action-target* is `G_TYPE_VARIANT`.
+
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
 
