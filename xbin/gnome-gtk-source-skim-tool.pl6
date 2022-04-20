@@ -3345,16 +3345,16 @@ sub cleanup-source-doc ( Str:D $text is copy --> Str ) {
 #-------------------------------------------------------------------------------
 sub primary-doc-changes ( Str:D $text is copy --> Str ) {
 
-note "\nprimary-doc-changes 0: $text";
+#note "\nprimary-doc-changes 0: $text";
 
   $text = podding-signal($text);
-note "\nprimary-doc-changes signal: $text";
+#note "\nprimary-doc-changes signal: $text";
 
   $text = podding-property($text);
-note "\nprimary-doc-changes property: $text";
+#note "\nprimary-doc-changes property: $text";
 
   $text = podding-class($text);
-note "\nprimary-doc-changes class: $text";
+#note "\nprimary-doc-changes class: $text";
 
   $text = modify-at-vars($text);
 #note "\nprimary-doc-changes vars: $text";
