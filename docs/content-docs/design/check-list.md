@@ -84,13 +84,13 @@ table {
 
 | Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--|
-AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓| ✓| sig prop
-AccelGroup                |  | ✗| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓| sig prop
-AccelLabel                |  | ✓| ✓| ✓| ✓| ✗| ✓| ⅞| ✗|  | ✓| ✓| ✓| sig prop
+AboutDialog               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅔| ✓| ✓| ✓|
+AccelGroup                |  | ✗| ✓| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓|
+AccelLabel                |  | ✓| ✓| ✓| ✓| ✗| ✓| ⅞| ✗|  | ✓| ✓| ✓|
 AccelMap                  |  | ✗| ✓| ✓| ✓| ✓| ✗| ✓| ½| ✗| ✓| ✓| ✓|
 Actionable                |R | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ½| ✓| ✓| ✓|
 ActionBar                 |  | ✓| ✓| ✓| ✓| ✗| ✗| ⅘| ✗| ✗| ✓| ✓| ✓|
-Adjustment                |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
+Adjustment                |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| < sig prop
 AppChooser                |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
 AppChooserButton          |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|  |  | ✓| ✓| ✓|
 AppChooserDialog          |  | ✓| ✓| ✓| ✓| ✗| ✗| ⅞| ✗| ✗| ✓| ✓| ✓|
