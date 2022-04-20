@@ -1367,6 +1367,8 @@ sub get-signals ( Str:D $source-content is copy ) {
     $signal-doc-entries{$signal-name} = $signal-doc;
   }
 
+  print "\n";
+
   # No output when there are no signals found
   if ?$signal-doc-entries {
     # Make one big signal doc
@@ -1391,10 +1393,10 @@ sub get-signals ( Str:D $source-content is copy ) {
     # And append to output file
     note "add signal information to $output-file";
     $output-file.IO.spurt( $doc-total, :append);
-
-    # Now modify the new body to insert the signals
-    modify-newbody-for-signals($signal-classes);
   }
+
+  # Now modify the new body to insert the signals
+  modify-newbody-for-signals($signal-classes);
 }
 
 #-------------------------------------------------------------------------------
@@ -1653,44 +1655,47 @@ sub modify-newbody-for-signals ( Hash $signal-classes ) {
 
   # Create the class definition string
   my Str $sig-class-str = '';
-  for $signal-classes.kv -> $class, $signals {
-    $sig-class-str ~= "\:$class\<";
-    $sig-class-str ~= $signals.join(' ');
-    $sig-class-str ~= '>, ';
-  }
 
-  $bool-signals-added = Q:q:to/EOBOOL/;
-    my Bool $signals-added = False;
-    #-------------------------------------------------------------------------------
-    EOBOOL
+  if ?$signal-classes {
+    for $signal-classes.kv -> $class, $signals {
+      $sig-class-str ~= "\:$class\<";
+      $sig-class-str ~= $signals.join(' ');
+      $sig-class-str ~= '>, ';
+    }
 
-  if $class-is-role {
-    $build-add-signals = Q:q:to/EOBUILD/;
-        # add signal info in the form of w*<signal-name>.
-        self.add-signal-types( $?CLASS.^name,
-          SIG_CLASS_STR
-        );
-      EOBUILD
-      $build-add-signals ~~ s/SIG_CLASS_STR/$sig-class-str/;
-  }
+    $bool-signals-added = Q:q:to/EOBOOL/;
+      my Bool $signals-added = False;
+      #-------------------------------------------------------------------------------
+      EOBOOL
 
-  else {
-    $build-add-signals = Q:q:to/EOBUILD/;
-        # add signal info in the form of w*<signal-name>.
-        unless $signals-added {
-          $signals-added = self.add-signal-types( $?CLASS.^name,
+    if $class-is-role {
+      $build-add-signals = Q:q:to/EOBUILD/;
+          # add signal info in the form of w*<signal-name>.
+          self.add-signal-types( $?CLASS.^name,
             SIG_CLASS_STR
           );
+        EOBUILD
+        $build-add-signals ~~ s/SIG_CLASS_STR/$sig-class-str/;
+    }
 
-          # signals from interfaces
-          #_add_..._signal_types($?CLASS.^name);
-        }
-      EOBUILD
-      $build-add-signals ~~ s/SIG_CLASS_STR/$sig-class-str/;
+    else {
+      $build-add-signals = Q:q:to/EOBUILD/;
+          # add signal info in the form of w*<signal-name>.
+          unless $signals-added {
+            $signals-added = self.add-signal-types( $?CLASS.^name,
+              SIG_CLASS_STR
+            );
+
+            # signals from interfaces
+            #_add_..._signal_types($?CLASS.^name);
+          }
+        EOBUILD
+        $build-add-signals ~~ s/SIG_CLASS_STR/$sig-class-str/;
+    }
+
+    # and append signal data to result module
+    #$output-file.IO.spurt( $signal-doc, :append);
   }
-
-  # and append signal data to result module
-  #$output-file.IO.spurt( $signal-doc, :append);
 
   # load the module for substitutions
   my Str $module = $output-file.IO.slurp;
@@ -2158,12 +2163,12 @@ sub get-properties ( Str:D $source-content is copy ) {
     my Array $args;
       ( $flags, $gtype-string, $prop-g-type, $prop-default, $min, $max, $args
       ) = process-prop-args($search-prop-spec);   # if ?$search-prop-spec;
-note 'A1: ', $flags.gist;
+#note 'A1: ', $flags.gist;
 
     # Arguments have also documentation. See if it is larger and if so,
     # Take the larger part.
 
-  #note 'A2: ', @$args[2];
+#note 'A2: ', @$args[2];
     $prop-blurp = (($prop-blurp//'').chars > (@$args[2]//'').chars)
                   ?? $prop-blurp !! @$args[2]//'';
 
@@ -2185,11 +2190,9 @@ note 'A1: ', $flags.gist;
       =comment -----------------------------------------------------------------------
       =comment #TP:0:$prop-name:
       =head2 $prop-name
-
       $prop-blurp
 
       The B<Gnome::GObject::Value> type of property I<$prop-name> is C<$prop-g-type>.
-
       $flags-text$min-max-text$default-text
       EOHEADER
 
@@ -2603,7 +2606,8 @@ sub property-search ( $source-content is rw --> List ) {
   ( $doc, $spec) = try-prop-search2($source-content);
   return ( $doc, $spec) if (?$doc and ?$spec);
 
-  ( $doc, $spec) = try-prop-search3($source-content);
+  # Keep this one at the last option. It checks for props without doc
+  ( $doc, $spec) = try-prop-search-last($source-content);
   return ( $doc, $spec) if (?$doc and ?$spec);
 }
 
@@ -2629,6 +2633,7 @@ sub try-prop-search1 ( $source-content is rw --> List ) {
   my Str $T = ~($<T> // '');
   my Str $property-doc = ~($<property-doc> // '');
   my Str $property-spec = ~($<property-spec> // '');
+  return ( '', '') unless (?$property-doc and ?$property-spec);
 
   $source-content ~~ s/ $property-doc $T $property-spec//;
 
@@ -2663,6 +2668,7 @@ sub try-prop-search2 ( $source-content is rw --> List ) {
   my Str $T = ~($<T> // '');
   my Str $property-doc = ~($<property-doc> // '');
   my Str $property-spec = ~($<property-spec> // '');
+  return ( '', '') unless (?$property-doc and ?$property-spec);
 #note "try-prop-search 2: $property-spec";
 
   $source-content ~~ s/ $property-doc $T $property-spec//;
@@ -2672,7 +2678,7 @@ sub try-prop-search2 ( $source-content is rw --> List ) {
 
 #-------------------------------------------------------------------------------
 # Try to find g_param_spec_*() when nod doc available
-sub try-prop-search3 ( $source-content is rw --> List ) {
+sub try-prop-search-last ( $source-content is rw --> List ) {
 
 #note "try-prop-search 2:, ", $source-content ~~ m/'/**' \s+ '*' \s+ <alnum>+ ':' [ <alnum> || '-' ]+ ':'/;
 
@@ -2683,12 +2689,9 @@ sub try-prop-search3 ( $source-content is rw --> List ) {
     ]
   /;
 
-#  my Str $T = ~($<T> // '');
   my Str $property-spec = ~($<property-spec> // '');
-#  my Array $flags;
-#  my Str $gtype-string;
-#  my $prop-default;
-#  my Str ( $min, $max);
+  return ( '', '') unless ?$property-spec;
+
   my List $l = process-prop-args($property-spec);
   my Array $args = $l[6];
 
@@ -2699,11 +2702,8 @@ sub try-prop-search3 ( $source-content is rw --> List ) {
       * {$*lib-class-name}:{$args[0]}:
       *
       * $args[2]
-      *
       */
     EOPROPDOC
-
-#note "try-prop-search 2: $property-spec";
 
   $source-content ~~ s/$property-spec//;
 
@@ -2841,25 +2841,25 @@ sub process-prop-args-type (
   given $prop-spec-type {
     when 'boolean' {
       $prop-default = $args[3].tc;
-      $flags = $args[4];
+      $flags = $args[4] // '';
     }
 
     when any(<char uchar int uint long ulong int64 uint64 float double>) {
-      $min = $args[3];
-      $max = $args[4];
-      $prop-default = $args[5];
-      $flags = $args[6];
+      $min = $args[3] // '';
+      $max = $args[4] // '';
+      $prop-default = $args[5] // '';
+      $flags = $args[6] // '';
     }
 
     when any(<enum flags>) {
-      $gtype-string = $args[3];
-      $prop-default = $args[4];
-      $flags = $args[5];
+      $gtype-string = $args[3] // '';
+      $prop-default = $args[4] // '';
+      $flags = $args[5] // '';
     }
 
     when 'string' {
       $prop-default = $args[3] ~~ 'NULL' ?? 'undefined' !! $args[3];
-      $flags = $args[4];
+      $flags = $args[4] // '';
     }
 
     when any(<param boxed pointer>) {
@@ -2869,19 +2869,25 @@ sub process-prop-args-type (
     }
 
     when 'object' {
-      $gtype-string = $args[3];
+      $gtype-string = $args[3] // '';
       $prop-default = '';
-      $flags = $args[4];
+      $flags = $args[4] // '';
     }
 
-    when any(<unichar array override gtype variant>) {
+    when any(<unichar array override gtype>) {
       note "Parameter type '$prop-spec-type' not processed";
       $prop-default = '';
       $flags = '';
     }
 
+    when 'variant' {
+      $prop-default = $args[4]  ~~ 'NULL' ?? 'undefined' !! $args[3];
+      $flags = $args[5] // '';
+    }
+
     default {
-      note "Unknown parameter type '$prop-spec-type' not processed";
+      note "Unknown parameter type '$prop-spec-type' not processed"
+        if ?$prop-spec-type;
       $prop-default = '';
       $flags = '';
     }
@@ -2947,7 +2953,7 @@ sub process-prop-args-type (
     }
   }
 
-note "process-prop-args-type: $flags -> $f.gist()";
+#note "process-prop-args-type: $flags -> $f.gist()";
   ( $f, $gtype-string, $prop-default, $min, $max)
 }
 
@@ -3338,16 +3344,16 @@ sub cleanup-source-doc ( Str:D $text is copy --> Str ) {
 #-------------------------------------------------------------------------------
 sub primary-doc-changes ( Str:D $text is copy --> Str ) {
 
-#note "\nprimary-doc-changes 0: $text";
+note "\nprimary-doc-changes 0: $text";
 
   $text = podding-signal($text);
-#note "\nprimary-doc-changes signal: $text";
+note "\nprimary-doc-changes signal: $text";
 
   $text = podding-property($text);
-#note "\nprimary-doc-changes property: $text";
+note "\nprimary-doc-changes property: $text";
 
   $text = podding-class($text);
-#note "\nprimary-doc-changes class: $text";
+note "\nprimary-doc-changes class: $text";
 
   $text = modify-at-vars($text);
 #note "\nprimary-doc-changes vars: $text";
@@ -3373,7 +3379,7 @@ sub podding-signal ( Str:D $text is copy --> Str ) {
     # change it to I<application-selected from Gnome::Gtk3::AppChooserWidget>
     # Otherwise, when classname is empty, or the Raku classname is the
     # same as for this module, write I<application-selected> only.
-    $text ~~ m/ '#'? $<gtk-classname> = [<alnum>+]? '::'
+    $text ~~ m/ ['#' $<gtk-classname> = [<alnum>+] || \s ] '::'
                 $<sig-name> = [<alnum> || '-']+/;
 
     my Str $sig-name = ~($<sig-name>//'');
@@ -3513,6 +3519,7 @@ sub make-raku-classname ( Str $gtk-classname --> Str ) {
 
   $raku-classname = $gtk-classname;
   $raku-classname ~~ m/ $<classlibpart> = ['Gtk' || 'Gdk' || 'G'] <alnum>+ /;
+note "make-raku-classname: $raku-classname, $<classlibpart>.Str()";
   given my Str $classlibpart = ~($<classlibpart>//'') {
     when any(<Gtk Gdk>) {
       $classlibpart ~= '3';
@@ -3524,7 +3531,7 @@ sub make-raku-classname ( Str $gtk-classname --> Str ) {
     }
 
     default {
-      note "Unknown $classlibpart from gtk class $raku-classname";
+      note "Unknown '$classlibpart' from gtk class $raku-classname";
     }
   }
 
