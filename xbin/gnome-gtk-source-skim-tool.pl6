@@ -2193,6 +2193,7 @@ sub get-properties ( Str:D $source-content is copy ) {
       $prop-blurp
 
       The B<Gnome::GObject::Value> type of property I<$prop-name> is C<$prop-g-type>.
+
       $flags-text$min-max-text$default-text
       EOHEADER
 
