@@ -274,46 +274,90 @@ Properties
 lower
 -----
 
-The minimum value of the adjustment.
+The minimum value of the adjustment
 
 The **Gnome::GObject::Value** type of property *lower* is `G_TYPE_DOUBLE`.
+
+  * Parameter is readable and writable.
+
+  * Minimum value is -G_MAXDOUBLE.
+
+  * Maximum value is G_MAXDOUBLE.
+
+  * Default value is 0.0.
 
 page-increment
 --------------
 
-The page increment of the adjustment.
+The page increment of the adjustment
 
 The **Gnome::GObject::Value** type of property *page-increment* is `G_TYPE_DOUBLE`.
+
+  * Parameter is readable and writable.
+
+  * Minimum value is -G_MAXDOUBLE.
+
+  * Maximum value is G_MAXDOUBLE.
+
+  * Default value is 0.0.
 
 page-size
 ---------
 
-The page size of the adjustment.
-
-Note that the page-size is irrelevant and should be set to zero if the adjustment is used for a simple scalar value, e.g. in a **Gnome::Gtk3::SpinButton**.
+The page size of the adjustment
 
 The **Gnome::GObject::Value** type of property *page-size* is `G_TYPE_DOUBLE`.
+
+  * Parameter is readable and writable.
+
+  * Minimum value is -G_MAXDOUBLE.
+
+  * Maximum value is G_MAXDOUBLE.
+
+  * Default value is 0.0.
 
 step-increment
 --------------
 
-The step increment of the adjustment.
+The step increment of the adjustment
 
 The **Gnome::GObject::Value** type of property *step-increment* is `G_TYPE_DOUBLE`.
+
+  * Parameter is readable and writable.
+
+  * Minimum value is -G_MAXDOUBLE.
+
+  * Maximum value is G_MAXDOUBLE.
+
+  * Default value is 0.0.
 
 upper
 -----
 
-The maximum value of the adjustment.
-
-Note that values will be restricted by upper - page-size` if the page-size property is nonzero.
+The maximum value of the adjustment
 
 The **Gnome::GObject::Value** type of property *upper* is `G_TYPE_DOUBLE`.
+
+  * Parameter is readable and writable.
+
+  * Minimum value is -G_MAXDOUBLE.
+
+  * Maximum value is G_MAXDOUBLE.
+
+  * Default value is 0.0.
 
 value
 -----
 
-The value of the adjustment.
+The value of the adjustment
 
 The **Gnome::GObject::Value** type of property *value* is `G_TYPE_DOUBLE`.
+
+  * Parameter is readable and writable.
+
+  * Minimum value is -G_MAXDOUBLE.
+
+  * Maximum value is G_MAXDOUBLE.
+
+  * Default value is 0.0.
 

@@ -686,54 +686,86 @@ Emitted when the  I<value> property has been changed.
 =head1 Properties
 
 =comment -----------------------------------------------------------------------
-=comment #TP:1:lower:
+=comment #TP:0:lower:
 =head2 lower
 
-The minimum value of the adjustment.
+The minimum value of the adjustment
 
 The B<Gnome::GObject::Value> type of property I<lower> is C<G_TYPE_DOUBLE>.
 
+=item Parameter is readable and writable.
+=item Minimum value is -G_MAXDOUBLE.
+=item Maximum value is G_MAXDOUBLE.
+=item Default value is 0.0.
+
+
 =comment -----------------------------------------------------------------------
-=comment #TP:1:page-increment:
+=comment #TP:0:page-increment:
 =head2 page-increment
 
-The page increment of the adjustment.
+The page increment of the adjustment
 
 The B<Gnome::GObject::Value> type of property I<page-increment> is C<G_TYPE_DOUBLE>.
 
+=item Parameter is readable and writable.
+=item Minimum value is -G_MAXDOUBLE.
+=item Maximum value is G_MAXDOUBLE.
+=item Default value is 0.0.
+
+
 =comment -----------------------------------------------------------------------
-=comment #TP:1:page-size:
+=comment #TP:0:page-size:
 =head2 page-size
 
-The page size of the adjustment.
-
-Note that the page-size is irrelevant and should be set to zero if the adjustment is used for a simple scalar value, e.g. in a B<Gnome::Gtk3::SpinButton>.
+The page size of the adjustment
 
 The B<Gnome::GObject::Value> type of property I<page-size> is C<G_TYPE_DOUBLE>.
 
+=item Parameter is readable and writable.
+=item Minimum value is -G_MAXDOUBLE.
+=item Maximum value is G_MAXDOUBLE.
+=item Default value is 0.0.
+
+
 =comment -----------------------------------------------------------------------
-=comment #TP:1:step-increment:
+=comment #TP:0:step-increment:
 =head2 step-increment
 
-The step increment of the adjustment.
+The step increment of the adjustment
 
 The B<Gnome::GObject::Value> type of property I<step-increment> is C<G_TYPE_DOUBLE>.
 
+=item Parameter is readable and writable.
+=item Minimum value is -G_MAXDOUBLE.
+=item Maximum value is G_MAXDOUBLE.
+=item Default value is 0.0.
+
+
 =comment -----------------------------------------------------------------------
-=comment #TP:1:upper:
+=comment #TP:0:upper:
 =head2 upper
 
-The maximum value of the adjustment.
-
-Note that values will be restricted by upper - page-size` if the page-size property is nonzero.
+The maximum value of the adjustment
 
 The B<Gnome::GObject::Value> type of property I<upper> is C<G_TYPE_DOUBLE>.
 
+=item Parameter is readable and writable.
+=item Minimum value is -G_MAXDOUBLE.
+=item Maximum value is G_MAXDOUBLE.
+=item Default value is 0.0.
+
+
 =comment -----------------------------------------------------------------------
-=comment #TP:1:value:
+=comment #TP:0:value:
 =head2 value
 
-The value of the adjustment.
+The value of the adjustment
 
 The B<Gnome::GObject::Value> type of property I<value> is C<G_TYPE_DOUBLE>.
+
+=item Parameter is readable and writable.
+=item Minimum value is -G_MAXDOUBLE.
+=item Maximum value is G_MAXDOUBLE.
+=item Default value is 0.0.
+
 =end pod
