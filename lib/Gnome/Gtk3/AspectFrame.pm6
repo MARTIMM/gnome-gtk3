@@ -240,6 +240,69 @@ sub _gtk_aspect_frame_new ( Str $label, num32 $xalign, num32 $yalign, num32 $rat
 =begin pod
 =head1 Properties
 
+=comment -----------------------------------------------------------------------
+=comment #TP:1:obey-child:
+=head2 obey-child
+
+Force aspect ratio to match that of the frame's child
+
+The B<Gnome::GObject::Value> type of property I<obey-child> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Default value is TRUE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:ratio:
+=head2 ratio
+
+Aspect ratio if obey_child is FALSE
+
+The B<Gnome::GObject::Value> type of property I<ratio> is C<G_TYPE_FLOAT>.
+
+=item Parameter is readable and writable.
+=item Minimum value is MIN_RATIO.
+=item Maximum value is MAX_RATIO.
+=item Default value is 1.0.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:xalign:
+=head2 xalign
+
+X alignment of the child
+
+The B<Gnome::GObject::Value> type of property I<xalign> is C<G_TYPE_FLOAT>.
+
+=item Parameter is readable and writable.
+=item Minimum value is 0.0.
+=item Maximum value is 1.0.
+=item Default value is 0.5.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:yalign:
+=head2 yalign
+
+Y alignment of the child
+
+The B<Gnome::GObject::Value> type of property I<yalign> is C<G_TYPE_FLOAT>.
+
+=item Parameter is readable and writable.
+=item Minimum value is 0.0.
+=item Maximum value is 1.0.
+=item Default value is 0.5.
+
+=end pod
+
+
+
+
+=finish
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
 An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
 
   my Gnome::Gtk3::Label $label .= new;

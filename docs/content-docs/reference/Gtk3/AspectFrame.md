@@ -84,37 +84,59 @@ Set parameters for an existing **Gnome::Gtk3::AspectFrame**.
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+obey-child
+----------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
+Force aspect ratio to match that of the frame's child
 
-Supported properties
---------------------
+The **Gnome::GObject::Value** type of property *obey-child* is `G_TYPE_BOOLEAN`.
 
-### Horizontal Alignment
+  * Parameter is readable and writable.
 
-X alignment of the child.
+  * Default value is TRUE.
 
-The **Gnome::GObject::Value** type of property *xalign* is `G_TYPE_FLOAT`.
+ratio
+-----
 
-### Vertical Alignment
-
-Y alignment of the child.
-
-The **Gnome::GObject::Value** type of property *yalign* is `G_TYPE_FLOAT`.
-
-### Ratio
-
-Aspect ratio if obey_child is FALSE.
+Aspect ratio if obey_child is FALSE
 
 The **Gnome::GObject::Value** type of property *ratio* is `G_TYPE_FLOAT`.
 
-### Obey child
+  * Parameter is readable and writable.
 
-Force aspect ratio to match that of the frame's child Default value: True
+  * Minimum value is MIN_RATIO.
 
-The **Gnome::GObject::Value** type of property *obey-child* is `G_TYPE_BOOLEAN`.
+  * Maximum value is MAX_RATIO.
+
+  * Default value is 1.0.
+
+xalign
+------
+
+X alignment of the child
+
+The **Gnome::GObject::Value** type of property *xalign* is `G_TYPE_FLOAT`.
+
+  * Parameter is readable and writable.
+
+  * Minimum value is 0.0.
+
+  * Maximum value is 1.0.
+
+  * Default value is 0.5.
+
+yalign
+------
+
+Y alignment of the child
+
+The **Gnome::GObject::Value** type of property *yalign* is `G_TYPE_FLOAT`.
+
+  * Parameter is readable and writable.
+
+  * Minimum value is 0.0.
+
+  * Maximum value is 1.0.
+
+  * Default value is 0.5.
 
