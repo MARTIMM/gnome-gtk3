@@ -193,21 +193,37 @@ Properties
 heading
 -------
 
-The text to show at the top of the dialog that can be opened from the button. The string may contain Pango markup.
+The text to show at the top of the dialog
 
 The **Gnome::GObject::Value** type of property *heading* is `G_TYPE_STRING`.
+
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
 
 show-default-item
 -----------------
 
-The *show-default-item* property determines whether the dropdown menu should show the default application on top for the provided content type.
+Whether the combobox should show the default application on top
 
 The **Gnome::GObject::Value** type of property *show-default-item* is `G_TYPE_BOOLEAN`.
+
+  * Parameter is readable and writable.
+
+  * Parameter is set on construction of object.
+
+  * Default value is FALSE.
 
 show-dialog-item
 ----------------
 
-The *show-dialog-item* property determines whether the dropdown menu should show an item that triggers a **Gnome::Gtk3::AppChooserDialog** when clicked.
+Whether the combobox should include an item that triggers a GtkAppChooserDialog
 
 The **Gnome::GObject::Value** type of property *show-dialog-item* is `G_TYPE_BOOLEAN`.
+
+  * Parameter is readable and writable.
+
+  * Parameter is set on construction of object.
+
+  * Default value is FALSE.
 

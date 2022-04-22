@@ -434,7 +434,6 @@ Emitted when a custom item, previously added with C<append_custom_item()>, is ac
 
 =end pod
 
-
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Properties
@@ -443,23 +442,37 @@ Emitted when a custom item, previously added with C<append_custom_item()>, is ac
 =comment #TP:0:heading:
 =head2 heading
 
-The text to show at the top of the dialog that can be  opened from the button. The string may contain Pango markup.
+The text to show at the top of the dialog
 
 The B<Gnome::GObject::Value> type of property I<heading> is C<G_TYPE_STRING>.
+
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:show-default-item:
 =head2 show-default-item
 
-The  I<show-default-item> property determines whether the dropdown menu should show the default application on top for the provided content type.
+Whether the combobox should show the default application on top
 
 The B<Gnome::GObject::Value> type of property I<show-default-item> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Parameter is set on construction of object.
+=item Default value is FALSE.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:show-dialog-item:
 =head2 show-dialog-item
 
-The  I<show-dialog-item> property determines whether the dropdown menu should show an item that triggers a B<Gnome::Gtk3::AppChooserDialog> when clicked.
+Whether the combobox should include an item that triggers a GtkAppChooserDialog
 
 The B<Gnome::GObject::Value> type of property I<show-dialog-item> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Parameter is set on construction of object.
+=item Default value is FALSE.
+
 =end pod
