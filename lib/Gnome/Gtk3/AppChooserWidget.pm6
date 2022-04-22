@@ -474,7 +474,6 @@ sub _gtk_app_chooser_widget_new ( gchar-ptr $content_type --> N-GObject )
   is symbol('gtk_app_chooser_widget_new')
   { * }
 
-
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Signals
@@ -556,9 +555,8 @@ if at least one item has been added to the menu.
 =head1 Properties
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:default-text:
+=comment #TP:1:default-text:
 =head2 default-text
-
 GtkAppChooserWidgetI<default-text>:
 
 The I<default-text> property determines the text that appears in the widget when there are no applications for the given content type. See also C<set_default_text()>.
@@ -570,9 +568,8 @@ The B<Gnome::GObject::Value> type of property I<default-text> is C<G_TYPE_STRING
 
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:show-all:
+=comment #TP:1:show-all:
 =head2 show-all
-
 GtkAppChooserWidgetI<show-all>:
 
 If the I<show-all> property is C<True>, the app chooser presents all applications in a single list, without subsections for default, recommended or related applications.
@@ -585,9 +582,8 @@ The B<Gnome::GObject::Value> type of property I<show-all> is C<G_TYPE_BOOLEAN>.
 
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:show-default:
+=comment #TP:1:show-default:
 =head2 show-default
-
 
 The I<show-default> property determines whether the app chooser should show the default handler for the content type in a separate section. If C<False>, the default handler is listed among the recommended applications.
 
@@ -599,9 +595,8 @@ The B<Gnome::GObject::Value> type of property I<show-default> is C<G_TYPE_BOOLEA
 
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:show-fallback:
+=comment #TP:1:show-fallback:
 =head2 show-fallback
-
 GtkAppChooserWidgetI<show-fallback>:
 
 The I<show-fallback> property determines whether the app chooser should show a section for fallback applications. If C<False>, the fallback applications are listed among the other applications.
@@ -614,9 +609,8 @@ The B<Gnome::GObject::Value> type of property I<show-fallback> is C<G_TYPE_BOOLE
 
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:show-other:
+=comment #TP:1:show-other:
 =head2 show-other
-
 GtkAppChooserWidgetI<show-other>:
 
 The I<show-other> property determines whether the app chooser should show a section for other applications.
@@ -629,9 +623,8 @@ The B<Gnome::GObject::Value> type of property I<show-other> is C<G_TYPE_BOOLEAN>
 
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:show-recommended:
+=comment #TP:1:show-recommended:
 =head2 show-recommended
-
 GtkAppChooserWidgetI<show-recommended>:
 
 The I<show-recommended> property determines whether the app chooser should show a section for recommended applications. If C<False>, the recommended applications are listed among the other applications.
@@ -643,263 +636,3 @@ The B<Gnome::GObject::Value> type of property I<show-recommended> is C<G_TYPE_BO
 =item Default value is TRUE.
 
 =end pod
-
-=finish
-
-
-
-
-
-
-
-
-
-
-
-
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Signals
-
-There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
-
-=head2 First method
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
-
-  # handler method
-  method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-  # connect a signal on window object
-  my Gnome::Gtk3::Window $w .= new( ... );
-  $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-=head2 Second method
-
-  my Gnome::Gtk3::Window $w .= new( ... );
-  my Callable $handler = sub (
-    N-GObject $native, GdkEvent $event, OpaquePointer $data
-  ) {
-    ...
-  }
-
-  $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<connect-object()> are using the signatures of the handler routines to setup the native call interface.
-
-=head2 Supported signals
-
-
-=comment -----------------------------------------------------------------------
-=comment #TS:0:application-activated:
-=head3 application-activated
-
-Emitted when an application item is activated from the widget's list.
-
-This usually happens when the user double clicks an item, or an item
-is selected and the user presses one of the keys Space, Shift+Space,
-Return or Enter.
-
-  method handler (
-    Unknown type G_TYPE_APP_INFO $application,
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($self),
-    *%user-options
-  );
-
-=item $self; the object which received the signal
-
-=item $application; the activated B<Gnome::Gtk3::AppInfo>
-
-=item $_handle_id; the registered event handler id
-
-=comment -----------------------------------------------------------------------
-=comment #TS:0:application-selected:
-=head3 application-selected
-
-Emitted when an application item is selected from the widget's list.
-
-  method handler (
-    Unknown type G_TYPE_APP_INFO $application,
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($self),
-    *%user-options
-  );
-
-=item $self; the object which received the signal
-
-=item $application; the selected B<Gnome::Gtk3::AppInfo>
-
-=item $_handle_id; the registered event handler id
-
-=comment -----------------------------------------------------------------------
-=comment #TS:0:populate-popup:
-=head3 populate-popup
-
-Emitted when a context menu is about to popup over an application item.
-Clients can insert menu items into the provided B<Gnome::Gtk3::Menu> object in the
-callback of this signal; the context menu will be shown over the item
-if at least one item has been added to the menu.
-
-  method handler (
-    Unknown type GTK_TYPE_MENU $menu,
-    Unknown type G_TYPE_APP_INFO $application,
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($self),
-    *%user-options
-  );
-
-=item $self; the object which received the signal
-
-=item $menu; the B<Gnome::Gtk3::Menu> to populate
-
-=item $application; the current B<Gnome::Gtk3::AppInfo>
-
-=item $_handle_id; the registered event handler id
-
-=end pod
-
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Properties
-
-=comment -----------------------------------------------------------------------
-=comment #TP:0:default-text:
-=head2 default-text
-
- The  I<default-text> property determines the text that appears in the widget when there are no applications for the given content type. See also C<set_default_text()>.
-
-The B<Gnome::GObject::Value> type of property I<default-text> is C<G_TYPE_STRING>.
-
-=item Parameter is readable and writable.
-=item Default value is undefined.
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:0:show-all:
-=head2 show-all
-
- If the  I<show-all> property is C<True>, the app chooser presents all applications in a single list, without subsections for default, recommended or related applications.
-
-The B<Gnome::GObject::Value> type of property I<show-all> is C<G_TYPE_BOOLEAN>.
-
-=item Parameter is readable and writable.
-=item Parameter is set on construction of object.
-=item Default value is FALSE.
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:0:show-default:
-=head2 show-default
-
- The I<show-default> property determines whether the app chooser should show the default handler for the content type in a separate section. If C<False>, the default handler is listed among the recommended applications.
-
-The B<Gnome::GObject::Value> type of property I<show-default> is C<G_TYPE_BOOLEAN>.
-
-=item Parameter is readable and writable.
-=item Parameter is set on construction of object.
-=item Default value is FALSE.
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:0:show-fallback:
-=head2 show-fallback
-
- The  I<show-fallback> property determines whether the app chooser should show a section for fallback applications. If C<False>, the fallback applications are listed among the other applications.
-
-The B<Gnome::GObject::Value> type of property I<show-fallback> is C<G_TYPE_BOOLEAN>.
-
-=item Parameter is readable and writable.
-=item Parameter is set on construction of object.
-=item Default value is FALSE.
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:0:show-other:
-=head2 show-other
-
- The  I<show-other> property determines whether the app chooser should show a section for other applications.
-
-The B<Gnome::GObject::Value> type of property I<show-other> is C<G_TYPE_BOOLEAN>.
-
-=item Parameter is readable and writable.
-=item Parameter is set on construction of object.
-=item Default value is FALSE.
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:0:show-recommended:
-=head2 show-recommended
-
- The  I<show-recommended> property determines whether the app chooser should show a section for recommended applications. If C<False>, the recommended applications are listed among the other applications.
-
-The B<Gnome::GObject::Value> type of property I<show-recommended> is C<G_TYPE_BOOLEAN>.
-
-=item Parameter is readable and writable.
-=item Parameter is set on construction of object.
-=item Default value is TRUE.
-
-=end pod
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Properties
-
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
-
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.get-property( 'label', $gv);
-  $gv.set-string('my text label');
-
-=head2 Supported properties
-
-=comment -----------------------------------------------------------------------
-=comment #TP:1:default-text
-=head3 default-text
-
-The C<default-text> property determines the text that appears in the widget when there are no applications for the given content type. See also C<set_default_text()>.
-
-The B<Gnome::GObject::Value> type of property I<default-text> is C<G_TYPE_STRING>.
-
-=comment -----------------------------------------------------------------------
-=comment #TP:1:show-all
-=head3 show-all
-
-If the C<show-all> property is C<1>, the app chooser presents all applications in a single list, without subsections for default, recommended or related applications.
-
-The B<Gnome::GObject::Value> type of property I<show-all> is C<G_TYPE_BOOLEAN>.
-
-=comment -----------------------------------------------------------------------
-=comment #TP:1:show-default
-=head3 show-default
-
-The C<show-default> property determines whether the app chooser should show the default handler for the content type in a separate section. If C<0>, the default handler is listed among the recommended applications.
-
-The B<Gnome::GObject::Value> type of property I<show-default> is C<G_TYPE_BOOLEAN>.
-
-=comment -----------------------------------------------------------------------
-=comment #TP:1:show-fallback
-=head3 show-fallback
-
-The C<show-fallback> property determines whether the app chooser should show a section for fallback applications. If C<0>, the fallback applications are listed among the other applications.
-
-The B<Gnome::GObject::Value> type of property I<show-fallback> is C<G_TYPE_BOOLEAN>.
-
-=comment -----------------------------------------------------------------------
-=comment #TP:1:show-other
-=head3 show-other
-
-The C<show-other> property determines whether the app chooser should show a section for other applications.
-
-The B<Gnome::GObject::Value> type of property I<show-other> is C<G_TYPE_BOOLEAN>.
-
-=comment -----------------------------------------------------------------------
-=comment #TP:1:show-recommended
-=head3 show-recommended
-
-The C<show-recommended> property determines whether the app chooser should show a section for recommended applications. If C<0>, the recommended applications are listed among the other applications.
-
-The B<Gnome::GObject::Value> type of property I<show-recommended> is C<G_TYPE_BOOLEAN>.

@@ -263,10 +263,8 @@ Emitted when a context menu is about to popup over an application item. Clients 
 Properties
 ==========
 
-default-text
-------------
-
-GtkAppChooserWidget*default-text*:
+default-text GtkAppChooserWidget*default-text*:
+-----------------------------------------------
 
 The *default-text* property determines the text that appears in the widget when there are no applications for the given content type. See also `set_default_text()`.
 
@@ -276,10 +274,8 @@ The **Gnome::GObject::Value** type of property *default-text* is `G_TYPE_STRING`
 
   * Default value is undefined.
 
-show-all
---------
-
-GtkAppChooserWidget*show-all*:
+show-all GtkAppChooserWidget*show-all*:
+---------------------------------------
 
 If the *show-all* property is `True`, the app chooser presents all applications in a single list, without subsections for default, recommended or related applications.
 
@@ -304,10 +300,8 @@ The **Gnome::GObject::Value** type of property *show-default* is `G_TYPE_BOOLEAN
 
   * Default value is FALSE.
 
-show-fallback
--------------
-
-GtkAppChooserWidget*show-fallback*:
+show-fallback GtkAppChooserWidget*show-fallback*:
+-------------------------------------------------
 
 The *show-fallback* property determines whether the app chooser should show a section for fallback applications. If `False`, the fallback applications are listed among the other applications.
 
@@ -319,10 +313,8 @@ The **Gnome::GObject::Value** type of property *show-fallback* is `G_TYPE_BOOLEA
 
   * Default value is FALSE.
 
-show-other
-----------
-
-GtkAppChooserWidget*show-other*:
+show-other GtkAppChooserWidget*show-other*:
+-------------------------------------------
 
 The *show-other* property determines whether the app chooser should show a section for other applications.
 
@@ -334,10 +326,8 @@ The **Gnome::GObject::Value** type of property *show-other* is `G_TYPE_BOOLEAN`.
 
   * Default value is FALSE.
 
-show-recommended
-----------------
-
-GtkAppChooserWidget*show-recommended*:
+show-recommended GtkAppChooserWidget*show-recommended*:
+-------------------------------------------------------
 
 The *show-recommended* property determines whether the app chooser should show a section for recommended applications. If `False`, the recommended applications are listed among the other applications.
 
