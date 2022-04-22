@@ -825,6 +825,209 @@ sub _gtk_assistant_new (  --> N-GObject )
   is symbol('gtk_assistant_new')
   { * }
 
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Signals
+
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:apply:
+=head2 apply
+
+The I<apply> signal is emitted when the apply button is clicked.
+
+The default behavior of the B<Gnome::Gtk3::Assistant> is to switch to the page
+after the current page, unless the current page is the last one.
+
+A handler for the I<apply> signal should carry out the actions for
+which the wizard has collected data. If the action takes a long time
+to complete, you might consider putting a page of type
+C<GTK_ASSISTANT_PAGE_PROGRESS> after the confirmation page and handle
+this operation within the I<prepare> signal of the progress
+page.
+
+  method handler (
+    Gnome::Gtk3::Assistant :_widget($assistant),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $assistant; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:cancel:
+=head2 cancel
+
+The I<cancel> signal is emitted when then the cancel button is clicked.
+
+  method handler (
+    Gnome::Gtk3::Assistant :_widget($assistant),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $assistant; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:close:
+=head2 close
+
+The I<close> signal is emitted either when the close button of
+a summary page is clicked, or when the apply button in the last
+page in the flow (of type C<GTK_ASSISTANT_PAGE_CONFIRM>) is clicked.
+
+  method handler (
+    Gnome::Gtk3::Assistant :_widget($assistant),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $assistant; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:prepare:
+=head2 prepare
+
+The I<prepare> signal is emitted when a new page is set as the
+assistant's current page, before making the new page visible.
+
+A handler for this signal can do any preparations which are
+necessary before showing I<page>.
+
+  method handler (
+    N-GObject #`{ native widget } $page,
+    Gnome::Gtk3::Assistant :_widget($assistant),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $page; the current page
+=item $assistant; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=end pod
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:complete:
+=head2 complete
+
+Whether all required fields on the page have been filled out
+
+The B<Gnome::GObject::Value> type of property I<complete> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:has-padding:
+=head2 has-padding
+
+Whether the assistant adds padding around the page
+
+The B<Gnome::GObject::Value> type of property I<has-padding> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Default value is TRUE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:header-image:
+=head2 header-image
+
+Header image for the assistant page
+
+The B<Gnome::GObject::Value> type of property I<header-image> is C<G_TYPE_OBJECT>.
+
+=item Parameter is readable and writable.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:page-type:
+=head2 page-type
+
+The type of the assistant page
+
+The B<Gnome::GObject::Value> type of property I<page-type> is C<G_TYPE_ENUM>.
+
+=item Parameter is readable and writable.
+=item Default value is GTK_ASSISTANT_PAGE_CONTENT.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:sidebar-image:
+=head2 sidebar-image
+
+Sidebar image for the assistant page
+
+The B<Gnome::GObject::Value> type of property I<sidebar-image> is C<G_TYPE_OBJECT>.
+
+=item Parameter is readable and writable.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:title:
+=head2 title
+
+The title of the assistant page
+
+The B<Gnome::GObject::Value> type of property I<title> is C<G_TYPE_STRING>.
+
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:use-header-bar:
+=head2 use-header-bar
+
+Use Header Bar for actions.
+
+The B<Gnome::GObject::Value> type of property I<use-header-bar> is C<G_TYPE_INT>.
+
+=item Parameter is readable and writable.
+=item Parameter is set on construction of object.
+=item Minimum value is -1.
+=item Maximum value is 1.
+=item Default value is -1.
+
+=end pod
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=finish
 
 #-------------------------------------------------------------------------------
 =begin pod

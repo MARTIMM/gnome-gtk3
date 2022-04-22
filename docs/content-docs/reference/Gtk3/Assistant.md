@@ -355,132 +355,174 @@ One situation where it can be necessary to call this function is when changing a
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
-
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
--------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### apply
+apply
+-----
 
 The *apply* signal is emitted when the apply button is clicked.
 
 The default behavior of the **Gnome::Gtk3::Assistant** is to switch to the page after the current page, unless the current page is the last one.
 
-A handler for the *apply* signal should carry out the actions for which the wizard has collected data. If the action takes a long time to complete, you might consider putting a page of type `GTK-ASSISTANT-PAGE-PROGRESS` after the confirmation page and handle this operation within the *prepare* signal of the progress page.
+A handler for the *apply* signal should carry out the actions for which the wizard has collected data. If the action takes a long time to complete, you might consider putting a page of type `GTK_ASSISTANT_PAGE_PROGRESS` after the confirmation page and handle this operation within the *prepare* signal of the progress page.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($assistant),
+      Gnome::Gtk3::Assistant :_widget($assistant),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $assistant; the **Gnome::Gtk3::Assistant**
+  * $assistant; The instance which registered the signal
 
-  * $_handle_id; the registered event handler id
+  * $_handler-id; The handler id which is returned from the registration
 
-### cancel
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+cancel
+------
 
 The *cancel* signal is emitted when then the cancel button is clicked.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($assistant),
+      Gnome::Gtk3::Assistant :_widget($assistant),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $assistant; the **Gnome::Gtk3::Assistant**
+  * $assistant; The instance which registered the signal
 
-  * $_handle_id; the registered event handler id
+  * $_handler-id; The handler id which is returned from the registration
 
-### close
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
 
-The *close* signal is emitted either when the close button of a summary page is clicked, or when the apply button in the last page in the flow (of type `GTK-ASSISTANT-PAGE-CONFIRM`) is clicked.
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+close
+-----
+
+The *close* signal is emitted either when the close button of a summary page is clicked, or when the apply button in the last page in the flow (of type `GTK_ASSISTANT_PAGE_CONFIRM`) is clicked.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($assistant),
+      Gnome::Gtk3::Assistant :_widget($assistant),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $assistant; the **Gnome::Gtk3::Assistant**
+  * $assistant; The instance which registered the signal
 
-  * $_handle_id; the registered event handler id
+  * $_handler-id; The handler id which is returned from the registration
 
-### escape
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
 
-    method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($assistant),
-      *%user-options
-    );
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
-  * $assistant;
-
-  * $_handle_id; the registered event handler id
-
-### prepare
+prepare
+-------
 
 The *prepare* signal is emitted when a new page is set as the assistant's current page, before making the new page visible.
 
 A handler for this signal can do any preparations which are necessary before showing *page*.
 
     method handler (
-      N-GObject #`{ is widget } $page,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($assistant),
+      N-GObject #`{ native widget } $page,
+      Gnome::Gtk3::Assistant :_widget($assistant),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
-
-  * $assistant; the **Gnome::Gtk3::Assistant**
+    )
 
   * $page; the current page
 
-  * $_handle_id; the registered event handler id
+  * $assistant; The instance which registered the signal
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
+complete
+--------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.get-property( 'label', $gv);
-    $gv.set-string('my text label');
+Whether all required fields on the page have been filled out
 
-Supported properties
---------------------
+The **Gnome::GObject::Value** type of property *complete* is `G_TYPE_BOOLEAN`.
 
-### Use Header Bar: use-header-bar
+  * Parameter is readable and writable.
 
-`True` if the assistant uses a **Gnome::Gtk3::HeaderBar** for action buttons instead of the action-area.
+  * Default value is FALSE.
 
-For technical reasons, this property is declared as an integer property, but you should only set it to `True` or `False`.
+has-padding
+-----------
+
+Whether the assistant adds padding around the page
+
+The **Gnome::GObject::Value** type of property *has-padding* is `G_TYPE_BOOLEAN`.
+
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
+
+header-image
+------------
+
+Header image for the assistant page
+
+The **Gnome::GObject::Value** type of property *header-image* is `G_TYPE_OBJECT`.
+
+  * Parameter is readable and writable.
+
+page-type
+---------
+
+The type of the assistant page
+
+The **Gnome::GObject::Value** type of property *page-type* is `G_TYPE_ENUM`.
+
+  * Parameter is readable and writable.
+
+  * Default value is GTK_ASSISTANT_PAGE_CONTENT.
+
+sidebar-image
+-------------
+
+Sidebar image for the assistant page
+
+The **Gnome::GObject::Value** type of property *sidebar-image* is `G_TYPE_OBJECT`.
+
+  * Parameter is readable and writable.
+
+title
+-----
+
+The title of the assistant page
+
+The **Gnome::GObject::Value** type of property *title* is `G_TYPE_STRING`.
+
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
+
+use-header-bar
+--------------
+
+Use Header Bar for actions.
 
 The **Gnome::GObject::Value** type of property *use-header-bar* is `G_TYPE_INT`.
+
+  * Parameter is readable and writable.
+
+  * Parameter is set on construction of object.
+
+  * Minimum value is -1.
+
+  * Maximum value is 1.
+
+  * Default value is -1.
 
