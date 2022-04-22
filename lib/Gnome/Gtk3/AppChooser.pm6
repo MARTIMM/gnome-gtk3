@@ -166,9 +166,13 @@ sub gtk_app_chooser_refresh (
 
 The content type of the B<Gnome::Gtk3::AppChooser> object.
 
-See GContentType for more information about content types.
+=comment TODO Gnome::Gio::ContentType See B<Gnome::Gio::ContentType> for more information about content types.
 
 The B<Gnome::GObject::Value> type of property I<content-type> is C<G_TYPE_STRING>.
+
+=item Parameter is set on construction of object.
+=item Parameter is readable and writable.
+=item Default value is undefined.
 
 =end pod
 

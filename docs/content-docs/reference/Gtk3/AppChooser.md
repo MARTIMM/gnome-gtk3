@@ -64,7 +64,11 @@ content-type
 
 The content type of the **Gnome::Gtk3::AppChooser** object.
 
-See GContentType for more information about content types.
-
 The **Gnome::GObject::Value** type of property *content-type* is `G_TYPE_STRING`.
+
+  * Parameter is set on construction of object.
+
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
 
