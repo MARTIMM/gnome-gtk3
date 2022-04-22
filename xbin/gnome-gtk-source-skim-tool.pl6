@@ -3520,7 +3520,7 @@ sub make-raku-classname ( Str $gtk-classname --> Str ) {
 
   $raku-classname = $gtk-classname;
   $raku-classname ~~ m/ $<classlibpart> = ['Gtk' || 'Gdk' || 'G'] <alnum>+ /;
-note "make-raku-classname: $raku-classname, $<classlibpart>.Str()";
+#note "make-raku-classname: $raku-classname, $<classlibpart>.Str()";
   given my Str $classlibpart = ~($<classlibpart>//'') {
     when any(<Gtk Gdk>) {
       $classlibpart ~= '3';
