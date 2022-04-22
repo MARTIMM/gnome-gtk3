@@ -383,6 +383,27 @@ sub _gtk_application_window_new ( N-GObject $application --> N-GObject )
 =begin pod
 =head1 Properties
 
+=comment -----------------------------------------------------------------------
+=comment #TP:0:show-menubar:
+=head2 show-menubar
+
+TRUE if the window should show a menubar at the top of the window
+
+The B<Gnome::GObject::Value> type of property I<show-menubar> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is set on construction of object.
+=item Parameter is readable and writable.
+=item Default value is TRUE.
+
+=end pod
+
+
+
+=finish
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
 An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
 
   my Gnome::Gtk3::Label $label .= new;

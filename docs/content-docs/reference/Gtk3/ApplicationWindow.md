@@ -159,13 +159,13 @@ Returns: `True` if *window* will display a menubar when needed
 set-help-overlay
 ----------------
 
-Associates a shortcuts window with the application window, and sets up an action with the name win.show-help-overlay to present it.
+Associates a shortcuts window with the application window, and sets up an action name `win.show-help-overlay` to present it.
 
-*window* takes resposibility for destroying *help-overlay*.
+This *window* takes resposibility for destroying *$help-overlay*.
 
-    method set-help-overlay ( N-GObject() $help_overlay )
+    method set-help-overlay ( N-GObject() $help-overlay )
 
-  * $help_overlay; a **Gnome::Gtk3::ShortcutsWindow**
+  * $help_overlay; a **Gnome::Gtk3::ShortcutsWindow**.
 
 set-show-menubar
 ----------------
@@ -179,19 +179,16 @@ Sets whether the window will display a menubar for the app menu and menubar as n
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
+show-menubar
+------------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.get-property( 'label', $gv);
-    $gv.set-string('my text label');
+TRUE if the window should show a menubar at the top of the window
 
-Supported properties
---------------------
+The **Gnome::GObject::Value** type of property *show-menubar* is `G_TYPE_BOOLEAN`.
 
-### Show a menubar: show-menubar
+  * Parameter is set on construction of object.
 
-If this property is `True`, the window will display a menubar that includes the app menu and menubar, unless these are shown by the desktop shell. See `gtk-application-set-app-menu()` and `gtk-application-set-menubar()`.
+  * Parameter is readable and writable.
 
-If `False`, the window will not display a menubar, regardless * of whether the desktop shell is showing the menus or not. The **Gnome::GObject::Value** type of property *show-menubar* is `G_TYPE_BOOLEAN`.
+  * Default value is TRUE.
 
