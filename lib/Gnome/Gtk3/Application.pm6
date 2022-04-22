@@ -898,6 +898,146 @@ sub _gtk_application_new ( gchar-ptr $application_id, GEnum $flags --> N-GObject
   is symbol('gtk_application_new')
   { * }
 
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Signals
+
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:query-end:
+=head2 query-end
+
+Emitted when the session manager is about to end the session, only
+if I<register-session> is C<True>. Applications can
+connect to this signal and call C<inhibit()> with
+C<GTK_APPLICATION_INHIBIT_LOGOUT> to delay the end of the session
+until state has been saved..8
+
+  method handler (
+    Gnome::Gtk3::Application :_widget($application),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $application; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:window-added:
+=head2 window-added
+
+Emitted when a B<Gnome::Gtk3::Window> is added to I<application> through
+C<add_window()>.
+
+  method handler (
+    Unknown type: GTK_TYPE_WINDOW $window,
+    Gnome::Gtk3::Application :_widget($application),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $window; the newly-added B<Gnome::Gtk3::Window>
+=item $application; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:window-removed:
+=head2 window-removed
+
+Emitted when a B<Gnome::Gtk3::Window> is removed from I<application>,
+either as a side-effect of being destroyed or explicitly
+through C<remove_window()>.
+
+  method handler (
+    Unknown type: GTK_TYPE_WINDOW $window,
+    Gnome::Gtk3::Application :_widget($application),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $window; the B<Gnome::Gtk3::Window> that is being removed
+=item $application; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=end pod
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:active-window:
+=head2 active-window
+
+The window which most recently had focus
+
+The B<Gnome::GObject::Value> type of property I<active-window> is C<G_TYPE_OBJECT>.
+
+=item Parameter is readable.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:app-menu:
+=head2 app-menu
+
+The GMenuModel for the application menu
+
+The B<Gnome::GObject::Value> type of property I<app-menu> is C<G_TYPE_OBJECT>.
+
+=item Parameter is readable and writable.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:menubar:
+=head2 menubar
+
+The GMenuModel for the menubar
+
+The B<Gnome::GObject::Value> type of property I<menubar> is C<G_TYPE_OBJECT>.
+
+=item Parameter is readable and writable.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:register-session:
+=head2 register-session
+
+Register with the session manager
+
+The B<Gnome::GObject::Value> type of property I<register-session> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:screensaver-active:
+=head2 screensaver-active
+
+Whether the screensaver is active
+
+The B<Gnome::GObject::Value> type of property I<screensaver-active> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable.
+=item Default value is FALSE.
+
+=end pod
+
+
+
+
+=finish
+
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Signals

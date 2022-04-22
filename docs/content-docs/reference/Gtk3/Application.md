@@ -363,127 +363,121 @@ Removes an inhibitor that has been established with `inhibit()`. Inhibitors are 
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
+query-end
+---------
 
-First method
+Emitted when the session manager is about to end the session, only if *register-session* is `True`. Applications can connect to this signal and call `inhibit()` with `GTK_APPLICATION_INHIBIT_LOGOUT` to delay the end of the session until state has been saved..8
+
+    method handler (
+      Gnome::Gtk3::Application :_widget($application),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
+
+  * $application; The instance which registered the signal
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+window-added
 ------------
 
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
--------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### query-end
-
-Emitted when the session manager is about to end the session, only if *register-session* is `True`. Applications can connect to this signal and call `inhibit()` with `GTK-APPLICATION-INHIBIT-LOGOUT` to delay the end of the session until state has been saved.
+Emitted when a **Gnome::Gtk3::Window** is added to *application* through `add_window()`.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($application),
+      Unknown type: GTK_TYPE_WINDOW $window,
+      Gnome::Gtk3::Application :_widget($application),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
-
-  * $application; the **Gnome::Gtk3::Application** which emitted the signal
-
-  * $_handle_id; the registered event handler id
-
-### window-added
-
-Emitted when a **Gnome::Gtk3::Window** is added to *application* through `add-window()`.
-
-    method handler (
-      Unknown type GTK_TYPE_WINDOW $window,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($application),
-      *%user-options
-    );
-
-  * $application; the **Gnome::Gtk3::Application** which emitted the signal
+    )
 
   * $window; the newly-added **Gnome::Gtk3::Window**
 
-  * $_handle_id; the registered event handler id
+  * $application; The instance which registered the signal
 
-### window-removed
+  * $_handler-id; The handler id which is returned from the registration
 
-Emitted when a **Gnome::Gtk3::Window** is removed from *application*, either as a side-effect of being destroyed or explicitly through `remove-window()`.
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+window-removed
+--------------
+
+Emitted when a **Gnome::Gtk3::Window** is removed from *application*, either as a side-effect of being destroyed or explicitly through `remove_window()`.
 
     method handler (
-      Unknown type GTK_TYPE_WINDOW $window,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($application),
+      Unknown type: GTK_TYPE_WINDOW $window,
+      Gnome::Gtk3::Application :_widget($application),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
-
-  * $application; the **Gnome::Gtk3::Application** which emitted the signal
+    )
 
   * $window; the **Gnome::Gtk3::Window** that is being removed
 
-  * $_handle_id; the registered event handler id
+  * $application; The instance which registered the signal
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
+active-window
+-------------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.get-property( 'label', $gv);
-    $gv.set-string('my text label');
-
-Supported properties
---------------------
-
-### Active window: active-window
-
-The window which most recently had focus Widget type: GTK-TYPE-WINDOW
+The window which most recently had focus
 
 The **Gnome::GObject::Value** type of property *active-window* is `G_TYPE_OBJECT`.
 
-### Application menu: app-menu
+  * Parameter is readable.
 
-The N-GObject for the application menu Widget type: G-TYPE-MENU-MODEL
+app-menu
+--------
+
+The GMenuModel for the application menu
 
 The **Gnome::GObject::Value** type of property *app-menu* is `G_TYPE_OBJECT`.
 
-### Menubar: menubar
+  * Parameter is readable and writable.
 
-The N-GObject for the menubar Widget type: G-TYPE-MENU-MODEL
+menubar
+-------
+
+The GMenuModel for the menubar
 
 The **Gnome::GObject::Value** type of property *menubar* is `G_TYPE_OBJECT`.
 
-### Register session: register-session
+  * Parameter is readable and writable.
 
-Set this property to `True` to register with the session manager.
+register-session
+----------------
+
+Register with the session manager
 
 The **Gnome::GObject::Value** type of property *register-session* is `G_TYPE_BOOLEAN`.
 
-### Screensaver Active: screensaver-active
+  * Parameter is readable and writable.
 
-This property is `True` if GTK+ believes that the screensaver is currently active. GTK+ only tracks session state (including this) when *register-session* is set to `True`.
+  * Default value is FALSE.
 
-Tracking the screensaver state is supported on Linux.
+screensaver-active
+------------------
+
+Whether the screensaver is active
 
 The **Gnome::GObject::Value** type of property *screensaver-active* is `G_TYPE_BOOLEAN`.
+
+  * Parameter is readable.
+
+  * Default value is FALSE.
 
