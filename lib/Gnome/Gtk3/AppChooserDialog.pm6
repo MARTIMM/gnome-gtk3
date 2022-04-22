@@ -344,6 +344,10 @@ The GFile used by the B<Gnome::Gtk3::AppChooserDialog>. The dialog's B<Gnome::Gt
 
 The B<Gnome::GObject::Value> type of property I<gfile> is C<G_TYPE_OBJECT>.
 
+=item Parameter is set on construction of object.
+=item Parameter is readable and writable.
+
+
 =comment -----------------------------------------------------------------------
 =comment #TP:0:heading:
 =head2 heading
@@ -352,9 +356,10 @@ The text to show at the top of the dialog. The string may contain Pango markup.
 
 The B<Gnome::GObject::Value> type of property I<heading> is C<G_TYPE_STRING>.
 
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
 =end pod
-
-
 
 
 

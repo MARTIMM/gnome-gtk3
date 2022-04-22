@@ -135,10 +135,18 @@ The GFile used by the **Gnome::Gtk3::AppChooserDialog**. The dialog's **Gnome::G
 
 The **Gnome::GObject::Value** type of property *gfile* is `G_TYPE_OBJECT`.
 
+  * Parameter is set on construction of object.
+
+  * Parameter is readable and writable.
+
 heading
 -------
 
 The text to show at the top of the dialog. The string may contain Pango markup.
 
 The **Gnome::GObject::Value** type of property *heading* is `G_TYPE_STRING`.
+
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
 
