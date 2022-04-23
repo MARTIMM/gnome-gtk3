@@ -592,6 +592,118 @@ sub _gtk_box_new ( GEnum $orientation, gint $spacing --> N-GObject )
   is native(&gtk-lib)
   is symbol('gtk_box_new')
   { * }
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:baseline-position:
+=head2 baseline-position
+
+The position of the baseline aligned widgets if extra space is available
+
+The B<Gnome::GObject::Value> type of property I<baseline-position> is C<G_TYPE_ENUM>.
+
+=item Parameter is readable and writable.
+=item Default value is GTK_BASELINE_POSITION_CENTER.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:expand:
+=head2 expand
+
+Whether the child should receive extra space when the parent grows
+
+The B<Gnome::GObject::Value> type of property I<expand> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:fill:
+=head2 fill
+
+Whether extra space given to the child should be allocated to the child or used as padding
+
+The B<Gnome::GObject::Value> type of property I<fill> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Default value is TRUE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:homogeneous:
+=head2 homogeneous
+
+Whether the children should all be the same size
+
+The B<Gnome::GObject::Value> type of property I<homogeneous> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:pack-type:
+=head2 pack-type
+
+A GtkPackType indicating whether the child is packed with reference to the start or end of the parent
+
+The B<Gnome::GObject::Value> type of property I<pack-type> is C<G_TYPE_ENUM>.
+
+=item Parameter is readable and writable.
+=item Default value is GTK_PACK_START.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:padding:
+=head2 padding
+
+Extra space to put between the child and its neighbors, in pixels
+
+The B<Gnome::GObject::Value> type of property I<padding> is C<G_TYPE_UINT>.
+
+=item Parameter is readable and writable.
+=item Minimum value is 0.
+=item Maximum value is G_MAXINT.
+=item Default value is 0.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:position:
+=head2 position
+
+The index of the child in the parent
+
+The B<Gnome::GObject::Value> type of property I<position> is C<G_TYPE_INT>.
+
+=item Parameter is readable and writable.
+=item Minimum value is -1.
+=item Maximum value is G_MAXINT.
+=item Default value is 0.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:spacing:
+=head2 spacing
+
+The amount of space between children
+
+The B<Gnome::GObject::Value> type of property I<spacing> is C<G_TYPE_INT>.
+
+=item Parameter is readable and writable.
+=item Minimum value is 0.
+=item Maximum value is G_MAXINT.
+=item Default value is 0.
+
+=end pod
+
+
+
+
+
+=finish
 
 #-------------------------------------------------------------------------------
 =begin pod

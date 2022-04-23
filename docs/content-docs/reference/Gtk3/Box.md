@@ -249,29 +249,103 @@ Sets the *spacing* property of *box*, which is the number of pixels to place bet
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
+baseline-position
+-----------------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.get-property( 'label', $gv);
-    $gv.set-string('my text label');
-
-Supported properties
---------------------
-
-### Baseline position: baseline-position
-
-The position of the baseline aligned widgets if extra space is available Default value: False
+The position of the baseline aligned widgets if extra space is available
 
 The **Gnome::GObject::Value** type of property *baseline-position* is `G_TYPE_ENUM`.
 
-### Homogeneous: homogeneous
+  * Parameter is readable and writable.
 
-Whether the children should all be the same size Default value: False
+  * Default value is GTK_BASELINE_POSITION_CENTER.
+
+expand
+------
+
+Whether the child should receive extra space when the parent grows
+
+The **Gnome::GObject::Value** type of property *expand* is `G_TYPE_BOOLEAN`.
+
+  * Parameter is readable and writable.
+
+  * Default value is FALSE.
+
+fill
+----
+
+Whether extra space given to the child should be allocated to the child or used as padding
+
+The **Gnome::GObject::Value** type of property *fill* is `G_TYPE_BOOLEAN`.
+
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
+
+homogeneous
+-----------
+
+Whether the children should all be the same size
 
 The **Gnome::GObject::Value** type of property *homogeneous* is `G_TYPE_BOOLEAN`.
 
-### Spacing: spacing
+  * Parameter is readable and writable.
+
+  * Default value is FALSE.
+
+pack-type
+---------
+
+A GtkPackType indicating whether the child is packed with reference to the start or end of the parent
+
+The **Gnome::GObject::Value** type of property *pack-type* is `G_TYPE_ENUM`.
+
+  * Parameter is readable and writable.
+
+  * Default value is GTK_PACK_START.
+
+padding
+-------
+
+Extra space to put between the child and its neighbors, in pixels
+
+The **Gnome::GObject::Value** type of property *padding* is `G_TYPE_UINT`.
+
+  * Parameter is readable and writable.
+
+  * Minimum value is 0.
+
+  * Maximum value is G_MAXINT.
+
+  * Default value is 0.
+
+position
+--------
+
+The index of the child in the parent
+
+The **Gnome::GObject::Value** type of property *position* is `G_TYPE_INT`.
+
+  * Parameter is readable and writable.
+
+  * Minimum value is -1.
+
+  * Maximum value is G_MAXINT.
+
+  * Default value is 0.
+
+spacing
+-------
+
+The amount of space between children
 
 The **Gnome::GObject::Value** type of property *spacing* is `G_TYPE_INT`.
+
+  * Parameter is readable and writable.
+
+  * Minimum value is 0.
+
+  * Maximum value is G_MAXINT.
+
+  * Default value is 0.
 
