@@ -237,117 +237,118 @@ If true, an underline in the text of the button label indicates the next charact
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
-
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
--------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### activate
+activate
+--------
 
 The *activate* signal on GtkButton is an action signal and emitting it causes the button to animate press then release. Applications should never connect to this signal, but use the *clicked* signal.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Gnome::Gtk3::Button :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $widget; the object which received the signal.
+  * $widget; The instance which registered the signal
 
-  * $_handle_id; the registered event handler id
+  * $_handler-id; The handler id which is returned from the registration
 
-### clicked
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+clicked
+-------
 
 Emitted when the button has been activated (pressed and released).
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($button),
+      Gnome::Gtk3::Button :_widget($button),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $button; the object that received the signal
+  * $button; The instance which registered the signal
 
-  * $_handle_id; the registered event handler id
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
+always-show-image
+-----------------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.get-property( 'label', $gv);
-    $gv.set-string('my text label');
-
-Supported properties
---------------------
-
-### Always show image: always-show-image
-
-If `True`, the button will ignore the *gtk-button-images* setting and always show the image, if available.
+If `True`, the button will ignore the *gtk-button-images from Gnome::Gtk3::Settings* setting and always show the image, if available.
 
 Use this property if the button would be useless or hard to use without the image.
 
 The **Gnome::GObject::Value** type of property *always-show-image* is `G_TYPE_BOOLEAN`.
 
-### Image widget: image
+  * Parameter is readable and writable.
+
+  * Parameter is set on construction of object.
+
+  * Default value is FALSE.
+
+image
+-----
 
 The child widget to appear next to the button text.
 
-    Widget type: GTK_TYPE_WIDGET
-
 The **Gnome::GObject::Value** type of property *image* is `G_TYPE_OBJECT`.
 
-### Image position: image-position
+  * Parameter is readable and writable.
+
+image-position
+--------------
 
 The position of the image relative to the text inside the button.
 
-    Widget type: GTK_TYPE_POSITION_TYPE
-
 The **Gnome::GObject::Value** type of property *image-position* is `G_TYPE_ENUM`.
 
-### Label: label
+  * Parameter is readable and writable.
 
-Text of the label widget inside the button, if the button contains a label widget Default value: Any
+  * Default value is GTK_POS_LEFT.
+
+label
+-----
+
+Text of the label widget inside the button, if the button contains a label widget
 
 The **Gnome::GObject::Value** type of property *label* is `G_TYPE_STRING`.
 
-### Border relief: relief
+  * Parameter is readable and writable.
 
-The border relief style Default value: False
+  * Parameter is set on construction of object.
+
+  * Default value is undefined.
+
+relief
+------
+
+The border relief style
 
 The **Gnome::GObject::Value** type of property *relief* is `G_TYPE_ENUM`.
 
-### Use underline: use-underline
+  * Parameter is readable and writable.
 
-If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key Default value: False
+  * Default value is GTK_RELIEF_NORMAL.
+
+use-underline
+-------------
+
+If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key
 
 The **Gnome::GObject::Value** type of property *use-underline* is `G_TYPE_BOOLEAN`.
+
+  * Parameter is readable and writable.
+
+  * Parameter is set on construction of object.
+
+  * Default value is FALSE.
 

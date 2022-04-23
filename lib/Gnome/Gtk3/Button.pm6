@@ -650,6 +650,141 @@ sub _gtk_button_new_with_mnemonic ( gchar-ptr $label --> N-GObject )
 =begin pod
 =head1 Signals
 
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:activate:
+=head2 activate
+
+The I<activate> signal on GtkButton is an action signal and
+emitting it causes the button to animate press then release.
+Applications should never connect to this signal, but use the
+I<clicked> signal.
+
+  method handler (
+    Gnome::Gtk3::Button :_widget($widget),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $widget; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=comment -----------------------------------------------------------------------
+=comment #TS:1:clicked:
+=head2 clicked
+
+Emitted when the button has been activated (pressed and released).
+
+  method handler (
+    Gnome::Gtk3::Button :_widget($button),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $button; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=end pod
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:always-show-image:
+=head2 always-show-image
+
+If C<True>, the button will ignore the I<gtk-button-images from Gnome::Gtk3::Settings> setting and always show the image, if available.
+
+Use this property if the button would be useless or hard to use without the image.
+
+
+The B<Gnome::GObject::Value> type of property I<always-show-image> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Parameter is set on construction of object.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:image:
+=head2 image
+
+The child widget to appear next to the button text.
+
+
+The B<Gnome::GObject::Value> type of property I<image> is C<G_TYPE_OBJECT>.
+
+=item Parameter is readable and writable.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:image-position:
+=head2 image-position
+
+The position of the image relative to the text inside the button.
+
+
+The B<Gnome::GObject::Value> type of property I<image-position> is C<G_TYPE_ENUM>.
+
+=item Parameter is readable and writable.
+=item Default value is GTK_POS_LEFT.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:label:
+=head2 label
+
+Text of the label widget inside the button, if the button contains a label widget
+
+The B<Gnome::GObject::Value> type of property I<label> is C<G_TYPE_STRING>.
+
+=item Parameter is readable and writable.
+=item Parameter is set on construction of object.
+=item Default value is undefined.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:relief:
+=head2 relief
+
+The border relief style
+
+The B<Gnome::GObject::Value> type of property I<relief> is C<G_TYPE_ENUM>.
+
+=item Parameter is readable and writable.
+=item Default value is GTK_RELIEF_NORMAL.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:use-underline:
+=head2 use-underline
+
+If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key
+
+The B<Gnome::GObject::Value> type of property I<use-underline> is C<G_TYPE_BOOLEAN>.
+
+=item Parameter is readable and writable.
+=item Parameter is set on construction of object.
+=item Default value is FALSE.
+
+=end pod
+
+
+
+
+=finish
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Signals
+
 There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
 
 =head2 First method
