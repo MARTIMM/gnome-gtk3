@@ -379,21 +379,17 @@ sub _gtk_button_box_new ( GEnum $orientation --> N-GObject )
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
-
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.get-property( 'label', $gv);
-  $gv.set-string('my text label');
-
-=head2 Supported properties
-
 =comment -----------------------------------------------------------------------
 =comment #TP:1:layout-style:
 =head3 Layout style: layout-style
 
 How to lay out the buttons in the box. Possible values are: spread, edge-COMMA- start and end
+
 Default value: False
 
 The B<Gnome::GObject::Value> type of property I<layout-style> is C<G_TYPE_ENUM>.
+
+=item Parameter is readable and writable.
+=item Default value is False.
+
 =end pod
