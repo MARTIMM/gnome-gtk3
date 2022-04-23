@@ -1334,6 +1334,35 @@ sub _gtk_builder_new_from_string ( gchar-ptr $string, gssize $length --> N-GObje
 =begin pod
 =head1 Properties
 
+=comment -----------------------------------------------------------------------
+=comment #TP:0:translation-domain:
+=head2 translation-domain
+
+The translation domain used by gettext
+
+The B<Gnome::GObject::Value> type of property I<translation-domain> is C<G_TYPE_STRING>.
+
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
+=end pod
+
+
+
+
+
+
+
+
+
+
+
+
+=finish
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
 An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
 
   my Gnome::Gtk3::Label $label .= new;

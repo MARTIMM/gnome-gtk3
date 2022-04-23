@@ -379,19 +379,14 @@ Sets the translation domain of *builder*. See *translation-domain*.
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
+translation-domain
+------------------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.get-property( 'label', $gv);
-    $gv.set-string('my text label');
-
-Supported properties
---------------------
-
-### Translation Domain: translation-domain
-
-The translation domain used when translating property values that have been marked as translatable in interface descriptions. If the translation domain is `undefined`, **Gnome::Gtk3::Builder** uses `gettext()`, otherwise `g-dgettext()`.
+The translation domain used by gettext
 
 The **Gnome::GObject::Value** type of property *translation-domain* is `G_TYPE_STRING`.
+
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
 
