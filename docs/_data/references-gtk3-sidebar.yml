@@ -70,6 +70,13 @@
     url: '/content-docs/reference/Gtk3/Box.html'
     type: widget
 
+  - title: "Buildable"
+    url: "/content-docs/reference/Gtk3/Buildable.html"
+    type: interface
+
+  - title: "Builder"
+    url: "/content-docs/reference/Gtk3/Builder.html"
+
   - title: "Button"
     url: '/content-docs/reference/Gtk3/Button.html'
     type: widget
@@ -77,13 +84,6 @@
   - title: "ButtonBox"
     url: '/content-docs/reference/Gtk3/ButtonBox.html'
     type: widget
-
-  - title: "Buildable"
-    url: "/content-docs/reference/Gtk3/Buildable.html"
-    type: interface
-
-  - title: "Builder"
-    url: "/content-docs/reference/Gtk3/Builder.html"
 
   - title: "CellLayout"
     url: '/content-docs/reference/Gtk3/CellLayout.html'
