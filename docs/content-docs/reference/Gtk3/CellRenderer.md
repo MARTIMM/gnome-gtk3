@@ -459,82 +459,177 @@ See `gtk_cell_editable_start_editing()` for information on the lifecycle of the 
 Properties
 ==========
 
-Cell background color name: cell-background
--------------------------------------------
+cell-background
+---------------
 
-Cell background color as a string Default value: Any
+Cell background color as a string
 
 The **Gnome::GObject::Value** type of property *cell-background* is `G_TYPE_STRING`.
 
-Editing: editing
-----------------
+  * Parameter is writable.
 
-Whether the cell renderer is currently in editing mode Default value: False
+  * Default value is undefined.
+
+cell-background-rgba
+--------------------
+
+Cell background color as a GdkRGBA
+
+The **Gnome::GObject::Value** type of property *cell-background-rgba* is `G_TYPE_BOXED`.
+
+editing
+-------
+
+Whether the cell renderer is currently in editing mode
 
 The **Gnome::GObject::Value** type of property *editing* is `G_TYPE_BOOLEAN`.
 
-height: height
---------------
+  * Parameter is readable.
+
+  * Default value is FALSE.
+
+height
+------
+
+The fixed height
 
 The **Gnome::GObject::Value** type of property *height* is `G_TYPE_INT`.
 
-Is Expanded: is-expanded
-------------------------
+  * Parameter is readable and writable.
 
-Row is an expander row, and is expanded Default value: False
+  * Minimum value is -1.
+
+  * Maximum value is G_MAXINT.
+
+  * Default value is -1.
+
+is-expanded
+-----------
+
+Row is an expander row, and is expanded
 
 The **Gnome::GObject::Value** type of property *is-expanded* is `G_TYPE_BOOLEAN`.
 
-Is Expander: is-expander
-------------------------
+  * Parameter is readable and writable.
 
-Row has children Default value: False
+  * Default value is FALSE.
+
+is-expander
+-----------
+
+Row has children
 
 The **Gnome::GObject::Value** type of property *is-expander* is `G_TYPE_BOOLEAN`.
 
-mode: mode
-----------
+  * Parameter is readable and writable.
 
-Editable mode of the CellRenderer Default value: False
+  * Default value is FALSE.
+
+mode
+----
+
+Editable mode of the CellRenderer
 
 The **Gnome::GObject::Value** type of property *mode* is `G_TYPE_ENUM`.
 
-Sensitive: sensitive
---------------------
+  * Parameter is readable and writable.
 
-Display the cell sensitive Default value: True
+  * Default value is GTK_CELL_RENDERER_MODE_INERT.
+
+sensitive
+---------
+
+Display the cell sensitive
 
 The **Gnome::GObject::Value** type of property *sensitive* is `G_TYPE_BOOLEAN`.
 
-visible: visible
-----------------
+  * Parameter is readable and writable.
 
-Display the cell Default value: True
+  * Default value is TRUE.
+
+visible
+-------
+
+Display the cell
 
 The **Gnome::GObject::Value** type of property *visible* is `G_TYPE_BOOLEAN`.
 
-width: width
-------------
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
+
+width
+-----
+
+The fixed width
 
 The **Gnome::GObject::Value** type of property *width* is `G_TYPE_INT`.
 
-xalign: xalign
---------------
+  * Parameter is readable and writable.
+
+  * Minimum value is -1.
+
+  * Maximum value is G_MAXINT.
+
+  * Default value is -1.
+
+xalign
+------
+
+The x-align
 
 The **Gnome::GObject::Value** type of property *xalign* is `G_TYPE_FLOAT`.
 
-xpad: xpad
-----------
+  * Parameter is readable and writable.
+
+  * Minimum value is 0.0.
+
+  * Maximum value is 1.0.
+
+  * Default value is 0.5.
+
+xpad
+----
+
+The xpad
 
 The **Gnome::GObject::Value** type of property *xpad* is `G_TYPE_UINT`.
 
-yalign: yalign
---------------
+  * Parameter is readable and writable.
+
+  * Minimum value is 0.
+
+  * Maximum value is G_MAXUINT.
+
+  * Default value is 0.
+
+yalign
+------
+
+The y-align
 
 The **Gnome::GObject::Value** type of property *yalign* is `G_TYPE_FLOAT`.
 
-ypad: ypad
-----------
+  * Parameter is readable and writable.
+
+  * Minimum value is 0.0.
+
+  * Maximum value is 1.0.
+
+  * Default value is 0.5.
+
+ypad
+----
+
+The ypad
 
 The **Gnome::GObject::Value** type of property *ypad* is `G_TYPE_UINT`.
+
+  * Parameter is readable and writable.
+
+  * Minimum value is 0.
+
+  * Maximum value is G_MAXUINT.
+
+  * Default value is 0.
 

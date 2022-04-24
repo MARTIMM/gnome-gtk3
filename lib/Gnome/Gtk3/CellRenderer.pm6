@@ -1012,106 +1012,178 @@ gtk_entry_set_completion (entry, completion);
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:cell-background:
-=head2 Cell background color name: cell-background
+=head2 cell-background
 
 Cell background color as a string
-Default value: Any
 
 The B<Gnome::GObject::Value> type of property I<cell-background> is C<G_TYPE_STRING>.
 
+=item Parameter is writable.
+=item Default value is undefined.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:cell-background-rgba:
+=head2 cell-background-rgba
+
+Cell background color as a GdkRGBA
+
+The B<Gnome::GObject::Value> type of property I<cell-background-rgba> is C<G_TYPE_BOXED>.
+
+
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:editing:
-=head2 Editing: editing
+=head2 editing
 
 Whether the cell renderer is currently in editing mode
-Default value: False
 
 The B<Gnome::GObject::Value> type of property I<editing> is C<G_TYPE_BOOLEAN>.
 
+=item Parameter is readable.
+=item Default value is FALSE.
+
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:height:
-=head2 height: height
+=head2 height
 
+The fixed height
 
 The B<Gnome::GObject::Value> type of property I<height> is C<G_TYPE_INT>.
 
+=item Parameter is readable and writable.
+=item Minimum value is -1.
+=item Maximum value is G_MAXINT.
+=item Default value is -1.
+
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:is-expanded:
-=head2 Is Expanded: is-expanded
+=head2 is-expanded
 
 Row is an expander row, and is expanded
-Default value: False
 
 The B<Gnome::GObject::Value> type of property I<is-expanded> is C<G_TYPE_BOOLEAN>.
 
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:is-expander:
-=head2 Is Expander: is-expander
+=head2 is-expander
 
 Row has children
-Default value: False
 
 The B<Gnome::GObject::Value> type of property I<is-expander> is C<G_TYPE_BOOLEAN>.
 
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:mode:
-=head2 mode: mode
+=head2 mode
 
 Editable mode of the CellRenderer
-Default value: False
 
 The B<Gnome::GObject::Value> type of property I<mode> is C<G_TYPE_ENUM>.
 
+=item Parameter is readable and writable.
+=item Default value is GTK_CELL_RENDERER_MODE_INERT.
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:sensitive:
-=head2 Sensitive: sensitive
+=head2 sensitive
 
 Display the cell sensitive
-Default value: True
 
 The B<Gnome::GObject::Value> type of property I<sensitive> is C<G_TYPE_BOOLEAN>.
 
+=item Parameter is readable and writable.
+=item Default value is TRUE.
+
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:visible:
-=head2 visible: visible
+=head2 visible
 
 Display the cell
-Default value: True
 
 The B<Gnome::GObject::Value> type of property I<visible> is C<G_TYPE_BOOLEAN>.
 
+=item Parameter is readable and writable.
+=item Default value is TRUE.
+
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:width:
-=head2 width: width
+=head2 width
 
+The fixed width
 
 The B<Gnome::GObject::Value> type of property I<width> is C<G_TYPE_INT>.
 
+=item Parameter is readable and writable.
+=item Minimum value is -1.
+=item Maximum value is G_MAXINT.
+=item Default value is -1.
+
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:xalign:
-=head2 xalign: xalign
+=head2 xalign
 
+The x-align
 
 The B<Gnome::GObject::Value> type of property I<xalign> is C<G_TYPE_FLOAT>.
 
+=item Parameter is readable and writable.
+=item Minimum value is 0.0.
+=item Maximum value is 1.0.
+=item Default value is 0.5.
+
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:xpad:
-=head2 xpad: xpad
+=head2 xpad
 
+The xpad
 
 The B<Gnome::GObject::Value> type of property I<xpad> is C<G_TYPE_UINT>.
 
+=item Parameter is readable and writable.
+=item Minimum value is 0.
+=item Maximum value is G_MAXUINT.
+=item Default value is 0.
+
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:yalign:
-=head2 yalign: yalign
+=head2 yalign
 
+The y-align
 
 The B<Gnome::GObject::Value> type of property I<yalign> is C<G_TYPE_FLOAT>.
 
+=item Parameter is readable and writable.
+=item Minimum value is 0.0.
+=item Maximum value is 1.0.
+=item Default value is 0.5.
+
+
 =comment -----------------------------------------------------------------------
 =comment #TP:1:ypad:
-=head2 ypad: ypad
+=head2 ypad
 
+The ypad
 
 The B<Gnome::GObject::Value> type of property I<ypad> is C<G_TYPE_UINT>.
+
+=item Parameter is readable and writable.
+=item Minimum value is 0.
+=item Maximum value is G_MAXUINT.
+=item Default value is 0.
+
 =end pod
