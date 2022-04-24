@@ -1400,9 +1400,7 @@ sub get-signals ( Str:D $source-content is copy ) {
 }
 
 #-------------------------------------------------------------------------------
-sub get-signal-function-declaration (
-  Str:D $source-content is rw --> List
-) {
+sub get-signal-function-declaration ( Str:D $source-content is rw --> List ) {
 
 #  $items-src-doc = [];
   my $signal-name = '';
@@ -1410,7 +1408,12 @@ sub get-signal-function-declaration (
   # Search doc for function declaration. Then remove from source.
   # Stop if none left
   $source-content ~~ m/
-    $<signal-doc> = [ '/**' \s+ '*' \s+ $*lib-class-name '::'  .*? '*/' ]
+    $<signal-doc> = [
+      '/**'                               # start c-comment block
+      \s+ '*' \s+ <alnum>+                # first line has a class name
+      '::' [ <alnum> || '-' ]+ ':'        # and a ::signal name:
+      .*? '*/'
+    ]
   /;
 
   my Str $function-doc = ~($<signal-doc> // '');
@@ -1426,12 +1429,13 @@ sub get-signal-function-declaration (
          $*lib-class-name '::' $<signal-name> = [ [<alnum> || '-']+ ]
     /;
     $signal-name = ~($<signal-name> // '');
-    $function-doc ~~ s/ ^^ \s+ '*' \s+ $*lib-class-name '::' $signal-name '::'? //;
+    $function-doc ~~
+      s/ ^^ \s+ '*' \s+ $*lib-class-name '::' $signal-name '::'? //;
 #note "FDoc 1 ", $function-doc;
   }
 
   # Get some more info from the function call
-  $source-content ~~ m/
+#`{{  $source-content ~~ m/
     'g_signal_new' '_class_handler'? \s* '('
     $<signal-args> = [
       [ <[A..Z]> '_('                     || # gtk sources
@@ -1440,6 +1444,14 @@ sub get-signal-function-declaration (
       '"' <-[\"]>+ '"' .*?
     ] ');'
   /;
+}}
+  $source-content ~~ m/
+    $<signal-args> = [
+      'g_signal_new'
+      .*? ');'                              # till the signal spec ends
+    ]
+  /;
+
 #note "FDoc 2 ",  $\.Str;
 #note "FDoc 3 ",  ~($<signal-args>//'-');
 
@@ -1448,6 +1460,7 @@ sub get-signal-function-declaration (
   my Str $signal-args-text = ~($<signal-args>//'');
   $function-doc = '' unless $signal-args-text;
 
+  $signal-args-text ~~ s/ ');' //;
   $source-content ~~
      s/ 'g_signal_new' '_class_handler'? \s* '(' $signal-args-text ');' //;
 
@@ -1559,13 +1572,13 @@ sub get-arg-doc ( Str $function-doc --> List ) {
 #-------------------------------------------------------------------------------
 sub get-arg-types ( @signal-args --> List ) {
 
-#note 'GAT: ', @signal-args.gist;
+#note "GAT: '@signal-args[8]': ", @signal-args.join("\n  ");
 
   # get a return type from arg 7
   my Str $return-type = raku-sig-type(@signal-args[7] // 'any');
 
   # process handler argument types. nbr args at 8, types at 9 and further
-  my @signal-arg-types = 'N-GObject',;
+  my @signal-arg-types = 'N-GObject';
   my Int $arg-count = @signal-args[8].Int;
   for ^$arg-count -> $i {
 #note "  A[9 + $i]: @signal-args[9 + $i]";
@@ -3519,7 +3532,10 @@ sub make-raku-classname ( Str $gtk-classname --> Str ) {
 #  $gtk-classname ~~ m/ '#' $<raku-classname> = (<alnum>+) /;
 
   $raku-classname = $gtk-classname;
-  $raku-classname ~~ m/ $<classlibpart> = ['Gtk' || 'Gdk' || 'G'] <alnum>+ /;
+  $raku-classname ~~
+    m/ $<classlibpart> = [
+      'Gtk' || 'Gdk' || 'G' || 'cairo_'
+    ] <alnum>+ /;
 #note "make-raku-classname: $raku-classname, $<classlibpart>.Str()";
   given my Str $classlibpart = ~($<classlibpart>//'') {
     when any(<Gtk Gdk>) {
@@ -3531,12 +3547,17 @@ sub make-raku-classname ( Str $gtk-classname --> Str ) {
       $classlibpart = 'Gio';
     }
 
+    when 'cairo_' {
+      $classlibpart = 'Cairo';
+    }
+
     default {
-      note "Unknown '$classlibpart' from gtk class $raku-classname";
+      note "Unknown '$classlibpart' from gtk class $raku-classname"
+        if ?$_;
     }
   }
 
-  $raku-classname ~~ s/^ ['Gtk' || 'Gdk' || 'G'] ( <alnum>+ )
+  $raku-classname ~~ s/^ ['Gtk' || 'Gdk' || 'G' || 'cairo_'] ( <alnum>+ )
                       /Gnome::$classlibpart\:\:$/[0]/;
 
   # replace changed part in text
