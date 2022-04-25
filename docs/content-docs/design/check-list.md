@@ -105,14 +105,14 @@ Box                       |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| �
 Buildable                 |R | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
 Builder                   |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
 Button                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
-ButtonBox                 |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓| < sig prop
+ButtonBox                 |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
 CellLayout                |R | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
-CellRenderer              |  | ✗| ✓| ✓| ✓| ✓| ✓| ¾|  | ✓| ✓| ✓| ✓| sig prop
-CellRendererAccel         |  | ✗| ✓| ✓| ✓| ✓| ✓| ½|  |  | ✓| ✓| ✓| sig prop
-CellRendererCombo         |  |  |  |  |  |  |  |  |  |  |  |  |  |  
-CellRendererPixbuf        |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+CellRenderer              |  | ✗| ✓| ✓| ✓| ✓| ✓| ¾|  | ✓| ✓| ✓| ✓|
+CellRendererAccel         |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓|  |  | ✓| ✓| ✓|
+CellRendererCombo         |  |  | ✓| ✓| ✓| ✓| ✓| ✓|  | ⅔| ✓| ✓| ✓| < sig prop
+CellRendererPixbuf        |  |  |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererProgress      |  |  |  |  |  |  |  |  |  |  |  |  |  | _fallback
-CellRendererSpin          |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+CellRendererSpin          |  |  |  |  |  |  |  |  |  |  |  |  |  |
 CellRendererSpinner       |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 CellRendererText          |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 CellRendererToggle        |  |  |  |  |  |  |  |  |  |  |  |  |  |  
