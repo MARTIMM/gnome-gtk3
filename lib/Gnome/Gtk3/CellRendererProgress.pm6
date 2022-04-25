@@ -8,11 +8,13 @@ use v6;
 
 Renders numbers as progress bars
 
+
 =head1 Description
 
 B<Gnome::Gtk3::CellRendererProgress> renders a numeric value as a progress par in a cell. Additionally, it can display a text on top of the progress bar.
 
 The B<Gnome::Gtk3::CellRendererProgress> cell renderer was added in GTK+ 2.6.
+
 
 =head2 Implemented Interfaces
 
@@ -26,6 +28,11 @@ Gnome::Gtk3::CellRendererProgress implements
   unit class Gnome::Gtk3::CellRendererProgress;
   also is Gnome::Gtk3::CellRenderer;
   also does Gnome::Gtk3::Orientable;
+
+
+=head2 Uml Diagram
+
+![](plantuml/CellRenderer-ea.svg)
 
 =comment head2 Example
 
@@ -51,84 +58,103 @@ also does Gnome::Gtk3::Orientable;
 =head1 Methods
 =head2 new
 
-Create a new plain object.
+=head3 default, no options
+
+Create a new CellRendererProgress object.
 
   multi method new ( )
 
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+
+=head3 :native-object
+
+Create a CellRendererProgress object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
   multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+
+=head3 :build-id
+
+Create a CellRendererProgress object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
 
 =end pod
 
+# TM:0:new():inheriting
 #TM:1:new():
-#TM:4:new(:native-object):
-#TM:4:new(:build-id):
+#TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
+#TM:4:new(:build-id):Gnome::GObject::Object
 submethod BUILD ( *%options ) {
+  # prevent creating wrong native-objects
+  if self.^name eq 'Gnome::Gtk3::CellRendererProgress' #`{{ or %options<GtkCellRendererProgress> }} {
 
-  # prevent creating wrong widgets
-  return unless self.^name eq 'Gnome::Gtk3::CellRendererProgress';
+    # check if native object is set by a parent class
+    if self.is-valid { }
 
-  # process all named arguments
-  if ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in Gnome::GObject::Object
+    # check if common options are handled by some parent
+    elsif %options<native-object>:exists { }
+    elsif %options<build-id>:exists { }
+
+    # process all other options
+    else {
+      my $no;
+      if ? %options<___x___> {
+        #$no = %options<___x___>;
+        #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
+        #$no = _gtk_cell_renderer_progress_new___x___($no);
+      }
+
+      ##`{{ use this when the module is not made inheritable
+      # check if there are unknown options
+      elsif %options.elems {
+        die X::Gnome.new(
+          :message(
+            'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+            self.^name ~ ': ' ~ %options.keys.join(', ')
+          )
+        );
+      }
+      #}}
+
+      #`{{ when there are no defaults use this
+      # check if there are any options
+      elsif %options.elems == 0 {
+        die X::Gnome.new(:message('No options specified ' ~ self.^name));
+      }
+      }}
+
+      ##`{{ when there are defaults use this instead
+      # create default object
+      else {
+        $no = _gtk_cell_renderer_progress_new();
+      }
+      #}}
+
+      self.set-native-object($no);
+    }
+
+    # only after creating the native-object, the gtype is known
+    self._set-class-info('GtkCellRendererProgress');
   }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  else { #if ? %options<empty> {
-    self._set-native-object(_gtk_cell_renderer_progress_new());
-  }
-
-  # only after creating the native-object, the gtype is known
-  self._set-class-info('GtkCellRendererProgress');
 }
 
-#`{{ no methods
-#-------------------------------------------------------------------------------
-# no pod. user does not have to know about it.
-method _fallback ( $native-sub is copy --> Callable ) {
-
-  my Callable $s;
-  try { $s = &::("gtk_cell_renderer_progress_$native-sub"); };
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-
-  self._set-class-name-of-sub('GtkCellRendererProgress');
-  $s = callsame unless ?$s;
-
-  $s;
-}
-}}
 
 #-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_progress_new:new()
+#TM:1:_gtk_cell_renderer_progress_new:
 #`{{
 =begin pod
-=head2 [gtk_] cell_renderer_progress_new
+=head2 _gtk_cell_renderer_progress_new
 
 Creates a new B<Gnome::Gtk3::CellRendererProgress>.
 
 Returns: the new cell renderer
 
-Since: 2.6
-
-  method gtk_cell_renderer_progress_new ( --> N-GObject  )
+  method _gtk_cell_renderer_progress_new ( --> N-GObject )
 
 =end pod
 }}
 
-sub _gtk_cell_renderer_progress_new ( --> N-GObject )
+sub _gtk_cell_renderer_progress_new (  --> N-GObject )
   is native(&gtk-lib)
   is symbol('gtk_cell_renderer_progress_new')
   { * }
@@ -137,83 +163,83 @@ sub _gtk_cell_renderer_progress_new ( --> N-GObject )
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+=comment -----------------------------------------------------------------------
+=comment #TP:1:inverted:
+=head2 inverted
 
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.g-object-get-property( 'label', $gv);
-  $gv.g-value-set-string('my text label');
+Invert the direction in which the progress bar grows
 
-=head2 Supported properties
+The B<Gnome::GObject::Value> type of property I<inverted> is C<G_TYPE_BOOLEAN>.
 
-=comment #TP:0:value:
-=head3 Value
-
-
-The "value" property determines the percentage to which the
-progress bar will be "filled in".
-Since: 2.6
+=item Parameter is readable and writable.
+=item Default value is FALSE.
 
 
-The B<Gnome::GObject::Value> type of property I<value> is C<G_TYPE_INT>.
+=comment -----------------------------------------------------------------------
+=comment #TP:1:pulse:
+=head2 pulse
 
-=comment #TP:0:text:
-=head3 Text
-
-
-The "text" property determines the label which will be drawn
-over the progress bar. Setting this property to C<Any> causes the default
-label to be displayed. Setting this property to an empty string causes
-no label to be displayed.
-Since: 2.6
-
-
-The B<Gnome::GObject::Value> type of property I<text> is C<G_TYPE_STRING>.
-
-=comment #TP:0:pulse:
-=head3 Pulse
-
-
-Setting this to a non-negative value causes the cell renderer to
-enter "activity mode", where a block bounces back and forth to
-indicate that some progress is made, without specifying exactly how
-much.
-Each increment of the property causes the block to move by a little
-bit.
-To indicate that the activity has not started yet, set the property
-to zero. To indicate completion, set the property to C<G_MAXINT>.
-Since: 2.12
+Set this to positive values to indicate that some progress is made, but you don't know how much.
 
 The B<Gnome::GObject::Value> type of property I<pulse> is C<G_TYPE_INT>.
 
-=comment #TP:0:text-xalign:
-=head3 Text x alignment
+=item Parameter is readable and writable.
+=item Minimum value is -1.
+=item Maximum value is G_MAXINT.
+=item Default value is -1.
 
 
-The "text-xalign" property controls the horizontal alignment of the
-text in the progress bar.  Valid values range from 0 (left) to 1
-(right).  Reserved for RTL layouts.
-Since: 2.12
+=comment -----------------------------------------------------------------------
+=comment #TP:1:text:
+=head2 text
+
+Text on the progress bar
+
+The B<Gnome::GObject::Value> type of property I<text> is C<G_TYPE_STRING>.
+
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:text-xalign:
+=head2 text-xalign
+
+The horizontal text alignment, from 0 (left to 1 (right). Reversed for RTL layouts.)
 
 The B<Gnome::GObject::Value> type of property I<text-xalign> is C<G_TYPE_FLOAT>.
 
-=comment #TP:0:text-yalign:
-=head3 Text y alignment
+=item Parameter is readable and writable.
+=item Minimum value is 0.0.
+=item Maximum value is 1.0.
+=item Default value is 0.5.
 
 
-The "text-yalign" property controls the vertical alignment of the
-text in the progress bar.  Valid values range from 0 (top) to 1
-(bottom).
-Since: 2.12
+=comment -----------------------------------------------------------------------
+=comment #TP:1:text-yalign:
+=head2 text-yalign
+
+The vertical text alignment, from 0 (top to 1 (bottom).)
 
 The B<Gnome::GObject::Value> type of property I<text-yalign> is C<G_TYPE_FLOAT>.
 
-=comment #TP:0:inverted:
-=head3 Inverted
+=item Parameter is readable and writable.
+=item Minimum value is 0.0.
+=item Maximum value is 1.0.
+=item Default value is 0.5.
 
-Invert the direction in which the progress bar grows
-Default value: False
 
+=comment -----------------------------------------------------------------------
+=comment #TP:1:value:
+=head2 value
 
-The B<Gnome::GObject::Value> type of property I<inverted> is C<G_TYPE_BOOLEAN>.
+Value of the progress bar
+
+The B<Gnome::GObject::Value> type of property I<value> is C<G_TYPE_INT>.
+
+=item Parameter is readable and writable.
+=item Minimum value is 0.
+=item Maximum value is 100.
+=item Default value is 0.
+
 =end pod
