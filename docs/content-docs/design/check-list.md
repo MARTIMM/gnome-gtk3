@@ -110,8 +110,8 @@ CellLayout                |R | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓|
 CellRenderer              |  | ✗| ✓| ✓| ✓| ✓| ✓| ¾|  | ✓| ✓| ✓| ✓|
 CellRendererAccel         |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓|  |  | ✓| ✓| ✓|
 CellRendererCombo         |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓|  | ⅔| ✓| ✓| ✓|
-CellRendererPixbuf        |  | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗|  | ✓| ✓| ✓| < sig prop fb
-CellRendererProgress      |  | ✗|  |  |  |  |  |  |  |  |  |  |  | _fallback
+CellRendererPixbuf        |  | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗|  | ✓| ✓| ✓|
+CellRendererProgress      |  | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓| < fbck sg prp
 CellRendererSpin          |  | ✗|  |  |  |  |  |  |  |  |  |  |  |
 CellRendererSpinner       |  | ✗|  |  |  |  |  |  |  |  |  |  |  |  
 CellRendererText          |  | ✗|  |  |  |  |  |  |  |  |  |  |  |  
