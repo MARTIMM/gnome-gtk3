@@ -13,6 +13,9 @@ Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
 Interface Gnome::GObject::Signal <Interface>
 class Gnome::GObject::Signal <<(R,#80ffff)>>
 
+Interface Gnome::Gtk3::Orientable <Interface>
+class Gnome::Gtk3::Orientable <<(R,#80ffff)>>
+
 Gnome::GObject::Object <|-- Gnome::GObject::InitialyUnowned
 
 
@@ -29,5 +32,7 @@ Gnome::Gtk3::CellRenderer <|-left- Gnome::Gtk3::CellRendererToggle
 Gnome::Gtk3::CellRendererText <|-left- Gnome::Gtk3::CellRendererAccel
 Gnome::Gtk3::CellRendererText <|-- Gnome::Gtk3::CellRendererCombo
 Gnome::Gtk3::CellRendererText <|-- Gnome::Gtk3::CellRendererSpin
+
+Gnome::Gtk3::CellRendererProgress ..|> Gnome::Gtk3::Orientable
 @enduml
 ```
