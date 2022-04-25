@@ -904,7 +904,7 @@ sub substitute-in-template (
 
       =comment head2 Uml Diagram
 
-      =comment ![](plantuml/.svg)
+      =comment ![](plantuml/MODULENAME.svg)
 
 
       =begin comment
@@ -3636,9 +3636,7 @@ sub generate-test ( ) {
     #    value, …
       ], 'properties: ' ~ (
     #    name, …
-    ).join\(', ');
-
-    }
+      ).join\(', ');
 
     #-------------------------------------------------------------------------------
     subtest 'Signals …', {
