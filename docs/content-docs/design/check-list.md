@@ -109,13 +109,13 @@ ButtonBox                 |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓|
 CellLayout                |R | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
 CellRenderer              |  | ✗| ✓| ✓| ✓| ✓| ✓| ¾|  | ✓| ✓| ✓| ✓|
 CellRendererAccel         |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓|  |  | ✓| ✓| ✓|
-CellRendererCombo         |  |  | ✓| ✓| ✓| ✓| ✓| ✓|  | ⅔| ✓| ✓| ✓| < sig prop
-CellRendererPixbuf        |  |  |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererProgress      |  |  |  |  |  |  |  |  |  |  |  |  |  | _fallback
-CellRendererSpin          |  |  |  |  |  |  |  |  |  |  |  |  |  |
-CellRendererSpinner       |  |  |  |  |  |  |  |  |  |  |  |  |  |  
-CellRendererText          |  |  |  |  |  |  |  |  |  |  |  |  |  |  
-CellRendererToggle        |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+CellRendererCombo         |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓|  | ⅔| ✓| ✓| ✓|
+CellRendererPixbuf        |  | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗|  | ✓| ✓| ✓| < sig prop fb
+CellRendererProgress      |  | ✗|  |  |  |  |  |  |  |  |  |  |  | _fallback
+CellRendererSpin          |  | ✗|  |  |  |  |  |  |  |  |  |  |  |
+CellRendererSpinner       |  | ✗|  |  |  |  |  |  |  |  |  |  |  |  
+CellRendererText          |  | ✗|  |  |  |  |  |  |  |  |  |  |  |  
+CellRendererToggle        |  | ✗|  |  |  |  |  |  |  |  |  |  |  |  
 CheckButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 CheckMenuItem             |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 ColorButton               |  |  |  |  |  |  |  |  |  |  |  |  |  |  
