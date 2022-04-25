@@ -1332,6 +1332,7 @@ sub get-signals ( Str:D $source-content is copy ) {
     loop (
       $arg-count = 1; $arg-count < $signal-arg-types.elems; $arg-count++
     ) {
+#note "get-signals: $arg-count, '$signal-arg-types[$arg-count]', '$items-src-doc[$arg-count][0]'";
       $signal-doc ~= "    $signal-arg-types[$arg-count] \$$items-src-doc[$arg-count][0],\n";
     }
 
@@ -3579,6 +3580,8 @@ sub generate-test ( ) {
 
     use $class;
 
+    #use Gnome::N::GlibToRakuTypes;
+    #use Gnome::GObject::Object;
     #use Gnome::N::X;
     #Gnome::N::debug(:on);
 
@@ -3624,58 +3627,21 @@ sub generate-test ( ) {
     }
 
     #-------------------------------------------------------------------------------
-    subtest 'Interface ...', {
+    subtest 'Properties …', {
+    #  my $class $m .= new;
+      my \@r = $m.get-properties\(
+    #    name, type,  …
+      );
+      is-deeply \@r, [
+    #    value, …
+      ], 'properties: ' ~ (
+    #    name, …
+    ).join\(', ');
+
     }
 
     #-------------------------------------------------------------------------------
-    subtest 'Properties ...', {
-      use Gnome::GObject::Value;
-      use Gnome::GObject::Type;
-
-      #my $class $m .= new;
-
-      sub test-property (
-        \$type, Str \$prop, Str \$routine, \$value,
-        Bool :\$approx = False, Bool :\$is-local = False
-      ) {
-        my Gnome::GObject::Value \$gv .= new\(:init(\$type));
-        $m.get-property\( \$prop, \$gv);
-        my \$gv-value = \$gv."\$routine"\();
-        if \$approx {
-          is-approx \$gv-value, \$value,
-            "property \$prop, value: " ~ \$gv-value;
-        }
-
-        # dependency on local settings might result in different values
-        elsif \$is-local {
-          if \$gv-value ~~ /\$value/ {
-            like \$gv-value, /\$value/, "property \$prop, value: " ~ \$gv-value;
-          }
-
-          else {
-            ok 1, "property \$prop, value: " ~ \$gv-value;
-          }
-        }
-
-        else {
-          is \$gv-value, \$value,
-            "property \$prop, value: " ~ \$gv-value;
-        }
-        \$gv.clear-object;
-      }
-
-      # example calls
-      #test-property\( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', False);
-      #test-property\( G_TYPE_STRING, 'label', 'get-string', '...');
-      #test-property\( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
-    }
-
-    #-------------------------------------------------------------------------------
-    subtest 'Themes ...', {
-    }
-
-    #-------------------------------------------------------------------------------
-    subtest 'Signals ...', {
+    subtest 'Signals …', {
       use Gnome::Gtk3::Main;
       use Gnome::N::GlibToRakuTypes;
 
@@ -3684,10 +3650,10 @@ sub generate-test ( ) {
       class SignalHandlers {
         has Bool \$!signal-processed = False;
 
-        method ... (
+        method … (
           'any-args',
           $class :\$_widget, gulong :\$_handler-id
-          # --> ...
+          # --> …
         ) {
 
           isa-ok \$_widget, $class;
@@ -3704,7 +3670,7 @@ sub generate-test ( ) {
           #  :return-type(int32),
           #  :parameters([int32,])
           );
-          is \$!signal-processed, True, '\\'...\\' signal processed';
+          is \$!signal-processed, True, '\\'…\\' signal processed';
 
           while \$main.gtk-events-pending\() { \$main.iteration-do\(False); }
 
@@ -3715,7 +3681,7 @@ sub generate-test ( ) {
           #  :return-type(int32),
           #  :parameters([int32,])
           #);
-          #is \$!signal-processed, True, '\\'...\\' signal processed';
+          #is \$!signal-processed, True, '\\'…\\' signal processed';
 
           while \$main.gtk-events-pending\() { \$main.iteration-do\(False); }
           sleep\(0.4);
@@ -3744,6 +3710,14 @@ sub generate-test ( ) {
       #is \$main.gtk-main-level, 0, "loop level is 0 again";
 
       is \$p.result, 'done', 'emitter finished';
+    }
+
+    #-------------------------------------------------------------------------------
+    subtest 'Themes …', {
+    }
+
+    #-------------------------------------------------------------------------------
+    subtest 'Interface …', {
     }
 
     EOTEST
