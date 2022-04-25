@@ -98,9 +98,6 @@
   - title: "CellRendererCombo"
     url: '/content-docs/reference/Gtk3/CellRendererCombo.html'
 
-  - title: "CellRendererText"
-    url: '/content-docs/reference/Gtk3/CellRendererText.html'
-
   - title: "CellRendererPixbuf"
     url: '/content-docs/reference/Gtk3/CellRendererProgress.html'
 
@@ -112,6 +109,9 @@
 
   - title: "CellRendererSpinner"
     url: '/content-docs/reference/Gtk3/CellRendererSpinner.html'
+
+  - title: "CellRendererText"
+    url: '/content-docs/reference/Gtk3/CellRendererText.html'
 
   - title: "CellRendererToggle"
     url: '/content-docs/reference/Gtk3/CellRendererToggle.html'
