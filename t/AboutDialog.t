@@ -122,7 +122,10 @@ subtest 'Properties ...', {
     'Very good language binding', GTK_LICENSE_MIT_X11.value,
     'https://example.com/my-favorite-items.html', 'favorite',
     'He, who has invented Raku, thanks a lot', 'folder-blue', 1
-  ], '.get-properties';
+  ], 'properties: ' ~ ('program-name', 'version', 'copyright', 'comments',
+    'license-type', 'website', 'website-label', 'translator-credits',
+    'logo-icon-name', 'wrap-license'
+  ).join(', ');
 
 #`{{
   test-property( G_TYPE_STRING, 'program-name', 'get-string', 'AboutDialog.t');
