@@ -19,15 +19,45 @@ The range of the spinbutton is taken from the I<adjustment> property of the cell
 
 The B<Gnome::Gtk3::CellRendererSpin> cell renderer was added in GTK+ 2.10.
 
+
 =head2 See Also
 
 B<Gnome::Gtk3::CellRendererText>, B<Gnome::Gtk3::SpinButton>
+
 
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::CellRendererSpin;
   also is Gnome::Gtk3::CellRendererText;
+
+
+=head2 Uml Diagram
+
+![](plantuml/CellRendererea.svg)
+
+
+=begin comment
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::CellRendererSpin;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::CellRendererSpin;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::CellRendererSpin class process the options
+    self.bless( :GtkCellRendererSpin, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
+
+=end comment
+
 
 =comment head2 Example
 
@@ -41,8 +71,6 @@ use Gnome::N::N-GObject;
 use Gnome::Gtk3::CellRendererText;
 
 #-------------------------------------------------------------------------------
-# /usr/include/gtk-3.0/gtk/INCLUDE
-# https://developer.gnome.org/WWW
 unit class Gnome::Gtk3::CellRendererSpin:auth<github:MARTIMM>;
 also is Gnome::Gtk3::CellRendererText;
 
@@ -51,165 +79,145 @@ also is Gnome::Gtk3::CellRendererText;
 =head1 Methods
 =head2 new
 
-Create a new plain object.
+=head3 default, no options
+
+Create a new CellRendererSpin object.
 
   multi method new ( )
 
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+
+=head3 :native-object
+
+Create a CellRendererSpin object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
   multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+
+=head3 :build-id
+
+Create a CellRendererSpin object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
 
 =end pod
 
-#TM:0:new():
-#TM:0:new(:native-object):
-#TM:0:new(:build-id):
-
+#TM:1:new():
+#TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
+#TM:4:new(:build-id):Gnome::GObject::Object
 submethod BUILD ( *%options ) {
-
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::CellRendererSpin';
+  if self.^name eq 'Gnome::Gtk3::CellRendererSpin' #`{{ or %options<GtkCellRendererSpin> }} {
 
-  # process all named arguments
-  if ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in Gnome::GObject::Object
-  }
+    # check if native object is set by a parent class
+    if self.is-valid { }
 
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
+    # check if common options are handled by some parent
+    elsif %options<native-object>:exists { }
+    elsif %options<build-id>:exists { }
 
-  else {#if ? %options<empty> {
-    self._set-native-object(gtk_cell_renderer_spin_new());
-  }
-
-  # only after creating the native-object, the gtype is known
-  self._set-class-info('GtkCellRendererSpin');
-}
-
-#-------------------------------------------------------------------------------
-# no pod. user does not have to know about it.
-method _fallback ( $native-sub is copy --> Callable ) {
-
-  my Str $new-patt = $native-sub.subst( '_', '-', :g);
-
-  my Callable $s;
-  try { $s = &::("gtk_cell_renderer_spin_$native-sub"); };
-  if ?$s {
-    Gnome::N::deprecate(
-      "gtk_cell_renderer_spinn_$native-sub", $new-patt, '0.47.4', '0.50.0'
-    );
-  }
-
-  else {
-    try { $s = &::("gtk_$native-sub"); } unless ?$s;
-    if ?$s {
-      Gnome::N::deprecate(
-        "gtk_$native-sub", $new-patt.subst('cell-renderer-spin-'),
-        '0.47.4', '0.50.0'
-      );
-    }
-
+    # process all other options
     else {
-      try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-      if ?$s {
-        Gnome::N::deprecate(
-          "$native-sub", $new-patt.subst('gtk-cell-renderer-spin-'),
-          '0.47.4', '0.50.0'
+      my $no;
+      if ? %options<___x___> {
+        #$no = %options<___x___>;
+        #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
+        #$no = _gtk_cell_renderer_spin_new___x___($no);
+      }
+
+      ##`{{ use this when the module is not made inheritable
+      # check if there are unknown options
+      elsif %options.elems {
+        die X::Gnome.new(
+          :message(
+            'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+            self.^name ~ ': ' ~ %options.keys.join(', ')
+          )
         );
       }
+      #}}
+
+      #`{{ when there are no defaults use this
+      # check if there are any options
+      elsif %options.elems == 0 {
+        die X::Gnome.new(:message('No options specified ' ~ self.^name));
+      }
+      }}
+
+      ##`{{ when there are defaults use this instead
+      # create default object
+      else {
+        $no = _gtk_cell_renderer_spin_new();
+      }
+      #}}
+
+      self.set-native-object($no);
     }
+
+    # only after creating the native-object, the gtype is known
+    self._set-class-info('GtkCellRendererSpin');
   }
-
-  self._set-class-name-of-sub('GtkCellRendererSpin');
-  $s = callsame unless ?$s;
-
-  $s;
 }
 
-
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_cell_renderer_spin_new:
 #`{{
-#-------------------------------------------------------------------------------
-# TM:0:gtk_cell_renderer_spin_get_type:
 =begin pod
-=head2 [gtk_cell_renderer_spin_] get_type
-
-  method gtk_cell_renderer_spin_get_type ( --> UInt  )
-
-=end pod
-
-sub gtk_cell_renderer_spin_get_type (  )
-  returns uint64
-  is native(&gtk-lib)
-  { * }
-}}
-
-#-------------------------------------------------------------------------------
-#TM:2:gtk_cell_renderer_spin_new:new()
-=begin pod
-=head2 gtk_cell_renderer_spin_new
+=head2 _gtk_cell_renderer_spin_new
 
 Creates a new B<Gnome::Gtk3::CellRendererSpin>.
 
-Since: 2.10
+Returns: a new B<Gnome::Gtk3::CellRendererSpin>
 
-  method gtk_cell_renderer_spin_new ( --> N-GObject  )
-
+  method _gtk_cell_renderer_spin_new ( --> N-GObject )
 
 =end pod
+}}
 
-sub gtk_cell_renderer_spin_new (  )
-  returns N-GObject
+sub _gtk_cell_renderer_spin_new (  --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_cell_renderer_spin_new')
   { * }
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
+=comment -----------------------------------------------------------------------
+=comment #TP:1:adjustment:
+=head2 adjustment
 
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.g-object-get-property( 'label', $gv);
-  $gv.g-value-set-string('my text label');
-
-=head2 Supported properties
-
-=comment #TP:0:adjustment:
-=head3 Adjustment
-
-
-The adjustment that holds the value of the spinbutton.
-This must be non-C<Any> for the cell renderer to be editable.
-Since: 2.10
-Widget type: GTK_TYPE_ADJUSTMENT
+The adjustment that holds the value of the spin button
 
 The B<Gnome::GObject::Value> type of property I<adjustment> is C<G_TYPE_OBJECT>.
 
-=comment #TP:0:climb-rate:
-=head3 Climb rate
+=item Parameter is readable and writable.
 
 
-The acceleration rate when you hold down a button.
-Since: 2.10
+=comment -----------------------------------------------------------------------
+=comment #TP:1:climb-rate:
+=head2 climb-rate
+
+The acceleration rate when you hold down a button
 
 The B<Gnome::GObject::Value> type of property I<climb-rate> is C<G_TYPE_DOUBLE>.
 
-=comment #TP:0:digits:
-=head3 Digits
+=item Parameter is readable and writable.
+=item Minimum value is 0.0.
+=item Maximum value is G_MAXDOUBLE.
+=item Default value is 0.0.
 
 
-The number of decimal places to display.
-Since: 2.10
+=comment -----------------------------------------------------------------------
+=comment #TP:1:digits:
+=head2 digits
+
+The number of decimal places to display
 
 The B<Gnome::GObject::Value> type of property I<digits> is C<G_TYPE_UINT>.
+
+=item Parameter is readable and writable.
+=item Minimum value is 0.
+=item Maximum value is 20.
+=item Default value is 0.
+
 =end pod

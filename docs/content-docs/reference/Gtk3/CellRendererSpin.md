@@ -26,61 +26,74 @@ Declaration
     unit class Gnome::Gtk3::CellRendererSpin;
     also is Gnome::Gtk3::CellRendererText;
 
+Uml Diagram
+-----------
+
+![](plantuml/CellRendererea.svg)
+
 Methods
 =======
 
 new
 ---
 
-Create a new plain object.
+### default, no options
+
+Create a new CellRendererSpin object.
 
     multi method new ( )
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :native-object
+
+Create a CellRendererSpin object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
     multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+### :build-id
+
+Create a CellRendererSpin object using a native object returned from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
-
-gtk_cell_renderer_spin_new
---------------------------
-
-Creates a new **Gnome::Gtk3::CellRendererSpin**.
-
-Since: 2.10
-
-    method gtk_cell_renderer_spin_new ( --> N-GObject  )
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+adjustment
+----------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
-
-Supported properties
---------------------
-
-### Adjustment
-
-The adjustment that holds the value of the spinbutton. This must be non-`Any` for the cell renderer to be editable. Since: 2.10 Widget type: GTK_TYPE_ADJUSTMENT
+The adjustment that holds the value of the spin button
 
 The **Gnome::GObject::Value** type of property *adjustment* is `G_TYPE_OBJECT`.
 
-### Climb rate
+  * Parameter is readable and writable.
 
-The acceleration rate when you hold down a button. Since: 2.10
+climb-rate
+----------
+
+The acceleration rate when you hold down a button
 
 The **Gnome::GObject::Value** type of property *climb-rate* is `G_TYPE_DOUBLE`.
 
-### Digits
+  * Parameter is readable and writable.
 
-The number of decimal places to display. Since: 2.10
+  * Minimum value is 0.0.
+
+  * Maximum value is G_MAXDOUBLE.
+
+  * Default value is 0.0.
+
+digits
+------
+
+The number of decimal places to display
 
 The **Gnome::GObject::Value** type of property *digits* is `G_TYPE_UINT`.
+
+  * Parameter is readable and writable.
+
+  * Minimum value is 0.
+
+  * Maximum value is 20.
+
+  * Default value is 0.
 
