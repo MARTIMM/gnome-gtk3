@@ -3,7 +3,10 @@ use NativeCall;
 use Test;
 
 use Gnome::Gtk3::CellRendererSpinner;
+use Gnome::Gtk3::Enums;
 
+use Gnome::N::GlibToRakuTypes;
+#use Gnome::N::N-GObject;
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
@@ -21,31 +24,132 @@ unless %*ENV<raku_test_all>:exists {
   exit;
 }
 
-#`{{
+#-------------------------------------------------------------------------------
+subtest 'Properties …', {
+#  my Gnome::Gtk3::CellRendererSpinner $crs .= new;
+  my @r = $crs.get-properties(
+    'active', gboolean, 'pulse', UInt, 'size', GEnum
+  );
+  is-deeply @r, [
+    0, 0, GTK_ICON_SIZE_MENU.value
+  ], 'properties: ' ~ (
+    'active', 'pulse', 'size'
+  ).join(', ');
+}
+
+#-------------------------------------------------------------------------------
+done-testing;
+
+=finish
+
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Inherit ...', {
+subtest 'Inherit Gnome::Gtk3::CellRendererSpinner', {
+  class MyClass is Gnome::Gtk3::CellRendererSpinner {
+    method new ( |c ) {
+      self.bless( :GtkCellRendererSpinner, |c);
+    }
+
+    submethod BUILD ( *%options ) {
+
+    }
+  }
+
+  my MyClass $mgc .= new;
+  isa-ok $mgc, Gnome::Gtk3::CellRendererSpinner, 'MyClass.new()';
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Interface ...', {
+subtest 'Properties …', {
+#  my Gnome::Gtk3::CellRendererSpinner $crs .= new;
+  my @r = $crs.get-properties(
+#    name, type,  …
+  );
+  is-deeply @r, [
+#    value, …
+  ], 'properties: ' ~ (
+#    name, …
+  ).join(', ');
+
+#-------------------------------------------------------------------------------
+subtest 'Signals …', {
+  use Gnome::Gtk3::Main;
+  use Gnome::N::GlibToRakuTypes;
+
+  my Gnome::Gtk3::Main $main .= new;
+
+  class SignalHandlers {
+    has Bool $!signal-processed = False;
+
+    method … (
+      'any-args',
+      Gnome::Gtk3::CellRendererSpinner :$_widget, gulong :$_handler-id
+      # --> …
+    ) {
+
+      isa-ok $_widget, Gnome::Gtk3::CellRendererSpinner;
+      $!signal-processed = True;
+    }
+
+    method signal-emitter ( Gnome::Gtk3::CellRendererSpinner :$widget --> Str ) {
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      $widget.emit-by-name(
+        'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      );
+      is $!signal-processed, True, '\'…\' signal processed';
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+
+      #$!signal-processed = False;
+      #$widget.emit-by-name(
+      #  'signal',
+      #  'any-args',
+      #  :return-type(int32),
+      #  :parameters([int32,])
+      #);
+      #is $!signal-processed, True, '\'…\' signal processed';
+
+      while $main.gtk-events-pending() { $main.iteration-do(False); }
+      sleep(0.4);
+      $main.gtk-main-quit;
+
+      'done'
+    }
+  }
+
+  my Gnome::Gtk3::CellRendererSpinner $crs .= new;
+
+  #my Gnome::Gtk3::Window $w .= new;
+  #$w.add($m);
+
+  my SignalHandlers $sh .= new;
+  $crs.register-signal( $sh, 'method', 'signal');
+
+  my Promise $p = $crs.start-thread(
+    $sh, 'signal-emitter',
+    # :!new-context,
+    # :start-time(now + 1)
+  );
+
+  is $main.gtk-main-level, 0, "loop level 0";
+  $main.gtk-main;
+  #is $main.gtk-main-level, 0, "loop level is 0 again";
+
+  is $p.result, 'done', 'emitter finished';
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Properties ...', {
+subtest 'Themes …', {
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Themes ...', {
+subtest 'Interface …', {
 }
-
-#-------------------------------------------------------------------------------
-subtest 'Signals ...', {
-}
-}}
-
-#-------------------------------------------------------------------------------
-done-testing;

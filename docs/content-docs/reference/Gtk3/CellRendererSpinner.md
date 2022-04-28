@@ -24,61 +24,72 @@ Declaration
     unit class Gnome::Gtk3::CellRendererSpinner;
     also is Gnome::Gtk3::CellRenderer;
 
+Uml Diagram
+-----------
+
+![](plantuml/CellRenderer-ea.svg)
+
 Methods
 =======
 
 new
 ---
 
-Create a new plain object.
+### default, no options
+
+Create a new CellRendererSpinner object.
 
     multi method new ( )
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :native-object
+
+Create a CellRendererSpinner object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
     multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+### :build-id
+
+Create a CellRendererSpinner object using a native object returned from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
-
-gtk_cell_renderer_spinner_new
------------------------------
-
-Returns a new cell renderer which will show a spinner to indicate activity.
-
-Since: 2.20
-
-    method gtk_cell_renderer_spinner_new ( --> N-GObject  )
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+active
+------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
-
-Supported properties
---------------------
-
-### Active
-
-Whether the spinner is active (ie. shown in the cell) Default value: False
+Whether the spinner is active (ie. shown in the cell)
 
 The **Gnome::GObject::Value** type of property *active* is `G_TYPE_BOOLEAN`.
 
-### Pulse
+  * Parameter is readable and writable.
 
-Pulse of the spinner. Increment this value to draw the next frame of the spinner animation. Usually, you would update this value in a timeout. By default, the **Gnome::Gtk3::Spinner** widget draws one full cycle of the animation, consisting of 12 frames, in 750 milliseconds. Since: 2.20
+  * Default value is FALSE.
+
+pulse
+-----
+
+Pulse of the spinner
 
 The **Gnome::GObject::Value** type of property *pulse* is `G_TYPE_UINT`.
 
-### Size
+  * Parameter is readable and writable.
 
-The **Gnome::Gtk3::IconSize** value that specifies the size of the rendered spinner. Since: 2.20 Widget type: GTK_TYPE_ICON_SIZE
+  * Minimum value is 0.
+
+  * Maximum value is G_MAXUINT.
+
+  * Default value is 0.
+
+size
+----
+
+The GtkIconSize value that specifies the size of the rendered spinner
 
 The **Gnome::GObject::Value** type of property *size* is `G_TYPE_ENUM`.
+
+  * Parameter is readable and writable.
+
+  * Default value is GTK_ICON_SIZE_MENU.
 
