@@ -29,7 +29,7 @@ Declaration
 Uml Diagram
 -----------
 
-![](plantuml/CellRendererea.svg)
+![](plantuml/CellRenderer-ea.svg)
 
 Methods
 =======

@@ -34,7 +34,7 @@ B<Gnome::Gtk3::CellRendererText>, B<Gnome::Gtk3::SpinButton>
 
 =head2 Uml Diagram
 
-![](plantuml/CellRendererea.svg)
+![](plantuml/CellRenderer-ea.svg)
 
 
 =begin comment
