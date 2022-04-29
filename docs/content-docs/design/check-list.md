@@ -111,12 +111,13 @@ CellRenderer              |  | ✗| ✓| ✓| ✓| ✓| ✓| ¾|  | ✓| ✓| �
 CellRendererAccel         |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓|  |  | ✓| ✓| ✓|
 CellRendererCombo         |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓|  | ⅔| ✓| ✓| ✓|
 CellRendererPixbuf        |  | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗|  | ✓| ✓| ✓|
-CellRendererProgress      |  | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓| < fbck sg prp
-CellRendererSpin          |  | ✗|  |  |  |  |  |  |  |  |  |  |  |
-CellRendererSpinner       |  | ✗|  |  |  |  |  |  |  |  |  |  |  |  
-CellRendererText          |  | ✗|  |  |  |  |  |  |  |  |  |  |  |  
-CellRendererToggle        |  | ✗|  |  |  |  |  |  |  |  |  |  |  |  
-CheckButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
+CellRendererProgress      |  | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
+CellRendererSpin          |  | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
+CellRendererSpinner       |  | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
+CellRendererText          |  | ✗| ✓| ✓| ✓| ✓| ✓|  |  | ⅗| ✓| ✓| ✓|
+CellRendererToggle        |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓| ✓| ✓| ✓|  
+CheckButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| < fbck sg prp
+| Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
 CheckMenuItem             |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 ColorButton               |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 ColorChooser              |R | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ½| ✓| ✓| ✓|
