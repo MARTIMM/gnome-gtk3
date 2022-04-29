@@ -1011,7 +1011,7 @@ gtk_entry_set_completion (entry, completion);
 =head1 Properties
 
 =comment -----------------------------------------------------------------------
-=comment #TP:1:cell-background:
+=comment #TP:0:cell-background:
 =head2 cell-background
 
 Cell background color as a string
