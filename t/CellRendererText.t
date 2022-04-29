@@ -6,14 +6,17 @@ use Test;
 #use Gnome::GObject::Object;
 use Gnome::GObject::Type;
 use Gnome::GObject::Value;
+
 use Gnome::Gtk3::Enums;
 #use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::CellRenderer;
 use Gnome::Gtk3::CellRendererText;
 
+
 use Gnome::N::GlibToRakuTypes;
-use Gnome::N::X;
+#use Gnome::N::N-GObject;
+#use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -21,6 +24,7 @@ use Gnome::N::X;
 my Gnome::Gtk3::Button $b;
 my Gnome::Gtk3::CellRendererText $crt;
 my Gnome::GObject::Value $v;
+
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   $crt .= new;
@@ -84,42 +88,53 @@ subtest 'Inherit CellRenderer', {
      'insensitive .get-state()';
   is GtkStateFlags( $state +& 0b10000000), GTK_STATE_FLAG_DIR_LTR,
      'dir ltr .get-state()';
-
-  #-----------------------------------------------------------------------------
-  subtest 'Properties CellRenderer', {
-
-    my @r = $crt.get-properties(
-        'ypad', guint, 'editing', gboolean, 'height', gint,
-        'is-expanded', gboolean, 'is-expander',  gboolean, 'mode', GEnum,
-        'sensitive', gboolean, 'visible', gboolean, 'width', gint,
-         'xalign', gfloat, 'xpad', guint, 'yalign', gfloat, 'ypad', guint
-    );
-#note @r;
-
-#    is @r[0], '', 'property cell-background';
-    is @r[0], 4, 'property ypad';
-    is @r[1], 0, 'property editing';
-    is @r[2], 10, 'property height';
-    is @r[3], 0, 'property is-expanded';
-    is @r[4], 0, 'property is-expander';
-    is GtkCellRendererMode(@r[5]), GTK_CELL_RENDERER_MODE_INERT, 'property mode';
-    is @r[6], 0, 'property sensitive';
-    is @r[7], 0, 'property visible';
-    is @r[8], 10, 'property width';
-    is @r[9], 0, 'property xalign';
-    is @r[10], 2, 'property xpad';
-    is @r[11], 0.5e0, 'property yalign';
-
-    $v .= new(:init(G_TYPE_INT));
-    $crt.get-property( 'mode', $v);
-    is GtkCellRendererMode($v.get-int), GTK_CELL_RENDERER_MODE_INERT,
-       'property mode';
-
-    $v .= new(:init(G_TYPE_BOOLEAN));
-    $crt.get-property( 'visible', $v);
-    nok $v.get-boolean, 'property visible'; # turned off in above test
-  }
 }
+
+#-------------------------------------------------------------------------------
+subtest 'Properties CellRenderer', {
+
+  my @r = $crt.get-properties(
+    'editing', gboolean, 'height', Int,
+    'is-expanded', gboolean, 'is-expander',  gboolean, 'mode', GEnum,
+    'sensitive', gboolean, 'visible', gboolean, 'width', Int,
+     'xalign', Num, 'xpad', UInt, 'yalign', Num, 'ypad', UInt
+  );
+
+  is-deeply @r, [
+    0, 10, 0, 0, GTK_CELL_RENDERER_MODE_INERT.value,
+    0, 0, 10, 0e0, 2, 5e-1, 4
+  ], 'properties: ' ~ (
+    'cell-background', 'editing', 'height', 'is-expanded', 'is-expander',
+    'mode', 'sensitive', 'visible', 'width', 'xalign', 'xpad',
+    'yalign', 'ypad'
+  ).join(', ');
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Properties CellRendererText', {
+
+  my @r = $crt.get-properties(
+    'editable', gboolean, 'ellipsize', GEnum, 'family', Str, 'language', Str,
+    'max-width-chars', Int, 'placeholder-text', Str, 'rise', Int, 'scale', Int,
+    'single-paragraph-mode', gboolean, 'size', Int, 'size-points', Num,
+    'stretch', GEnum, 'strikethrough', gboolean, 'style', GEnum, 'text', Str,
+    'underline', GEnum, 'variant', GEnum, 'weight', Int,
+    'width-chars', Int, 'wrap-mode', GEnum, 'wrap-width', Int
+  );
+
+  is-deeply @r, [
+    0, #`{PANGO_ELLIPSIZE_NONE.value} 0, '', '', -1, '', 0, 0, 0, 0, 0e0,
+    #`{PANGO_STRETCH_NORMAL} 4, 0, #`{PANGO_STYLE_NORMAL} 0, '',
+    #`{PANGO_UNDERLINE_NONE} 0, #`{PANGO_VARIANT_NORMAL} 0,
+    #`{PANGO_WEIGHT_NORMAL} 400, -1, #`{PANGO_WRAP_CHAR} 1, -1
+  ], 'properties: ' ~ (
+    'editable', 'ellipsize', 'family', 'language', 'markup', 'max-width-chars',
+    'placeholder-text', 'rise', 'scale', 'single-paragraph-mode', 'size',
+    'size-points', 'stretch', 'strikethrough', 'style', 'text', 'underline',
+    'variant', 'weight', 'width-chars', 'wrap-mode', 'wrap-width'
+  ).join(', ');
+}
+
 
 #`{{
 #-------------------------------------------------------------------------------
@@ -155,3 +170,5 @@ subtest 'Signals ...', {
 
 #-------------------------------------------------------------------------------
 done-testing;
+
+=finish
