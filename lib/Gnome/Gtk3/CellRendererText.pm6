@@ -218,9 +218,8 @@ Sets the height of a renderer to explicitly be determined by the “font” and 
 =end pod
 
 method set-fixed-height-from-font ( Int() $number_of_rows ) {
-
   gtk_cell_renderer_text_set_fixed_height_from_font(
-    self._f('GtkCellRendererText'), $number_of_rows
+    self._get-native-object-no-reffing, $number_of_rows
   );
 }
 
