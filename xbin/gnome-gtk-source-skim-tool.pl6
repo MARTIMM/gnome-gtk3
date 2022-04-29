@@ -869,7 +869,6 @@ sub substitute-in-template (
 
 
     =head1 Synopsis
-
     =head2 Declaration
     EOTEMPLATE
 
@@ -1079,8 +1078,8 @@ sub substitute-in-template (
             else {
               my $no;
               if ? %options<___x___> {
-                $no = %options<___x___>;
-                $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
+                #$no = %options<___x___>;
+                #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
                 #$no = _BASE-SUBNAME_new___x___($no);
               }
 
@@ -3581,7 +3580,7 @@ sub generate-test ( ) {
     use $class;
 
     #use Gnome::N::GlibToRakuTypes;
-    #use Gnome::GObject::Object;
+    #use Gnome::N::N-GObject;
     #use Gnome::N::X;
     #Gnome::N::debug(:on);
 
@@ -3637,6 +3636,7 @@ sub generate-test ( ) {
       ], 'properties: ' ~ (
     #    name, …
       ).join\(', ');
+    }
 
     #-------------------------------------------------------------------------------
     subtest 'Signals …', {
