@@ -18,21 +18,26 @@ class Gnome::Gtk3::Buildable <<(R,#80ffff)>>
 Interface Gnome::Gtk3::Actionable <Interface>
 class Gnome::Gtk3::Actionable <<(R,#80ffff)>>
 
-'Class connections
-Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
-Gnome::GObject::InitialyUnowned <|-- Gnome::Gtk3::Widget
 
+'class connections
+Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
 Gnome::GObject::Object <|-- Gnome::GObject::InitialyUnowned
 Gnome::GObject::Signal <|. Gnome::GObject::Object
 
-Gnome::Gtk3::Widget .|> Gnome::Gtk3::Buildable
+Gnome::GObject::InitialyUnowned <|--- Gnome::Gtk3::Widget
+Gnome::Gtk3::Widget .up.|> Gnome::Gtk3::Buildable
 
 Gnome::Gtk3::Container -|> Gnome::Gtk3::Widget
 Gnome::Gtk3::Bin -|> Gnome::Gtk3::Container
-Gnome::Gtk3::Bin <|-- Gnome::Gtk3::MenuItem
-Gnome::Gtk3::MenuItem ..|> Gnome::Gtk3::Actionable
-Gnome::Gtk3::MenuItem <|- Gnome::Gtk3::CheckMenuItem
 
+Gnome::Gtk3::MenuItem -|> Gnome::Gtk3::Bin
+Gnome::Gtk3::MenuItem .up.|> Gnome::Gtk3::Actionable
+
+Gnome::Gtk3::MenuItem <|-- Gnome::Gtk3::CheckMenuItem
+Gnome::Gtk3::CheckMenuItem <|-- Gnome::Gtk3::RadioMenuItem
+Gnome::Gtk3::MenuItem <|-- Gnome::Gtk3::SeparatorMenuItem
+Gnome::Gtk3::MenuItem <|-- Gnome::Gtk3::TearoffMenuItem
+Gnome::Gtk3::MenuItem <|-- Gnome::Gtk3::ImageMenuItem
 
 @enduml
 ```
