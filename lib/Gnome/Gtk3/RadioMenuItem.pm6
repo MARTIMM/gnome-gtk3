@@ -58,7 +58,7 @@ B<Gnome::Gtk3::MenuItem>, B<Gnome::Gtk3::CheckMenuItem>
 
 =head2 Uml Diagram
 
-![](plantuml/RadioMenuItem.svg)
+![](plantuml/MenuItem-ea.svg)
 
 
 =head2 Inheriting this class

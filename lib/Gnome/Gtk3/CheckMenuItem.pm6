@@ -36,7 +36,7 @@ B<Gnome::Gtk3::CheckMenuItem> has a main CSS node with name menuitem, and a subn
 
 =head2 Uml Diagram
 
-![](plantuml/CheckMenuItem.svg)
+![](plantuml/MenuItem-ea.svg)
 
 
 =head2 Inheriting this class

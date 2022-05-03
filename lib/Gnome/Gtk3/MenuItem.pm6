@@ -58,7 +58,7 @@ B<Gnome::Gtk3::Bin>, B<Gnome::Gtk3::MenuShell>
 
 =head2 Uml Diagram
 
-![](plantuml/MenuItem.svg)
+![](plantuml/MenuItem-ea.svg)
 
 
 =begin comment
