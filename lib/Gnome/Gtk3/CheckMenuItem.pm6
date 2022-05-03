@@ -435,6 +435,95 @@ sub gtk_check_menu_item_get_draw_as_radio ( N-GObject $check_menu_item --> gbool
   is native(&gtk-lib)
   { * }
 
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Signals
+
+=comment -----------------------------------------------------------------------
+=comment #TS:1:toggled:
+=head2 toggled
+
+This signal is emitted when the state of the check box is changed.
+
+A signal handler can use C<get_active()>
+to discover the new state.
+
+  method handler (
+    Gnome::Gtk3::CheckMenuItem :_widget($checkmenuitem),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $checkmenuitem; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=end pod
+
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:active:
+=head2 active
+
+Whether the menu item is checked
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:draw-as-radio:
+=head2 draw-as-radio
+
+Whether the menu item looks like a radio menu item
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:inconsistent:
+=head2 inconsistent
+
+Whether to display an \inconsistent\ state
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
+=end pod
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=finish
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Signals

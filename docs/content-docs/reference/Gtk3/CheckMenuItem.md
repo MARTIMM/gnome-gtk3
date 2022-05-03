@@ -150,79 +150,61 @@ Returns whether *check_menu_item* looks like a **Gnome::Gtk3::RadioMenuItem**
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
-
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
--------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### toggled
+toggled
+-------
 
 This signal is emitted when the state of the check box is changed.
 
-A signal handler can use `gtk_check_menu_item_get_active()` to discover the new state.
+A signal handler can use `get_active()` to discover the new state.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($checkmenuitem),
+      Gnome::Gtk3::CheckMenuItem :_widget($checkmenuitem),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $checkmenuitem; the object which received the signal.
+  * $checkmenuitem; The instance which registered the signal
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+active
+------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
+Whether the menu item is checked
 
-Supported properties
---------------------
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-### Active
+  * Parameter is readable and writable.
 
-Whether the menu item is checked Default value: False
+  * Default value is FALSE.
 
-The **Gnome::GObject::Value** type of property *active* is `G_TYPE_BOOLEAN`.
+draw-as-radio
+-------------
 
-### Inconsistent
+Whether the menu item looks like a radio menu item
 
-Whether to display an \inconsistent\ state Default value: False
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-The **Gnome::GObject::Value** type of property *inconsistent* is `G_TYPE_BOOLEAN`.
+  * Parameter is readable and writable.
 
-### Draw as radio menu item
+  * Default value is FALSE.
 
-Whether the menu item looks like a radio menu item Default value: False
+inconsistent
+------------
 
-The **Gnome::GObject::Value** type of property *draw-as-radio* is `G_TYPE_BOOLEAN`.
+Whether to display an \inconsistent\ state
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is FALSE.
 
