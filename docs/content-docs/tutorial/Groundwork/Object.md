@@ -70,7 +70,7 @@ my Gnome::Gtk3::Main $main .= new;
 class SignalHandlers {
   has Bool $!signal-processed = False;
 
-  method activate ( Str $uri --> Bool ) {                               # 1
+  method activate ( Str $uri --> Bool ) {                             # 1
     is $uri, 'https://example.com/my-favourite-items.html',
       'uri received from event';
     $!signal-processed = True;
@@ -80,9 +80,9 @@ class SignalHandlers {
 
   method signal-emitter (
     Gnome::Gtk3::AboutDialog :_widget($about-dialog) --> Str
-  ) {                                                                   # 2
+  ) {                                                                 # 2
 
-    $about-dialog.emit-by-name(                                         # 3
+    $about-dialog.emit-by-name(                                       # 3
       'activate-link',
       'https://example.com/my-favourite-items.html',
       :return-type(gboolean),
@@ -99,36 +99,36 @@ class SignalHandlers {
 }
 
 my SignalHandlers $sh .= new;
-$a.register-signal( $sh, 'activate', 'activate-link');                  # 4
+$a.register-signal( $sh, 'activate', 'activate-link');                # 4
 
-my Promise $p = $a.start-thread( $sh, 'signal-emitter', :new-context);  # 5
+my Promise $p = $a.start-thread( $sh, 'signal-emitter', :new-context);# 5
 
-$main.main;                                                             # 6
+$main.main;                                                           # 6
 
 is $p.result, 'done', 'emitter finished';
 ```
 
-1) There are two handlers in the **SignalHandlers** class. The signal to be tested is `activate-link` and the method `.activate()` receives it. This handler receives an uri.
+1. There are two handlers in the **SignalHandlers** class. The signal to be tested is `activate-link` and the method `.activate()` receives it. This handler receives an uri.
 
-2) The second handler is the one running in a thread. We need a thread if long running work is to be done and it should not hold up the interaction of the user interface. Here it just fires an event to test the event handler.
+2. The second handler is the one running in a thread. We need a thread if long running work is to be done and it should not hold up the interaction of the user interface. Here it just fires an event to test the event handler.
 
-3) The method `.emit-by-name()` is used to fire the event. It must deliver all arguments which an event handler can receive. After emitting, we need some rest and then finish the event loop. The types are native types used in Gtk and are defined in **Gnome::N::GlibToRakuTypes** as a convenience. The `gboolean` is an `int32` and `gchar-ptr` is an `Str`.
+3. The method `.emit-by-name()` is used to fire the event. It must deliver all arguments which an event handler can receive. After emitting, we need some rest and then finish the event loop. The types are native types used in Gtk and are defined in **Gnome::N::GlibToRakuTypes** as a convenience. The `gboolean` is an `int32` and `gchar-ptr` is an `Str`.
 
-4) We must register the signal handler.
+4. We must register the signal handler.
 
-5) Now we can create a thread which, in this case, also creates a new event context. This is not always necessary, but in that case you need to process the events yourself like here;
-```raku
-while $main.events-pending() { $main.iteration-do(False); }
-```
+5. Now we can create a thread which, in this case, also creates a new event context. This is not always necessary, but in that case you need to process the events yourself like here;
+  ```raku
+  while $main.events-pending() { $main.iteration-do(False); }
+  ```
 
-6) Start the event loop. We return here when `.main-quit()` is called to end the loop. After that we can test for any results comming back from the thread.
+6. Start the event loop. We return here when `.main-quit()` is called to end the loop. After that we can test for any results comming back from the thread.
 
 
 ## Properties
 
-Properties are predefined items in the native object. Each Gtk class has its own set of variables to store data set by the several routines of a class. Most of the values can be retrieved by the native subroutines as well as setting these values. Sometimes however, there are no subs defined and we must use special calls to get and set them. At the start of the implementation of the Raku classes, there was only one method available and is documented everywhere at the start of the properties section of a class.
+Properties are predefined items in the native object, i.e all GTK+ objects inheriting from the native object wrapped in **Gnome::GObject::Object**. Each gtk class has its own set of variables to store data. Most of the values can be retrieved by the methods as well as setting these values. Sometimes however, there are no methods defined and we must use special calls to get and set them.
 
-For instance in the module **Gnome::Gtk3::AboutDialog** we can find the methods to get and set the program name which is shown in the dialog.
+For instance, in the module **Gnome::Gtk3::AboutDialog** we can find the methods to get and set the program name which is shown in the dialog.
 
 ```raku
 $about-dialog.set-program-name('AboutDialog.t');
@@ -137,24 +137,25 @@ say $about-dialog.get-program-name;         # AboutDialog.t
 
 To use the property for this data you can run the following snippet;
 ```raku
-my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));              # 1
-$about-dialog.get-property( 'program-name', $gv);                       # 2
-say $gv.get-string;                         # AboutDialog               # 3
-$gv.clear-object;                                                       # 4
+my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));            # 1
+$about-dialog.get-property( 'program-name', $gv);                     # 2
+say $gv.get-string;                         # AboutDialog.t           # 3
+$gv.clear-object;                                                     # 4
 ```
-1) Initialize the **Gnome::GObject::Value** object with the type we have to get data from. These types are defined in **Gnome::GObject::Type**.
+1. Initialize the **Gnome::GObject::Value** object with the type we have to get data from. These types are defined in **Gnome::GObject::Type**.
 
-2) Then we can get the property from the about dialog object into the **Gnome::GObject::Value** object.
+2. Then we can get the property from the about dialog object into the **Gnome::GObject::Value** object.
 
-3) Using the call `.get-string()`, we are able to retrieve the string from the property. For each type, there is another method. Examples are `.get-boolean()` and `.get-int64()`. There is also a set property method. In this case `.set-string()`. Note that not all properties are writable.
+3. Using the call `.get-string()`, we are able to retrieve the string from the property. For each type, there is another method. Examples are `.get-boolean()` and `.get-int64()`. There is also a set property method. In this case `.set-string()`. Note that not all properties are writable.
 
-4) When done with the **Value** object, clean it up.
+4. When done with the **Value** object, we need to clean it up.
 
-Das war damals, but still usable. Now, new methods are added and are much simpler to work with.
+Das war damals, but it still usable. Now, new methods are added and are much simpler to work with. The methods are `.get-properties()` and `.set-properties()`.
 ```raku
 my @r = $about-dialog.get-properties( 'program-name', Str);
-say @r[0];                                  # AboutDialog
+say @r[0];                                  # AboutDialog.t
 ```
+
 More than one property can be returned from one call. Therefore, the values are returned in a list.
 
 Errors like the next one, are shown at the terminal when wrong or non-existant property names are used.
@@ -164,16 +165,16 @@ Errors like the next one, are shown at the terminal when wrong or non-existant p
 
 ## Data
 
-Properties are predefined values of a Gtk class. The user of a widget might have a few of their own to add to the native object. But first …
+Properties are predefined values of a gtk class. The user of a widget might have a few of their own to add to the native object. But first …
 
 There was this issue #23 posted by Grenzionky about loosing information set in attributes of classes inheriting some gnome widget. The problem happened when the object of such a class was set as a page in a notebook. Later the object was returned again from the notebook by some call to a method. The strange thing was that, when the Raku object was recreated again, the attributes in that object were not having the values which were set before.
 
-A code snippet to show what has been done
+A code snippet to show the situation
 ```raku
-class ExtendedLabel is Gnome::Gtk3::Label {                             # 1
+class ExtendedLabel is Gnome::Gtk3::Label {                           # 1
   has Str $.custom-data;
 
-  submethod new (|c) {                                                  # 2
+  submethod new (|c) {                                                # 2
     self.bless( :GtkLabel, |c );
   }
 }
@@ -182,29 +183,29 @@ my ExtendedLabel $label .= new(
   :custom-data('some data contents'), :text('words')
 );
 
-my Gnome::Gtk3::Notebook $notebook .= new;                              # 3
+my Gnome::Gtk3::Notebook $notebook .= new;                            # 3
 $notebook.append-page( $label, Gnome::Gtk3::Label.new(:text('title')));
 
-my Gnome::Gtk3::Window $window .= new;                                  # 4
+my Gnome::Gtk3::Window $window .= new;                                # 4
 $window.add($notebook);
 
 … Further setup and start main loop …
 
-say ExtendedLabel.new(                                                  # 5
+say ExtendedLabel.new(                                                # 5
   :native-object($notebook.get-nth-page(0))
 ).custom-data;
 
 ```
 
-1) This is the class we want to talk about. `$!custom-data` is the attribute we need to use later.
+1. This is the class we want to talk about. `$!custom-data` is the attribute we need to use later.
 
-2) A necessary step to inherit the Label widget. Initializing the class with the label text as 'words' and the attribute `$.custom-data` to 'some data contents'.
+2. A necessary step to inherit the Label widget. Initializing the class with the label text as 'words' and the attribute `$.custom-data` to 'some data contents'.
 
-3) Create the notebook and add the **ExtendedLabel** object as a page.
+3. Create the notebook and add the **ExtendedLabel** object as a page.
 
-4) Create a window and add the notebook to it. Additionally, we need to register callback handlers, show everything and start the main loop.
+4. Create a window and add the notebook to it. Additionally, we need to register callback handlers, show everything and start the main loop.
 
-5) Sometime later we want to get the object again to do some work and we expect to get `'some data contents'` as the stored text. Unfortunately, it will be undefined!
+5. Sometime later we want to get the object again to do some work and we expect to get `'some data contents'` as the stored text. Unfortunately, it will be undefined!
 
 So, why did the Raku class not initialize to its original value?
 The problem lies in the fact that all Raku widget classes wrap a native object. This native object is the only structure to be given to the native suboutines in order to complete their tasks. When, at a later moment, the object is retrieved, the object can only be wrapped in again into the Raku class without any knowledge of the previous settings of its attributes. In the above case it is more or less obvious that the object is imported (See line `(5`).
@@ -213,6 +214,11 @@ It is less clear when a `-rk` version is used like below;
 
 ```raku
 my Gnome::Gtk3::Label $label = $notebook.get-nth-page-rk(0);
+```
+
+**Note** that the `-rk` routines are deprecated because of newer code which can help to coerce to the proper Raku objects. As an example taken from above, the same result is produced using the following code;
+```raku
+my Gnome::Gtk3::Label() $label = $notebook.get-nth-page(0);
 ```
 
 Essentially, it does the same besides finding out what Raku widget object to create. Note that it can only return a **Gnome::Gtk3::Label**, the code cannot possibly know about other classes. Therefore this is not usable on child classes like **ExtendedLabel**.
@@ -236,11 +242,11 @@ class ExtendedLabel is Gnome::Gtk3::Label {
   }
 
   submethod BUILD ( Str $!custom-data, :$native-object ) {
-    if ? $native-object {                                               # 1
+    if ? $native-object {                                             # 1
       $!custom-data = self.get-data( 'custom data', Str);
     }
 
-    else {                                                              # 2
+    else {                                                            # 2
       self.set-data( 'custom data', $!custom-data);
     }
   }
@@ -252,13 +258,13 @@ my ExtendedLabel $label .= new(
 
 …
 
-say ExtendedLabel.new(                                                  # 3
+say ExtendedLabel.new(                                                # 3
   :native-object($notebook.get-nth-page(0))
 ).custom-data;
 ```
-1) Create the class from our issue example but now we test for a named argument `:$native-object`. The argument is handled in **TopLevelClassSupport** but we use it here to see if the native object is imported or that it is created anew. When imported, we retrieve the data back from the native object with `.get-data()`.
-2) Otherwise, when created anew, the data is also stored on the native object.
-3) Then, when needed, the same call is used as before but the attribute `$!custom-data` will be set automatically.
+1. Create the class from our issue example but now we test for a named argument `:$native-object`. The argument is handled in **TopLevelClassSupport** but we use it here to see if the native object is imported or that it is created anew. When imported, we retrieve the data back from the native object with `.get-data()`.
+2. Otherwise, when created anew, the data is also stored on the native object.
+3. Then, when needed, the same call is used as before but the attribute `$!custom-data` will be set automatically.
 
 Note that the data is stored with a key. This means that you can store more data items on an object. Above the key `custom data` is used.
 
@@ -326,11 +332,11 @@ class ExtendedLabel is Gnome::Gtk3::Label {
   }
 
   submethod BUILD ( Str :$!custom-data, :$native-object? ) {
-    if $native-object {                                                 # 1
+    if $native-object {                                               # 1
       $!custom-data = self.get-data( 'custom-data', Str);
     }
 
-    else {                                                              # 2
+    else {                                                            # 2
       self.set-data( 'custom-data', $!custom-data);
     }
   }
