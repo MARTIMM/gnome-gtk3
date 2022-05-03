@@ -117,12 +117,12 @@
     url: '/content-docs/reference/Gtk3/CellRendererToggle.html'
     type: widget
 
-  - title: "CheckMenuItem"
-    url: "/content-docs/reference/Gtk3/CheckMenuItem.html"
-    type: widget
-
   - title: "CheckButton"
     url: "/content-docs/reference/Gtk3/CheckButton.html"
+    type: widget
+
+  - title: "CheckMenuItem"
+    url: "/content-docs/reference/Gtk3/CheckMenuItem.html"
     type: widget
 
   - title: "ColorButton"
