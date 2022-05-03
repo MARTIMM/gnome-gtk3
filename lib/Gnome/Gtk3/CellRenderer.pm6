@@ -1016,8 +1016,7 @@ gtk_entry_set_completion (entry, completion);
 
 Cell background color as a string
 
-The B<Gnome::GObject::Value> type of property I<cell-background> is C<G_TYPE_STRING>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
 =item Parameter is writable.
 =item Default value is undefined.
 
@@ -1028,8 +1027,9 @@ The B<Gnome::GObject::Value> type of property I<cell-background> is C<G_TYPE_STR
 
 Cell background color as a GdkRGBA
 
-The B<Gnome::GObject::Value> type of property I<cell-background-rgba> is C<G_TYPE_BOXED>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOXED
+=item the type of this G_TYPE_BOXED object is GDK_TYPE_RGBA
+=item Parameter is readable and writable.
 
 
 =comment -----------------------------------------------------------------------
@@ -1038,8 +1038,7 @@ The B<Gnome::GObject::Value> type of property I<cell-background-rgba> is C<G_TYP
 
 Whether the cell renderer is currently in editing mode
 
-The B<Gnome::GObject::Value> type of property I<editing> is C<G_TYPE_BOOLEAN>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
 =item Parameter is readable.
 =item Default value is FALSE.
 
@@ -1050,8 +1049,7 @@ The B<Gnome::GObject::Value> type of property I<editing> is C<G_TYPE_BOOLEAN>.
 
 The fixed height
 
-The B<Gnome::GObject::Value> type of property I<height> is C<G_TYPE_INT>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_INT
 =item Parameter is readable and writable.
 =item Minimum value is -1.
 =item Maximum value is G_MAXINT.
@@ -1064,8 +1062,7 @@ The B<Gnome::GObject::Value> type of property I<height> is C<G_TYPE_INT>.
 
 Row is an expander row, and is expanded
 
-The B<Gnome::GObject::Value> type of property I<is-expanded> is C<G_TYPE_BOOLEAN>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
 =item Parameter is readable and writable.
 =item Default value is FALSE.
 
@@ -1076,8 +1073,7 @@ The B<Gnome::GObject::Value> type of property I<is-expanded> is C<G_TYPE_BOOLEAN
 
 Row has children
 
-The B<Gnome::GObject::Value> type of property I<is-expander> is C<G_TYPE_BOOLEAN>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
 =item Parameter is readable and writable.
 =item Default value is FALSE.
 
@@ -1088,8 +1084,8 @@ The B<Gnome::GObject::Value> type of property I<is-expander> is C<G_TYPE_BOOLEAN
 
 Editable mode of the CellRenderer
 
-The B<Gnome::GObject::Value> type of property I<mode> is C<G_TYPE_ENUM>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_ENUM
+=item the type of this G_TYPE_ENUM object is GTK_TYPE_CELL_RENDERER_MODE
 =item Parameter is readable and writable.
 =item Default value is GTK_CELL_RENDERER_MODE_INERT.
 
@@ -1099,8 +1095,7 @@ The B<Gnome::GObject::Value> type of property I<mode> is C<G_TYPE_ENUM>.
 
 Display the cell sensitive
 
-The B<Gnome::GObject::Value> type of property I<sensitive> is C<G_TYPE_BOOLEAN>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
 =item Parameter is readable and writable.
 =item Default value is TRUE.
 
@@ -1111,8 +1106,7 @@ The B<Gnome::GObject::Value> type of property I<sensitive> is C<G_TYPE_BOOLEAN>.
 
 Display the cell
 
-The B<Gnome::GObject::Value> type of property I<visible> is C<G_TYPE_BOOLEAN>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
 =item Parameter is readable and writable.
 =item Default value is TRUE.
 
@@ -1123,8 +1117,7 @@ The B<Gnome::GObject::Value> type of property I<visible> is C<G_TYPE_BOOLEAN>.
 
 The fixed width
 
-The B<Gnome::GObject::Value> type of property I<width> is C<G_TYPE_INT>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_INT
 =item Parameter is readable and writable.
 =item Minimum value is -1.
 =item Maximum value is G_MAXINT.
@@ -1137,8 +1130,7 @@ The B<Gnome::GObject::Value> type of property I<width> is C<G_TYPE_INT>.
 
 The x-align
 
-The B<Gnome::GObject::Value> type of property I<xalign> is C<G_TYPE_FLOAT>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_FLOAT
 =item Parameter is readable and writable.
 =item Minimum value is 0.0.
 =item Maximum value is 1.0.
@@ -1151,8 +1143,7 @@ The B<Gnome::GObject::Value> type of property I<xalign> is C<G_TYPE_FLOAT>.
 
 The xpad
 
-The B<Gnome::GObject::Value> type of property I<xpad> is C<G_TYPE_UINT>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_UINT
 =item Parameter is readable and writable.
 =item Minimum value is 0.
 =item Maximum value is G_MAXUINT.
@@ -1165,8 +1156,7 @@ The B<Gnome::GObject::Value> type of property I<xpad> is C<G_TYPE_UINT>.
 
 The y-align
 
-The B<Gnome::GObject::Value> type of property I<yalign> is C<G_TYPE_FLOAT>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_FLOAT
 =item Parameter is readable and writable.
 =item Minimum value is 0.0.
 =item Maximum value is 1.0.
@@ -1179,8 +1169,7 @@ The B<Gnome::GObject::Value> type of property I<yalign> is C<G_TYPE_FLOAT>.
 
 The ypad
 
-The B<Gnome::GObject::Value> type of property I<ypad> is C<G_TYPE_UINT>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_UINT
 =item Parameter is readable and writable.
 =item Minimum value is 0.
 =item Maximum value is G_MAXUINT.

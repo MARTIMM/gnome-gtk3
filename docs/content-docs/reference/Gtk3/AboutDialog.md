@@ -447,21 +447,29 @@ artists
 
 The people who contributed artwork to the program, as a `undefined`-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
-The **Gnome::GObject::Value** type of property *artists* is `G_TYPE_BOXED`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOXED
+
+  * the type of this G_TYPE_BOXED object is G_TYPE_STRV
+
+  * Parameter is readable and writable.
 
 authors
 -------
 
 The authors of the program, as a `undefined`-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
-The **Gnome::GObject::Value** type of property *authors* is `G_TYPE_BOXED`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOXED
+
+  * the type of this G_TYPE_BOXED object is G_TYPE_STRV
+
+  * Parameter is readable and writable.
 
 comments
 --------
 
 Comments about the program. This string is displayed in a label in the main dialog, thus it should be a short explanation of the main purpose of the program, not a detailed list of features.
 
-The **Gnome::GObject::Value** type of property *comments* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
   * Parameter is readable and writable.
 
@@ -472,7 +480,7 @@ copyright
 
 Copyright information for the program.
 
-The **Gnome::GObject::Value** type of property *copyright* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
   * Parameter is readable and writable.
 
@@ -483,7 +491,11 @@ documenters
 
 The people documenting the program, as a `undefined`-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
-The **Gnome::GObject::Value** type of property *documenters* is `G_TYPE_BOXED`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOXED
+
+  * the type of this G_TYPE_BOXED object is G_TYPE_STRV
+
+  * Parameter is readable and writable.
 
 license
 -------
@@ -494,7 +506,7 @@ Note that the text is only wrapped in the text view if the "wrap-license" proper
 
 When setting this property to a non-`undefined` value, the *license-type* property is set to `GTK_LICENSE_CUSTOM` as a side effect.
 
-The **Gnome::GObject::Value** type of property *license* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
   * Parameter is readable and writable.
 
@@ -513,9 +525,9 @@ If `GTK_LICENSE_CUSTOM` is used, the current contents of the *license* property 
 
 For any other **Gnome::Gtk3::License** value, the contents of the *license* property are also set by this property as a side effect.
 
-Widget type: GTK_TYPE_LICENSE
+  * **Gnome::GObject::Value** type of this property is G_TYPE_ENUM
 
-The **Gnome::GObject::Value** type of property *license-type* is `G_TYPE_ENUM`.
+  * the type of this G_TYPE_ENUM object is GTK_TYPE_LICENSE
 
   * Parameter is readable and writable.
 
@@ -526,9 +538,9 @@ logo
 
 A logo for the about box. If it is `undefined`, the default window icon set with `gtk_window_set_default_icon()` will be used.
 
-Widget type: GDK_TYPE_PIXBUF
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
 
-The **Gnome::GObject::Value** type of property *logo* is `G_TYPE_OBJECT`.
+  * the type of this G_TYPE_OBJECT object is GDK_TYPE_PIXBUF
 
   * Parameter is readable and writable.
 
@@ -537,7 +549,7 @@ logo-icon-name
 
 A named icon to use as the logo for the about box. This property overrides the *logo* property.
 
-The **Gnome::GObject::Value** type of property *logo-icon-name* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
   * Parameter is readable and writable.
 
@@ -548,7 +560,7 @@ program-name
 
 The name of the program. If this is not set, it defaults to `g_get_application_name()`.
 
-The **Gnome::GObject::Value** type of property *program-name* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
   * Parameter is readable and writable.
 
@@ -559,7 +571,7 @@ translator-credits
 
 Credits to the translators. This string should be marked as translatable. The string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
-The **Gnome::GObject::Value** type of property *translator-credits* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
   * Parameter is readable and writable.
 
@@ -570,7 +582,7 @@ version
 
 The version of the program.
 
-The **Gnome::GObject::Value** type of property *version* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
   * Parameter is readable and writable.
 
@@ -581,7 +593,7 @@ website
 
 The URL for the link to the website of the program. This should be a string starting with "http://.
 
-The **Gnome::GObject::Value** type of property *website* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
   * Parameter is readable and writable.
 
@@ -592,7 +604,7 @@ website-label
 
 The label for the link to the website of the program.
 
-The **Gnome::GObject::Value** type of property *website-label* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
   * Parameter is readable and writable.
 
@@ -603,7 +615,7 @@ wrap-license
 
 Whether to wrap the text in the license dialog.
 
-The **Gnome::GObject::Value** type of property *wrap-license* is `G_TYPE_BOOLEAN`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
   * Parameter is readable and writable.
 

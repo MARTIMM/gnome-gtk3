@@ -6,9 +6,11 @@ use NativeCall;
 use Test;
 
 use Gnome::Gtk3::AboutDialog;
-use Gnome::Gdk3::Pixbuf;
-use Gnome::N::GlibToRakuTypes;
 
+use Gnome::Gdk3::Pixbuf;
+
+use Gnome::N::GlibToRakuTypes;
+use Gnome::N::N-GObject;
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
@@ -126,6 +128,27 @@ subtest 'Properties ...', {
     'license-type', 'website', 'website-label', 'translator-credits',
     'logo-icon-name', 'wrap-license'
   ).join(', ');
+
+#`{{
+  my Gnome::Gdk3::Pixbuf $p1 .= new(:file<t/data/Add.png>);
+note 'w: ', $p1.get-width;
+  @r = $a.get-properties( 'logo', N-GObject);
+  my Gnome::Gdk3::Pixbuf() $p2 = @r[0];
+note 'no: ', @r[0].gist;
+  is $p1.get-width, $p2.get-width, 'property logo: pixbuf width';
+}}
+
+  $a.set-properties( :program-name<AboutDialog.rakutest>, :version<0.14.2.2>);
+  @r = $a.get-properties( 'program-name', Str, 'version', Str);
+  is-deeply @r, [ 'AboutDialog.rakutest', '0.14.2.2'],
+    'set properties: ' ~ ('program-name', 'version').join(', ');
+
+  @r = $a.get-properties( 'artists', N-GObject);
+  my CArray[Str] $artists = nativecast( CArray[Str], @r[0]);
+  my Int $c = 0;
+  while ?$artists[$c] {
+    diag $artists[$c++];
+  }
 
 #`{{
   test-property( G_TYPE_STRING, 'program-name', 'get-string', 'AboutDialog.t');

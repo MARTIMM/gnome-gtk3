@@ -96,7 +96,9 @@ alignment
 
 How to align the lines
 
-The **Gnome::GObject::Value** type of property *alignment* is `G_TYPE_ENUM`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_ENUM
+
+  * the type of this G_TYPE_ENUM object is PANGO_TYPE_ALIGNMENT
 
   * Parameter is readable and writable.
 
@@ -107,14 +109,18 @@ attributes
 
 A list of style attributes to apply to the text of the renderer
 
-The **Gnome::GObject::Value** type of property *attributes* is `G_TYPE_BOXED`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOXED
+
+  * the type of this G_TYPE_BOXED object is PANGO_TYPE_ATTR_LIST
+
+  * Parameter is readable and writable.
 
 background
 ----------
 
 Background color as a string
 
-The **Gnome::GObject::Value** type of property *background* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
   * Parameter is writable.
 
@@ -125,14 +131,18 @@ background-rgba
 
 Background color as a GdkRGBA
 
-The **Gnome::GObject::Value** type of property *background-rgba* is `G_TYPE_BOXED`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOXED
+
+  * the type of this G_TYPE_BOXED object is GDK_TYPE_RGBA
+
+  * Parameter is readable and writable.
 
 editable
 --------
 
 Whether the text can be modified by the user
 
-The **Gnome::GObject::Value** type of property *editable* is `G_TYPE_BOOLEAN`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
   * Parameter is readable and writable.
 
@@ -143,7 +153,9 @@ ellipsize
 
 The preferred place to ellipsize the string, if the cell renderer does not have enough room to display the entire string
 
-The **Gnome::GObject::Value** type of property *ellipsize* is `G_TYPE_ENUM`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_ENUM
+
+  * the type of this G_TYPE_ENUM object is PANGO_TYPE_ELLIPSIZE_MODE
 
   * Parameter is readable and writable.
 
@@ -154,7 +166,7 @@ family
 
 Name of the font family, e.g. Sans_COMMA_ Helvetica_COMMA_ Times_COMMA_ Monospace
 
-The **Gnome::GObject::Value** type of property *family* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
   * Parameter is readable and writable.
 
@@ -165,7 +177,7 @@ font
 
 Font description as a string, e.g. \Sans Italic 12\
 
-The **Gnome::GObject::Value** type of property *font* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
   * Parameter is readable and writable.
 
@@ -176,14 +188,18 @@ font-desc
 
 Font description as a PangoFontDescription struct
 
-The **Gnome::GObject::Value** type of property *font-desc* is `G_TYPE_BOXED`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOXED
+
+  * the type of this G_TYPE_BOXED object is PANGO_TYPE_FONT_DESCRIPTION
+
+  * Parameter is readable and writable.
 
 foreground
 ----------
 
 Foreground color as a string
 
-The **Gnome::GObject::Value** type of property *foreground* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
   * Parameter is writable.
 
@@ -194,14 +210,18 @@ foreground-rgba
 
 Foreground color as a GdkRGBA
 
-The **Gnome::GObject::Value** type of property *foreground-rgba* is `G_TYPE_BOXED`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOXED
+
+  * the type of this G_TYPE_BOXED object is GDK_TYPE_RGBA
+
+  * Parameter is readable and writable.
 
 language
 --------
 
 The language this text is in, as an ISO code. Pango can use this as a hint when rendering the text. If you don't understand this parameter_COMMA_ you probably don't need it
 
-The **Gnome::GObject::Value** type of property *language* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
   * Parameter is readable and writable.
 
@@ -212,7 +232,7 @@ markup
 
 Marked up text to render
 
-The **Gnome::GObject::Value** type of property *markup* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
   * Parameter is writable.
 
@@ -223,7 +243,7 @@ max-width-chars
 
 The maximum width of the cell, in characters
 
-The **Gnome::GObject::Value** type of property *max-width-chars* is `G_TYPE_INT`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
 
   * Parameter is readable and writable.
 
@@ -238,7 +258,7 @@ placeholder-text
 
 Text rendered when an editable cell is empty
 
-The **Gnome::GObject::Value** type of property *placeholder-text* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
   * Parameter is readable and writable.
 
@@ -249,7 +269,7 @@ rise
 
 Offset of text above the baseline (below the baseline if rise is negative)
 
-The **Gnome::GObject::Value** type of property *rise* is `G_TYPE_INT`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
 
   * Parameter is readable and writable.
 
@@ -264,7 +284,7 @@ scale
 
 Font scaling factor
 
-The **Gnome::GObject::Value** type of property *scale* is `G_TYPE_DOUBLE`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_DOUBLE
 
   * Parameter is readable and writable.
 
@@ -279,7 +299,7 @@ single-paragraph-mode
 
 Whether to keep all text in a single paragraph
 
-The **Gnome::GObject::Value** type of property *single-paragraph-mode* is `G_TYPE_BOOLEAN`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
   * Parameter is readable and writable.
 
@@ -290,7 +310,7 @@ size
 
 Font size
 
-The **Gnome::GObject::Value** type of property *size* is `G_TYPE_INT`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
 
   * Parameter is readable and writable.
 
@@ -305,7 +325,7 @@ size-points
 
 Font size in points
 
-The **Gnome::GObject::Value** type of property *size-points* is `G_TYPE_DOUBLE`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_DOUBLE
 
   * Parameter is readable and writable.
 
@@ -320,7 +340,9 @@ stretch
 
 Font stretch
 
-The **Gnome::GObject::Value** type of property *stretch* is `G_TYPE_ENUM`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_ENUM
+
+  * the type of this G_TYPE_ENUM object is PANGO_TYPE_STRETCH
 
   * Parameter is readable and writable.
 
@@ -331,7 +353,7 @@ strikethrough
 
 Whether to strike through the text
 
-The **Gnome::GObject::Value** type of property *strikethrough* is `G_TYPE_BOOLEAN`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
   * Parameter is readable and writable.
 
@@ -342,7 +364,9 @@ style
 
 Font style
 
-The **Gnome::GObject::Value** type of property *style* is `G_TYPE_ENUM`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_ENUM
+
+  * the type of this G_TYPE_ENUM object is PANGO_TYPE_STYLE
 
   * Parameter is readable and writable.
 
@@ -353,7 +377,7 @@ text
 
 Text to render
 
-The **Gnome::GObject::Value** type of property *text* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
   * Parameter is readable and writable.
 
@@ -364,7 +388,9 @@ underline
 
 Style of underline for this text
 
-The **Gnome::GObject::Value** type of property *underline* is `G_TYPE_ENUM`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_ENUM
+
+  * the type of this G_TYPE_ENUM object is PANGO_TYPE_UNDERLINE
 
   * Parameter is readable and writable.
 
@@ -375,7 +401,9 @@ variant
 
 Font variant
 
-The **Gnome::GObject::Value** type of property *variant* is `G_TYPE_ENUM`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_ENUM
+
+  * the type of this G_TYPE_ENUM object is PANGO_TYPE_VARIANT
 
   * Parameter is readable and writable.
 
@@ -386,7 +414,7 @@ weight
 
 Font weight
 
-The **Gnome::GObject::Value** type of property *weight* is `G_TYPE_INT`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
 
   * Parameter is readable and writable.
 
@@ -401,7 +429,7 @@ width-chars
 
 The desired width of the label, in characters
 
-The **Gnome::GObject::Value** type of property *width-chars* is `G_TYPE_INT`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
 
   * Parameter is readable and writable.
 
@@ -416,7 +444,9 @@ wrap-mode
 
 How to break the string into multiple lines, if the cell renderer does not have enough room to display the entire string
 
-The **Gnome::GObject::Value** type of property *wrap-mode* is `G_TYPE_ENUM`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_ENUM
+
+  * the type of this G_TYPE_ENUM object is PANGO_TYPE_WRAP_MODE
 
   * Parameter is readable and writable.
 
@@ -427,7 +457,7 @@ wrap-width
 
 The width at which the text is wrapped
 
-The **Gnome::GObject::Value** type of property *wrap-width* is `G_TYPE_INT`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
 
   * Parameter is readable and writable.
 

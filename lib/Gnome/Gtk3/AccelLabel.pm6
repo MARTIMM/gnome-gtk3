@@ -434,9 +434,12 @@ sub _gtk_accel_label_new ( gchar-ptr $string --> N-GObject )
 =comment #TP:0:accel-closure:
 =head2 accel-closure
 
-The closure to be monitored for accelerator changes.
+The closure to be monitored for accelerator changes
 
-The B<Gnome::GObject::Value> type of property I<accel-closure> is C<G_TYPE_BOXED>.
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOXED
+=item the type of this G_TYPE_BOXED object is G_TYPE_CLOSURE
+=item Parameter is readable and writable.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:accel-widget:
@@ -444,10 +447,8 @@ The B<Gnome::GObject::Value> type of property I<accel-closure> is C<G_TYPE_BOXED
 
 The widget to be monitored for accelerator changes
 
-Widget type: GTK_TYPE_WIDGET
-
-The B<Gnome::GObject::Value> type of property I<accel-widget> is C<G_TYPE_OBJECT>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_OBJECT
+=item the type of this G_TYPE_OBJECT object is GTK_TYPE_WIDGET
 =item Parameter is readable and writable.
 
 =end pod

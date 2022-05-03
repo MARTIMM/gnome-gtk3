@@ -156,18 +156,22 @@ Properties
 accel-closure
 -------------
 
-The closure to be monitored for accelerator changes.
+The closure to be monitored for accelerator changes
 
-The **Gnome::GObject::Value** type of property *accel-closure* is `G_TYPE_BOXED`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOXED
+
+  * the type of this G_TYPE_BOXED object is G_TYPE_CLOSURE
+
+  * Parameter is readable and writable.
 
 accel-widget
 ------------
 
 The widget to be monitored for accelerator changes
 
-Widget type: GTK_TYPE_WIDGET
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
 
-The **Gnome::GObject::Value** type of property *accel-widget* is `G_TYPE_OBJECT`.
+  * the type of this G_TYPE_OBJECT object is GTK_TYPE_WIDGET
 
   * Parameter is readable and writable.
 

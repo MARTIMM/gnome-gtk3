@@ -23,7 +23,7 @@ B<Gnome::Gtk3::CellRendererToggle> renders a toggle button in a cell. The button
 
 =head2 Uml Diagram
 
-=comment ![](plantuml/CellRenderer-ea.svg)
+![](plantuml/CellRenderer-ea.svg)
 
 
 =begin comment

@@ -1088,12 +1088,15 @@ Returns: C<True> if the link has been activated.
 =head1 Properties
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:artists:
+=comment #TP:1:artists:
 =head2 artists
 
 The people who contributed artwork to the program, as a C<undefined>-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
-The B<Gnome::GObject::Value> type of property I<artists> is C<G_TYPE_BOXED>.
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOXED
+=item the type of this G_TYPE_BOXED object is G_TYPE_STRV
+=item Parameter is readable and writable.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:authors:
@@ -1101,7 +1104,10 @@ The B<Gnome::GObject::Value> type of property I<artists> is C<G_TYPE_BOXED>.
 
 The authors of the program, as a C<undefined>-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
-The B<Gnome::GObject::Value> type of property I<authors> is C<G_TYPE_BOXED>.
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOXED
+=item the type of this G_TYPE_BOXED object is G_TYPE_STRV
+=item Parameter is readable and writable.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:comments:
@@ -1109,10 +1115,10 @@ The B<Gnome::GObject::Value> type of property I<authors> is C<G_TYPE_BOXED>.
 
 Comments about the program. This string is displayed in a label in the main dialog, thus it should be a short explanation of the main purpose of the program, not a detailed list of features.
 
-The B<Gnome::GObject::Value> type of property I<comments> is C<G_TYPE_STRING>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
 =item Parameter is readable and writable.
 =item Default value is undefined.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:copyright:
@@ -1120,10 +1126,10 @@ The B<Gnome::GObject::Value> type of property I<comments> is C<G_TYPE_STRING>.
 
 Copyright information for the program.
 
-The B<Gnome::GObject::Value> type of property I<copyright> is C<G_TYPE_STRING>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
 =item Parameter is readable and writable.
 =item Default value is undefined.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:documenters:
@@ -1131,7 +1137,10 @@ The B<Gnome::GObject::Value> type of property I<copyright> is C<G_TYPE_STRING>.
 
 The people documenting the program, as a C<undefined>-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
-The B<Gnome::GObject::Value> type of property I<documenters> is C<G_TYPE_BOXED>.
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOXED
+=item the type of this G_TYPE_BOXED object is G_TYPE_STRV
+=item Parameter is readable and writable.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:license:
@@ -1143,11 +1152,10 @@ Note that the text is only wrapped in the text view if the "wrap-license" proper
 
 When setting this property to a non-C<undefined> value, the I<license-type> property is set to C<GTK_LICENSE_CUSTOM> as a side effect.
 
-
-The B<Gnome::GObject::Value> type of property I<license> is C<G_TYPE_STRING>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
 =item Parameter is readable and writable.
 =item Default value is undefined.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:license-type:
@@ -1163,12 +1171,11 @@ If C<GTK_LICENSE_CUSTOM> is used, the current contents of the  I<license> proper
 
 For any other B<Gnome::Gtk3::License> value, the contents of the  I<license> property are also set by this property as a side effect.
 
-Widget type: GTK_TYPE_LICENSE
-
-The B<Gnome::GObject::Value> type of property I<license-type> is C<G_TYPE_ENUM>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_ENUM
+=item the type of this G_TYPE_ENUM object is GTK_TYPE_LICENSE
 =item Parameter is readable and writable.
 =item Default value is GTK_LICENSE_UNKNOWN.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:logo:
@@ -1176,11 +1183,10 @@ The B<Gnome::GObject::Value> type of property I<license-type> is C<G_TYPE_ENUM>.
 
 A logo for the about box. If it is C<undefined>, the default window icon set with C<gtk_window_set_default_icon()> will be used.
 
-Widget type: GDK_TYPE_PIXBUF
-
-The B<Gnome::GObject::Value> type of property I<logo> is C<G_TYPE_OBJECT>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_OBJECT
+=item the type of this G_TYPE_OBJECT object is GDK_TYPE_PIXBUF
 =item Parameter is readable and writable.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:logo-icon-name:
@@ -1188,10 +1194,10 @@ The B<Gnome::GObject::Value> type of property I<logo> is C<G_TYPE_OBJECT>.
 
 A named icon to use as the logo for the about box. This property overrides the  I<logo> property.
 
-The B<Gnome::GObject::Value> type of property I<logo-icon-name> is C<G_TYPE_STRING>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
 =item Parameter is readable and writable.
 =item Default value is image-missing.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:program-name:
@@ -1199,10 +1205,10 @@ The B<Gnome::GObject::Value> type of property I<logo-icon-name> is C<G_TYPE_STRI
 
 The name of the program. If this is not set, it defaults to C<g_get_application_name()>.
 
-The B<Gnome::GObject::Value> type of property I<program-name> is C<G_TYPE_STRING>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
 =item Parameter is readable and writable.
 =item Default value is undefined.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:translator-credits:
@@ -1210,10 +1216,10 @@ The B<Gnome::GObject::Value> type of property I<program-name> is C<G_TYPE_STRING
 
 Credits to the translators. This string should be marked as translatable. The string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
 
-The B<Gnome::GObject::Value> type of property I<translator-credits> is C<G_TYPE_STRING>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
 =item Parameter is readable and writable.
 =item Default value is undefined.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:version:
@@ -1221,10 +1227,10 @@ The B<Gnome::GObject::Value> type of property I<translator-credits> is C<G_TYPE_
 
 The version of the program.
 
-The B<Gnome::GObject::Value> type of property I<version> is C<G_TYPE_STRING>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
 =item Parameter is readable and writable.
 =item Default value is undefined.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:website:
@@ -1232,10 +1238,10 @@ The B<Gnome::GObject::Value> type of property I<version> is C<G_TYPE_STRING>.
 
 The URL for the link to the website of the program. This should be a string starting with "http://.
 
-The B<Gnome::GObject::Value> type of property I<website> is C<G_TYPE_STRING>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
 =item Parameter is readable and writable.
 =item Default value is undefined.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:website-label:
@@ -1243,8 +1249,7 @@ The B<Gnome::GObject::Value> type of property I<website> is C<G_TYPE_STRING>.
 
 The label for the link to the website of the program.
 
-The B<Gnome::GObject::Value> type of property I<website-label> is C<G_TYPE_STRING>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
 =item Parameter is readable and writable.
 =item Default value is undefined.
 
@@ -1254,163 +1259,8 @@ The B<Gnome::GObject::Value> type of property I<website-label> is C<G_TYPE_STRIN
 
 Whether to wrap the text in the license dialog.
 
-The B<Gnome::GObject::Value> type of property I<wrap-license> is C<G_TYPE_BOOLEAN>.
-
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
 =item Parameter is readable and writable.
 =item Default value is FALSE.
-
-=end pod
-
-
-
-
-
-
-=finish
-=comment -----------------------------------------------------------------------
-=comment #TP:1:program-name:
-=head2 Program name
-
-The name of the program. If this is not set, it defaults to C<g_get_application_name()>.
-
-The B<Gnome::GObject::Value> type of property I<program-name> is C<G_TYPE_STRING>.
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:1:version:
-=head2 Program version
-
-The version of the program.
-
-The B<Gnome::GObject::Value> type of property I<version> is C<G_TYPE_STRING>.
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:1:copyright:
-=head2 Copyright string
-
-Copyright information for the program.
-
-The B<Gnome::GObject::Value> type of property I<copyright> is C<G_TYPE_STRING>.
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:1:comments:
-=head2 Comments string
-
-Comments about the program. This string is displayed in a label in the main dialog, thus it should be a short explanation of the main purpose of the program, not a detailed list of features.
-
-The B<Gnome::GObject::Value> type of property I<comments> is C<G_TYPE_STRING>.
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:1:license:
-=head2 License
-
-The license of the program. This string is displayed in a text view in a secondary dialog, therefore it is fine to use a long multi-paragraph text. Note that the text is only wrapped in the text view if the "wrap-license" property is set to C<1>; otherwise the text itself must contain the intended linebreaks. When setting this property to a non-C<Any> value, the sig I<license-type> property is set to C<GTK_LICENSE_CUSTOM> as a side effect.
-
-The B<Gnome::GObject::Value> type of property I<license> is C<G_TYPE_STRING>.
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:1:license-type:
-=head2 License Type
-
-The license of the program, as a value of the C<GtkLicense> enumeration. The I<Gnome::Gtk3::AboutDialog> will automatically fill out a standard disclaimer and link the user to the appropriate online resource for the license text.
-
-If C<GTK_LICENSE_UNKNOWN> is used, the link used will be the same specified in the sig I<website> property.
-
-If C<GTK_LICENSE_CUSTOM> is used, the current contents of the sig I<license> property are used.
-
-For any other I<Gnome::Gtk3::License> value, the contents of the sig I<license> property are also set by this property as a side effect.
-
-Widget type: GTK_TYPE_LICENSE
-
-The B<Gnome::GObject::Value> type of property I<license-type> is C<G_TYPE_ENUM>.
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:1:website:
-=head2 Website URL
-
-The URL for the link to the website of the program. This should be a string starting with "http://.
-
-The B<Gnome::GObject::Value> type of property I<website> is C<G_TYPE_STRING>.
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:1:website-label:
-=head2 Website label
-
-The label for the link to the website of the program.
-
-The B<Gnome::GObject::Value> type of property I<website-label> is C<G_TYPE_STRING>.
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:0:translator-credits:
-=head2 Translator credits
-
-Credits to the translators. This string should be marked as translatable. The string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
-
-The B<Gnome::GObject::Value> type of property I<translator-credits> is C<G_TYPE_STRING>.
-
-
-=comment -----------------------------------------------------------------------
-=begin comment
-=comment #TP:0:authors:
-=head2 Authors
-
-The authors of the program, as an C<Any>-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
-
-The B<Gnome::GObject::Value> type of property I<authors> is C<G_TYPE_BOXED>.
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:0:documenters:
-=head2 Documenters
-
-The people documenting the program, as an C<Any>-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
-
-The B<Gnome::GObject::Value> type of property I<documenters> is C<G_TYPE_BOXED>.
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:0:artists:
-=head2 Artists
-
-The people who contributed artwork to the program, as a C<Any>-terminated array of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
-
-The B<Gnome::GObject::Value> type of property I<artists> is C<G_TYPE_BOXED>.
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:0:logo:
-=head2 Logo
-
-A logo for the about box. If it is C<Any>, the default window icon set with C<gtk_window_set_default_icon()> will be used.
-
-Widget type: it defaults to gtk_window_get_default_icon_list()
-
-The B<Gnome::GObject::Value> type of property I<logo> is C<G_TYPE_OBJECT>.
-=end comment
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:1:logo-icon-name:
-=head2 Logo Icon Name
-
-A named icon to use as the logo for the about box. This property overrides the sig I<logo> property.
-
-The B<Gnome::GObject::Value> type of property I<logo-icon-name> is C<G_TYPE_STRING>.
-
-
-=comment -----------------------------------------------------------------------
-=comment #TP:1:wrap-license:
-=head2 Wrap license
-
-Whether to wrap the text in the license dialog.
-
-The B<Gnome::GObject::Value> type of property I<wrap-license> is C<G_TYPE_BOOLEAN>.
 
 =end pod

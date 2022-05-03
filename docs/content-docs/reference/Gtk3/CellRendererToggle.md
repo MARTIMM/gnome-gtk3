@@ -20,6 +20,8 @@ Declaration
 Uml Diagram
 -----------
 
+![](plantuml/CellRenderer-ea.svg)
+
 Methods
 =======
 
