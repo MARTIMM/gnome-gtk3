@@ -2164,9 +2164,9 @@ sub get-properties ( Str:D $source-content is copy ) {
             $search-prop-spec ~~ m/'G_PARAM_DEPRECATED'/;
 
 
-    my Str ( $prop-name, $prop-blurp);
-    my Str $prop-args-string;
-    ( $prop-name, $prop-blurp) = get-prop-doc($search-prop-doc);
+#    my Str ( $prop-name, $prop-blurp);
+#    my Str $prop-args-string;
+    my Str ( $prop-name, $prop-blurp) = get-prop-doc($search-prop-doc);
 
     my Array $flags;
     my Str $gtype-string;
@@ -2181,10 +2181,12 @@ sub get-properties ( Str:D $source-content is copy ) {
     # Arguments have also documentation. See if it is larger and if so,
     # Take the larger part.
 
-#note 'A2: ', @$args[2];
+#note 'A2: ', $prop-blurp//'', ', ', @$args[2];
     $prop-blurp = (($prop-blurp//'').chars > (@$args[2]//'').chars)
                   ?? $prop-blurp !! @$args[2]//'';
 
+    my Str $type-string = "=item B<Gnome::GObject::Value> type of this property is $prop-g-type\n";
+    $type-string ~= "=item the type of this $prop-g-type object is $gtype-string\n" if ?$gtype-string and $gtype-string ne $prop-g-type;
 
     my Str $flags-text = '';
     for @$flags -> $ftext {
@@ -2204,10 +2206,8 @@ sub get-properties ( Str:D $source-content is copy ) {
       =comment #TP:0:$prop-name:
       =head2 $prop-name
       $prop-blurp
-
-      The B<Gnome::GObject::Value> type of property I<$prop-name> is C<$prop-g-type>.
-
-      $flags-text$min-max-text$default-text
+      
+      $type-string$flags-text$min-max-text$default-text
       EOHEADER
 
     $property-doc-entries{$prop-name} = $property-doc;
@@ -2726,16 +2726,16 @@ sub try-prop-search-last ( $source-content is rw --> List ) {
 
 #-------------------------------------------------------------------------------
 # Get property documentation
-sub get-prop-doc ( Str $search-prop-doc is copy --> List ) {
+sub get-prop-doc ( Str $search-prop-doc is rw --> List ) {
   $search-prop-doc ~~ m/
-    ^^ \s+ '*' \s+ $*lib-class-name ':'
-    $<prop-name> = [ <-[:]> [<alnum> || '-']+ ]
+    \s+ '*' \s+ $*lib-class-name ':'
+    $<prop-name> = [ [<alnum> || '-']+ ] ':'
   /;
   my Str $property-name = ~($<prop-name> // '');
 
   # Remove classname and property name
   $search-prop-doc ~~
-    s/ \s+ '*' \s+ $*lib-class-name ':' $<prop-name> ':' \n //;
+    s/ \s+ '*' \s+ $*lib-class-name ':' $property-name ':' //;
   $search-prop-doc ~~ s/ \s* \* \s+ Since ':' \s+ \d+ \. \d+ \s*//;
 
   $search-prop-doc = cleanup-source-doc(
@@ -2822,8 +2822,6 @@ sub process-prop-args ( Str $search-prop-spec is copy --> List ) {
 
 #note 'process-prop-args 3: ', @$args.join("\n  ");
 
-#  $prop-name = $args[0];
-
   my Array $flags;
   my Str $gtype-string;
   my $prop-default;
@@ -2849,7 +2847,7 @@ sub process-prop-args-type (
   my Str $min = '';
   my Str $max = '';
 
-#note "process-prop-args-type '$prop-spec-type': ", $args.join("\n  ");
+#note "process-prop-args-type '$prop-spec-type', '$prop-g-type': ", $args.join("\n  ");
 
   # Get some info depending on the type of this property
   given $prop-spec-type {
@@ -2876,13 +2874,13 @@ sub process-prop-args-type (
       $flags = $args[4] // '';
     }
 
-    when any(<param boxed pointer>) {
+    when any(<param pointer>) {
       note "Parameter type '$prop-spec-type' not processed";
       $prop-default = '';
       $flags = '';
     }
 
-    when 'object' {
+    when any(<object boxed>) {
       $gtype-string = $args[3] // '';
       $prop-default = '';
       $flags = $args[4] // '';
