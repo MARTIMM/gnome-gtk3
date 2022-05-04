@@ -49,11 +49,12 @@ Declaration
 
     unit class Gnome::Gtk3::RadioMenuItem;
     also is Gnome::Gtk3::CheckMenuItem;
+    also does Gnome::Gtk3::Actionable;
 
 Uml Diagram
 -----------
 
-![](plantuml/RadioMenuItem.svg)
+![](plantuml/MenuItem-ea.svg)
 
 Inheriting this class
 ---------------------

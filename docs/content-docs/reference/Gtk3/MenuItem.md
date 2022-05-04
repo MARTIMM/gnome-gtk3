@@ -52,7 +52,7 @@ Declaration
 Uml Diagram
 -----------
 
-![](plantuml/MenuItem.svg)
+![](plantuml/MenuItem-ea.svg)
 
 Methods
 =======

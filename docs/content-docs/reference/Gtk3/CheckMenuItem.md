@@ -31,7 +31,7 @@ Declaration
 Uml Diagram
 -----------
 
-![](plantuml/CheckMenuItem.svg)
+![](plantuml/MenuItem-ea.svg)
 
 Inheriting this class
 ---------------------
