@@ -178,6 +178,7 @@ submethod BUILD ( *%options ) {
   }
 }
 
+#`{{
 #-------------------------------------------------------------------------------
 # no pod. user does not have to know about it.
 method _fallback ( $native-sub is copy --> Callable ) {
@@ -193,6 +194,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
   $s;
 }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:1:_gtk_color_chooser_dialog_new:
@@ -221,21 +223,14 @@ sub _gtk_color_chooser_dialog_new (
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
-
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.get-property( 'label', $gv);
-  $gv.set-string('my text label');
-
-=head2 Supported properties
-
 =comment -----------------------------------------------------------------------
-=comment #TP:0:show-editor:
-=head3 Show editor: show-editor
+=comment #TP:1:show-editor:
+=head2 show-editor
 
 Show editor
-Default value: False
 
-The B<Gnome::GObject::Value> type of property I<show-editor> is C<G_TYPE_BOOLEAN>.
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
 =end pod

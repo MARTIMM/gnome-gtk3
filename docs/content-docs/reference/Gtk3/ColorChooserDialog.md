@@ -83,19 +83,14 @@ Create a ColorChooserDialog object using a native object returned from a builder
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
+show-editor
+-----------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.get-property( 'label', $gv);
-    $gv.set-string('my text label');
+Show editor
 
-Supported properties
---------------------
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-### Show editor: show-editor
+  * Parameter is readable and writable.
 
-Show editor Default value: False
-
-The **Gnome::GObject::Value** type of property *show-editor* is `G_TYPE_BOOLEAN`.
+  * Default value is FALSE.
 

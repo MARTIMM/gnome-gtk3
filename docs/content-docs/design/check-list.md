@@ -116,22 +116,22 @@ CellRendererSpin          |  | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓|
 CellRendererSpinner       |  | ✗| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
 CellRendererText          |  | ✗| ✓| ✓| ✓| ✓| ✓|  |  | ⅗| ✓| ✓| ✓|
 CellRendererToggle        |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓| ✓| ✓| ✓|  
-CheckButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| < fbck sg prp
-| Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
-CheckMenuItem             |  |  |  |  |  |  |  |  |  |  |  |  |  |  
-ColorButton               |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+CheckButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
+CheckMenuItem             |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
+ColorButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 ColorChooser              |R | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ½| ✓| ✓| ✓|
-ColorChooserDialog        |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
-ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |  |  |  
-ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |  |  |  
-ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+ColorChooserDialog        |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| < fbck sg prp
+| Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
+ColorChooserWidget        |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Container                 |  | ✗| ✓| ✓| ✓| ✓| ✓| ½| ⅔| ½| ✓| ✓| ✓| _fallback
 CssProvider               |  |  | ✓| ✓| ✓| ✓| ✗| ⅞| ✓| ✗| ✓| ✓| ✓| _fallback
 CssSection                |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
-DragDest                  |S | ✗|  |  |  |  |  |  |  |  |  |  |  |  
-DragSource                |S | ✗|  |  |  |  |  |  |  |  |  |  |  |  
+DragDest                  |S | ✗|  |  |  |  |  |  |  |  |  |  |  |
+DragSource                |S | ✗|  |  |  |  |  |  |  |  |  |  |  |
 DrawingArea               |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| no -rk :v T
-Dialog                    |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  
+Dialog                    |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 Editable                  |  | ✓| ✓| ✓| ✓| ✓| ✗|  |  | ✗| ✓| ✓| ✓|
 Entry                     |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  
 EntryCompletion           |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅖|  | ⅗| ✓| ✓| ✓|  

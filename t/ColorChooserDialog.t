@@ -9,6 +9,7 @@ use Gnome::Gtk3::ColorChooserDialog;
 use Gnome::Gtk3::ColorButton;
 use Gnome::Gtk3::Enums;
 
+use Gnome::N::GlibToRakuTypes;
 use Gnome::N::N-GObject;
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
@@ -70,81 +71,23 @@ subtest 'Interface ColorChooser', {
   ok 1, '.add-palette(Array[Num]) didn\'t choke';
 }
 
-#`{{
 #-------------------------------------------------------------------------------
-subtest 'Manipulations', {
+subtest 'Properties Color Chooser', {
+#  my Gnome::Gtk3::ColorChooserDialog $ccd .= new;
+  my @r = $ccd.get-properties( 'use-alpha', gboolean);
+  is-deeply @r, [ 0, ], 'property: use-alpha';
+
+  @r = $ccd.get-properties( 'rgba', N-GObject);
+  my Gnome::Gdk3::RGBA() $color = @r[0];
+  is $color.red, 0e0, 'property: rgba';
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Inherit Gnome::Gtk3::ColorChooser', {
-  class MyClass is Gnome::Gtk3::ColorChooser {
-    method new ( |c ) {
-      self.bless( :GtkColorChooser, |c);
-    }
-
-    submethod BUILD ( *%options ) {
-
-    }
-  }
-
-  my MyClass $mgc .= new;
-  isa-ok $mgc, Gnome::Gtk3::ColorChooser, '.new()';
+subtest 'Properties Color Chooser Dialog', {
+#  my Gnome::Gtk3::ColorChooserDialog $ccd .= new;
+  my @r = $ccd.get-properties( 'show-editor', gboolean);
+  is-deeply @r, [ 0, ], 'property: show-editor';
 }
-
-#-------------------------------------------------------------------------------
-subtest 'Interface ...', {
-}
-}}
-
-#-------------------------------------------------------------------------------
-subtest 'Properties ...', {
-  use Gnome::GObject::Value;
-  use Gnome::GObject::Type;
-
-  #my Gnome::Gtk3::ColorChooser $cc .= new;
-
-  sub test-property (
-    $type, Str $prop, Str $routine, $value,
-    Bool :$approx = False, Bool :$is-local = False
-  ) {
-    my Gnome::GObject::Value $gv .= new(:init($type));
-    $ccd.get-property( $prop, $gv);
-    my $gv-value = $gv."$routine"();
-    if $approx {
-      is-approx $gv-value, $value,
-        "property $prop, value: " ~ $gv-value;
-    }
-
-    # dependency on local settings might result in different values
-    elsif $is-local {
-      if $gv-value ~~ /$value/ {
-        like $gv-value, /$value/, "property $prop, value: " ~ $gv-value;
-      }
-
-      else {
-        ok 1, "property $prop, value: " ~ $gv-value;
-      }
-    }
-
-    else {
-      is $gv-value, $value,
-        "property $prop, value: " ~ $gv-value;
-    }
-    $gv.clear-object;
-  }
-
-  test-property( G_TYPE_BOOLEAN, 'use-alpha', 'get-boolean', False);
-
-  # example calls
-  #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
-  #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
-}
-
-#`{{
-#-------------------------------------------------------------------------------
-subtest 'Themes ...', {
-}
-}}
 
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
@@ -218,3 +161,12 @@ subtest 'Signals ...', {
 
 #-------------------------------------------------------------------------------
 done-testing;
+=finish
+
+#-------------------------------------------------------------------------------
+subtest 'Interface ...', {
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Themes ...', {
+}

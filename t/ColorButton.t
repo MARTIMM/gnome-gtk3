@@ -7,7 +7,8 @@ use Gnome::Gdk3::RGBA;
 use Gnome::Gtk3::ColorButton;
 
 use Gnome::N::GlibToRakuTypes;
-use Gnome::N::X;
+use Gnome::N::N-GObject;
+#use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -57,10 +58,16 @@ subtest 'Inherit Gnome::Gtk3::ColorButton', {
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
   my @r = $cb.get-properties(
-    'show-editor', gboolean, 'title', Str, 'use-alpha', gboolean
+    'alpha', UInt, 'show-editor', gboolean, 'title', Str, 'use-alpha', gboolean
   );
-  is-deeply @r, [ 0, 'choose your favorite color', 0],
-    'show-editor, title, use-alpha';
+  is-deeply @r, [ 32768, 0, 'choose your favorite color', 0],
+  'properties: ' ~ (
+    'alpha, show-editor, title, use-alpha'
+  ).join(', ');
+
+  @r = $cb.get-properties( 'rgba', N-GObject);
+  my Gnome::Gdk3::RGBA() $color = @r[0];
+  is $color.red, 5e-1, 'property: rgba';
 }
 
 #-------------------------------------------------------------------------------
@@ -70,15 +77,9 @@ subtest 'Interface ...', {
     '.get-rgba()';
 }
 
-#`{{
-
 #-------------------------------------------------------------------------------
-subtest 'Interface ...', {
-}
-
-#-------------------------------------------------------------------------------
-subtest 'Properties ...', {
-}
+done-testing;
+=finish
 
 #-------------------------------------------------------------------------------
 subtest 'Themes ...', {
@@ -87,7 +88,3 @@ subtest 'Themes ...', {
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
 }
-}}
-
-#-------------------------------------------------------------------------------
-done-testing;

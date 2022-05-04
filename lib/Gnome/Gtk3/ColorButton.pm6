@@ -196,11 +196,39 @@ submethod BUILD ( *%options ) {
 # no pod. user does not have to know about it.
 method _fallback ( $native-sub is copy --> Callable ) {
 
+  my Str $new-patt = $native-sub.subst( '_', '-', :g);
+
   my Callable $s;
   try { $s = &::("gtk_color_button_$native-sub"); };
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._color_chooser_interface($native-sub) unless ?$s;
+  if ?$s {
+    Gnome::N::deprecate(
+      "gtk_color_button_$native-sub", $new-patt, '0.47.4', '0.50.0'
+    );
+  }
+
+  else {
+    try { $s = &::("gtk_$native-sub"); } unless ?$s;
+    if ?$s {
+      Gnome::N::deprecate(
+        "gtk_$native-sub", $new-patt.subst('color-button-'),
+        '0.47.4', '0.50.0'
+      );
+    }
+
+    else {
+      try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+      if ?$s {
+        Gnome::N::deprecate(
+          "$native-sub", $new-patt.subst('gtk-color-button-'),
+          '0.47.4', '0.50.0'
+        );
+      }
+
+      else {
+        $s = self._color_chooser_interface($native-sub);
+      }
+    }
+  }
 
   self._set-class-name-of-sub('GtkColorButton');
   $s = callsame unless ?$s;
@@ -299,347 +327,91 @@ sub _gtk_color_button_new_with_rgba ( N-GdkRGBA $rgba --> N-GObject )
 =begin pod
 =head1 Signals
 
-There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
-
-=head2 First method
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
-
-  # handler method
-  method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-  # connect a signal on window object
-  my Gnome::Gtk3::Window $w .= new( ... );
-  $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-=head2 Second method
-
-  my Gnome::Gtk3::Window $w .= new( ... );
-  my Callable $handler = sub (
-    N-GObject $native, GdkEvent $event, OpaquePointer $data
-  ) {
-    ...
-  }
-
-  $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<connect-object()> are using the signatures of the handler routines to setup the native call interface.
-
-=head2 Supported signals
-
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:color-set:
-=head3 color-set
+=head2 color-set
 
 The I<color-set> signal is emitted when the user selects a color.
-When handling this signal, use C<get-rgba()> to
+When handling this signal, use C<get_rgba()> to
 find out which color was just selected.
 
 Note that this signal is only emitted when the user
 changes the color. If you need to react to programmatic color changes
 as well, use the notify::color signal.
 
-
   method handler (
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($widget),
+    Gnome::Gtk3::ColorButton :_widget($widget),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
-  );
+  )
 
-=item $widget; the object which received the signal.
-
-=item $_handle_id; the registered event handler id
+=item $widget; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =end pod
-
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
+=comment -----------------------------------------------------------------------
+=comment #TP:1:alpha:
+=head2 alpha
 
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.get-property( 'label', $gv);
-  $gv.set-string('my text label');
+The selected opacity value (0 fully transparent, 65535 fully opaque)
 
-=head2 Supported properties
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_UINT
+=item Parameter is readable and writable.
+=item Minimum value is 0.
+=item Maximum value is 65535.
+=item Default value is 65535.
+
 
 =comment -----------------------------------------------------------------------
-=comment #TP:0:rgba:
-=head3 Current RGBA Color: rgba
+=comment #TP:1:rgba:
+=head2 rgba
 
-The RGBA color.
+The selected RGBA color
 
-The B<Gnome::GObject::Value> type of property I<rgba> is C<G_TYPE_BOXED>.
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOXED
+=item the type of this G_TYPE_BOXED object is GDK_TYPE_RGBA
+=item Parameter is readable and writable.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:show-editor:
-=head3 Show Editor: show-editor
+=head2 show-editor
 
+Whether to show the color editor right away
 
-Set this property to C<True> to skip the palette
-in the dialog and go directly to the color editor.
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is FALSE.
 
-This property should be used in cases where the palette
-in the editor would be redundant, such as when the color
-button is already part of a palette.
-
-
-The B<Gnome::GObject::Value> type of property I<show-editor> is C<G_TYPE_BOOLEAN>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:title:
-=head3 Title: title
-
+=head2 title
 
 The title of the color selection dialog
 
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
+=item Parameter is readable and writable.
+=item Default value is _(Pick a Color.
 
-The B<Gnome::GObject::Value> type of property I<title> is C<G_TYPE_STRING>.
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:use-alpha:
-=head3 Use alpha: use-alpha
+=head2 use-alpha
 
+Whether to give the color an alpha value
 
-If this property is set to C<True>, the color swatch on the button is
-rendered against a checkerboard background to show its opacity and
-the opacity slider is displayed in the color selection dialog.
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is FALSE.
 
-
-The B<Gnome::GObject::Value> type of property I<use-alpha> is C<G_TYPE_BOOLEAN>.
-=end pod
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=finish
-#-------------------------------------------------------------------------------
-#TM:2:gtk_color_button_new:
-=begin pod
-=head2 [gtk_] color_button_new
-
-Creates a new color button.
-
-This returns a widget in the form of a small button containing
-a swatch representing the current selected color. When the button
-is clicked, a color-selection dialog will open, allowing the user
-to select a color. The swatch will be updated to reflect the new
-color when the user finishes.
-
-Returns: a new color button
-
-Since: 2.4
-
-  method gtk_color_button_new ( --> N-GObject  )
-
-
-=end pod
-
-sub gtk_color_button_new (  )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:2:gtk_color_button_new_with_rgba:
-=begin pod
-=head2 [[gtk_] color_button_] new_with_rgba
-
-Creates a new color button.
-
-Returns: a new color button
-
-Since: 3.0
-
-  method gtk_color_button_new_with_rgba ( GdkRGBA $rgba --> N-GObject  )
-
-=item N-GObject $rgba; A B<Gnome::Gdk3::RGBA> to set the current color with
-
-=end pod
-
-sub gtk_color_button_new_with_rgba ( N-GdkRGBA $rgba )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:1:gtk_color_button_set_title:
-=begin pod
-=head2 [[gtk_] color_button_] set_title
-
-Sets the title for the color selection dialog.
-
-Since: 2.4
-
-  method gtk_color_button_set_title ( Str $title )
-
-=item Str $title; String containing new window title
-
-=end pod
-
-sub gtk_color_button_set_title ( N-GObject $button, Str $title )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:1:gtk_color_button_get_title:
-=begin pod
-=head2 [[gtk_] color_button_] get_title
-
-Gets the title of the color selection dialog.
-
-Returns: An internal string, do not free the return value
-
-Since: 2.4
-
-  method gtk_color_button_get_title ( --> Str  )
-
-
-=end pod
-
-sub gtk_color_button_get_title ( N-GObject $button )
-  returns Str
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Signals
-
-There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<g_signal_connect_object()> directly from B<Gnome::GObject::Signal>.
-
-=head2 First method
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
-
-  # handler method
-  method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
-
-  # connect a signal on window object
-  my Gnome::Gtk3::Window $w .= new( ... );
-  $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-=head2 Second method
-
-  my Gnome::Gtk3::Window $w .= new( ... );
-  my Callable $handler = sub (
-    N-GObject $native, N-GdkEvent $event, OpaquePointer $data
-  ) {
-    ...
-  }
-
-  $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<g_signal_connect_object()> are using the signatures of the handler routines to setup the native call interface.
-
-=head2 Supported signals
-
-
-=comment #TS:0:color-set:
-=head3 color-set
-
-The I<color-set> signal is emitted when the user selects a color.
-When handling this signal, use C<gtk_color_button_get_rgba()> to
-find out which color was just selected.
-
-Note that this signal is only emitted when the user
-changes the color. If you need to react to programmatic color changes
-as well, use the notify::color signal.
-
-Since: 2.4
-
-  method handler (
-    Int :$_handler_id,
-    Gnome::GObject::Object :_widget($widget),
-    *%user-options
-  );
-
-=item $widget; the object which received the signal.
-=end pod
-
-#-------------------------------------------------------------------------------
-=begin pod
-=head1 Properties
-
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<gtk_label_set_text('my text label')>.
-
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.g-object-get-property( 'label', $gv);
-  $gv.g-value-set-string('my text label');
-
-=head2 Supported properties
-
-=comment #TP:0:use-alpha:
-=head3 Use alpha
-
-
-If this property is set to C<1>, the color swatch on the button is
-rendered against a checkerboard background to show its opacity and
-the opacity slider is displayed in the color selection dialog.
-Since: 2.4
-
-The B<Gnome::GObject::Value> type of property I<use-alpha> is C<G_TYPE_BOOLEAN>.
-
-=comment #TP:0:title:
-=head3 Title
-
-
-The title of the color selection dialog
-Since: 2.4
-
-The B<Gnome::GObject::Value> type of property I<title> is C<G_TYPE_STRING>.
-
-=begin comment
-=comment #TP:0:rgba:
-=head3 Current RGBA Color
-
-
-The RGBA color.
-Since: 3.0
-
-The B<Gnome::GObject::Value> type of property I<rgba> is C<G_TYPE_BOXED>.
-=end comment
-
-=comment #TP:0:show-editor:
-=head3 Show Editor
-
-
-Set this property to C<1> to skip the palette
-in the dialog and go directly to the color editor.
-This property should be used in cases where the palette
-in the editor would be redundant, such as when the color
-button is already part of a palette.
-Since: 3.20
-
-The B<Gnome::GObject::Value> type of property I<show-editor> is C<G_TYPE_BOOLEAN>.
 =end pod

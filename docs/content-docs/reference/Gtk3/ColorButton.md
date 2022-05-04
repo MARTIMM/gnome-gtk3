@@ -113,89 +113,87 @@ Sets the title for the color selection dialog.
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
+color-set
+---------
 
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
--------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### color-set
-
-The *color-set* signal is emitted when the user selects a color. When handling this signal, use `get-rgba()` to find out which color was just selected.
+The *color-set* signal is emitted when the user selects a color. When handling this signal, use `get_rgba()` to find out which color was just selected.
 
 Note that this signal is only emitted when the user changes the color. If you need to react to programmatic color changes as well, use the notify::color signal.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Gnome::Gtk3::ColorButton :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $widget; the object which received the signal.
+  * $widget; The instance which registered the signal
 
-  * $_handle_id; the registered event handler id
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
+alpha
+-----
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.get-property( 'label', $gv);
-    $gv.set-string('my text label');
+The selected opacity value (0 fully transparent, 65535 fully opaque)
 
-Supported properties
---------------------
+  * **Gnome::GObject::Value** type of this property is G_TYPE_UINT
 
-### Current RGBA Color: rgba
+  * Parameter is readable and writable.
 
-The RGBA color.
+  * Minimum value is 0.
 
-The **Gnome::GObject::Value** type of property *rgba* is `G_TYPE_BOXED`.
+  * Maximum value is 65535.
 
-### Show Editor: show-editor
+  * Default value is 65535.
 
-Set this property to `True` to skip the palette in the dialog and go directly to the color editor.
+rgba
+----
 
-This property should be used in cases where the palette in the editor would be redundant, such as when the color button is already part of a palette.
+The selected RGBA color
 
-The **Gnome::GObject::Value** type of property *show-editor* is `G_TYPE_BOOLEAN`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOXED
 
-### Title: title
+  * the type of this G_TYPE_BOXED object is GDK_TYPE_RGBA
+
+  * Parameter is readable and writable.
+
+show-editor
+-----------
+
+Whether to show the color editor right away
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is FALSE.
+
+title
+-----
 
 The title of the color selection dialog
 
-The **Gnome::GObject::Value** type of property *title* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
-### Use alpha: use-alpha
+  * Parameter is readable and writable.
 
-If this property is set to `True`, the color swatch on the button is rendered against a checkerboard background to show its opacity and the opacity slider is displayed in the color selection dialog.
+  * Default value is _(Pick a Color.
 
-The **Gnome::GObject::Value** type of property *use-alpha* is `G_TYPE_BOOLEAN`.
+use-alpha
+---------
+
+Whether to give the color an alpha value
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is FALSE.
 

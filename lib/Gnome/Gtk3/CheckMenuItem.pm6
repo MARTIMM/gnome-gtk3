@@ -142,7 +142,7 @@ submethod BUILD ( *%options ) {
     # process all options
 
     # check if common options are handled by some parent
-    elsif %options<native-object>:exists or %options<widget>:exists { }
+    elsif %options<native-object>:exists { }
     elsif %options<build-id>:exists { }
 
     else {
