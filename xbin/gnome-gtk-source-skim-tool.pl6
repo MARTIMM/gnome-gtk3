@@ -2186,7 +2186,7 @@ sub get-properties ( Str:D $source-content is copy ) {
                   ?? $prop-blurp !! @$args[2]//'';
 
     my Str $type-string = "=item B<Gnome::GObject::Value> type of this property is $prop-g-type\n";
-    $type-string ~= "=item the type of this $prop-g-type object is $gtype-string\n" if ?$gtype-string and $gtype-string ne $prop-g-type;
+    $type-string ~= "=item The type of this $prop-g-type object is $gtype-string\n" if ?$gtype-string and $gtype-string ne $prop-g-type;
 
     my Str $flags-text = '';
     for @$flags -> $ftext {
@@ -2206,7 +2206,7 @@ sub get-properties ( Str:D $source-content is copy ) {
       =comment #TP:0:$prop-name:
       =head2 $prop-name
       $prop-blurp
-      
+
       $type-string$flags-text$min-max-text$default-text
       EOHEADER
 
