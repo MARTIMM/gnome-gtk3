@@ -19,15 +19,6 @@ CSS names
 
 **Gnome::Gtk3::ColorChooserWidget** has a single CSS node with name colorchooser.
 
-Since: 3.4
-
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::ColorChooserWidget implements
-
-  * [Gnome::Gtk3::ColorChooser](ColorChooser.html)
-
 See Also
 --------
 
@@ -43,51 +34,65 @@ Declaration
     also is Gnome::Gtk3::Box;
     also does Gnome::Gtk3::ColorChooser;
 
+Uml Diagram
+-----------
+
+![](plantuml/ColorChooserWidget.svg)
+
+Inheriting this class
+---------------------
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+    use Gnome::Gtk3::ColorChooserWidget;
+
+    unit class MyGuiClass;
+    also is Gnome::Gtk3::ColorChooserWidget;
+
+    submethod new ( |c ) {
+      # let the Gnome::Gtk3::ColorChooserWidget class process the options
+      self.bless( :GtkColorChooserWidget, |c);
+    }
+
+    submethod BUILD ( ... ) {
+      ...
+    }
+
 Methods
 =======
 
 new
 ---
 
-Create a new plain object.
+### default, no options
+
+Create a new ColorChooserWidget object.
 
     multi method new ( )
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :native-object
+
+Create a ColorChooserWidget object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
     multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+### :build-id
+
+Create a ColorChooserWidget object using a native object returned from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
-
-[gtk_] color_chooser_widget_new
--------------------------------
-
-Creates a new **Gnome::Gtk3::ColorChooserWidget**.
-
-Returns: a new **Gnome::Gtk3::ColorChooserWidget**
-
-Since: 3.4
-
-    method gtk_color_chooser_widget_new ( --> N-GObject )
 
 Properties
 ==========
 
-An example of using a string type property of a `Gnome::Gtk3::Label` object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+show-editor
+-----------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
+Show editor
 
-Supported properties
---------------------
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-### Show editor
+  * Parameter is readable and writable.
 
-The *show-editor* property is `1` when the color chooser is showing the single-color editor. It can be set to switch the color chooser into single-color editing mode. Since: 3.4
-
-The **Gnome::GObject::Value** type of property *show-editor* is `G_TYPE_BOOLEAN`.
+  * Default value is FALSE.
 

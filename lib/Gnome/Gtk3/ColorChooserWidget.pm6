@@ -12,38 +12,18 @@ A widget for choosing colors
 
 =head1 Description
 
-The B<Gnome::Gtk3::ColorChooserWidget> widget lets the user select a
-color. By default, the chooser presents a predefined palette
-of colors, plus a small number of settable custom colors.
-It is also possible to select a different color with the
-single-color editor. To enter the single-color editing mode,
-use the context menu of any color of the palette, or use the
-'+' button to add a new custom color.
+The B<Gnome::Gtk3::ColorChooserWidget> widget lets the user select a color. By default, the chooser presents a predefined palette of colors, plus a small number of settable custom colors. It is also possible to select a different color with the single-color editor. To enter the single-color editing mode, use the context menu of any color of the palette, or use the '+' button to add a new custom color.
 
-The chooser automatically remembers the last selection, as well
-as custom colors.
+The chooser automatically remembers the last selection, as well as custom colors.
 
-To change the initially selected color, use C<gtk_color_chooser_set_rgba()>.
-To get the selected color use C<gtk_color_chooser_get_rgba()>.
+To change the initially selected color, use C<gtk_color_chooser_set_rgba()>. To get the selected color use C<gtk_color_chooser_get_rgba()>.
 
-The B<Gnome::Gtk3::ColorChooserWidget> is used in the B<Gnome::Gtk3::ColorChooserDialog>
-to provide a dialog for selecting colors.
+The B<Gnome::Gtk3::ColorChooserWidget> is used in the B<Gnome::Gtk3::ColorChooserDialog> to provide a dialog for selecting colors.
 
 
 =head2 CSS names
 
 B<Gnome::Gtk3::ColorChooserWidget> has a single CSS node with name colorchooser.
-
-Since: 3.4
-
-
-
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::ColorChooserWidget implements
-
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::ColorChooser](ColorChooser.html)
 
 
 =head2 See Also
@@ -57,6 +37,31 @@ B<Gnome::Gtk3::ColorChooserDialog>
   also is Gnome::Gtk3::Box;
   also does Gnome::Gtk3::ColorChooser;
 
+
+=head2 Uml Diagram
+
+![](plantuml/ColorChooserWidget.svg)
+
+
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::ColorChooserWidget;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::ColorChooserWidget;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::ColorChooserWidget class process the options
+    self.bless( :GtkColorChooserWidget, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
+
+
 =comment head2 Example
 
 =end pod
@@ -66,8 +71,9 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
-use Gnome::Gtk3::Box;
+use Gnome::N::GlibToRakuTypes;
 
+use Gnome::Gtk3::Box;
 use Gnome::Gtk3::Buildable;
 use Gnome::Gtk3::Orientable;
 use Gnome::Gtk3::ColorChooser;
@@ -86,24 +92,33 @@ my Bool $signals-added = False;
 =head1 Methods
 =head2 new
 
-Create a new plain object.
+=head3 default, no options
+
+Create a new ColorChooserWidget object.
 
   multi method new ( )
 
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+
+=head3 :native-object
+
+Create a ColorChooserWidget object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
   multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+
+=head3 :build-id
+
+Create a ColorChooserWidget object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
 
+
 =end pod
 
-#TM:0:new():
-#TM:0:new(:native-object):
-#TM:0:new(:build-id):
-
+#TM:1:new():inheriting
+#TM:1:new():
+#TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
+#TM:4:new(:build-id):Gnome::GObject::Object
 submethod BUILD ( *%options ) {
 
   # add signal info in the form of group<signal-name>.
@@ -117,45 +132,102 @@ submethod BUILD ( *%options ) {
   }
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::ColorChooserWidget';
+  if self.^name eq 'Gnome::Gtk3::ColorChooserWidget' or %options<GtkColorChooserWidget> {
 
-  # process all named arguments
-  if ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in Gnome::GObject::Object
+    # check if native object is set by a parent class
+    if self.is-valid { }
+
+    # check if common options are handled by some parent
+    elsif %options<native-object>:exists { }
+    elsif %options<build-id>:exists { }
+
+    # process all other options
+    else {
+      my $no;
+      if ? %options<___x___> {
+        #$no = %options<___x___>;
+        #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
+        #$no = _gtk_color_chooser_widget_new___x___($no);
+      }
+
+      #`{{ use this when the module is not made inheritable
+      # check if there are unknown options
+      elsif %options.elems {
+        die X::Gnome.new(
+          :message(
+            'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+            self.^name ~ ': ' ~ %options.keys.join(', ')
+          )
+        );
+      }
+      }}
+
+      #`{{ when there are no defaults use this
+      # check if there are any options
+      elsif %options.elems == 0 {
+        die X::Gnome.new(:message('No options specified ' ~ self.^name));
+      }
+      }}
+
+      ##`{{ when there are defaults use this instead
+      # create default object
+      else {
+        $no = _gtk_color_chooser_widget_new();
+      }
+      #}}
+
+      self.set-native-object($no);
+    }
+
+    # only after creating the native-object, the gtype is known
+    self._set-class-info('GtkColorChooserWidget');
   }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  else {#if ? %options<empty> {
-    self._set-native-object(gtk_color_chooser_widget_new());
-  }
-
-  # only after creating the native-object, the gtype is known
-  self._set-class-info('GtkColorChooserWidget');
 }
 
 #-------------------------------------------------------------------------------
-# no pod. user does not have to know about it.
-method _fallback ( $native-sub is copy --> Callable ) {
+#TM:1:_gtk_color_chooser_widget_new:
+#`{{
+=begin pod
+=head2 _gtk_color_chooser_widget_new
 
-  my Callable $s;
-  try { $s = &::("gtk_color_chooser_widget_$native-sub"); };
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
-  $s = self._color_chooser_interface($native-sub) unless ?$s;
+Creates a new B<Gnome::Gtk3::ColorChooserWidget>.
 
-  self._set-class-name-of-sub('GtkColorChooserWidget');
-  $s = callsame unless ?$s;
+Returns: a new B<Gnome::Gtk3::ColorChooserWidget>
 
-  $s;
-}
+  method _gtk_color_chooser_widget_new ( --> N-GObject )
 
+=end pod
+}}
+
+sub _gtk_color_chooser_widget_new (  --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_color_chooser_widget_new')
+  { * }
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:show-editor:
+=head2 show-editor
+
+Show editor
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
+=end pod
+
+
+
+
+
+
+
+
+=finish
 #-------------------------------------------------------------------------------
 #TM:2:gtk_color_chooser_widget_new:new()
 =begin pod
