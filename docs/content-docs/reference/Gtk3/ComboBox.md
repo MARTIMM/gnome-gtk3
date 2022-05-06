@@ -57,7 +57,26 @@ Declaration
 Uml Diagram
 -----------
 
-![](plantuml/ComboBox.svg)
+![](plantuml/ComboBox-ea.svg)
+
+Inheriting this class
+---------------------
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+    use Gnome::Gtk3::ComboBox;
+
+    unit class MyGuiClass;
+    also is Gnome::Gtk3::ComboBox;
+
+    submethod new ( |c ) {
+      # let the Gnome::Gtk3::ComboBox class process the options
+      self.bless( :GtkComboBox, |c);
+    }
+
+    submethod BUILD ( ... ) {
+      ...
+    }
 
 Example
 -------
@@ -68,568 +87,573 @@ Methods
 new
 ---
 
-Create a new plain object.
+### default, no options
+
+Create a new ComboBox object.
 
     multi method new ( )
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :native-object
+
+Create a ComboBox object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
     multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+### :build-id
+
+Create a ComboBox object using a native object returned from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
 
-[gtk_] combo_box_new
---------------------
-
-Creates a new empty **Gnome::Gtk3::ComboBox**.
-
-Returns: A new **Gnome::Gtk3::ComboBox**.
-
-    method gtk_combo_box_new ( --> N-GObject  )
-
-[[gtk_] combo_box_] new_with_area
----------------------------------
-
-Creates a new empty **Gnome::Gtk3::ComboBox** using *area* to layout cells.
-
-Returns: A new **Gnome::Gtk3::ComboBox**.
-
-    method gtk_combo_box_new_with_area ( N-GObject $area --> N-GObject  )
-
-  * N-GObject $area; the **Gnome::Gtk3::CellArea** to use to layout cell renderers
-
-[[gtk_] combo_box_] new_with_area_and_entry
--------------------------------------------
-
-Creates a new empty **Gnome::Gtk3::ComboBox** with an entry.
-
-The new combo box will use *area* to layout cells.
-
-Returns: A new **Gnome::Gtk3::ComboBox**.
-
-    method gtk_combo_box_new_with_area_and_entry ( N-GObject $area --> N-GObject  )
-
-  * N-GObject $area; the **Gnome::Gtk3::CellArea** to use to layout cell renderers
-
-[[gtk_] combo_box_] new_with_entry
-----------------------------------
-
-Creates a new empty **Gnome::Gtk3::ComboBox** with an entry.
-
-Returns: A new **Gnome::Gtk3::ComboBox**.
-
-Since: 2.24
-
-    method gtk_combo_box_new_with_entry ( --> N-GObject  )
-
-[[gtk_] combo_box_] new_with_model
-----------------------------------
-
-Creates a new **Gnome::Gtk3::ComboBox** with the model initialized to *model*.
-
-Returns: A new **Gnome::Gtk3::ComboBox**.
-
-Since: 2.4
-
-    method gtk_combo_box_new_with_model ( N-GObject $model --> N-GObject  )
-
-  * N-GObject $model; A **Gnome::Gtk3::TreeModel**.
-
-[[gtk_] combo_box_] new_with_model_and_entry
---------------------------------------------
-
-Creates a new empty **Gnome::Gtk3::ComboBox** with an entry and with the model initialized to *model*.
-
-Returns: A new **Gnome::Gtk3::ComboBox**
-
-Since: 2.24
-
-    method gtk_combo_box_new_with_model_and_entry ( N-GObject $model --> N-GObject  )
-
-  * N-GObject $model; A **Gnome::Gtk3::TreeModel**
-
-[[gtk_] combo_box_] get_wrap_width
-----------------------------------
-
-Returns the wrap width which is used to determine the number of columns for the popup menu. If the wrap width is larger than 1, the combo box is in table mode.
-
-Returns: the wrap width.
-
-Since: 2.6
-
-    method gtk_combo_box_get_wrap_width ( --> Int  )
-
-[[gtk_] combo_box_] set_wrap_width
-----------------------------------
-
-Sets the wrap width of *combo_box* to be *width*. The wrap width is basically the preferred number of columns when you want the popup to be layed out in a table.
-
-Since: 2.4
-
-    method gtk_combo_box_set_wrap_width ( Int $width )
-
-  * Int $width; Preferred number of columns
-
-[[gtk_] combo_box_] get_row_span_column
----------------------------------------
-
-Returns the column with row span information for *combo_box*.
-
-Returns: the row span column.
-
-Since: 2.6
-
-    method gtk_combo_box_get_row_span_column ( --> Int  )
-
-[[gtk_] combo_box_] set_row_span_column
----------------------------------------
-
-Sets the column with row span information for *combo_box* to be *row_span*. The row span column contains integers which indicate how many rows an item should span.
-
-Since: 2.4
-
-    method gtk_combo_box_set_row_span_column ( Int $row_span )
-
-  * Int $row_span; A column in the model passed during construction.
-
-[[gtk_] combo_box_] get_column_span_column
-------------------------------------------
-
-Returns the column with column span information for *combo_box*.
-
-Returns: the column span column.
-
-Since: 2.6
-
-    method gtk_combo_box_get_column_span_column ( --> Int  )
-
-[[gtk_] combo_box_] set_column_span_column
-------------------------------------------
-
-Sets the column with column span information for *combo_box* to be *column_span*. The column span column contains integers which indicate how many columns an item should span.
-
-Since: 2.4
-
-    method gtk_combo_box_set_column_span_column ( Int $column_span )
-
-  * Int $column_span; A column in the model passed during construction
-
-[[gtk_] combo_box_] get_active
-------------------------------
+get-active
+----------
 
 Returns the index of the currently active item, or -1 if there’s no active item. If the model is a non-flat treemodel, and the active item is not an immediate child of the root of the tree, this function returns `gtk_tree_path_get_indices (path)[0]`, where `path` is the **Gnome::Gtk3::TreePath** of the active item.
 
 Returns: An integer which is the index of the currently active item, or -1 if there’s no active item.
 
-Since: 2.4
+    method get-active ( --> Int )
 
-    method gtk_combo_box_get_active ( --> Int  )
+get-active-id
+-------------
 
-[[gtk_] combo_box_] set_active
-------------------------------
+Returns the ID of the active row of *combo_box*. This value is taken from the active row and the column specified by the *id-column* property of *combo_box* (see `set_id_column()`).
 
-Sets the active item of *combo_box* to be the item at *index*.
+The returned value is an interned string which means that you can compare the pointer by value to other interned strings and that you must not free it.
 
-Since: 2.4
+If the *id-column* property of *combo_box* is not set, or if no row is active, or if the active row has a `undefined` ID value, then `undefined` is returned.
 
-    method gtk_combo_box_set_active ( Int $index_ )
+Returns: the ID of the active row, or `undefined`
 
-  * Int $index_; An index in the model passed during construction, or -1 to have no active item
+    method get-active-id ( --> Str )
 
-[[gtk_] combo_box_] set_model
------------------------------
+get-active-iter
+---------------
 
-Sets the model used by *combo_box* to be *model*. Will unset a previously set model (if applicable). If model is `Any`, then it will unset the model.
+Sets *iter* to point to the currently active item, if any item is active. Otherwise, *iter* is left unchanged.
 
-Note that this function does not clear the cell renderers, you have to call `gtk_cell_layout_clear()` yourself if you need to set up different cell renderers for the new model.
+Returns: `True` if *iter* was set, `False` otherwise
 
-Since: 2.4
+    method get-active-iter ( N-GtkTreeIter $iter --> Bool )
 
-    method gtk_combo_box_set_model ( N-GObject $model )
+  * $iter; A **Gnome::Gtk3::TreeIter**
 
-  * N-GObject $model; (allow-none): A **Gnome::Gtk3::TreeModel**
-
-[[gtk_] combo_box_] get_model
------------------------------
-
-Returns the **Gnome::Gtk3::TreeModel** which is acting as data source for *combo_box*.
-
-Returns: (transfer none): A **Gnome::Gtk3::TreeModel** which was passed during construction.
-
-Since: 2.4
-
-    method gtk_combo_box_get_model ( --> N-GObject  )
-
-[[gtk_] combo_box_] set_button_sensitivity
-------------------------------------------
-
-Sets whether the dropdown button of the combo box should be always sensitive (`GTK_SENSITIVITY_ON`), never sensitive (`GTK_SENSITIVITY_OFF`) or only if there is at least one item to display (`GTK_SENSITIVITY_AUTO`).
-
-Since: 2.14
-
-    method gtk_combo_box_set_button_sensitivity ( GtkSensitivityType $sensitivity )
-
-  * GtkSensitivityType $sensitivity; specify the sensitivity of the dropdown button
-
-[[gtk_] combo_box_] get_button_sensitivity
-------------------------------------------
+get-button-sensitivity
+----------------------
 
 Returns whether the combo box sets the dropdown button sensitive or not when there are no items in the model.
 
 Returns: `GTK_SENSITIVITY_ON` if the dropdown button is sensitive when the model is empty, `GTK_SENSITIVITY_OFF` if the button is always insensitive or `GTK_SENSITIVITY_AUTO` if it is only sensitive as long as the model has one item to be selected.
 
-Since: 2.14
+    method get-button-sensitivity ( --> GtkSensitivityType )
 
-    method gtk_combo_box_get_button_sensitivity ( --> GtkSensitivityType  )
+get-column-span-column
+----------------------
 
-[[gtk_] combo_box_] get_has_entry
----------------------------------
+Returns the column with column span information for *combo_box*.
 
-Returns whether the combo box has an entry.
+Returns: the column span column.
 
-Returns: whether there is an entry in *combo_box*.
+    method get-column-span-column ( --> Int )
 
-Since: 2.24
-
-    method gtk_combo_box_get_has_entry ( --> Int )
-
-[[gtk_] combo_box_] set_entry_text_column
------------------------------------------
-
-Sets the model column which *combo_box* should use to get strings from to be *text_column*. The column *text_column* in the model of *combo_box* must be of type `G_TYPE_STRING`.
-
-This is only relevant if *combo_box* has been created with *has-entry* as `1`.
-
-Since: 2.24
-
-    method gtk_combo_box_set_entry_text_column ( Int $text_column )
-
-  * Int $text_column; A column in *model* to get the strings from for the internal entry
-
-[[gtk_] combo_box_] get_entry_text_column
------------------------------------------
+get-entry-text-column
+---------------------
 
 Returns the column which *combo_box* is using to get the strings from to display in the internal entry.
 
 Returns: A column in the data source model of *combo_box*.
 
-Since: 2.24
+    method get-entry-text-column ( --> Int )
 
-    method gtk_combo_box_get_entry_text_column ( --> Int  )
+get-has-entry
+-------------
 
-[[gtk_] combo_box_] set_popup_fixed_width
------------------------------------------
+Returns whether the combo box has an entry.
 
-Specifies whether the popup’s width should be a fixed width matching the allocated width of the combo box.
+Returns: whether there is an entry in *combo_box*.
 
-Since: 3.0
+    method get-has-entry ( --> Bool )
 
-    method gtk_combo_box_set_popup_fixed_width ( Int $fixed )
-
-  * Int $fixed; whether to use a fixed popup width
-
-[[gtk_] combo_box_] get_popup_fixed_width
------------------------------------------
-
-Gets whether the popup uses a fixed width matching the allocated width of the combo box.
-
-Returns: `1` if the popup uses a fixed width
-
-Since: 3.0
-
-    method gtk_combo_box_get_popup_fixed_width ( --> Int  )
-
-[gtk_] combo_box_popup
-----------------------
-
-Pops up the menu or dropdown list of *combo_box*.
-
-This function is mostly intended for use by accessibility technologies; applications should have little use for it.
-
-Since: 2.4
-
-    method gtk_combo_box_popup ( )
-
-[[gtk_] combo_box_] popup_for_device
-------------------------------------
-
-Pops up the menu or dropdown list of *combo_box*, the popup window will be grabbed so only *device* and its associated pointer/keyboard are the only **Gnome::Gdk3::Devices** able to send events to it.
-
-Since: 3.0
-
-    method gtk_combo_box_popup_for_device ( N-GObject $device )
-
-  * N-GObject $device; a **Gnome::Gdk3::Device**
-
-[gtk_] combo_box_popdown
-------------------------
-
-Hides the menu or dropdown list of *combo_box*.
-
-This function is mostly intended for use by accessibility technologies; applications should have little use for it.
-
-Since: 2.4
-
-    method gtk_combo_box_popdown ( )
-
-[[gtk_] combo_box_] get_id_column
----------------------------------
+get-id-column
+-------------
 
 Returns the column which *combo_box* is using to get string IDs for values from.
 
 Returns: A column in the data source model of *combo_box*.
 
-Since: 3.0
+    method get-id-column ( --> Int )
 
-    method gtk_combo_box_get_id_column ( --> Int  )
+get-model
+---------
 
-[[gtk_] combo_box_] set_id_column
----------------------------------
+Returns the **Gnome::Gtk3::TreeModel** which is acting as data source for *combo_box*.
+
+Returns: A **Gnome::Gtk3::TreeModel** which was passed during construction.
+
+    method get-model ( --> N-GObject )
+
+get-popup-fixed-width
+---------------------
+
+Gets whether the popup uses a fixed width matching the allocated width of the combo box.
+
+Returns: `True` if the popup uses a fixed width
+
+    method get-popup-fixed-width ( --> Bool )
+
+get-row-span-column
+-------------------
+
+Returns the column with row span information for *combo_box*.
+
+Returns: the row span column.
+
+    method get-row-span-column ( --> Int )
+
+get-wrap-width
+--------------
+
+Returns the wrap width which is used to determine the number of columns for the popup menu. If the wrap width is larger than 1, the combo box is in table mode.
+
+Returns: the wrap width.
+
+    method get-wrap-width ( --> Int )
+
+popdown
+-------
+
+Hides the menu or dropdown list of *combo_box*.
+
+This function is mostly intended for use by accessibility technologies; applications should have little use for it.
+
+    method popdown ( )
+
+popup
+-----
+
+Pops up the menu or dropdown list of *combo_box*.
+
+This function is mostly intended for use by accessibility technologies; applications should have little use for it.
+
+Before calling this, *combo_box* must be mapped, or nothing will happen.
+
+    method popup ( )
+
+popup-for-device
+----------------
+
+Pops up the menu or dropdown list of *combo_box*, the popup window will be grabbed so only *device* and its associated pointer/keyboard are the only **Gnome::Gdk3::Devices** able to send events to it.
+
+    method popup-for-device ( N-GObject() $device )
+
+  * $device; a **Gnome::Gdk3::Device**
+
+set-active
+----------
+
+Sets the active item of *combo_box* to be the item at *index*.
+
+    method set-active ( Int() $index_ )
+
+  * $index_; An index in the model passed during construction, or -1 to have no active item
+
+set-active-id
+-------------
+
+Changes the active row of *combo_box* to the one that has an ID equal to *active_id*, or unsets the active row if *active_id* is `undefined`. Rows having a `undefined` ID string cannot be made active by this function.
+
+If the *id-column* property of *combo_box* is unset or if no row has the given ID then the function does nothing and returns `False`.
+
+Returns: `True` if a row with a matching ID was found. If a `undefined` *active_id* was given to unset the active row, the function always returns `True`.
+
+    method set-active-id ( Str $active_id --> Bool )
+
+  * $active_id; the ID of the row to select, or `undefined`
+
+set-active-iter
+---------------
+
+Sets the current active item to be the one referenced by *iter*, or unsets the active item if *iter* is `undefined`.
+
+    method set-active-iter ( N-GtkTreeIter $iter )
+
+  * $iter; The **Gnome::Gtk3::TreeIter**, or `undefined`
+
+set-button-sensitivity
+----------------------
+
+Sets whether the dropdown button of the combo box should be always sensitive (`GTK_SENSITIVITY_ON`), never sensitive (`GTK_SENSITIVITY_OFF`) or only if there is at least one item to display (`GTK_SENSITIVITY_AUTO`).
+
+    method set-button-sensitivity ( GtkSensitivityType $sensitivity )
+
+  * $sensitivity; specify the sensitivity of the dropdown button
+
+set-column-span-column
+----------------------
+
+Sets the column with column span information for *combo_box* to be *column_span*. The column span column contains integers which indicate how many columns an item should span.
+
+    method set-column-span-column ( Int() $column_span )
+
+  * $column_span; A column in the model passed during construction
+
+set-entry-text-column
+---------------------
+
+Sets the model column which *combo_box* should use to get strings from to be *text_column*. The column *text_column* in the model of *combo_box* must be of type `G_TYPE_STRING`.
+
+This is only relevant if *combo_box* has been created with *has-entry* as `True`.
+
+    method set-entry-text-column ( Int() $text_column )
+
+  * $text_column; A column in *model* to get the strings from for the internal entry
+
+set-id-column
+-------------
 
 Sets the model column which *combo_box* should use to get string IDs for values from. The column *id_column* in the model of *combo_box* must be of type `G_TYPE_STRING`.
 
-Since: 3.0
+    method set-id-column ( Int() $id_column )
 
-    method gtk_combo_box_set_id_column ( Int $id_column )
+  * $id_column; A column in *model* to get string IDs for values from
 
-  * Int $id_column; A column in *model* to get string IDs for values from
+set-model
+---------
 
-[[gtk_] combo_box_] get_active_id
----------------------------------
+Sets the model used by *combo_box* to be *model*. Will unset a previously set model (if applicable). If model is `undefined`, then it will unset the model.
 
-Returns the ID of the active row of *combo_box*. This value is taken from the active row and the column specified by the *id-column* property of *combo_box* (see `gtk_combo_box_set_id_column()`).
+Note that this function does not clear the cell renderers, you have to call `gtk_cell_layout_clear()` yourself if you need to set up different cell renderers for the new model.
 
-The returned value is an interned string which means that you can compare the pointer by value to other interned strings and that you must not free it.
+    method set-model ( N-GObject() $model )
 
-If the *id-column* property of *combo_box* is not set, or if no row is active, or if the active row has a `Any` ID value, then `Any` is returned.
+  * $model; A **Gnome::Gtk3::TreeModel**
 
-Returns: (nullable): the ID of the active row, or `Any`
+set-popup-fixed-width
+---------------------
 
-Since: 3.0
+Specifies whether the popup’s width should be a fixed width matching the allocated width of the combo box.
 
-    method gtk_combo_box_get_active_id ( --> Str  )
+    method set-popup-fixed-width ( Bool $fixed )
 
-[[gtk_] combo_box_] set_active_id
----------------------------------
+  * $fixed; whether to use a fixed popup width
 
-Changes the active row of *combo_box* to the one that has an ID equal to *active_id*, or unsets the active row if *active_id* is `Any`. Rows having a `Any` ID string cannot be made active by this function.
+set-row-span-column
+-------------------
 
-If the *id-column* property of *combo_box* is unset or if no row has the given ID then the function does nothing and returns `0`.
+Sets the column with row span information for *combo_box* to be *row_span*. The row span column contains integers which indicate how many rows an item should span.
 
-Returns: `1` if a row with a matching ID was found. If a `Any` *active_id* was given to unset the active row, the function always returns `1`.
+    method set-row-span-column ( Int() $row_span )
 
-Since: 3.0
+  * $row_span; A column in the model passed during construction.
 
-    method gtk_combo_box_set_active_id ( Str $active_id --> Int  )
+set-wrap-width
+--------------
 
-  * Str $active_id; (allow-none): the ID of the row to select, or `Any`
+Sets the wrap width of *combo_box* to be *width*. The wrap width is basically the preferred number of columns when you want the popup to be layed out in a table.
+
+    method set-wrap-width ( Int() $width )
+
+  * $width; Preferred number of columns
 
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
+changed
+-------
 
-First method
-------------
+The changed signal is emitted when the active item is changed. The can be due to the user selecting a different item from the list, or due to a call to `set_active_iter()`. It will also be emitted while typing into the entry of a combo box with an entry.
 
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
+    method handler (
+      Gnome::Gtk3::ComboBox :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
 
-    # handler method
-    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
+  * $widget; The instance which registered the signal
 
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
+  * $_handler-id; The handler id which is returned from the registration
 
-Second method
--------------
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
 
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
+format-entry-text
 -----------------
 
-### changed
-
-The changed signal is emitted when the active item is changed. The can be due to the user selecting a different item from the list, or due to a call to `gtk_combo_box_set_active_iter()`. It will also be emitted while typing into the entry of a combo box with an entry.
-
-Since: 2.4
-
-    method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($widget),
-      *%user-options
-    );
-
-  * $widget; the object which received the signal
-
-### move-active
-
-The *move-active* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to move the active selection.
-
-Since: 2.12
-
-    method handler (
-      Gnome::Gtk3::ScrollType $scroll_type,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($widget),
-      *%user-options
-    );
-
-  * $widget; the object that received the signal
-
-  * $scroll_type; a **Gnome::Gtk3::ScrollType**
-
-### popup
-
-The *popup* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to popup the combo box list.
-
-The default binding for this signal is Alt+Down.
-
-Since: 2.12
-
-    method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($widget),
-      *%user-options
-    );
-
-  * $widget; the object that received the signal
-
-### popdown
-
-The *popdown* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to popdown the combo box list.
-
-The default bindings for this signal are Alt+Up and Escape.
-
-Since: 2.12
-
-    method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($button),
-      *%user-options
-      --> Int
-    );
-
-  * $button; the object which received the signal
-
-### format-entry-text
-
-For combo boxes that are created with an entry (See **Gnome::Gtk3::ComboBox**:has-entry).
+For combo boxes that are created with an entry (See GtkComboBox:has-entry).
 
 A signal which allows you to change how the text displayed in a combo box's entry is displayed.
 
-Connect a signal handler which returns an allocated string representing *path*. That string will then be used to set the text in the combo box's entry. The default signal handler uses the text from the **Gnome::Gtk3::ComboBox**::entry-text-column model column.
+Connect a signal handler which returns an allocated string representing *path*. That string will then be used to set the text in the combo box's entry. The default signal handler uses the text from the GtkComboBox::entry-text-column model column.
 
-Returns: (transfer full): a newly allocated string representing *path* for the current **Gnome::Gtk3::ComboBox** model.
-
-Since: 3.4
+Returns: (transfer full): a newly allocated string representing *path* for the current GtkComboBox model.
 
     method handler (
-      Str $path,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($combo),
+      Gnome::Gtk3::ComboBox :_widget($combo),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-      --> Unknown type G_TYPE_STRING
-    );
+    )
 
-  * $combo; the object which received the signal
+  * $path; the GtkTreePath string from the combo box's current model to format text for
 
-  * $path; the **Gnome::Gtk3::TreePath** string from the combo box's current model to format text for
+  * $combo; The instance which registered the signal
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+move-active
+-----------
+
+The *move-active* signal is a [keybinding signal][GtkBindingSignal] which gets emitted to move the active selection.
+
+    method handler (
+      Gnome::Gtk3::ComboBox :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
+
+  * $scroll_type; a **Gnome::Gtk3::ScrollType**
+
+  * $widget; The instance which registered the signal
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+popdown
+-------
+
+The *popdown* signal is a [keybinding signal][GtkBindingSignal] which gets emitted to popdown the combo box list.
+
+The default bindings for this signal are Alt+Up and Escape.
+
+    method handler (
+      Gnome::Gtk3::ComboBox :_widget($button),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
+
+  * $button; The instance which registered the signal
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+popup
+-----
+
+The *popup* signal is a [keybinding signal][GtkBindingSignal] which gets emitted to popup the combo box list.
+
+The default binding for this signal is Alt+Down.
+
+    method handler (
+      Gnome::Gtk3::ComboBox :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
+
+  * $widget; The instance which registered the signal
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+active
+------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
+The item which is currently active
 
-Supported properties
---------------------
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
 
-### Wrap width
+  * Parameter is readable and writable.
 
-If wrap-width is set to a positive value, the list will be displayed in multiple columns, the number of columns is determined by wrap-width. Since: 2.4
+  * Minimum value is -1.
 
-The **Gnome::GObject::Value** type of property *wrap-width* is `G_TYPE_INT`.
+  * Maximum value is G_MAXINT.
 
-### Row span column
+  * Default value is -1.
 
-If this is set to a non-negative value, it must be the index of a column of type `G_TYPE_INT` in the model. The values of that column are used to determine how many rows a value in the list will span. Therefore, the values in the model column pointed to by this property must be greater than zero and not larger than wrap-width. Since: 2.4
+active-id
+---------
 
-The **Gnome::GObject::Value** type of property *row-span-column* is `G_TYPE_INT`.
+The value of the id column for the active row
 
-### Column span column
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
-If this is set to a non-negative value, it must be the index of a column of type `G_TYPE_INT` in the model. The values of that column are used to determine how many columns a value in the list will span. Since: 2.4
+  * Parameter is readable and writable.
 
-The **Gnome::GObject::Value** type of property *column-span-column* is `G_TYPE_INT`.
+  * Default value is undefined.
 
-### Active item
+button-sensitivity
+------------------
 
-The item which is currently active. If the model is a non-flat treemodel, and the active item is not an immediate child of the root of the tree, this property has the value `gtk_tree_path_get_indices (path)[0]`, where `path` is the **Gnome::Gtk3::TreePath** of the active item. Since: 2.4
+Whether the dropdown button is sensitive when the model is empty
 
-The **Gnome::GObject::Value** type of property *active* is `G_TYPE_INT`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_ENUM
 
-### Has Frame
+  * The type of this G_TYPE_ENUM object is GTK_TYPE_SENSITIVITY_TYPE
 
-The has-frame property controls whether a frame is drawn around the entry. Since: 2.6
+  * Parameter is readable and writable.
 
-The **Gnome::GObject::Value** type of property *has-frame* is `G_TYPE_BOOLEAN`.
+  * Default value is GTK_SENSITIVITY_AUTO.
 
-### Popup shown
+cell-area
+---------
 
-Whether the combo boxes dropdown is popped up. Note that this property is mainly useful, because it allows you to connect to notify::popup-shown. Since: 2.10
+The GtkCellArea used to layout cells
 
-The **Gnome::GObject::Value** type of property *popup-shown* is `G_TYPE_BOOLEAN`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
 
-### Button Sensitivity
+  * The type of this G_TYPE_OBJECT object is GTK_TYPE_CELL_AREA
 
-Whether the dropdown button is sensitive when the model is empty. Since: 2.14 Widget type: GTK_TYPE_SENSITIVITY_TYPE
+  * Parameter is readable and writable.
 
-The **Gnome::GObject::Value** type of property *button-sensitivity* is `G_TYPE_ENUM`.
+  * Parameter is set on construction of object.
 
-### Has Entry
+column-span-column
+------------------
 
-Whether the combo box has an entry. Since: 2.24
+TreeModel column containing the column span values
 
-The **Gnome::GObject::Value** type of property *has-entry* is `G_TYPE_BOOLEAN`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
 
-### Entry Text Column
+  * Parameter is readable and writable.
 
-The column in the combo box's model to associate with strings from the entry if the combo was created with *has-entry* = `1`. Since: 2.24
+  * Minimum value is -1.
 
-The **Gnome::GObject::Value** type of property *entry-text-column* is `G_TYPE_INT`.
+  * Maximum value is G_MAXINT.
 
-### ID Column
+  * Default value is -1.
 
-The column in the combo box's model that provides string IDs for the values in the model, if != -1. Since: 3.0
+entry-text-column The column in the combo box's model to associate with strings from the entry if the combo was created with ComboBox has-entry = 1
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
-The **Gnome::GObject::Value** type of property *id-column* is `G_TYPE_INT`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
 
-### Active id
+  * Parameter is readable and writable.
 
-The value of the ID column of the active row. Since: 3.0
+  * Minimum value is -1.
 
-The **Gnome::GObject::Value** type of property *active-id* is `G_TYPE_STRING`.
+  * Maximum value is G_MAXINT.
 
-### Popup Fixed Width
+  * Default value is -1.
 
-Whether the popup's width should be a fixed width matching the allocated width of the combo box. Since: 3.0
+has-entry
+---------
 
-The **Gnome::GObject::Value** type of property *popup-fixed-width* is `G_TYPE_BOOLEAN`.
+Whether combo box has an entry
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Parameter is set on construction of object.
+
+  * Default value is FALSE.
+
+has-frame
+---------
+
+Whether the combo box draws a frame around the child
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
+
+id-column
+---------
+
+The column in the combo box's model that provides string IDs for the values in the model
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
+
+  * Parameter is readable and writable.
+
+  * Minimum value is -1.
+
+  * Maximum value is G_MAXINT.
+
+  * Default value is -1.
+
+model
+-----
+
+The model for the combo box
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
+
+  * The type of this G_TYPE_OBJECT object is GTK_TYPE_TREE_MODEL
+
+  * Parameter is readable and writable.
+
+popup-fixed-width
+-----------------
+
+Whether the popup's width should be a fixed width matching the allocated width of the combo box
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
+
+popup-shown
+-----------
+
+Whether the combo's dropdown is shown
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable.
+
+  * Default value is FALSE.
+
+row-span-column
+---------------
+
+TreeModel column containing the row span values
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
+
+  * Parameter is readable and writable.
+
+  * Minimum value is -1.
+
+  * Maximum value is G_MAXINT.
+
+  * Default value is -1.
+
+wrap-width
+----------
+
+Wrap width for laying out the items in a grid
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
+
+  * Parameter is readable and writable.
+
+  * Minimum value is 0.
+
+  * Maximum value is G_MAXINT.
+
+  * Default value is 0.
 
