@@ -31,7 +31,7 @@ Declaration
 Uml Diagram
 -----------
 
-![](plantuml/AppChooserButton.svg)
+![](plantuml/ComboBox-ea.svg)
 
 Inheriting this class
 ---------------------

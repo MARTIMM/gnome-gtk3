@@ -62,7 +62,7 @@ C<Gnome::Gtk3::ComboBox>
 
 =head2 Uml Diagram
 
-![](plantuml/ComboBox.svg)
+![](plantuml/ComboBox-ea.svg)
 
 
 =head2 Example

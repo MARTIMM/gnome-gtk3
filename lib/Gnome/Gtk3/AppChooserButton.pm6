@@ -36,7 +36,7 @@ To track changes in the selected application, use the I<changed> signal.
 
 =head2 Uml Diagram
 
-![](plantuml/AppChooserButton.svg)
+![](plantuml/ComboBox-ea.svg)
 
 
 =head2 Inheriting this class

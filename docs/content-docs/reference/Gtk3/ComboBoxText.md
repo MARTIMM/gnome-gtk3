@@ -61,7 +61,7 @@ Declaration
 Uml Diagram
 -----------
 
-![](plantuml/ComboBox.svg)
+![](plantuml/ComboBox-ea.svg)
 
 Example
 -------
