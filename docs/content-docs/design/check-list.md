@@ -121,9 +121,9 @@ CheckMenuItem             |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 ColorButton               |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 ColorChooser              |R | ✗| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ½| ✓| ✓| ✓|
 ColorChooserDialog        |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
-ColorChooserWidget        |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| < fbck sg prp
+ColorChooserWidget        |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
+ComboBox                  |  | ✓| ✓| ✓| ✓| ✓| ✓|⅒|  | ⅘| ✓| ✓| ✓| < fbck sg prp
 | Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
-ComboBox                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ComboBoxText              |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Container                 |  | ✗| ✓| ✓| ✓| ✓| ✓| ½| ⅔| ½| ✓| ✓| ✓| _fallback
 CssProvider               |  |  | ✓| ✓| ✓| ✓| ✗| ⅞| ✓| ✗| ✓| ✓| ✓| _fallback
