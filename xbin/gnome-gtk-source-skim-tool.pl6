@@ -165,6 +165,10 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
         get-type( $raw-arg, :attr);
 #note "  args: $arg, $arg-type, $raku-arg-type";
       if ?$arg {
+        # sometimes there are strange argument names like 'index_'
+        $arg ~~ s/^ '-'//;
+        $arg ~~ s/'_' $//;
+
         my Str $pod-doc-item-doc = $items-src-doc.shift if $items-src-doc.elems;
 #note "  pod info: $raku-arg-type, $arg, $pod-doc-item-doc";
 
@@ -186,8 +190,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
               $convert-lines ~= "";
               $method-args ~= ',' if ?$method-args;
               $method-args ~= " $raku-arg-type \$$arg";
-              $call-args ~= ',' if ?$call-args;
-              $call-args ~= " \$$arg";
+              $call-args ~= ", \$$arg";
               $pod-args ~= ',' if ?$pod-args;
               $pod-args ~= " $raku-arg-type \$$arg";
             }
@@ -201,8 +204,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
 
               $method-args ~= ',' if ?$method-args;
               $method-args ~= " \$$arg is copy";
-              $call-args ~= ',' if ?$call-args;
-              $call-args ~= " \$$arg";
+              $call-args ~= ", \$$arg";
               $pod-args ~= ',' if ?$pod-args;
               $pod-args ~= " $raku-arg-type \$$arg";
             }
@@ -212,15 +214,13 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
               # also no pod args and also add '--> List' at the end, but how
               # and not always if it only one
               $raku-arg-type = 'Int';
-              $call-args ~= ',' if ?$call-args;
-              $call-args ~= " my gint \$$arg";
+              $call-args ~= ", my gint \$$arg";
             }
 
             default {
               $method-args ~= ',' if ?$method-args;
               $method-args ~= " $raku-arg-type \$$arg";
-              $call-args ~= ',' if ?$call-args;
-              $call-args ~= " \$$arg";
+              $call-args ~= ", \$$arg";
               $pod-args ~= ',' if ?$pod-args;
               $pod-args ~= " $raku-arg-type \$$arg";
             }
@@ -343,10 +343,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
         $pod-doc-items=end pod
 
         method $pod-sub-name ($method-args$pod-returns ) \{
-        $convert-lines
-          $sub-name\(
-            self\._get-native-object-no-reffing,$call-args
-          )$return-conversion$return-dot-comma
+        $convert-lines  $sub-name\( self\._get-native-object-no-reffing$call-args)$return-conversion$return-dot-comma
         \}
 
         sub $sub-name (
@@ -375,10 +372,7 @@ sub get-subroutines( Str:D $include-content, Str:D $source-content ) {
         $pod-doc-items=end pod
 
         method $pod-sub-name ($method-args$pod-returns ) \{
-        $convert-lines
-          $sub-name\(
-            self\._f\('$*lib-class-name'),$call-args
-          )$return-conversion$return-dot-comma
+        $convert-lines  $sub-name\( self\._f\('$*lib-class-name')$call-args)$return-conversion$return-dot-comma
         \}
 
         sub $sub-name (
