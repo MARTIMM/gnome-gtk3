@@ -8,20 +8,20 @@ A simple, text-only combo box
 Description
 ===========
 
-A `Gnome::Gtk3::ComboBoxText` is a simple variant of `Gnome::Gtk3::ComboBox` that hides the model-view complexity for simple text-only use cases.
+A **Gnome::Gtk3::ComboBoxText** is a simple variant of **Gnome::Gtk3::ComboBox** that hides the model-view complexity for simple text-only use cases.
 
-To create a `Gnome::Gtk3::ComboBoxText`, use `gtk_combo_box_text_new()` or `gtk_combo_box_text_new_with_entry()`.
+To create a **Gnome::Gtk3::ComboBoxText**, use .
 
-You can add items to a `Gnome::Gtk3::ComboBoxText` with `gtk_combo_box_text_append_text()`, `gtk_combo_box_text_insert_text()` or `gtk_combo_box_text_prepend_text()` and remove options with `gtk_combo_box_text_remove()`.
+You can add items to a `Gnome::Gtk3::ComboBoxText` with `append-text()`, `insert_text()` or `gprepend-text()` and remove options with `remove()`.
 
-If the `Gnome::Gtk3::ComboBoxText` contains an entry (via the “has-entry” property), its contents can be retrieved using `gtk_combo_box_text_get_active_text()`. The entry itself can be accessed by calling `gtk_bin_get_child()` on the combo box.
+If the **Gnome::Gtk3::ComboBoxText** contains an entry (via the “has-entry” property), its contents can be retrieved using `get-active-text()`. The entry itself can be accessed by calling `Gnome::Gtk3::Bin get-child()` on the combo box.
 
-You should not call `gtk_combo_box_set_model()` or attempt to pack more cells into this combo box via its `Gnome::Gtk3::CellLayout` interface.
+You should not call `Gnome::Gtk3::ComboBox set-model()` or attempt to pack more cells into this combo box via its **Gnome::Gtk3::CellLayout** interface.
 
 Gnome::Gtk3::ComboBoxText as Gnome::Gtk3::Buildable
 ---------------------------------------------------
 
-The `Gnome::Gtk3::ComboBoxText` implementation of the `Gnome::Gtk3::Buildable` interface supports adding items directly using the <items> element and specifying <item> elements for each item. Each <item> element can specify the “id” corresponding to the appended text and also supports the regular translation attributes “translatable”, “context” and “comments”.
+The **Gnome::Gtk3::ComboBoxText** implementation of the **Gnome::Gtk3::Buildable** interface supports adding items directly using the <items> element and specifying <item> elements for each item. Each <item> element can specify the “id” corresponding to the appended text and also supports the regular translation attributes “translatable”, “context” and “comments”.
 
 Here is a UI definition fragment specifying `GtkComboBoxText` items:
 
@@ -42,7 +42,7 @@ Css Nodes
         ├── button.combo
         ╰── window.popup
 
-`Gnome::Gtk3::ComboBoxText` has a single CSS node with name combobox. It adds the style class .combo to the main CSS nodes of its entry and button children, and the .linked class to the node of its internal box.
+**Gnome::Gtk3::ComboBoxText** has a single CSS node with name combobox. It adds the style class .combo to the main CSS nodes of its entry and button children, and the .linked class to the node of its internal box.
 
 See Also
 --------
@@ -63,6 +63,25 @@ Uml Diagram
 
 ![](plantuml/ComboBox-ea.svg)
 
+Inheriting this class
+---------------------
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+    use Gnome::Gtk3::ComboBoxText;
+
+    unit class MyGuiClass;
+    also is Gnome::Gtk3::ComboBoxText;
+
+    submethod new ( |c ) {
+      # let the Gnome::Gtk3::ComboBoxText class process the options
+      self.bless( :GtkComboBoxText, |c);
+    }
+
+    submethod BUILD ( ... ) {
+      ...
+    }
+
 Example
 -------
 
@@ -72,158 +91,130 @@ Methods
 new
 ---
 
-Create a new plain object.
-
-    multi method new ( )
-
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
-
-    multi method new ( N-GObject :$native-object! )
-
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
-
-    multi method new ( Str :$build-id! )
-
-[gtk_] combo_box_text_new
--------------------------
+### default, no options
 
 Creates a new **Gnome::Gtk3::ComboBoxText**, which is a **Gnome::Gtk3::ComboBox** just displaying strings.
 
-Returns: A new **Gnome::Gtk3::ComboBoxText**
+    multi method new ( )
 
-Since: 2.24
-
-    method gtk_combo_box_text_new ( --> N-GObject  )
-
-[[gtk_] combo_box_text_] new_with_entry
----------------------------------------
+### :entry
 
 Creates a new **Gnome::Gtk3::ComboBoxText**, which is a **Gnome::Gtk3::ComboBox** just displaying strings. The combo box created by this function has an entry.
 
-Returns: a new **Gnome::Gtk3::ComboBoxText**
+    multi method new ( Any :$entry! )
 
-Since: 2.24
+  * $entry; named argument only checkd for its existence
 
-    method gtk_combo_box_text_new_with_entry ( --> N-GObject  )
+### :native-object
 
-[[gtk_] combo_box_text_] append_text
-------------------------------------
+Create a ComboBoxText object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
-Appends *text* to the list of strings stored in *combo_box*.
+    multi method new ( N-GObject :$native-object! )
 
-This is the same as calling `gtk_combo_box_text_insert_text()` with a position of -1.
+### :build-id
 
-Since: 2.24
+Create a ComboBoxText object using a native object returned from a builder. See also **Gnome::GObject::Object**.
 
-    method gtk_combo_box_text_append_text ( Str $text )
+    multi method new ( Str :$build-id! )
 
-  * Str $text; A string
+append
+------
 
-[[gtk_] combo_box_text_] insert_text
-------------------------------------
+Appends *$text* to the list of strings stored in this combo box. If *id* is defined, then it is used as the ID of the row.
 
-Inserts *text* at *position* in the list of strings stored in *combo_box*.
+This is the same as calling `insert()` with a position of -1.
 
-If *position* is negative then *text* is appended.
+    method append ( Str $id, Str $text )
 
-This is the same as calling `gtk_combo_box_text_insert()` with a `Any` ID string.
+  * $id; a string ID for this value, or `undefined`
 
-Since: 2.24
+  * $text; A string
 
-    method gtk_combo_box_text_insert_text ( Int $position, Str $text )
+append-text
+-----------
 
-  * Int $position; An index to insert *text*
+Appends *text* to the list of strings stored in this combo box.
 
-  * Str $text; A string
+This is the same as calling `insert_text()` with a position of -1.
 
-[[gtk_] combo_box_text_] prepend_text
--------------------------------------
+    method append-text ( Str $text )
 
-Prepends *text* to the list of strings stored in *combo_box*.
+  * $text; A string
 
-This is the same as calling `gtk_combo_box_text_insert_text()` with a position of 0.
+get-active-text
+---------------
 
-Since: 2.24
+Returns the currently active string in this combo box, or `undefined` if none is selected. If this combo box contains an entry, this function will return its contents (which will not necessarily be an item from the list).
 
-    method gtk_combo_box_text_prepend_text ( Str $text )
+Returns: a newly allocated string containing the currently active text. Must be freed with `g_free()`.
 
-  * Str $text; A string
+    method get-active-text ( --> Str )
 
-[gtk_] combo_box_text_remove
-----------------------------
+insert
+------
 
-Removes the string at *position* from *combo_box*.
+Inserts *$text* at *$position* in the list of strings stored in this combo box. If *$id* is defined, then it is used as the ID of the row. See *id-column from Gnome::Gtk3::ComboBox*.
 
-Since: 2.24
+If *$position* is negative then *$text* is appended.
 
-    method gtk_combo_box_text_remove ( Int $position )
+    method insert ( Int() $position, Str $id, Str $text )
 
-  * Int $position; Index of the item to remove
+  * $position; An index to insert *$text*
 
-[[gtk_] combo_box_text_] remove_all
------------------------------------
+  * $id; a string ID for this value, or `undefined`
+
+  * $text; A string to display
+
+insert-text
+-----------
+
+Inserts *$text* at *$position* in the list of strings stored in this combo box. If *$position* is negative then *$text* is appended.
+
+This is the same as calling `insert()` with a `undefined` ID string.
+
+    method insert-text ( Int() $position, Str $text )
+
+  * $position; An index to insert *text*
+
+  * $text; A string
+
+prepend
+-------
+
+Prepends *text* to the list of strings stored in this combo box. If *id* is defined then it is used as the ID of the row.
+
+This is the same as calling `insert()` with a position of 0.
+
+    method prepend ( Str $id, Str $text )
+
+  * $id; a string ID for this value, or `undefined`
+
+  * $text; a string
+
+prepend-text
+------------
+
+Prepends *text* to the list of strings stored in this combo box.
+
+This is the same as calling `insert_text()` with a position of 0.
+
+    method prepend-text ( Str $text )
+
+  * $text; A string
+
+remove
+------
+
+Removes the string at *position* from this combo box.
+
+    method remove ( Int() $position )
+
+  * $position; Index of the item to remove
+
+remove-all
+----------
 
 Removes all the text entries from the combo box.
 
-Since: 3.0
-
-    method gtk_combo_box_text_remove_all ( )
-
-[[gtk_] combo_box_text_] get_active_text
-----------------------------------------
-
-Returns the currently active string in *combo_box*, or `Any` if none is selected. If *combo_box* contains an entry, this function will return its contents (which will not necessarily be an item from the list).
-
-Returns: (transfer full): a newly allocated string containing the currently active text. Must be freed with `g_free()`.
-
-Since: 2.24
-
-    method gtk_combo_box_text_get_active_text ( --> Str  )
-
-[gtk_] combo_box_text_insert
-----------------------------
-
-Inserts *text* at *position* in the list of strings stored in *combo_box*. If *id* is non-`Any` then it is used as the ID of the row. See *id-column*.
-
-If *position* is negative then *text* is appended.
-
-Since: 3.0
-
-    method gtk_combo_box_text_insert ( Int $position, Str $id, Str $text )
-
-  * Int $position; An index to insert *text*
-
-  * Str $id; (allow-none): a string ID for this value, or `Any`
-
-  * Str $text; A string to display
-
-[gtk_] combo_box_text_append
-----------------------------
-
-Appends *text* to the list of strings stored in *combo_box*. If *id* is non-`Any` then it is used as the ID of the row.
-
-This is the same as calling `gtk_combo_box_text_insert()` with a position of -1.
-
-Since: 2.24
-
-    method gtk_combo_box_text_append ( Str $id, Str $text )
-
-  * Str $id; (allow-none): a string ID for this value, or `Any`
-
-  * Str $text; A string
-
-[gtk_] combo_box_text_prepend
------------------------------
-
-Prepends *text* to the list of strings stored in *combo_box*. If *id* is non-`Any` then it is used as the ID of the row.
-
-This is the same as calling `gtk_combo_box_text_insert()` with a position of 0.
-
-Since: 2.24
-
-    method gtk_combo_box_text_prepend ( Str $id, Str $text )
-
-  * Str $id; (allow-none): a string ID for this value, or `Any`
-
-  * Str $text; a string
+    method remove-all ( )
 
