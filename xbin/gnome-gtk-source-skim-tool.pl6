@@ -1291,7 +1291,8 @@ sub get-signals ( Str:D $source-content is copy ) {
     my ( $signal-name, $function-doc, $signal-args) =
       get-signal-function-declaration($source-content);
 
-    last unless $function-doc;
+    #last unless $function-doc;
+    last unless ?$signal-name;
 
     # Construct a class name for this signal and add signal to that class
     my Str $signal-class = 'w' ~ @$signal-args[8];
@@ -1325,8 +1326,25 @@ sub get-signals ( Str:D $source-content is copy ) {
     loop (
       $arg-count = 1; $arg-count < $signal-arg-types.elems; $arg-count++
     ) {
-#note "get-signals: $arg-count, '$signal-arg-types[$arg-count]', '$items-src-doc[$arg-count][0]'";
-      $signal-doc ~= "    $signal-arg-types[$arg-count] \$$items-src-doc[$arg-count][0],\n";
+
+      my Hash $var-counts-when-undef = {};
+      my Str $item-src-doc = $items-src-doc[$arg-count][0] // Str;
+#`{{
+      unless ?$item-src-doc {
+        my Str $key = $signal-arg-types[$arg-count].lc;
+        my Str $var-name;
+        if $var-counts-when-undef{$key}:exists {
+          $var-counts-when-undef{$key}++;
+          $item-src-doc = $key ~ $var-counts-when-undef{$key};
+        }
+        else {
+          $var-counts-when-undef{$key} = 1;
+          $item-src-doc = $key ~ $var-counts-when-undef{$key};
+        }
+      }
+}}
+      $signal-doc ~= "    $signal-arg-types[$arg-count] \$$item-src-doc,\n";
+note "get-signals: ", ($arg-count, $signal-arg-types[$arg-count], $item-src-doc)>>.gist.join(', ');
     }
 
     # Add the arguments given by the register-signal() method
@@ -1446,17 +1464,16 @@ sub get-signal-function-declaration ( Str:D $source-content is rw --> List ) {
     ]
   /;
 
-#note "FDoc 2 ",  $\.Str;
-#note "FDoc 3 ",  ~($<signal-args>//'-');
-
 
   # Save and remove from source
   my Str $signal-args-text = ~($<signal-args>//'');
   $function-doc = '' unless $signal-args-text;
 
+#note "FDoc 3: $function-doc\n$signal-args-text";
+
   $signal-args-text ~~ s/ ');' //;
-  $source-content ~~
-     s/ 'g_signal_new' '_class_handler'? \s* '(' $signal-args-text ');' //;
+  $source-content ~~ s/$signal-args-text//;
+#     s/ 'g_signal_new' '_class_handler'? \s* '(' $signal-args-text ');' //;
 
     # When there's no doc, signal name must be retrieved from function argument.
     # Mostly noted as I_("some name")
@@ -1475,7 +1492,7 @@ sub get-signal-function-declaration ( Str:D $source-content is rw --> List ) {
       @signal-args.push: $sarg;
     }
 
-#note "FDoc 4 ", $signal-name, ', ', @signal-args.join(', ');
+#note "FDoc 4: ", ( $signal-name, |@signal-args).join(', ');
 
   ( $signal-name, $function-doc, @signal-args)
 }
@@ -2161,6 +2178,7 @@ sub get-properties ( Str:D $source-content is copy ) {
 #    my Str ( $prop-name, $prop-blurp);
 #    my Str $prop-args-string;
     my Str ( $prop-name, $prop-blurp) = get-prop-doc($search-prop-doc);
+#note "$?LINE: $search-prop-doc, $prop-name";
 
     my Array $flags;
     my Str $gtype-string;
@@ -2608,6 +2626,27 @@ note "prop args 2: ", @args.join(', ');
 sub property-search ( $source-content is rw --> List ) {
   my Str ( $doc, $spec);
 
+  # $source-content is cleaned only once
+  state Bool $keep-cleening = True;
+  while $keep-cleening {
+    # cleanp some define c-calls which might interfere
+    $source-content ~~ m/
+      $<property-spec> = [
+        'g_param_spec_' [
+          pool || ref || unref ||
+          sink || get || set || steal || internal
+        ]
+#        .*? ');'                            # till the spec ends
+      ]
+    /;
+
+    my $property-spec = ($<property-spec> // '').Str;
+#note $property-spec;
+
+    $keep-cleening = ?$property-spec;
+    $source-content ~~ s/ $property-spec // if $keep-cleening;
+  }
+
   ( $doc, $spec) = try-prop-search1($source-content);
   return ( $doc, $spec) if (?$doc and ?$spec);
 
@@ -2616,7 +2655,9 @@ sub property-search ( $source-content is rw --> List ) {
 
   # Keep this one at the last option. It checks for props without doc
   ( $doc, $spec) = try-prop-search-last($source-content);
-  return ( $doc, $spec) if (?$doc and ?$spec);
+  return ( $doc, $spec) if ?$spec;
+
+  ( '', '')
 }
 
 #-------------------------------------------------------------------------------
@@ -2685,7 +2726,7 @@ sub try-prop-search2 ( $source-content is rw --> List ) {
 }
 
 #-------------------------------------------------------------------------------
-# Try to find g_param_spec_*() when nod doc available
+# Try to find g_param_spec_*() when no doc available
 sub try-prop-search-last ( $source-content is rw --> List ) {
 
 #note "try-prop-search 2:, ", $source-content ~~ m/'/**' \s+ '*' \s+ <alnum>+ ':' [ <alnum> || '-' ]+ ':'/;
