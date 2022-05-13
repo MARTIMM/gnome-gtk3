@@ -276,96 +276,102 @@ The adjustments have to be in pixel units and in the same coordinate system as t
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
+add
+---
 
-First method
+    method handler (
+      N-GObject #`{ native widget } $n-widget,
+      Gnome::Gtk3::Container :_widget($container),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
+
+  * $n-widget; the added widget
+
+  * $container; The instance which registered the signal
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+check-resize
 ------------
 
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
+    method handler (
+      Gnome::Gtk3::Container :_widget($container),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
 
-    # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
+  * $container; The instance which registered the signal
 
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
+  * $_handler-id; The handler id which is returned from the registration
 
-Second method
--------------
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
 
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### add
+remove
+------
 
     method handler (
-      N-GObject $n-gobject,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($container),
+      N-GObject #`{ native widget } $n-widget,
+      Gnome::Gtk3::Container :_widget($container),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $container;
+  * $n-widget; The removed widget
 
-  * $n-gobject; is added widget
+  * $container; The instance which registered the signal
 
-### remove
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+set-focus-child
+---------------
 
     method handler (
-      N-GObject #`{ is widget } $n-gobject #`{ is widget },
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($container),
+      N-GObject #`{ native widget } $widget,
+      Gnome::Gtk3::Container :_widget($container),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $container;
+  * $widget; The focussed child
 
-  * $n-gobject #`{ is widget };
+  * $container; The instance which registered the signal
 
-### set-focus-child
+  * $_handler-id; The handler id which is returned from the registration
 
-    method handler (
-      N-GObject #`{ is widget } $n-gobject #`{ is widget },
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($container),
-      *%user-options
-    );
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
 
-  * $container;
-
-  * $n-gobject #`{ is widget };
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
+border-width
+------------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.get-property( 'label', $gv);
-    $gv.set-string('my text label');
+The width of the empty border outside the containers children
 
-Supported properties
---------------------
+  * **Gnome::GObject::Value** type of this property is G_TYPE_UINT
 
-### Border width: border-width
+  * Parameter is readable and writable.
 
-The **Gnome::GObject::Value** type of property *border-width* is `G_TYPE_UINT`.
+  * Minimum value is 0.
 
-### Child: child
+  * Maximum value is 65535.
 
-Can be used to add a new child to the container Widget type: GTK-TYPE-WIDGET
-
-The **Gnome::GObject::Value** type of property *child* is `G_TYPE_OBJECT`.
+  * Default value is 0.
 

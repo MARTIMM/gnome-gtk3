@@ -286,10 +286,35 @@ submethod BUILD ( *%options ) {
 #-------------------------------------------------------------------------------
 method _fallback ( $native-sub is copy --> Callable ) {
 
+  my Str $new-patt = $native-sub.subst( '_', '-', :g);
+
   my Callable $s;
   try { $s = &::("gtk_container_$native-sub"); };
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  if ?$s {
+    Gnome::N::deprecate(
+      "gtk_container_$native-sub", $new-patt, '0.47.4', '0.50.0'
+    );
+  }
+
+  else {
+    try { $s = &::("gtk_$native-sub"); } unless ?$s;
+    if ?$s {
+      Gnome::N::deprecate(
+        "gtk_$native-sub", $new-patt.subst('container-'),
+        '0.47.4', '0.50.0'
+      );
+    }
+
+    else {
+      try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+      if ?$s {
+        Gnome::N::deprecate(
+          "$native-sub", $new-patt.subst('gtk-container-'),
+          '0.47.4', '0.50.0'
+        );
+      }
+    }
+  }
 
   self._set-class-name-of-sub('GtkContainer');
   $s = callsame unless ?$s;
@@ -1230,6 +1255,86 @@ sub gtk_container_set_focus_vadjustment (
 =begin pod
 =head1 Signals
 
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:add:
+=head2 add
+
+  method handler (
+    N-GObject #`{ native widget } $n-widget,
+    Gnome::Gtk3::Container :_widget($container),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $n-widget; the added widget
+=item $container; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:check-resize:
+=head2 check-resize
+
+  method handler (
+    Gnome::Gtk3::Container :_widget($container),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $container; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:remove:
+=head2 remove
+
+  method handler (
+    N-GObject #`{ native widget } $n-widget,
+    Gnome::Gtk3::Container :_widget($container),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $n-widget; The removed widget
+=item $container; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:set-focus-child:
+=head2 set-focus-child
+
+  method handler (
+    N-GObject #`{ native widget } $widget,
+    Gnome::Gtk3::Container :_widget($container),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $widget; The focussed child
+=item $container; The instance which registered the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=end pod
+
+
+
+#`{{
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Signals
+
 There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
 
 =head2 First method
@@ -1316,44 +1421,22 @@ Also here, the types of positional arguments in the signal handler are important
 =item $n-gobject #`{ is widget };
 
 =end pod
-
+}}
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
-
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.get-property( 'label', $gv);
-  $gv.set-string('my text label');
-
-=head2 Supported properties
-
 =comment -----------------------------------------------------------------------
-=comment #TP:1:border-width:
-=head3 Border width: border-width
+=comment #TP:0:border-width:
+=head2 border-width
 
-The B<Gnome::GObject::Value> type of property I<border-width> is C<G_TYPE_UINT>.
+The width of the empty border outside the containers children
 
-=comment -----------------------------------------------------------------------
-=comment #TP:0:child:
-=head3 Child: child
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_UINT
+=item Parameter is readable and writable.
+=item Minimum value is 0.
+=item Maximum value is 65535.
+=item Default value is 0.
 
-Can be used to add a new child to the container
-Widget type: GTK-TYPE-WIDGET
-
-The B<Gnome::GObject::Value> type of property I<child> is C<G_TYPE_OBJECT>.
-
-=begin comment
-=comment -----------------------------------------------------------------------
-=comment # TP:0:resize-mode:
-=head3 Resize mode: resize-mode
-
-Specify how resize events are handled
-Default value: False
-
-The B<Gnome::GObject::Value> type of property I<resize-mode> is C<G_TYPE_ENUM>.
-=end comment
 =end pod
