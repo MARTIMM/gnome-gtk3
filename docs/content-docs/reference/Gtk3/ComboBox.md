@@ -253,9 +253,9 @@ set-active
 
 Sets the active item of *combo_box* to be the item at *index*.
 
-    method set-active ( Int() $index_ )
+    method set-active ( Int() $index )
 
-  * $index_; An index in the model passed during construction, or -1 to have no active item
+  * $index; An index in the model passed during construction, or -1 to have no active item
 
 set-active-id
 -------------
