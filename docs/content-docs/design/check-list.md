@@ -343,15 +343,16 @@ Window                    |  |  | ✓| ✓| ✓| ✓| ✓| ⅑|  |  | ✓| ✓| 
 
 <br/>
 
-| Gnome::Gio              |T |dm|db|ds|de|dp|ts|te|tp|12|14|so| no -rk :v T
-|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--| _fallback
+| Gnome::Gio              |T |dm|db|ds|de|dp|ts|te|tp|12|14|so| < fbck sg prp
+|-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
 Action                    |R | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ⅖| ✓| ✓| ✓|  
 ActionMap                 |R | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  
 AppInfo                   |  | ✗| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
 AppInfoManager            |  | ✗| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓|
 AppLaunchContext          |  | ✗| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓|
 Application               |  | ✓| ✓| ✓| ✓| ✓| ¾| ¾| ⅔| ✓| ✓| ✓|  
-ApplicationCommandLine    |  | ✓| ✓| ✓| ✗| ✓| ⅘| ✗|  | ✓| ✓| ✓|  
+ApplicationCommandLine    |  | ✓| ✓| ✓| ✗| ✓| ⅘| ✗|  | ✓| ✓| ✓|
+DesktopAppInfo            |  | ✓| ✓| ✓| ✗| ✓| ⅓| ✗| ✓| ✓| ✓| ✓| < fbck sg prp
 Enums                     |S |  |  |  |  |  |  |  |  |  |  |  |  
 File                      |  | ✗| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  
 Menu                      |  | ✓| ✓| ✓| ✗|  | ⅖| ✗| ✗| ✓| ✓| ✓|  
@@ -365,8 +366,8 @@ SimpleAction              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅖| ✓| ✓|
 
 <br/>
 
-| Gnome::Cairo            |T |dm|db|ds|ts|12|14|so| no -rk :v T
-|-------------------------|--|--|--|--|--|--|--|--| _fallback
+| Gnome::Cairo            |T |dm|db|ds|ts|12|14|so| < fbck sg prp
+|-------------------------|--|--|--|--|--|--|--|--|
 Cairo                     |TL| ✓| ✓| ✓| ⅓| ✓| ✓| ✓|  
 Enums                     |  |  |  |  |  |  |  |  |  
 FontFace                  |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓|

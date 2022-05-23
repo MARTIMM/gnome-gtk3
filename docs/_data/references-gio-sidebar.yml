@@ -31,6 +31,10 @@
     url: '/content-docs/reference/Gio/ApplicationCommandLine.html'
     type: object
 
+  - title: DesktopAppInfo
+    url: /content-docs/reference/Gio/DesktopAppInfo.html
+    type: object
+
   - title: Emblem
     url: /content-docs/reference/Gio/Emblem.html
     type: object
