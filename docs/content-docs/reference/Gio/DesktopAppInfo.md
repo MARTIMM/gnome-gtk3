@@ -223,7 +223,7 @@ Activates the named application action.
 
 You may only call this function on action names that were returned from `list_actions()`.
 
-Note that if the main entry of the desktop file indicates that the application supports startup notification, and *launch_context* is non-`undefined`, then startup notification will be used when activating the action (and as such, invocation of the action on the receiving side must signal the end of startup notification when it is completed). This is the expected behaviour of applications declaring additional actions, as per the desktop file specification.
+Note that if the main entry of the desktop file indicates that the application supports startup notification, and *launch_context* is defined, then startup notification will be used when activating the action (and as such, invocation of the action on the receiving side must signal the end of startup notification when it is completed). This is the expected behaviour of applications declaring additional actions, as per the desktop file specification.
 
 As with `g_app_info_launch()` there is no way to detect failures that occur while using this function.
 
@@ -240,22 +240,22 @@ Returns the list of "additional application actions" supported on the desktop fi
 
 As per the specification, this is the list of actions that are explicitly listed in the "Actions" key of the [Desktop Entry] group.
 
-Returns: (element-type utf8) : a list of strings, always non-`undefined`
+Returns: an Array of strings, always defined
 
-    method list-actions ( --> CArray[Str] )
+    method list-actions ( --> Array )
 
 search
 ------
 
 Searches desktop files for ones that match *search_string*.
 
-The return value is an array of strvs. Each strv contains a list of applications that matched *search_string* with an equal score. The outer list is sorted by score so that the first strv contains the best-matching applications, and so on. The algorithm for determining matches is undefined and may change at any time.
+The return value is an array of string arrays. Each string array contains a list of applications that matched *search_string* with an equal score. The outer list is sorted by score so that the first string list contains the best-matching applications, and so on. The algorithm for determining matches is undefined and may change at any time.
 
 None of the search results are subjected to the normal validation checks performed by `new()` (for example, checking that the executable referenced by a result exists), and so it is possible for `new()` to return `undefined` when passed an app ID returned by this function. It is expected that calling code will do this when subsequently creating a **Gnome::Gio::DesktopAppInfo** for each result.
 
-Returns: (element-type GStrv) : a list of strvs. Free each item with `g_strfreev()` and free the outer list with `g_free()`.
+Returns: an array of string array's.
 
-    method search ( Str $search_string --> CArray[CArray[Str]] )
+    method search ( Str $search_string --> Array[Array[Str]] )
 
   * $search_string; the search string to use
 
