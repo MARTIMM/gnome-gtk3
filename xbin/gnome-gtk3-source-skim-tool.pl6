@@ -657,13 +657,13 @@ sub setup-names ( Str:D $base-name --> List ) {
 
   my $source-root = '/home/marcel/Software/Packages/Sources/Gnome';
   my @source-list = (
-    "$source-root/gtk+-3.24.13/gtk",
-    "$source-root/gdk-pixbuf-2.38.2/gdk-pixbuf",
-    "$source-root/gtk+-3.24.13/gdk",
-    "$source-root/glib-2.60.7/gio",
-    "$source-root/glib-2.60.7/glib",
-    "$source-root/glib-2.60.7/gobject",
-    "$source-root/pango-1.42.4/pango",
+    "$source-root/gtk+-3.24.24/gtk",
+    "$source-root/gdk-pixbuf-2.42.8/gdk-pixbuf",
+    "$source-root/gtk+-3.24.24/gdk",
+    "$source-root/glib-2.72.1/gio",
+    "$source-root/glib-2.72.1/glib",
+    "$source-root/glib-2.72.1/gobject",
+    "$source-root/pango-1.50.7/pango",
   );
 
   my Str ( $include-content, $source-content) = ( '', '');
