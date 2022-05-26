@@ -471,7 +471,7 @@ sub gtk_menu_button_set_direction (
 =begin pod
 =head2 set-menu-model
 
-Sets the B<Gnome::Gtk3::MenuModel> from which the popup will be constructed, or C<undefined> to dissociate any existing menu model and disable the button.
+Sets the B<Gnome::Gio::MenuModel> from which the popup will be constructed, or C<undefined> to dissociate any existing menu model and disable the button.
 
 Depending on the value of  I<use-popover>, either a B<Gnome::Gtk3::Menu> will be created, or a B<Gnome::Gtk3::Popover>. In either case, actions will be connected as documented for these functions.
 
@@ -479,7 +479,7 @@ If  I<popup> or I<popover> are already set, those widgets are dissociated from t
 
   method set-menu-model ( N-GObject $menu_model )
 
-=item N-GObject $menu_model; a B<Gnome::Gtk3::MenuModel>, or C<undefined> to unset and disable the button
+=item N-GObject $menu_model; a B<Gnome::Gio::MenuModel>, or C<undefined> to unset and disable the button
 
 =end pod
 
@@ -633,7 +633,7 @@ The B<Gnome::GObject::Value> type of property I<direction> is C<G_TYPE_ENUM>.
 =comment #TP:0:menu-model:
 =head3 Menu model: menu-model
 
-The B<Gnome::Gtk3::MenuModel> from which the popup will be created. Depending on the  I<use-popover> property, that may be a menu or a popover.
+The B<Gnome::Gio::MenuModel> from which the popup will be created. Depending on the  I<use-popover> property, that may be a menu or a popover.
 
 See C<set-menu-model()> for the interaction with the
  I<popup> property.

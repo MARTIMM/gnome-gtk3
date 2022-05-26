@@ -217,7 +217,7 @@ If you pass `GTK-ARROW-NONE` for a *$direction*, the popup will behave as if you
 set-menu-model
 --------------
 
-Sets the **Gnome::Gtk3::MenuModel** from which the popup will be constructed, or `undefined` to dissociate any existing menu model and disable the button.
+Sets the **Gnome::Gio::MenuModel** from which the popup will be constructed, or `undefined` to dissociate any existing menu model and disable the button.
 
 Depending on the value of *use-popover*, either a **Gnome::Gtk3::Menu** will be created, or a **Gnome::Gtk3::Popover**. In either case, actions will be connected as documented for these functions.
 
@@ -225,7 +225,7 @@ If *popup* or *popover* are already set, those widgets are dissociated from the 
 
     method set-menu-model ( N-GObject $menu_model )
 
-  * N-GObject $menu_model; a **Gnome::Gtk3::MenuModel**, or `undefined` to unset and disable the button
+  * N-GObject $menu_model; a **Gnome::Gio::MenuModel**, or `undefined` to unset and disable the button
 
 set-popover
 -----------
@@ -289,7 +289,7 @@ The **Gnome::GObject::Value** type of property *direction* is `G_TYPE_ENUM`.
 
 ### Menu model: menu-model
 
-The **Gnome::Gtk3::MenuModel** from which the popup will be created. Depending on the *use-popover* property, that may be a menu or a popover.
+The **Gnome::Gio::MenuModel** from which the popup will be created. Depending on the *use-popover* property, that may be a menu or a popover.
 
 See `set-menu-model()` for the interaction with the *popup* property.
 
