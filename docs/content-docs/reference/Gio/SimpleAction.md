@@ -39,7 +39,7 @@ Create a new stateless SimpleAction object.
 
   * Str $name; the name of the action
 
-  * N-GObject $parameter_type; the type of parameter that will be passed to handlers for the *activate* signal, or `undefined` for no parameter
+  * N-GObject $parameter_type; the type of parameter that will be passed to handlers for the *activate* signal, or `undefined` for no parameter. The $parameter_type is a native **Gnome::Glib::Variant** object.
 
 ### :name, :parameter-type, :state
 
@@ -51,9 +51,9 @@ Create a new stateful SimpleAction object. All future state values must have the
 
   * Str $name; the name of the action
 
-  * N-GObject $parameter_type; the type of the parameter that will be passed to handlers for the *activate* signal, or `undefined` for no parameter
+  * N-GObject $parameter_type; the type of the parameter that will be passed to handlers for the *activate* signal, or `undefined` for no parameter. The $parameter_type is a native **Gnome::Glib::VariantType** object.
 
-  * N-GObject $state; the initial state value of the action
+  * N-GObject $state; the initial state value of the action. The state is a native **Gnome::Glib::Variant** object.
 
 ### :native-object
 
@@ -77,7 +77,7 @@ Sets the state of the action. This directly updates the 'state' property to the 
 
     method set-state ( N-GObject $value )
 
-  * N-GObject $value; the new **N-GObject** for the state
+  * N-GObject $value; the new **N-GObject** for the state. The state is a native **Gnome::Glib::Variant** object.
 
 set-state-hint
 --------------

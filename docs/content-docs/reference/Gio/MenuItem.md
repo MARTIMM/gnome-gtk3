@@ -26,6 +26,12 @@ Methods
 new
 ---
 
+### :label
+
+Creates a menu item. Call one of `set-action-and-target-value`, `set-detailed-action`, `set-section`, `set-submenu` to set purpose of item
+
+    multi method new ( Str :$label! )
+
 ### :label, :action
 
 Creates a new **Gnome::Gio::MenuItem**.
@@ -52,7 +58,7 @@ This is a convenience API around `new()` followed by `set-section()`.
 
 The effect of having one menu appear as a section of another is exactly as it sounds: the items from *$section* become a direct part of the menu that *menu-item* is added to.
 
-Visual separation is typically displayed between two non-empty sections. If *$label* is non-`undefined` then it will be encorporated into this visual indication. This allows for labeled subsections of a menu.
+Visual separation is typically displayed between two non-empty sections. If *$label* is defined then it will be encorporated into this visual indication. This allows for labeled subsections of a menu.
 
 As a simple example, consider a typical "Edit" menu from a simple program. It probably contains an "Undo" and "Redo" item, followed by a separator, followed by "Cut", "Copy" and "Paste".
 
@@ -90,7 +96,7 @@ The following example is exactly equivalent. It is more illustrative of the exac
 
 The method is defined as
 
-    multi method new ( Str $label?, N-GObject $section! )
+    multi method new ( Str :$label?, N-GObject :$section! )
 
 ### :submenu, :label
 
@@ -152,7 +158,7 @@ Sets or unsets the "action" and "target" attributes of *menu-item*.
 
 If *action* is `undefined` then both the "action" and "target" attributes are unset (and *target-value* is ignored).
 
-If *action* is non-`undefined` then the "action" attribute is set. The "target" attribute is then set to the value of *target-value* if it is non-`undefined` or unset otherwise.
+If *action* is defined then the "action" attribute is set. The "target" attribute is then set to the value of *target-value* if it is defined or unset otherwise.
 
 Normal menu items (ie: not submenu, section or other custom item types) are expected to have the "action" attribute set to identify the action that they are associated with. The state type of the action help to determine the disposition of the menu item. See **GAction** and **GActionGroup** for an overview of actions.
 
@@ -183,7 +189,7 @@ The attribute to set or unset is specified by *attribute*. This can be one of th
 
 must consist only of lowercase ASCII characters, digits and '-'.
 
-If *value* is non-`undefined` then it is used as the new value for the attribute. If *value* is `undefined` then the attribute is unset. If the *value* **GVariant** is floating, it is consumed.
+If *value* is defined then it is used as the new value for the attribute. If *value* is `undefined` then the attribute is unset. If the *value* **GVariant** is floating, it is consumed.
 
 See also `set-attribute()` for a more convenient way to do the same.
 
@@ -212,12 +218,27 @@ See also `g-menu-set-action-and-target-value()` for a description of the semanti
 
   * Str $detailed_action; the "detailed" action string
 
+set-icon
+--------
+
+Sets (or unsets) the icon on this menu item.
+
+This call is the same as calling `Gnome::Gio::Icon.serialize()` and using the result as the value to `set-attribute-value()` for `G-MENU-ATTRIBUTE-ICON`.
+
+This API is only intended for use with "noun" menu items; things like bookmarks or applications in an "Open With" menu. Don't use it on menu items corresponding to verbs (eg: stock icons for 'Save' or 'Quit').
+
+If *$icon* is not defined then the icon is unset.
+
+    method set-icon ( N-GObject() $icon )
+
+  * N-GObject $icon; a native **Gnome::Gio::Icon** or undefined.
+
 set-label
 ---------
 
 Sets or unsets the "label" attribute of *menu-item*.
 
-If *label* is non-`undefined` it is used as the label for the menu item. If it is `undefined` then the label attribute is unset.
+If *label* is defined it is used as the label for the menu item. If it is `undefined` then the label attribute is unset.
 
     method set-label ( Str $label )
 
@@ -228,7 +249,7 @@ If *label* is non-`undefined` it is used as the label for the menu item. If it i
 set-link
 --------
 
-Creates a link from *menu-item* to *model* if non-`undefined`, or unsets it.
+Creates a link from *menu-item* to *model* if defined, or unsets it.
 
 Links are used to establish a relationship between a particular menu item and another menu. For example, `G-MENU-LINK-SUBMENU` is used to associate a submenu with a particular menu item, and `G-MENU-LINK-SECTION` is used to create a section. Other types of link can be used, but there is no guarantee that clients will be able to make sense of them. Link types are restricted to lowercase characters, numbers and '-'. Furthermore, the names must begin with a lowercase character, must not end with a '-', and must not contain consecutive dashes.
 
@@ -247,7 +268,7 @@ Sets or unsets the "section" link of *menu-item* to *section*.
 
 The effect of having one menu appear as a section of another is exactly as it sounds: the items from *section* become a direct part of the menu that *menu-item* is added to. See `new-section()` for more information about what it means for a menu item to be a section.
 
-    method set-section ( N-GObject $section )
+    method set-section ( N-GObject() $section )
 
   * N-GObject $menu_item; a **Gnome::Gio::MenuItem**
 
@@ -258,11 +279,11 @@ set-submenu
 
 Sets or unsets the "submenu" link of *menu-item* to *submenu*.
 
-If *submenu* is non-`undefined`, it is linked to. If it is `undefined` then the link is unset.
+If *submenu* is defined, it is linked to. If it is `undefined` then the link is unset.
 
 The effect of having one menu appear as a submenu of another is exactly as it sounds.
 
-    method set-submenu ( N-GObject $submenu )
+    method set-submenu ( N-GObject() $submenu )
 
   * N-GObject $menu_item; a **Gnome::Gio::MenuItem**
 

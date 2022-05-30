@@ -92,26 +92,6 @@ Called when an application has failed to launch, so that it can cancel the appli
 
   * Str $startup_notify_id; the startup notification id that was returned by `get-startup-notify-id()`.
 
-setenv
-------
-
-Arranges for *variable* to be set to *value* in the child's environment when *context* is used to launch an application.
-
-    method setenv ( Str $variable, Str $value )
-
-  * Str $variable; (type filename): the environment variable to set
-
-  * Str $value; (type filename): the value for to set the variable to.
-
-unsetenv
---------
-
-Arranges for *variable* to be unset in the child's environment when *context* is used to launch an application.
-
-    method unsetenv ( Str $variable )
-
-  * Str $variable; (type filename): the environment variable to remove
-
 Signals
 =======
 
