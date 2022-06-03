@@ -64,144 +64,160 @@ Create a SimpleAction object using a native object from elsewhere. See also **Gn
 set-enabled
 -----------
 
-Sets the action as enabled or not. An action must be enabled in order to be activated or in order to have its state changed from outside callers. This should only be called by the implementor of the action. Users of the action should not attempt to modify its enabled flag.
+Sets the action as enabled or not.
+
+An action must be enabled in order to be activated or in order to have its state changed from outside callers.
+
+This should only be called by the implementor of the action. Users of the action should not attempt to modify its enabled flag.
 
     method set-enabled ( Bool $enabled )
 
-  * Int $enabled; whether the action is enabled
+  * $enabled; whether the action is enabled
 
 set-state
 ---------
 
-Sets the state of the action. This directly updates the 'state' property to the given value. This should only be called by the implementor of the action. Users of the action should not attempt to directly modify the 'state' property. Instead, they should call `change-state()` to request the change.
+Sets the state of the action.
 
-    method set-state ( N-GObject $value )
+This directly updates the 'state' property to the given value.
 
-  * N-GObject $value; the new **N-GObject** for the state. The state is a native **Gnome::Glib::Variant** object.
+This should only be called by the implementor of the action. Users of the action should not attempt to directly modify the 'state' property. Instead, they should call `Gnome::Gio::Action.change-state()` to request the change.
+
+If the *$value* GVariant is floating, it is consumed.
+
+    method set-state ( N-GObject() $value )
+
+  * $value; the new value for the state. The state is a native **Gnome::Glib::Variant** object.
 
 set-state-hint
 --------------
 
-Sets the state hint for the action. See `get_state_hint()` in **Gnome::Gio::Action** for more information about action state hints.
+Sets the state hint for the action.
 
-    method set-state-hint ( N-GObject $state_hint )
+See `Gnome::Gio::Action.get_state_hint()` for more information about action state hints.
 
-  * N-GObject $state_hint; a **N-GObject** representing the state hint, may be an undefined value.
+    method set-state-hint ( N-GObject() $state_hint )
+
+  * $state_hint; a native **Gnome::Gio::Variant** representing the state hint, may be an undefined value.
 
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
-
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
--------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### activate
+activate
+--------
 
 Indicates that the action was just activated.
 
 *parameter* will always be of the expected type, i.e. the parameter type specified when the action was created. If an incorrect type is given when activating the action, this signal is not emitted.
 
-If no handler is connected to this signal then the default behaviour for boolean-stated actions with a `undefined` parameter type is to toggle them via the *change-state* signal. For stateful actions where the state type is equal to the parameter type, the default is to forward them directly to *change-state*. This should allow almost all users of **N-GSimpleAction** to connect only one handler or the other.
+Since GLib 2.40, if no handler is connected to this signal then the default behaviour for boolean-stated actions with a `undefined` parameter type is to toggle them via the *change-state* signal. For stateful actions where the state type is equal to the parameter type, the default is to forward them directly to *change-state*. This should allow almost all users of **Gnome::Gio::SimpleAction** to connect only one handler or the other.
 
     method handler (
       N-GObject $parameter,
-      Int :$_handle_id,
       Gnome::Gio::SimpleAction :_widget($simple),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $simple; the **Gnome::Gio::SimpleAction**
+  * $parameter; a native **Gnome::Gio::Variant**, the parameter to the activation, or `undefined` if it has no parameter
 
-  * $parameter; the parameter to the activation, or `undefined` if it has no parameter
+  * $simple; The instance which registered the signal
 
-### change-state
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+change-state
+------------
 
 Indicates that the action just received a request to change its state.
 
-*value* will always be of the correct state type, i.e. the type of the initial state passed to `g_simple_action_new_stateful()`. If an incorrect type is given when requesting to change the state, this signal is not emitted.
+*value* will always be of the correct state type, i.e. the type of the initial state passed to `new_stateful()`. If an incorrect type is given when requesting to change the state, this signal is not emitted.
 
-If no handler is connected to this signal then the default behaviour is to call `set-state()` to set the state to the requested value. If you connect a signal handler then no default action is taken. If the state should change then you must call `set-state()` from the handler.
+If no handler is connected to this signal then the default behaviour is to call `set_state()` to set the state to the requested value. If you connect a signal handler then no default action is taken. If the state should change then you must call `set_state()` from the handler.
 
     method handler (
-      N-GObject $value,
-      Int :$_handle_id,
+      N-GObject $parameter,
       Gnome::Gio::SimpleAction :_widget($simple),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $simple; the **GSimpleAction**
+  * $value; a native **Gnome::Gio::Variant**, the requested value for the state, or `undefined` if it has no parameter
 
-  * $value; the requested value for the state
+  * $simple; The instance which registered the signal
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+enabled
+-------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
+If the action can be activated
 
-Supported properties
---------------------
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-### Enabled
+  * Parameter is readable and writable.
 
-If *action* is currently enabled.
+  * Default value is TRUE.
 
-If the action is disabled then calls to `g_action_activate()` and `g_action_change_state()` have no effect.
+name
+----
 
-### Action Name
+The name used to invoke the action
 
-The name of the action. This is mostly meaningful for identifying the action once it has been added to a **GSimpleActionGroup**.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
-The **Gnome::GObject::Value** type of property *name* is `G_TYPE_STRING`.
+  * Parameter is readable and writable.
 
-### Parameter Type
+  * Parameter is set on construction of object.
 
-The type of the parameter that must be given when activating the action.
+  * Default value is undefined.
 
-The **Gnome::GObject::Value** type of property *parameter-type* is `G_TYPE_BOXED`.
+parameter-type
+--------------
 
-The **Gnome::GObject::Value** type of property *enabled* is `G_TYPE_BOOLEAN`.
+The type of GVariant passed to `activate()`
 
-### State
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOXED
 
-The state of the action, or `undefined` if the action is stateless.
+  * The type of this G_TYPE_BOXED object is G_TYPE_VARIANT_TYPE
 
-The **Gnome::GObject::Value** type of property *state* is `G_TYPE_VARIANT`.
+  * Parameter is readable and writable.
 
-### State Type
+  * Parameter is set on construction of object.
 
-The **N-GObject** of the state that the action has, or `undefined` if the action is stateless.
+state
+-----
 
-The **Gnome::GObject::Value** type of property *state-type* is `G_TYPE_BOXED`.
+The state the action is in
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_VARIANT
+
+  * Parameter is readable and writable.
+
+  * Parameter is set on construction of object.
+
+  * Default value is undefined.
+
+state-type
+----------
+
+The type of the state kept by the action
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOXED
+
+  * The type of this G_TYPE_BOXED object is G_TYPE_VARIANT_TYPE
+
+  * Parameter is readable.
 
