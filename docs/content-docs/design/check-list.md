@@ -343,7 +343,7 @@ Window                    |  |  | ✓| ✓| ✓| ✓| ✓| ⅑|  |  | ✓| ✓| 
 
 <br/>
 
-| Gnome::Gio              |T |dm|db|ds|de|dp|ts|te|tp|12|14|so| < fbck sg prp
+| Gnome::Gio              |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
 Action                    |R | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ⅖| ✓| ✓| ✓|  
 ActionMap                 |R | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  
@@ -356,13 +356,13 @@ DesktopAppInfo            |  | ✓| ✓| ✓| ✗| ✓| ⅖| ✗| ✓| ✓| ✓|
 Enums                     |S |  |  |  |  |  |  |  |  |  |  |  |  
 File                      |  | ✗| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  
 Menu                      |  | ✓| ✓| ✓| ✗|  | ⅖| ✗| ✗| ✓| ✓| ✓|  
-MenuAttributeIter         |  | ✓| ✓| ✓| ✗| ✗| ⅕| ✗| ✗| ✓| ✓| ✓|  
-MenuItem                  |  | ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|  
+MenuAttributeIter         |  | ✓| ✓| ✓| ✗| ✗| ⅕| ✗| ✗| ✓| ✓| ✓|
+MenuItem                  |  | ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓| < fbck sg prp
 MenuLinkIter              |  | ✓| ✓| ✓| ✗| ✗| ⅗| ✗| ✗| ✓| ✓| ✓|  
 MenuModel                 |  | ✓| ✓| ✓| ✓| ✗| ⅖|  | ✗| ✓| ✓| ✓|  
 Notification              |  | ✓| ✓| ✓| ✗| ✗| ⅖| ✗| ✗| ✓| ✓| ✓|  
 Resource                  |Bx| ✓| ✓| ✓| ✗| ✗| ½| ✗| ✗| ✓| ✓| ✓|  
-SimpleAction              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅖| ✓| ✓| ✓|
+SimpleAction              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅖| ✓| ✓| ✓| < fbck sg prp
 
 <br/>
 
