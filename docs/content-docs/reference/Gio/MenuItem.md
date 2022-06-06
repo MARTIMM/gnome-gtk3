@@ -30,9 +30,11 @@ new
 
 ### :label
 
-Creates a menu item. Call one of `set-action-and-target-value`, `set-detailed-action`, `set-section`, `set-submenu` to set purpose of item
+Creates a menu item. Call one of `set-action-and-target-value`, `set-detailed-action`, `set-section`, `set-submenu` to set purpose of this menu item.
 
     multi method new ( Str :$label! )
+
+  * $label; the section label, or `undefined`
 
 ### :label, :action
 
@@ -156,7 +158,7 @@ Sets or unsets the "action" and "target" attributes of *menu_item*.
 
 If *action* is `undefined` then both the "action" and "target" attributes are unset (and *target_value* is ignored).
 
-If *action* is non-`undefined` then the "action" attribute is set. The "target" attribute is then set to the value of *target_value* if it is non-`undefined` or unset otherwise.
+If *action* is defined then the "action" attribute is set. The "target" attribute is then set to the value of *target_value* if it is defined or unset otherwise.
 
 Normal menu items (ie: not submenu, section or other custom item types) are expected to have the "action" attribute set to identify the action that they are associated with. The state type of the action help to determine the disposition of the menu item. See **Gnome::Gio::Action** and **Gnome::Gio::ActionGroup** for an overview of actions.
 
@@ -185,7 +187,7 @@ The attribute to set or unset is specified by *attribute*. This can be one of th
 
 must consist only of lowercase ASCII characters, digits and '-'.
 
-If *value* is non-`undefined` then it is used as the new value for the attribute. If *value* is `undefined` then the attribute is unset. If the *value* **Gnome::Gio::Variant** is floating, it is consumed.
+If *value* is defined then it is used as the new value for the attribute. If *value* is `undefined` then the attribute is unset. If the *value* **Gnome::Gio::Variant** is floating, it is consumed.
 
 See also `set_attribute()` for a more convenient way to do the same.
 
@@ -200,7 +202,7 @@ set-detailed-action
 
 Sets the "action" and possibly the "target" attribute of *menu_item*.
 
-The format of *detailed_action* is the same format parsed by `g_action_parse_detailed_name()`.
+The format of *detailed_action* is the same format parsed by `Gnome::Gio::Action.parse_detailed_name()`.
 
 See `set_action_and_target()` or `set_action_and_target_value()` for more flexible (but slightly less convenient) alternatives.
 
@@ -215,7 +217,7 @@ set-icon
 
 Sets (or unsets) the icon on *menu_item*.
 
-This call is the same as calling `g_icon_serialize()` and using the result as the value to `set_attribute_value()` for `G_MENU_ATTRIBUTE_ICON`.
+This call is the same as calling `Gnome::Gio::Icon.serialize()` and using the result as the value to `set_attribute_value()` for `G_MENU_ATTRIBUTE_ICON`.
 
 This API is only intended for use with "noun" menu items; things like bookmarks or applications in an "Open With" menu. Don't use it on menu items corresponding to verbs (eg: stock icons for 'Save' or 'Quit').
 
@@ -230,7 +232,7 @@ set-label
 
 Sets or unsets the "label" attribute of *menu_item*.
 
-If *label* is non-`undefined` it is used as the label for the menu item. If it is `undefined` then the label attribute is unset.
+If *label* is defined it is used as the label for the menu item. If it is `undefined` then the label attribute is unset.
 
     method set-label ( Str $label )
 
@@ -239,7 +241,7 @@ If *label* is non-`undefined` it is used as the label for the menu item. If it i
 set-link
 --------
 
-Creates a link from *menu_item* to *model* if non-`undefined`, or unsets it.
+Creates a link from *menu_item* to *model* if defined, or unsets it.
 
 Links are used to establish a relationship between a particular menu item and another menu. For example, `G_MENU_LINK_SUBMENU` is used to associate a submenu with a particular menu item, and `G_MENU_LINK_SECTION` is used to create a section. Other types of link can be used, but there is no guarantee that clients will be able to make sense of them. Link types are restricted to lowercase characters, numbers and '-'. Furthermore, the names must begin with a lowercase character, must not end with a '-', and must not contain consecutive dashes.
 
@@ -265,7 +267,7 @@ set-submenu
 
 Sets or unsets the "submenu" link of *menu_item* to *submenu*.
 
-If *submenu* is non-`undefined`, it is linked to. If it is `undefined` then the link is unset.
+If *submenu* is defined, it is linked to. If it is `undefined` then the link is unset.
 
 The effect of having one menu appear as a submenu of another is exactly as it sounds.
 

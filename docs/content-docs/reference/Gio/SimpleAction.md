@@ -35,31 +35,31 @@ new
 
 Create a new stateless SimpleAction object.
 
-    multi method new ( Str :$name!, N-GObject :$parameter-type )
+    multi method new ( Str :$name!, N-GObject() :$parameter-type? )
 
-  * Str $name; the name of the action
+  * $name; the name of the action
 
-  * N-GObject $parameter_type; the type of parameter that will be passed to handlers for the *activate* signal, or `undefined` for no parameter. The $parameter_type is a native **Gnome::Glib::Variant** object.
+  * $parameter_type; the type of parameter that will be passed to handlers for the *activate* signal. The $parameter_type is a native **Gnome::Glib::Variant** object.
 
-### :name, :parameter-type, :state
+### :name, :state, :parameter-type
 
-Create a new stateful SimpleAction object. All future state values must have the same **N-GObject** as the initial *$state* variant object.
+Create a new stateful SimpleAction object. All future state values must have the same type as the initial *$state* variant object.
 
     multi method new (
-      Str :$name!, N-GObject :$parameter_type, N-GObject :$state!
+      Str :$name!, N-GObject() :$state!, N-GObject() :$parameter_type?
     )
 
-  * Str $name; the name of the action
+  * $name; the name of the action
 
-  * N-GObject $parameter_type; the type of the parameter that will be passed to handlers for the *activate* signal, or `undefined` for no parameter. The $parameter_type is a native **Gnome::Glib::VariantType** object.
+  * $parameter_type; the type of the parameter that will be passed to handlers for the *activate* signal. The $parameter_type is a native **Gnome::Glib::VariantType** object.
 
-  * N-GObject $state; the initial state value of the action. The state is a native **Gnome::Glib::Variant** object.
+  * $state; the initial state value of the action. The state is a native **Gnome::Glib::Variant** object.
 
 ### :native-object
 
 Create a SimpleAction object using a native object from elsewhere. See also **Gnome::GObject::Object**.
 
-    multi method new ( N-GObject :$native-object! )
+    multi method new ( N-GObject() :$native-object! )
 
 set-enabled
 -----------
@@ -82,8 +82,6 @@ Sets the state of the action.
 This directly updates the 'state' property to the given value.
 
 This should only be called by the implementor of the action. Users of the action should not attempt to directly modify the 'state' property. Instead, they should call `Gnome::Gio::Action.change-state()` to request the change.
-
-If the *$value* GVariant is floating, it is consumed.
 
     method set-state ( N-GObject() $value )
 
@@ -108,9 +106,11 @@ activate
 
 Indicates that the action was just activated.
 
-*parameter* will always be of the expected type, i.e. the parameter type specified when the action was created. If an incorrect type is given when activating the action, this signal is not emitted.
+*$parameter* will always be of the expected type, i.e. the parameter type specified when the action was created. If an incorrect type is given when activating the action, this signal is not emitted.
 
-Since GLib 2.40, if no handler is connected to this signal then the default behaviour for boolean-stated actions with a `undefined` parameter type is to toggle them via the *change-state* signal. For stateful actions where the state type is equal to the parameter type, the default is to forward them directly to *change-state*. This should allow almost all users of **Gnome::Gio::SimpleAction** to connect only one handler or the other.
+If no handler is connected to this signal then the default behaviour for boolean-stated actions with an undefined parameter type is to toggle them via the *change-state* signal.
+
+For stateful actions where the state type is equal to the parameter type, the default is to forward them directly to *change-state*. This should allow almost all users of **Gnome::Gio::SimpleAction** to connect only one handler or the other.
 
     method handler (
       N-GObject $parameter,
@@ -135,9 +135,9 @@ change-state
 
 Indicates that the action just received a request to change its state.
 
-*value* will always be of the correct state type, i.e. the type of the initial state passed to `new_stateful()`. If an incorrect type is given when requesting to change the state, this signal is not emitted.
+*value* will always be of the correct state type, i.e. the type of the initial state passed to a `new(:state, …)`. If an incorrect type is given when requesting to change the state, this signal is not emitted.
 
-If no handler is connected to this signal then the default behaviour is to call `set_state()` to set the state to the requested value. If you connect a signal handler then no default action is taken. If the state should change then you must call `set_state()` from the handler.
+If no handler is connected to this signal then the default behaviour is to call `set-state()` to set the state to the requested value. If you connect a signal handler then no default action is taken. If the state should change then you must call `set-state()` from the handler.
 
     method handler (
       N-GObject $parameter,
