@@ -34,7 +34,7 @@ Creates a menu item. Call one of `set-action-and-target-value`, `set-detailed-ac
 
     multi method new ( Str :$label! )
 
-  * $label; the section label, or `undefined`
+  * $label; the menu item label
 
 ### :label, :action
 
@@ -45,6 +45,10 @@ If *$label* is defined, then it is used to set the "label" attribute of the new 
 *$action* is used to set the "action" and possibly the "target" attribute of the new item. See `set-detailed-action()` for more information.
 
     multi method new ( Str :$label?, Str :$action! )
+
+  * $label; the menu item label, or `undefined`
+
+  * $action; the detailed action string
 
 ### :model, :item-index
 
@@ -58,9 +62,9 @@ Creates a **Gnome::Gio::MenuItem** as an exact copy of an existing menu item in 
 
 Creates a new **Gnome::Gio::MenuItem** representing a section.
 
-This is a convenience API around `new()` followed by `set-section()`.
+This is a convenience API around `new(:label<…>)` followed by `set-section()`.
 
-The effect of having one menu appear as a section of another is exactly as it sounds: the items from *$section* become a direct part of the menu that *menu-item* is added to.
+The effect of having one menu appear as a section of another is exactly as it sounds: the items from *$section* become a direct part of the menu that this menu item is added to.
 
 Visual separation is typically displayed between two non-empty sections. If *$label* is defined then it will be encorporated into this visual indication. This allows for labeled subsections of a menu.
 
@@ -80,7 +84,9 @@ This would be accomplished by creating three **Gnome::Gio::Menu** instances. The
       </section>
     </menu>
 
-The following example is exactly equivalent. It is more illustrative of the exact relationship between the menus and items (keeping in mind that the 'link' element defines a new menu that is linked to the containing one). The style of the second example is more verbose and difficult to read (and therefore not recommended except for the purpose of understanding what is really going on).
+The following example is exactly equivalent. It is more illustrative of the exact relationship between the menus and items (keeping in mind that the 'link' element defines a new menu that is linked to the containing one).
+
+The style of the second example is more verbose and difficult to read (and therefore not recommended except for the purpose of understanding what is really going on).
 
     <menu id='edit-menu'>
       <item>
@@ -102,6 +108,10 @@ The method is defined as
 
     multi method new ( Str :$label?, N-GObject :$section! )
 
+  * $label; the menu item label, or `undefined`
+
+  * $section; a **Gnome::Gio::MenuModel** with the items of the section
+
 ### :submenu, :label
 
 Creates a new **Gnome::Gio::MenuItem** representing a submenu.
@@ -109,6 +119,10 @@ Creates a new **Gnome::Gio::MenuItem** representing a submenu.
 This is a convenience API around `new()` followed by `set-submenu()`.
 
     method item-new-submenu ( Str :$label?, N-GObject :$submenu! )
+
+  * $label; the section label, or `undefined`
+
+  * $submenu; a **Gnome::Gio::MenuModel** with the items of the submenu
 
 ### :native-object
 
