@@ -124,9 +124,9 @@ ColorChooserDialog        |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 ColorChooserWidget        |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 ComboBox                  |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅖|  | ⅘| ✓| ✓| ✓|
 ComboBoxText              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
-Container                 |  | ✗| ✓| ✓| ✓| ✓| ✓| ½| ⅔| ½| ✓| ✓| ✓| < fbck sg prp
+Container                 |  | ✗| ✓| ✓| ✓| ✓| ✓| ½| ⅔| ½| ✓| ✓| ✓|
+CssProvider               |  | ✗| ✓| ✓| ✓| ✓| ✗| ⅞| ✓| ✗| ✓| ✓| ✓| < fbck sg prp
 | Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
-CssProvider               |  |  | ✓| ✓| ✓| ✓| ✗| ⅞| ✓| ✗| ✓| ✓| ✓| _fallback
 CssSection                |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
 DragDest                  |S | ✗|  |  |  |  |  |  |  |  |  |  |  |
 DragSource                |S | ✗|  |  |  |  |  |  |  |  |  |  |  |
