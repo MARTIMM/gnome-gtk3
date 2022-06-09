@@ -131,10 +131,10 @@ Loads a theme from the usual theme paths
 
 Creates a CssProvider> with the theme loaded. This memory is owned by GTK+, and you must not free it.
 
-  method new( Str :$named!, Str :$variant )
+  method new( Str :$name!, Str :$variant? )
 
-=item $named; A theme name like 'Breeze' or 'Oxygen'.
-=item $variant; variant to load, for example, 'dark'. Use C<undefined> to get the default.
+=item $name; A theme name like 'Breeze' or 'Oxygen'.
+=item $variant; variant to load, for example, 'dark'.
 
 
 =head3 :native-object
@@ -154,7 +154,7 @@ Create a CssProvider object using a native object returned from a builder. See a
 =end pod
 
 #TM:1:new():
-#TM:1:new(:named,:variant):
+#TM:1:new(:name,:variant):
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 #TM:4:new(:build-id):Gnome::GObject::Object
 submethod BUILD ( *%options ) {
@@ -200,9 +200,13 @@ submethod BUILD ( *%options ) {
     # process all other options
     else {
       my $no;
-      if ? %options<named> {
+      if ? %options<named> or ? %options<name> {
+        Gnome::N::deprecate(
+          'option :named', 'option :name', '0.48.3', '0.50.0'
+        ) if ? %options<named>;
+
         $no = _gtk_css_provider_get_named(
-          %options<named>, %options<variant> // Str
+          %options<name> // %options<named>, %options<variant> // Str
         );
       }
 
@@ -303,6 +307,7 @@ sub gtk_css_provider_error_quark (
   { * }
 
 #-------------------------------------------------------------------------------
+#NOTE: called from .new( :name, :variant)
 #TM:1:get-named:
 #`{{
 =begin pod
@@ -509,34 +514,6 @@ sub _gtk_css_provider_new (  --> N-GObject )
 =begin pod
 =head1 Signals
 
-There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
-
-=head2 First method
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
-
-  # handler method
-  method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-  # connect a signal on window object
-  my Gnome::Gtk3::Window $w .= new( ... );
-  $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-=head2 Second method
-
-  my Gnome::Gtk3::Window $w .= new( ... );
-  my Callable $handler = sub (
-    N-GObject $native, GdkEvent $event, OpaquePointer $data
-  ) {
-    ...
-  }
-
-  $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<connect-object()> are using the signatures of the handler routines to setup the native call interface.
-
-=head2 Supported signals
-
 
 =comment -----------------------------------------------------------------------
 =comment #TS:1:parsing-error:
@@ -562,10 +539,11 @@ than when a loading function was called.
     *%user-options
   );
 
-=item $provider; the provider that had a parsing error.
 =item $section; section the error happened in, a native B<Gnome::Gtk3::Section>.
 =item $error; the parsing error.
+=item $provider; the provider that had a parsing error.
 =item $_handle_id; the registered event handler id.
-=item $_widget: the widget on which the event was registered .
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =end pod

@@ -72,11 +72,11 @@ Loads a theme from the usual theme paths
 
 Creates a CssProvider> with the theme loaded. This memory is owned by GTK+, and you must not free it.
 
-    method new( Str :$named!, Str :$variant )
+    method new( Str :$name!, Str :$variant? )
 
-  * $named; A theme name like 'Breeze' or 'Oxygen'.
+  * $name; A theme name like 'Breeze' or 'Oxygen'.
 
-  * $variant; variant to load, for example, 'dark'. Use `undefined` to get the default.
+  * $variant; variant to load, for example, 'dark'.
 
 ### :native-object
 
@@ -157,37 +157,6 @@ Returns: a new string representing the *provider*.
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
-
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
--------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
 ### parsing-error
 
 Signals that a parsing error occurred. the *path*, *line* and *position* describe the actual location of the error as accurately as possible.
@@ -204,13 +173,15 @@ Note that this signal may be emitted at any time as the css provider may opt to 
       *%user-options
     );
 
-  * $provider; the provider that had a parsing error.
-
   * $section; section the error happened in, a native **Gnome::Gtk3::Section**.
 
   * $error; the parsing error.
 
+  * $provider; the provider that had a parsing error.
+
   * $_handle_id; the registered event handler id.
 
-  * $_widget: the widget on which the event was registered .
+  * $_native-object; The native object provided by the caller wrapped in the Raku object.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
