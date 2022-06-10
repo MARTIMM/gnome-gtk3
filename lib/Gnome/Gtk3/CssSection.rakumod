@@ -191,10 +191,7 @@ Returns: the line number
 =end pod
 
 method get-end-line ( --> UInt ) {
-
-  gtk_css_section_get_end_line(
-    self._get-native-object-no-reffing,
-  )
+  gtk_css_section_get_end_line(self._get-native-object-no-reffing)
 }
 
 sub gtk_css_section_get_end_line (
@@ -216,9 +213,7 @@ Returns: the offset in bytes from the start of the line.
 =end pod
 
 method get-end-position ( --> UInt ) {
-  gtk_css_section_get_end_position(
-    self._get-native-object-no-reffing,
-  )
+  gtk_css_section_get_end_position(self._get-native-object-no-reffing)
 }
 
 sub gtk_css_section_get_end_position (
@@ -233,17 +228,14 @@ sub gtk_css_section_get_end_position (
 
 Gets the file that I<section> was parsed from. If no such file exists, for example because the CSS was loaded via I<gtk-css-provider-load-from-data>(), then C<undefined> is returned.
 
-Returns: the B<Gnome::Gtk3::File> that I<section> was parsed from or C<undefined> if I<section> was parsed from other data
+Returns: the native B<Gnome::Gtk3::File> that I<section> was parsed from or C<undefined> if I<section> was parsed from other data
 
   method get-file ( --> N-GObject )
 
 =end pod
 
 method get-file ( --> N-GObject ) {
-
-  gtk_css_section_get_file(
-    self._get-native-object-no-reffing,
-  )
+  gtk_css_section_get_file(self._get-native-object-no-reffing)
 }
 
 sub gtk_css_section_get_file (
@@ -256,7 +248,7 @@ sub gtk_css_section_get_file (
 =begin pod
 =head2 get-parent
 
-Gets the parent section for the given I<section>. The parent section is the section that contains this I<section>. A special case are sections of type B<Gnome::Gtk3::TK-CSS-SECTION-DOCUMENT>. Their parent will either be C<undefined> if they are the original CSS document that was loaded by C<gtk-css-provider-load-from-file()> or a section of type B<Gnome::Gtk3::TK-CSS-SECTION-IMPORT> if it was loaded with an import rule from a different file.
+Gets the parent section for the given I<section>. The parent section is the section that contains this I<section>. A special case are sections of type C<GTK-CSS-SECTION-DOCUMENT>. Their parent will either be C<undefined> if they are the original CSS document that was loaded by C<Gnome::Gtk3::CssProvider.load-from-file()> or a section of type C<GTK-CSS-SECTION-IMPORT> if it was loaded with an import rule from a different file.
 
 Returns: the parent section or C<undefined> if none
 
@@ -265,9 +257,7 @@ Returns: the parent section or C<undefined> if none
 =end pod
 
 method get-parent ( --> N-GObject ) {
-  gtk_css_section_get_parent(
-    self._get-native-object-no-reffing,
-  )
+  gtk_css_section_get_parent(self._get-native-object-no-reffing)
 }
 
 sub gtk_css_section_get_parent (
@@ -313,10 +303,7 @@ Returns: the line number
 =end pod
 
 method get-start-line ( --> UInt ) {
-
-  gtk_css_section_get_start_line(
-    self._get-native-object-no-reffing,
-  )
+  gtk_css_section_get_start_line(self._get-native-object-no-reffing)
 }
 
 sub gtk_css_section_get_start_line (
@@ -338,10 +325,7 @@ Returns: the offset in bytes from the start of the line.
 =end pod
 
 method get-start-position ( --> UInt ) {
-
-  gtk_css_section_get_start_position(
-    self._get-native-object-no-reffing,
-  )
+  gtk_css_section_get_start_position(self._get-native-object-no-reffing)
 }
 
 sub gtk_css_section_get_start_position (
