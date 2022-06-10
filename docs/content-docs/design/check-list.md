@@ -125,9 +125,9 @@ ColorChooserWidget        |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 ComboBox                  |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅖|  | ⅘| ✓| ✓| ✓|
 ComboBoxText              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 Container                 |  | ✗| ✓| ✓| ✓| ✓| ✓| ½| ⅔| ½| ✓| ✓| ✓|
-CssProvider               |  | ✗| ✓| ✓| ✓| ✓| ✗| ⅞| ✓| ✗| ✓| ✓| ✓| < fbck sg prp
+CssProvider               |  | ✗| ✓| ✓| ✓| ✓| ✗| ⅞| ✓| ✗| ✓| ✓| ✓|
+CssSection                |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓| < fbck sg prp
 | Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
-CssSection                |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
 DragDest                  |S | ✗|  |  |  |  |  |  |  |  |  |  |  |
 DragSource                |S | ✗|  |  |  |  |  |  |  |  |  |  |  |
 DrawingArea               |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| no -rk :v T
