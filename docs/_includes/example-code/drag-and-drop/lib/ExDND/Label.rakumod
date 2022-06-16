@@ -1,6 +1,5 @@
 use v6;
 
-use Gnome::Gtk3::Frame;
 use Gnome::Gtk3::Label;
 use Gnome::Gtk3::Enums;
 

@@ -6,19 +6,10 @@ use Gnome::N::GlibToRakuTypes;
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
-#use Gnome::Gtk3::EventBox;
-#use Gnome::Gtk3::Image;
-#use Gnome::Gtk3::Label;
-#use Gnome::Gtk3::Grid;
-#use Gnome::Gtk3::Window;
-#use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Enums;
-#use Gnome::Gtk3::Frame;
 
 use Gnome::Gtk3::TargetEntry;
 use Gnome::Gtk3::DragSource;
-#use Gnome::Gtk3::DragDest;
-#use Gnome::Gtk3::TargetList;
 use Gnome::Gtk3::SelectionData;
 
 use Gnome::Gdk3::Atom;
@@ -74,9 +65,7 @@ method on-drag-data-get (
 ) {
 #note "\nsrc get: $info, $time, $!drag-time";
 
-  my Gnome::Gtk3::SelectionData $selection-data .= new(
-    :native-object($selection-data-no)
-  );
+  my Gnome::Gtk3::SelectionData() $selection-data = $selection-data-no;
 
   # here, you can check $info to see what is requested
   given $info {

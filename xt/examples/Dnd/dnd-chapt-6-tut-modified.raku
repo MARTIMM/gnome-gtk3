@@ -28,6 +28,7 @@ use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Frame;
 
 use Gnome::Gtk3::TargetEntry;
+use Gnome::Gtk3::Drag;
 use Gnome::Gtk3::DragSource;
 use Gnome::Gtk3::DragDest;
 use Gnome::Gtk3::TargetList;
@@ -142,9 +143,7 @@ class DragSourceWidget {
   ) {
 #note "\nsrc get: $info, $time, $!drag-time";
 
-    my Gnome::Gtk3::SelectionData $selection-data .= new(
-      :native-object($selection-data-no)
-    );
+    my Gnome::Gtk3::SelectionData() $selection-data = $selection-data-no;
 
     # here, you can check $info to see what is requested
     given $info {
@@ -259,8 +258,8 @@ class DragDestinationWidget {
     my Bool $status;
 #note "\ndst motion: $x, $y, $time";
 
-    my Gnome::Gdk3::DragContext $context .= new(:native-object($context-no));
-    my Gnome::Gdk3::Atom $target-atom = $destination.find-target(
+    my Gnome::Gdk3::DragContext() $context = $context-no;
+    my Gnome::Gdk3::Atom() $target-atom = $destination.find-target(
       $destination-widget, $context,
       $destination.get-target-list($destination-widget)
     );
@@ -281,7 +280,7 @@ class DragDestinationWidget {
       # <CTR><SHIFT>: GDK_ACTION_NONE
       my GdkDragAction $suggest-action = $context.get-suggested-action;
 #note $?LINE, ', action: ', $suggest-action;
-      $destination.highlight($destination-widget) if $suggest-action;
+      $*dnd.highlight($destination-widget) if $suggest-action;
       $context.status( $suggest-action, $time);
       $status = True;
     }
@@ -295,7 +294,7 @@ class DragDestinationWidget {
     :_widget($destination-widget), Gnome::Gtk3::DragDest :$destination
   ) {
 #note "\ndst leave: $time";
-    $destination.unhighlight($destination-widget);
+    $*dnd.unhighlight($destination-widget);
   }
 
   #-----------------------------------------------------------------------------
@@ -307,8 +306,8 @@ class DragDestinationWidget {
   ) {
 #note "\ndst drop: $x, $y, $time";
 
-    my Gnome::Gdk3::DragContext $context .= new(:native-object($context-no));
-    my Gnome::Gdk3::Atom $target-atom = $destination.find-target(
+    my Gnome::Gdk3::DragContext() $context = $context-no;
+    my Gnome::Gdk3::Atom() $target-atom = $destination.find-target(
       $destination-widget, $context,
       $destination.get-target-list($destination-widget)
     );
@@ -317,7 +316,7 @@ class DragDestinationWidget {
 
     # ask for data. triggers drag-data-get on source. when data is received or
     # error, drag-data-received on destination is triggered
-    $destination.get-data(
+    $*dnd.get-data(
       $destination-widget, $context-no, $target-atom, $time
     ) if ?$target-atom;
 
@@ -332,9 +331,7 @@ class DragDestinationWidget {
     Gnome::Gtk3::DragDest :$destination
   ) {
 #note "\ndst received:, $x, $y, $info, $time";
-    my Gnome::Gtk3::SelectionData $selection-data .= new(
-      :native-object($selection-data-no)
-    );
+    my Gnome::Gtk3::SelectionData() $selection-data = $selection-data-no;
 
     my $source-data;
     given $destination-type {
@@ -354,11 +351,9 @@ class DragDestinationWidget {
       }
 
       when IMAGE_DROP {
-        my Gnome::Gdk3::DragContext $context .= new(
-          :native-object($context-no)
-        );
-        
-        my Gnome::Gdk3::Atom $target-atom = $destination.find-target(
+        my Gnome::Gdk3::DragContext() $context = $context-no;
+
+        my Gnome::Gdk3::Atom() $target-atom = $destination.find-target(
           $destination-widget, $context,
           $destination.get-target-list($destination-widget)
         );
@@ -401,6 +396,8 @@ class DragDestinationWidget {
 
 
 #-------------------------------------------------------------------------------
+my Gnome::Gtk3::Drag $*dnd .= new;
+
 # Setup of the main page. All widgets are placed in a grid which is placed in
 # a window.
 my Gnome::Gtk3::Grid $grid .= new;

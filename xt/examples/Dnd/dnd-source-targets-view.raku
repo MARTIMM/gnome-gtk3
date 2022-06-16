@@ -30,7 +30,7 @@ use Gnome::Gtk3::Window;
 use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Enums;
 
-#use Gnome::Gtk3::Dnd;
+use Gnome::Gtk3::Drag;
 use Gnome::Gtk3::DragSource;
 use Gnome::Gtk3::DragDest;
 use Gnome::Gtk3::TargetList;
@@ -176,11 +176,11 @@ class SourceTargetViewer is Gnome::Gtk3::Grid {
     my Bool $status;
 
     # get the list of source targets and put them in a string
-    my Gnome::Gdk3::DragContext $dctx .= new(:native-object($context));
-    my Gnome::Glib::List $lt = $dctx.list-targets;
+    my Gnome::Gdk3::DragContext() $dctx = $context;
+    my Gnome::Glib::List() $lt = $dctx.list-targets;
     my Str $label-text = '';
     for ^$lt.length -> $i {
-      my Gnome::Gdk3::Atom $lt-a .= new(:native-object($lt.nth-data($i)));
+      my Gnome::Gdk3::Atom() $lt-a = $lt.nth-data($i);
       my Str $name = $lt-a.name;
       if $name ~~ 'text/plain' {
         $label-text ~= "<b>$name\n</b>";
@@ -201,7 +201,7 @@ class SourceTargetViewer is Gnome::Gtk3::Grid {
 
 
     # check if there is a 'text/plain' atom in the list
-    my Gnome::Gdk3::Atom $a = $!destination.find-target(
+    my Gnome::Gdk3::Atom() $a = $!destination.find-target(
       $widget, $context, $!destination.get-target-list($widget)
     );
 
@@ -215,7 +215,7 @@ class SourceTargetViewer is Gnome::Gtk3::Grid {
     # if the name is different than 'NONE', return True to show
     # that we can handle the data.
     else {
-      $!destination.highlight($widget);
+      $*dnd.highlight($widget);
       $dctx.status( GDK_ACTION_COPY, $time);
       $status = True;
     }
@@ -227,7 +227,7 @@ class SourceTargetViewer is Gnome::Gtk3::Grid {
   # after releasing the mouse button, indicating a drop, the drag has ended
   # so far the user concerned. the drag-leave shows the
   method leave ( N-GObject $context, UInt $time, :_widget($widget) ) {
-    $!destination.unhighlight($widget);
+    $*dnd.unhighlight($widget);
   }
 
   #-----------------------------------------------------------------------------
@@ -240,7 +240,7 @@ class SourceTargetViewer is Gnome::Gtk3::Grid {
     # ask for data. it triggers drag-data-get event on the source. when data
     # is received or an error occurs, drag-data-received event on
     # destination is triggered.
-    $!destination.get-data(
+    $*dnd.get-data(
       $widget, $context, Gnome::Gdk3::Atom.new(:intern<text/plain>), $time
     );
 
@@ -257,24 +257,26 @@ class SourceTargetViewer is Gnome::Gtk3::Grid {
     # 'text/plain' mimetype is about string data. when something is not
     # right, $sd.get() returns an undefined string. finish() is called
     # to round things up.
-    my Gnome::Gtk3::SelectionData $sd .= new(:native-object($selection-data));
+    my Gnome::Gtk3::SelectionData() $sd = $selection-data;
     if ( my Str $str = $sd.get(:data-type(Str)) ).defined {
       $!text-view.set-text($str);
-      $!destination.finish( $context, True, False, $time);
+      $*dnd.finish( $context, True, False, $time);
     }
 
     else {
-      $!destination.finish( $context, False, False, $time);
+      $*dnd.finish( $context, False, False, $time);
     }
 
     # resize back to original. result is that the window shrinks to
     # what is needed at this moment
-    my Gnome::Gtk3::Window $window = $widget.get-toplevel-rk;
+    my Gnome::Gtk3::Window() $window = $widget.get-toplevel;
     $window.resize( 400, 300);
   }
 }
 
 #-------------------------------------------------------------------------------
+my Gnome::Gtk3::Drag $*dnd .= new;
+
 # initialize handler objects
 my SourceTargetViewer $target-viewer .= new;
 my AppHandlers $ah .= new;
