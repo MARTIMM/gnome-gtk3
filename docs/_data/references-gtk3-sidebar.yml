@@ -168,6 +168,10 @@
     url: "/content-docs/reference/Gtk3/DrawingArea.html"
     type: widget
 
+  - title: "Drag"
+    url: "/content-docs/reference/Gtk3/Drag.html"
+    type: standalone
+
   - title: "DragDest"
     url: "/content-docs/reference/Gtk3/DragDest.html"
     type: standalone

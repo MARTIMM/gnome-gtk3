@@ -1,7 +1,7 @@
 {
   "description": "Raku - Gnome GTK+ Interface",
   "name": "Gnome::Gtk3",
-  "version": "0.48.3",
+  "version": "0.48.4",
   "auth": "github:MARTIMM",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk", "gdk", "glib", "gobject", "gio", "cairo"],
@@ -54,6 +54,7 @@
     "Gnome::Gtk3::CssProvider": "lib/Gnome/Gtk3/CssProvider.pm6",
     "Gnome::Gtk3::CssSection": "lib/Gnome/Gtk3/CssSection.rakumod",
     "Gnome::Gtk3::Dialog": "lib/Gnome/Gtk3/Dialog.pm6",
+    "Gnome::Gtk3::Drag": "lib/Gnome/Gtk3/Drag.rakumod",
     "Gnome::Gtk3::DragDest": "lib/Gnome/Gtk3/DragDest.pm6",
     "Gnome::Gtk3::DragSource": "lib/Gnome/Gtk3/DragSource.pm6",
     "Gnome::Gtk3::DrawingArea": "lib/Gnome/Gtk3/DrawingArea.pm6",
