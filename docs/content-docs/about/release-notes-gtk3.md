@@ -5,6 +5,20 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+* 2022-06-12 0.48.4
+  * Changed docs.
+  * Missing docs for **Gnome::Gtk3::DragDest** and **Gnome::Gtk3::DragSource**.
+  * Previously, the method `find-target()` from **Gnome::Gtk3::DragDest** returned a **Gnome::Gdk3::Atom**. To be in line with latest ideas about coercing, the routine now returns a native object. To cope with the change, write the following instead, for example;
+    ```
+    my Gnome::Gdk3::Atom() $target-atom = $!destination.find-target(…);
+    ```
+    Note the `()` tacked on the **Gnome::Gdk3::Atom** type! Sorry that I cannot give a deprecation warning because of multis not looking for return types. (lucky that the module docs weren't generated yet 😃😃😃😃).
+    Unfortunately, this will happen once in a while when things evolve. You may recognize those functions returning Gnome::* objects and prepare for the change just by tacking those brackets on the type like shown in the example above.
+  * Added a module **Gnome::Gtk3::Drag** with methods from DragSource and DragDest. This is more inline with the C-files and the routines defined there.
+    * Methods from DragDest; finish, get-data, get-source-widget, highlight and unhighlight.
+    * Methods from DragSource; cancel
+  * Site doc changes
+
 * 2022-05-13 0.48.3
   * More modules converted and more routines deprecated.
 
