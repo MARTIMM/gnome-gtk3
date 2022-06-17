@@ -67,7 +67,7 @@ method setup-dest-widget ( $destination-widget ) {
 Although it is often suffcient to use `Gnome::Gtk3::DragDest.set()` to set up a destination widget, it is of limited use. It is often more convenient to create the destination with an empty target table and then call `Gnome::Gtk3::DragDest.set-target-list()` to set the target list for the destination. The advantage of doing this is that there are several functions for adding classes of targets to target lists. For example, there is a function to add all image targets to a target list, or all text targets **¹**. The prototype of `.set-target-list()` is
 
 ```
-method set-target-list ( N-GObject $widget, N-GtkTargetList $target-list )
+method set-target-list ( N-GObject() $widget, N-GtkTargetList $target-list )
 ```
 which is given the widget and a target list, not a target table. You can create a target list from a target table with
 
