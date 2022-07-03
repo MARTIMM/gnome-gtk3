@@ -150,22 +150,6 @@ defaults:
       sidebar_menu: references-glib-sidebar
 
   - scope:
-      path: "content-docs/reference/Native"
-    values:
-      layout: reference-page
-      part-title: Native reference
-      nav_menu: references-nav
-      sidebar_menu: references-native-sidebar
-
-#  - scope:
-#      path: "content-docs/reference/..."
-#    values:
-#      layout: reference-page
-#      part-title: ... reference
-#      nav_menu: references-nav
-#      sidebar_menu: references-...-sidebar
-
-  - scope:
       path: "content-docs/reference/Pango"
     values:
       layout: reference-page
@@ -180,6 +164,22 @@ defaults:
       part-title: Cairo reference
       nav_menu: references-nav
       sidebar_menu: references-cairo-sidebar
+
+  - scope:
+      path: "content-docs/reference/Native"
+    values:
+      layout: reference-page
+      part-title: Native reference
+      nav_menu: references-nav
+      sidebar_menu: references-native-sidebar
+
+  - scope:
+      path: "content-docs/reference/Test"
+    values:
+      layout: reference-page
+      part-title: Test reference
+      nav_menu: references-nav
+      sidebar_menu: references-test-sidebar
 
 
 #liquid:
