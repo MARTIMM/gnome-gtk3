@@ -126,18 +126,20 @@ ComboBox                  |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅖|  | ⅘| ✓| �
 ComboBoxText              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓| ✓|
 Container                 |  | ✗| ✓| ✓| ✓| ✓| ✓| ½| ⅔| ½| ✓| ✓| ✓|
 CssProvider               |  | ✗| ✓| ✓| ✓| ✓| ✗| ⅞| ✓| ✗| ✓| ✓| ✓|
-CssSection                |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓| < fbck sg prp
+CssSection                |Bx| ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
+Drag                      |S | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
+DragDest                  |S | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
+DragSource                |S | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
+DrawingArea               |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| < fbck sg prp
 | Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
-DragDest                  |S | ✗|  |  |  |  |  |  |  |  |  |  |  |
-DragSource                |S | ✗|  |  |  |  |  |  |  |  |  |  |  |
-DrawingArea               |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓| no -rk :v T
 Dialog                    |  | ✓|  |  |  |  |  |  |  |  |  |  |  |
 Editable                  |  | ✓| ✓| ✓| ✓| ✓| ✗|  |  | ✗| ✓| ✓| ✓|
 Entry                     |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  
 EntryCompletion           |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅖|  | ⅗| ✓| ✓| ✓|  
 Enums                     |S |  |  |  |  | ✗| ✗|  | ✗| ✗|  |  |  |  
-EventBox                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|  
-FileChooser               |R | ✗|  |  |  |  |  |  |  |  |  |  |  |  
+EventBox                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
+Expander                  |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  |  | ✓| ✓| ✓|
+FileChooser               |R | ✗|  |  |  |  |  |  |  |  |  |  |  |
 FileChooserButton         |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  | ⅓|  |  |  |  
 FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 FileChooserWidget         |  |  | ✓| ✓| ✓| ✓| ✓| ✓|  | ✓| ✓| ✓| ✓|
@@ -232,103 +234,9 @@ Window                    |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅑| ⅕|  | ✓| �
 
 <br/>
 
-<!--
-AccelGroup                |
-AccelLabel                |
-AccelMap                  |
-Accessible                |
-ButtonBox                 |
-Calendar|
-CellArea|
-CellAreaBox|
-CellAreaContext|
-CellEditable              |R | ✗|
-CellView|
-ChooserDialog|
-Clipboard|
-Editable|
-EntryBuffer|
-EventController|
-EventControllerKey|
-EventControllerMotion|
-EventControllerScroll|
-Expander|
-FileChooserButton|
-FileChooserWidget|
-FlowBox|
-FlowBoxChild|
-FontButton|
-FontChooserDialog|
-FontChooser               |R | ✗|
-FontChooserWidget|
-Gesture|
-GestureDrag|
-GestureLongPress|
-GestureMultiPress|
-GesturePan|
-GestureRotate|
-GestureSingle|
-GestureStylus|
-GestureSwipe|
-GestureZoom|
-GLArea|
-HandleBox|
-IMContext|
-IMContextSimple|
-IMMulticontext|
-InfoBar|
-LinkButton|
-LockButton|
-MenuToolButton|
-ModelButton|
-MountOperation|
-Overlay|
-PadController|
-PageSetup|
-PageSetupUnixDialog|
-PaperSize                 |Bx| ✗|
-Plug|
-PrintBackend|
-PrintContext|
-Printer|
-PrintJob|
-PrintOperation|
-PrintOperationPreview     |R | ✗|
-PrintSettings|
-PrintUnixDialog|
-RadioToolButton|
-RcStyle|
-Requisition|b|
-ScaleButton|
-Scrollbar|
-SeparatorToolItem|
-Settings|
-SizeGroup|
-Socket|
-TextChildAnchor|
-TextMark|
-ToggleToolButton|
-Toolbar|
-ToolItemGroup|
-ToolPalette|
-ToolShell                 |R | ✗|
-Tooltip|
-TreeDragDest              |R | ✗|
-TreeDragSource            |R | ✗|
-TreeModelFilter|
-TreeModelSort|
-TreeSortable              |R | ✗|
-VolumeButton|
-WindowGroup|
-
--->
-
-<br/>
-
 | Gnome::Gdk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|--| _fallback
 Atom                      | S| ✗| ✓| ✓| ✓| ✗| ✗| ⅔| ✗| ✗| ✓| ✓| ✓|
-<!--Cursor                    |  |  |  |  |  |  |  |  |  |  |  |  |  |-->
 Device                    |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Display                   |  |  |  |  |  |  |  |  |  |  |  |  |  |
 DragContext               |  | ✗| ✓| ✓| ✓| ✗| ✗| ⅑| ✗| ✗| ✓| ✓| ✓|
@@ -340,6 +248,8 @@ Screen                    |  | ✗| ✓| ✓| ✓| ✓| ✓| ⅘|  | ½| ✓| �
 Types                     |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 Visual                    |  | ✗| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  
 Window                    |  |  | ✓| ✓| ✓| ✓| ✓| ⅑|  |  | ✓| ✓| ✓| no -rk :v T
+
+<!--Cursor                    |  |  |  |  |  |  |  |  |  |  |  |  |  |-->
 
 <br/>
 
