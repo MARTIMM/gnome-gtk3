@@ -31,7 +31,7 @@ use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Enums;
 
 use Gnome::Gtk3::Drag;
-use Gnome::Gtk3::DragSource;
+#use Gnome::Gtk3::DragSource;
 use Gnome::Gtk3::DragDest;
 use Gnome::Gtk3::TargetList;
 use Gnome::Gtk3::SelectionData;

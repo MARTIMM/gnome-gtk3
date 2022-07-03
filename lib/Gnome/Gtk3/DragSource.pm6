@@ -157,7 +157,7 @@ sub gtk_drag_source_get_target_list (
 }}
 
 #-------------------------------------------------------------------------------
-#TM:4:set:xt/dnd-01.raku
+#TM:4:set:xt/examples/Dnd
 =begin pod
 =head2 set
 
@@ -228,7 +228,7 @@ sub gtk_drag_source_set_icon_gicon (
 }}
 
 #-------------------------------------------------------------------------------
-#TM:4:set-icon-name:xt/dnd-01.raku
+#TM:4:set-icon-name:xt/examples/Dnd
 =begin pod
 =head2 set-icon-name
 
@@ -272,7 +272,7 @@ sub gtk_drag_source_set_icon_pixbuf (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:4:set-target-list:xt/dnd-01.raku
+#TM:0:set-target-list:
 =begin pod
 =head2 set-target-list
 

@@ -156,7 +156,7 @@ sub gtk_drag_dest_add_uri_targets (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:find-target:
+#TM:1:find-target:xt/examples/Dnd
 =begin pod
 =head2 find-target
 
@@ -244,7 +244,7 @@ sub gtk_drag_dest_get_track_motion (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:4:set:xt/dnd-01.raku
+#TM:4:set:xt/examples/Dnd
 =begin pod
 =head2 set
 
@@ -320,7 +320,7 @@ sub gtk_drag_dest_set (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:4:set-target-list:xt/dnd-01.raku
+#TM:4:set-target-list:xt/examples/Dnd
 =begin pod
 =head2 set-target-list
 

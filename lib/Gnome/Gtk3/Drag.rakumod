@@ -167,7 +167,7 @@ sub gtk_drag_check_threshold (
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:finish:
+#TM:4:finish:xt/examples/Dnd
 =begin pod
 =head2 finish
 
@@ -191,7 +191,7 @@ sub gtk_drag_finish (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:get-data:
+#TM:4:get-data:xt/examples/Dnd
 =begin pod
 =head2 get-data
 
@@ -243,7 +243,7 @@ sub gtk_drag_get_source_widget (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:highlight:
+#TM:4:highlight:xt/examples/Dnd
 =begin pod
 =head2 highlight
 
@@ -418,7 +418,7 @@ sub gtk_drag_set_icon_widget (
 }}
 
 #-------------------------------------------------------------------------------
-#TM:0:unhighlight:
+#TM:4:unhighlight:xt/examples/Dnd
 =begin pod
 =head2 unhighlight
 
