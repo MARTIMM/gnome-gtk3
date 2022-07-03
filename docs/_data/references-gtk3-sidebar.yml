@@ -200,6 +200,10 @@
     type: widget
     url: "/content-docs/reference/Gtk3/EventBox.html"
 
+  - title: "Expander"
+    type: widget
+    url: "/content-docs/reference/Gtk3/Expander.html"
+
   - title: "FileChooser"
     url: "/content-docs/reference/Gtk3/FileChooser.html"
     type: interface

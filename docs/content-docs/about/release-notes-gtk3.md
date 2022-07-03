@@ -5,6 +5,9 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+* 2022-07-2 0.48.5
+  * New module **Gnome::Gtk3::Expander**.
+
 * 2022-06-12 0.48.4
   * Changed docs.
   * Missing docs for **Gnome::Gtk3::DragDest** and **Gnome::Gtk3::DragSource**.
