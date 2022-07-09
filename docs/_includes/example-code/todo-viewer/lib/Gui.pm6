@@ -1,5 +1,6 @@
 use v6;
 
+use Gnome::Gtk3::TreeStore;
 use Gnome::Gtk3::CellRendererText;
 use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Window;
@@ -7,7 +8,6 @@ use Gnome::Gtk3::Grid;
 use Gnome::Gtk3::TreeView;
 use Gnome::Gtk3::TreeViewColumn;
 use Gnome::Gtk3::ListStore;
-use Gnome::Gtk3::TreeStore;
 use Gnome::Gtk3::TreePath;
 use Gnome::Gtk3::TreeIter;
 
