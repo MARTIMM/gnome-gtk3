@@ -25,7 +25,7 @@ When -1 is returned, it is taken as a sign to continue and not to return to the 
 So adding the following will give us a way to process arguments. I've taken the freedom to choose the **Getopt::Long** module of Leon Timmermans to process the arguments.
 
 ```
-use Getopt::Long;                                                   # ①
+use Getopt::Long;                                                 # 1
 use Gnome::N::N-GObject;
 …
 unit class UserAppClass is Gnome::Gtk3::Application;
@@ -33,18 +33,20 @@ unit class UserAppClass is Gnome::Gtk3::Application;
 submethod BUILD ( ) {
   …
   self.register-signal( self, 'local-options', 'handle-local-options');
-                                                                    # ②
+                                                                  # 2
   …
 }
 …
 method local-options (
-  N-GObject $n-vd, UserAppClass :_widget($app) --> Int         # ③
+  N-GObject $n-vd, UserAppClass :_widget($app) --> Int            # 3
 ) {
-  my Int $exit-code = -1;                                           # ④
+  my Int $exit-code = -1;                                         # 4
 
-  CATCH { default { .message.note; $exit-code = 1; return $exit-code; }
-                                                                    # ⑤
-  my $o = get-options('version');                                   # ⑥
+  CATCH {                                                         # 5
+    default { .message.note; $exit-code = 1; return $exit-code; }
+  }
+
+  my $o = get-options('version');                                 # 6
   if $o<version> {
     say "Version of UserAppClass is 0.2.0";
     $exit-code = 0;
@@ -53,17 +55,17 @@ method local-options (
   $exit-code
 }
 ```
-① We need **Getopt::Long** and **Gnome::N::N-GObject**. The N-GObject class is only used to define the handler interface.
+1) We need **Getopt::Long** and **Gnome::N::N-GObject**. The N-GObject class is only used to define the handler interface.
 
-② Register the handler for the `handle-local-options` signal.
+2) Register the handler for the `handle-local-options` signal.
 
-③ Positional arguments must always be defined when declaring a handler method. It is necessary because of the way the registration of signals works. The named arguments like `:_widget` and the users provided options may always be left out if not used in the method.
+3) Positional arguments must always be defined when declaring a handler method. It is necessary because of the way the registration of signals works. The named arguments like `:_widget` and the users provided options may always be left out if not used in the method.
 
-④ Specify the exit code such that the application continues. Change it when an error occurs or when the task is done.
+4) Specify the exit code such that the application continues. Change it when an error occurs or when the task is done.
 
-⑤ When there are unrecognized arguments and options, the `get-options()` routine will blow up in your face. Define a CATCH to prevent a stack dump and show the message only.
+5) When there are unrecognized arguments and options, the `get-options()` routine will blow up in your face. Define a CATCH to prevent a stack dump and show the message only.
 
-⑥ Process an option. It is a boolean variable `version` which, when found, the application will show a version and then decides to return a success value after which the application will stop.
+6) Process an option. It is a boolean variable `version` which, when found, the application will show a version and then decides to return a success value after which the application will stop.
 
 When no arguments are given, the program continues and shows a window. Each invocation without arguments adds a new window. You might introduce a boolean variable which is set after building the GUI. A second attempt to build can be prevented after checking this value.
 
@@ -81,7 +83,7 @@ To get this to work we must turn on another signal and we must also add an initi
 
 ```
 use Getopt::Long;
-use Gnome::N::N-GObject;                                            # ①
+use Gnome::N::N-GObject;                                          # 1
 use Gnome::Gio::Enums;
 use Gnome::Gio::ApplicationCommandLine;
 …
@@ -90,7 +92,7 @@ unit class UserAppClass is Gnome::Gtk3::Application;
 submethod new ( |c ) {
   self.bless(
     :GtkApplication, :app-id(APP-ID),
-    :flags(G_APPLICATION_HANDLES_COMMAND_LINE)                      # ②
+    :flags(G_APPLICATION_HANDLES_COMMAND_LINE)                    # 2
     |c
   );
 }
@@ -98,7 +100,7 @@ submethod new ( |c ) {
 submethod BUILD ( ) {
   …
   self.register-signal( self, 'local-options', 'handle-local-options');
-  self.register-signal( self, 'remote-options', 'command-line');    # ③
+  self.register-signal( self, 'remote-options', 'command-line');  # 3
   …
 }
 …
@@ -107,7 +109,9 @@ method local-options (
 ) {
   my Int $exit-code = -1;
 
-  CATCH { default { .message.note; $exit-code = 1; return $exit-code; }
+  CATCH {
+    default { .message.note; $exit-code = 1; return $exit-code; }
+  }
   my $o = get-options( 'version', 'show:s');
   if $o<version> {
     say "Version of UserAppClass is 0.2.0";
@@ -117,54 +121,54 @@ method local-options (
   $exit-code
 }
 
-method remote-options (                                             # ④
+method remote-options (                                           # 4
   N-GObject $n-cl, UserAppClass :_widget($app) --> Int
 ) {
   my Int $exit-code = 0;
 
-  my Gnome::Gio::ApplicationCommandLine $cl .= new(                 # ⑤
+  my Gnome::Gio::ApplicationCommandLine $cl .= new(               # 5
     :native-object($n-cl)
   );
 
-  my Array $args = $cl.get-arguments;                               # ⑥
+  my Array $args = $cl.get-arguments;                             # 6
   my Capture $o = get-options-from( $args[1..*-1], 'version', 'show:s');
-                                                                    # ⑦
+                                                                  # 7
   my Str $file-to-show = $o.<show>
     if ($o.<show> // '') and $o.<show>.IO.r;
 
-  self.activate unless $cl.get-is-remote;                           # ⑧
+  self.activate unless $cl.get-is-remote;                         # 8
 
   if ?$file-to-show {
     $cl.print("Show text from $file-to-show\n");
     … show file in window …
   }
 
-  $cl.clear-object;                                                 # ⑨
+  $cl.clear-object;                                               # 9
 
   $exit-code
 }
 ```
-① Again more modules are needed to get the `N-GObject` type, the initialization flag and the commandline class.
+1) Again more modules are needed to get the `N-GObject` type, the initialization flag and the commandline class.
 
-② We need the `G_APPLICATION_HANDLES_COMMAND_LINE` to process the commandline arguments remotely.
+2) We need the `G_APPLICATION_HANDLES_COMMAND_LINE` to process the commandline arguments remotely.
 
-③ For this to work we must also register a handler for the `command-line` signal.
+3) For this to work we must also register a handler for the `command-line` signal.
 
-④ The method `.remote-options()` is called after returning -1 (=continue) from the `.local-options()` method.
+4) The method `.remote-options()` is called after returning -1 (=continue) from the `.local-options()` method.
 
-⑤ The commandline object `$cl` is initialized with the provided native object `$n-cl`.
+5) The commandline object `$cl` is initialized with the provided native object `$n-cl`.
 
-⑥ The arguments returned from the call are exactly the same as stored while starting the `.run()` method in the beginning. Because the argument management is not supported, it is also not adjusted by the necessary calls in `.local-options()`.
+6) The arguments returned from the call are exactly the same as stored while starting the `.run()` method in the beginning. Because the argument management is not supported, it is also not adjusted by the necessary calls in `.local-options()`.
 
-⑦ Process the options. We must test for the same set as is done in the `.local-options()` to prevent 'option not recognized' errors. Another important thing is that when the tested option set is the same, we do not need a `CATCH {}` to catch unrecognized option errors.
+7) Process the options. We must test for the same set as is done in the `.local-options()` to prevent 'option not recognized' errors. Another important thing is that when the tested option set is the same, we do not need a `CATCH {}` to catch unrecognized option errors.
 
-⑧ Now we get the chance to differentiate between actions needed to do by a primary instance by looking if the arguments are coming from the primary or from the secondary instance. If from a primary, this means that there is not yet a window created and thus we call the applications `.activate()` method. It is worth noting that, now the application requested to handle command line arguments, the `activate` signal will not be fired automatically. This is because the primary must also be able to return to the command line in case of troubles.
+8) Now we get the chance to differentiate between actions needed to do by a primary instance by looking if the arguments are coming from the primary or from the secondary instance. If from a primary, this means that there is not yet a window created and thus we call the applications `.activate()` method. It is worth noting that, now the application requested to handle command line arguments, the `activate` signal will not be fired automatically. This is because the primary must also be able to return to the command line in case of troubles.
 
-⑨ One last important step is to destroy the commandline object. Otherwise, when it is kept around, the secondary process will be kept alive by not returning from the call to `.run()`. This is done because the object may be kept around to defer some of the tests for later.
+9) One last important step is to destroy the commandline object. Otherwise, when it is kept around, the secondary process will be kept alive by not returning from the call to `.run()`. This is done because the object may be kept around to defer some of the tests for later.
 
 When we test it now, we get far better results. First the --version option which returns immediately;
 ```
-# raku sceleton-application-v3.raku --show some-file.txt
+# raku sceleton-application-v3.raku --version
 Version of UserAppClass is 0.2.0
 ```
 And assuming that some-file.txt exists, the --show option;
@@ -195,5 +199,5 @@ But when we want more excitement we must handle the local commandline arguments 
 * The local options handler must return an integer;
   * -1 to continue processing
   * 0 to return from `run()` with a success exit value
-  * > 0 to return from `run()` with a failure exit value
+  * &gt; 0 to return from `run()` with a failure exit value
 * To handle remote options one must add the `G_APPLICATION_HANDLES_COMMAND_LINE` flag to the initialization of Application. Also a handler must be registered for the `command-line` event.

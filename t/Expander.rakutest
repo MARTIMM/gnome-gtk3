@@ -40,6 +40,11 @@ subtest 'Manipulations', {
   nok $e.get-expanded, '.get-expanded()';
   $e.set-label('xyz');
   is $e.get-label, 'xyz', '.set-label() / .get-label()';
+
+  $e.set-label-fill(True);
+  ok $e.get-label-fill, '.set-label-fill() / .get-label-fill()';
+
+  
 }
 
 #-------------------------------------------------------------------------------

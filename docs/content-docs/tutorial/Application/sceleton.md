@@ -71,23 +71,23 @@ use Gnome::Gtk3::ApplicationWindow;
 
 unit class UserAppClass is Gnome::Gtk3::Application;
 
-constant APP-ID = 'io.github.martimm.tutorial.sceleton';            # ①
+constant APP-ID = 'io.github.martimm.tutorial.sceleton';          # 1
 has Gnome::Gtk3::ApplicationWindow $!app-window;
 
 
 submethod new ( |c ) {
-  self.bless( :GtkApplication, :app-id(APP-ID), |c);                # ②
+  self.bless( :GtkApplication, :app-id(APP-ID), |c);              # 2
 }
 
 submethod BUILD ( ) {
-  self.register-signal( self, 'app-activate', 'activate');          # ③
+  self.register-signal( self, 'app-activate', 'activate');        # 3
 
-  my Gnome::Glib::Error $e = self.register;                         # ④
+  my Gnome::Glib::Error $e = self.register;                       # 4
   die $e.message if $e.is-valid;
 }
 
-method app-activate ( UserAppClass :_widget($app) ) {               # ⑤
-  given $!app-window .= new(:application(self)) {
+method app-activate ( UserAppClass :_widget($app) ) {             # 5
+  with $!app-window .= new(:application(self)) {
     .set-size-request( 400, 200);
     .set-title('Application Sceleton');
     .register-signal( self, 'exit-program', 'destroy');
@@ -98,47 +98,45 @@ method app-activate ( UserAppClass :_widget($app) ) {               # ⑤
   say '  app id: ', self.get-application-id;
 }
 
-method exit-program ( ) {                                           # ⑥
+method exit-program ( ) {                                         # 6
   self.quit;
 }
 ```
 
-① The application id is defined as a constant here because it will not change for the life of the application. There is a [nice document](https://developer.gnome.org/ChooseApplicationID/) about how to specify such a string. In short, it represents a "reversed DNS" style. The next list shows where it is used for (taken from that page);
+1) The application id is defined as a constant here because it will not change for the life of the application. There is a [nice document](https://developer.gnome.org/documentation/tutorials/application-id.html) about how to specify such a string. In short, it represents a "reversed DNS" style. The next list shows where it is used for (taken from that page);
 
-* Used by **Gnome::Gio::Application** as a method of identifying your application to the system, for ensuring that only one instance of your application is running at a given time, and as a way of passing messages to your application (such as an instruction to open a file)
+  * Used by **Gnome::Gio::Application** as a method of identifying your application to the system, for ensuring that only one instance of your application is running at a given time, and as a way of passing messages to your application (such as an instruction to open a file)
 
-* Used by D-Bus, to name your application on the message bus. This is the primary means of communicating between applications and is visible via the `gdbus` commandline tool or the graphical D-Bus browser `qdbusviewer-qt5`. I believe that there is another type of communication on Windows or that dbus is ported to Windows. For the moment I assume Linux/Unix systems when talking about dbus.
+  * Used by D-Bus, to name your application on the message bus. This is the primary means of communicating between applications and is visible via the `gdbus` commandline tool or the graphical D-Bus browser `qdbusviewer-qt5`. I believe that there is another type of communication on Windows or that dbus is ported to Windows. For the moment I assume Linux/Unix systems when talking about dbus.
 
-* Used as the name of the ".desktop file" for your application. This file is how you describe your application to the system (so that it can be displayed in and launched by gnome-shell). This also something coming from Linux/Unix systems. The _`freedesktop.org`_ has defined several protocols and specifications centered around desktops.
+  * Used as the name of the ".desktop file" for your application. This file is how you describe your application to the system (so that it can be displayed in and launched by gnome-shell). This also something coming from Linux/Unix systems. The _`freedesktop.org`_ has defined several protocols and specifications centered around desktops.
 
-* Used as a way for the system to remember state information about your applications (for example, which notifications it has requested to be shown to the user) and as a way for it to control settings about your application (for example, if its notifications have been blocked by the user)
+  * Used as a way for the system to remember state information about your applications (for example, which notifications it has requested to be shown to the user) and as a way for it to control settings about your application (for example, if its notifications have been blocked by the user)
 
-* Used as a way for the system to use your application to extend itself (for example, by way of search providers)
+  * Used as a way for the system to use your application to extend itself (for example, by way of search providers)
 
-* Used as the bundle name for application bundles
-<!--
-* Used as the base name of any GSettings schemas that your application may install. These names are visible via the gsettings commandline tool or the dconf-editor graphical editor.
--->
+  * Used as the bundle name for application bundles
+  <!--
+  * Used as the base name of any GSettings schemas that your application may install. These names are visible via the gsettings commandline tool or the dconf-editor graphical editor.
+  -->
 
 
-② The application id is applied to the initialization of the Applications native object.
+2) The application id is applied to the initialization of the Applications native object.
 
-③ To control several phases of the initialization, a few signal handlers need to be set up. We'll start with only one, `activate` which must show the default first window of the application.
-<!--
-③ To control several phases of the initialization, a few signal handlers need to be set up;
-* `startup`: sets up the application when it first starts. It is fired right after the call to `.register()`.
-* `activate`: shows the default first window of the application. This corresponds to the application being launched by the desktop environment.
-* `shutdown`: performs shutdown tasks after the main loop is exited.
--->
+2) To control several phases of the initialization, a few signal handlers need to be set up. We'll start with only one, `activate` which must show the default first window of the application.
+3) To control several phases of the initialization, a few signal handlers need to be set up;
+  * `startup`: sets up the application when it first starts. It is fired right after the call to `.register()`.
+  * `activate`: shows the default first window of the application. This corresponds to the application being launched by the desktop environment.
+  * `shutdown`: performs shutdown tasks after the main loop is exited.
 
-④ Then, the application registers itself.
+4) Then, the application registers itself.
 <!--
  This will cause the `startup` signal to fire. This is your opportunity to set things ready for further work, for example setup a database connection. This only happens in primary instances.
 -->
 
-⑤ When initialization is finished, the user calls `.run()` to run the application. This will cause the `activate` signal to fire.
+5) When initialization is finished, the user calls `.run()` to run the application. This will cause the `activate` signal to fire.
 
-⑥ After working with the app, the user may decide to press an exit button or select a quit menu entry.
+6) After working with the app, the user may decide to press an exit button or select a quit menu entry.
 <!--
  When that happens, `.quit()` warps a `shutdown` signal. Again, this will only happen on the primary instance. Useful to cleanup things like last minute database updates and cleanup or closing files.
 -->
