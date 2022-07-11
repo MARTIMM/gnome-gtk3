@@ -105,7 +105,7 @@ submethod BUILD ( ) {
 }
 …
 method local-options (
-  N-GObject $n-vd, UserAppClass :_widget($app) --> Int
+  N-GObject $no-vd, UserAppClass :_widget($app) --> Int
 ) {
   my Int $exit-code = -1;
 
@@ -122,11 +122,11 @@ method local-options (
 }
 
 method remote-options (                                           # 4
-  N-GObject $n-cl, UserAppClass :_widget($app) --> Int
+  N-GObject $no-cl, UserAppClass :_widget($app) --> Int
 ) {
   my Int $exit-code = 0;
 
-  my Gnome::Gio::ApplicationCommandLine $cl .= new(               # 5
+  my Gnome::Gio::ApplicationCommandLine() $cl = $no-cl            # 5
     :native-object($n-cl)
   );
 
@@ -156,7 +156,7 @@ method remote-options (                                           # 4
 
 4) The method `.remote-options()` is called after returning -1 (=continue) from the `.local-options()` method.
 
-5) The commandline object `$cl` is initialized with the provided native object `$n-cl`.
+5) The commandline object `$cl` is initialized with the provided native object `$no-cl`.
 
 6) The arguments returned from the call are exactly the same as stored while starting the `.run()` method in the beginning. Because the argument management is not supported, it is also not adjusted by the necessary calls in `.local-options()`.
 
