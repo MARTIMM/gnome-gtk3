@@ -323,7 +323,8 @@ Calls `Gnome::Gtk3::Widget.set-sensitive($setting)` for each widget in the dialo
 Signals
 =======
 
-### close
+close
+-----
 
 The *close* signal is a keybinding signal which gets emitted when the user uses a keybinding to close the dialog.
 
@@ -344,7 +345,8 @@ The default binding for this signal is the Escape key.
 
   * %user-options; A list of named arguments provided at the `register-signal()` method
 
-### response
+response
+--------
 
 Emitted when an action widget is clicked, the dialog receives a delete event, or the application programmer calls `response()`. On a delete event, the response ID is **Gnome::Gtk3::TK-RESPONSE-DELETE-EVENT**. Otherwise, it depends on which action widget was clicked.
 

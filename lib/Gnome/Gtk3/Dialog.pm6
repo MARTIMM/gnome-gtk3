@@ -750,7 +750,7 @@ sub _gtk_dialog_new_with_buttons (
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:close:
-=head3 close
+=head2 close
 
 The I<close> signal is a keybinding signal which gets emitted when the user uses a keybinding to close the dialog.
 
@@ -771,7 +771,7 @@ The default binding for this signal is the Escape key.
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:response:
-=head3 response
+=head2 response
 
 Emitted when an action widget is clicked, the dialog receives a
 delete event, or the application programmer calls C<response()>.
