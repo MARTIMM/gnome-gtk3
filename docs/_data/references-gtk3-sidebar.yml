@@ -164,10 +164,6 @@
     url: "/content-docs/reference/Gtk3/Dialog.html"
     type: widget
 
-  - title: "DrawingArea"
-    url: "/content-docs/reference/Gtk3/DrawingArea.html"
-    type: widget
-
   - title: "Drag"
     url: "/content-docs/reference/Gtk3/Drag.html"
     type: standalone
@@ -180,9 +176,13 @@
     url: "/content-docs/reference/Gtk3/DragSource.html"
     type: standalone
 
+  - title: "DrawingArea"
+    url: "/content-docs/reference/Gtk3/DrawingArea.html"
+    type: widget
+
   - title: "Editable"
     url: "/content-docs/reference/Gtk3/Editable.html"
-    type: widget
+    type: interface
 
   - title: "Entry"
     url: "/content-docs/reference/Gtk3/Entry.html"
