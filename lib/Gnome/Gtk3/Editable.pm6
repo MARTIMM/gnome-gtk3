@@ -90,10 +90,7 @@ Copies the contents of the currently selected content in the editable and puts i
 =end pod
 
 method copy-clipboard ( ) {
-
-  gtk_editable_copy_clipboard(
-    self._f('GtkEditable'),
-  );
+  gtk_editable_copy_clipboard(self._f('GtkEditable'));
 }
 
 sub gtk_editable_copy_clipboard (
@@ -113,10 +110,7 @@ Removes the contents of the currently selected content in the editable and puts 
 =end pod
 
 method cut-clipboard ( ) {
-
-  gtk_editable_cut_clipboard(
-    self._f('GtkEditable'),
-  );
+  gtk_editable_cut_clipboard(self._f('GtkEditable'));
 }
 
 sub gtk_editable_cut_clipboard (
@@ -136,10 +130,7 @@ Deletes the currently selected text of the editable. This call doesn’t do anyt
 =end pod
 
 method delete-selection ( ) {
-
-  gtk_editable_delete_selection(
-    self._f('GtkEditable'),
-  );
+  gtk_editable_delete_selection(self._f('GtkEditable'));
 }
 
 sub gtk_editable_delete_selection (
@@ -152,21 +143,18 @@ sub gtk_editable_delete_selection (
 =begin pod
 =head2 delete-text
 
-Deletes a sequence of characters. The characters that are deleted are those characters at positions from I<start-pos> up to, but not including I<end-pos>. If I<end-pos> is negative, then the characters deleted are those from I<start-pos> to the end of the text.
+Deletes a sequence of characters. The characters that are deleted are those characters at positions from I<$start-pos> up to, but not including I<$end-pos>. If I<$end-pos> is negative, then the characters deleted are those from I<$start-pos> to the end of the text.
 
 Note that the positions are specified in characters, not bytes.
 
-  method delete-text ( Int $start_pos, Int $end_pos )
+  method delete-text ( Int() $start_pos, Int() $end_pos )
 
-=item Int $start_pos; start position
-=item Int $end_pos; end position
+=item $start_pos; start position
+=item $end_pos; end position
 =end pod
 
-method delete-text ( Int $start_pos, Int $end_pos ) {
-
-  gtk_editable_delete_text(
-    self._f('GtkEditable'), $start_pos, $end_pos
-  );
+method delete-text ( Int() $start_pos, Int() $end_pos ) {
+  gtk_editable_delete_text( self._f('GtkEditable'), $start_pos, $end_pos);
 }
 
 sub gtk_editable_delete_text (
@@ -179,23 +167,20 @@ sub gtk_editable_delete_text (
 =begin pod
 =head2 get-chars
 
-Retrieves a sequence of characters. The characters that are retrieved are those characters at positions from I<start-pos> up to, but not including I<end-pos>. If I<end-pos> is negative, then the characters retrieved are those characters from I<start-pos> to the end of the text.
+Retrieves a sequence of characters. The characters that are retrieved are those characters at positions from I<$start-pos> up to, but not including I<$end-pos>. If I<$end-pos> is negative, then the characters retrieved are those characters from I<$start-pos> to the end of the text.
 
 Note that positions are specified in characters, not bytes.
 
 Returns: a pointer to the contents of the widget as a string. This string is allocated by the B<Gnome::Gtk3::Editable> implementation and should be freed by the caller.
 
-  method get-chars ( Int $start_pos, Int $end_pos --> Str )
+  method get-chars ( Int() $start_pos, Int() $end_pos --> Str )
 
-=item Int $start_pos; start of text
-=item Int $end_pos; end of text
+=item $start_pos; start of text
+=item $end_pos; end of text
 =end pod
 
-method get-chars ( Int $start_pos, Int $end_pos --> Str ) {
-
-  gtk_editable_get_chars(
-    self._f('GtkEditable'), $start_pos, $end_pos
-  )
+method get-chars ( Int() $start_pos, Int() $end_pos --> Str ) {
+  gtk_editable_get_chars( self._f('GtkEditable'), $start_pos, $end_pos)
 }
 
 sub gtk_editable_get_chars (
@@ -217,10 +202,7 @@ Returns: C<True> if I<editable> is editable.
 =end pod
 
 method get-editable ( --> Bool ) {
-
-  gtk_editable_get_editable(
-    self._f('GtkEditable'),
-  ).Bool
+  gtk_editable_get_editable(self._f('GtkEditable')).Bool
 }
 
 sub gtk_editable_get_editable (
@@ -244,10 +226,7 @@ Returns: the cursor position
 =end pod
 
 method get-position ( --> Int ) {
-
-  gtk_editable_get_position(
-    self._f('GtkEditable'),
-  )
+  gtk_editable_get_position(self._f('GtkEditable'))
 }
 
 sub gtk_editable_get_position (
@@ -264,19 +243,21 @@ Retrieves the selection bound of the editable. start-pos will be filled with the
 
 Note that positions are specified in characters, not bytes.
 
-Returns: C<True> if an area is selected, C<False> otherwise
+Returns: a List with defined values if an area is selected, undefined C<Int> otherwise.
 
-  method get-selection-bounds ( --> Bool )
+  method get-selection-bounds ( --> List )
 
-=item Int $start_pos; location to store the starting position, or C<undefined>
-=item Int $end_pos; location to store the end position, or C<undefined>
+Returns a List with
+=item Int; location to store the starting position, or C<undefined>
+=item Int; location to store the end position, or C<undefined>
 =end pod
 
-method get-selection-bounds ( --> Bool ) {
-
-  gtk_editable_get_selection_bounds(
+method get-selection-bounds ( --> List ) {
+  my Bool $r = gtk_editable_get_selection_bounds(
     self._f('GtkEditable'), my gint $start_pos, my gint $end_pos
-  ).Bool
+  ).Bool;
+
+  $r ?? ( $start_pos, $start_pos) !! ( Int, Int)
 }
 
 sub gtk_editable_get_selection_bounds (
@@ -289,28 +270,30 @@ sub gtk_editable_get_selection_bounds (
 =begin pod
 =head2 insert-text
 
-Inserts I<new-text-length> bytes of I<new-text> into the contents of the widget, at position I<position>.
+Inserts I<$new-text> into the contents of the widget, at position I<$position>.
 
-Note that the position is in characters, not in bytes. The function updates I<position> to point after the newly inserted text.
+Note that the position is in characters, not in bytes. The method returns a new position to point after the newly inserted text.
 
-  method insert-text ( Str $new_text, Int $new_text_length )
+  method insert-text ( Str $new-text, Int() $position --> Int )
 
-=item Str $new_text; the text to append
-=item Int $new_text_length; the length of the text in bytes, or -1
-=item Int $position; location of the position text will be inserted at
+=item $new-text; the text to append
+=item $position; location of the position text will be inserted at
 =end pod
 
-method insert-text ( Str $new_text, Int $new_text_length ) {
-
+method insert-text ( Str $new_text, Int() $position --> Int ) {
   gtk_editable_insert_text(
-    self._f('GtkEditable'), $new_text, $new_text_length, my gint $position
+    self._f('GtkEditable'), $new_text, $new_text.chars,
+    my gint $new-osition = $position
   );
+
+  $new-osition
 }
 
 sub gtk_editable_insert_text (
   N-GObject $editable, gchar-ptr $new_text, gint $new_text_length, gint $position is rw
 ) is native(&gtk-lib)
   { * }
+
 
 #-------------------------------------------------------------------------------
 #TM:0:paste-clipboard:
@@ -324,10 +307,7 @@ Pastes the content of the clipboard to the current position of the cursor in the
 =end pod
 
 method paste-clipboard ( ) {
-
-  gtk_editable_paste_clipboard(
-    self._f('GtkEditable'),
-  );
+  gtk_editable_paste_clipboard(self._f('GtkEditable'));
 }
 
 sub gtk_editable_paste_clipboard (
@@ -340,21 +320,18 @@ sub gtk_editable_paste_clipboard (
 =begin pod
 =head2 select-region
 
-Selects a region of text. The characters that are selected are those characters at positions from I<start-pos> up to, but not including I<end-pos>. If I<end-pos> is negative, then the characters selected are those characters from I<start-pos> to the end of the text.
+Selects a region of text. The characters that are selected are those characters at positions from I<$start-pos> up to, but not including I<$end-pos>. If I<$end-pos> is negative, then the characters selected are those characters from I<$start-pos> to the end of the text.
 
 Note that positions are specified in characters, not bytes.
 
-  method select-region ( Int $start_pos, Int $end_pos )
+  method select-region ( Int() $start_pos, Int() $end_pos )
 
-=item Int $start_pos; start of region
-=item Int $end_pos; end of region
+=item $start_pos; start of region
+=item $end_pos; end of region
 =end pod
 
-method select-region ( Int $start_pos, Int $end_pos ) {
-
-  gtk_editable_select_region(
-    self._f('GtkEditable'), $start_pos, $end_pos
-  );
+method select-region ( Int() $start_pos, Int() $end_pos ) {
+  gtk_editable_select_region( self._f('GtkEditable'), $start_pos, $end_pos);
 }
 
 sub gtk_editable_select_region (
@@ -375,10 +352,7 @@ Determines if the user can edit the text in the editable widget or not.
 =end pod
 
 method set-editable ( Bool $is_editable ) {
-
-  gtk_editable_set_editable(
-    self._f('GtkEditable'), $is_editable
-  );
+  gtk_editable_set_editable( self._f('GtkEditable'), $is_editable);
 }
 
 sub gtk_editable_set_editable (
@@ -395,16 +369,13 @@ Sets the cursor position in the editable to the given value.
 
 The cursor is displayed before the character with the given (base 0) index in the contents of the editable. The value must be less than or equal to the number of characters in the editable. A value of -1 indicates that the position should be set after the last character of the editable. Note that I<position> is in characters, not in bytes.
 
-  method set-position ( Int $position )
+  method set-position ( Int() $position )
 
-=item Int $position; the position of the cursor
+=item $position; the position of the cursor
 =end pod
 
-method set-position ( Int $position ) {
-
-  gtk_editable_set_position(
-    self._f('GtkEditable'), $position
-  );
+method set-position ( Int() $position ) {
+  gtk_editable_set_position( self._f('GtkEditable'), $position);
 }
 
 sub gtk_editable_set_position (
@@ -416,114 +387,72 @@ sub gtk_editable_set_position (
 =begin pod
 =head1 Signals
 
-There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
-
-=head2 First method
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
-
-  # handler method
-  method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-  # connect a signal on window object
-  my Gnome::Gtk3::Window $w .= new( ... );
-  $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-=head2 Second method
-
-  my Gnome::Gtk3::Window $w .= new( ... );
-  my Callable $handler = sub (
-    N-GObject $native, GdkEvent $event, OpaquePointer $data
-  ) {
-    ...
-  }
-
-  $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<connect-object()> are using the signatures of the handler routines to setup the native call interface.
-
-=head2 Supported signals
-
-
 =comment -----------------------------------------------------------------------
 =comment #TS:0:changed:
-=head3 changed
+=head2 changed
 
-The I<changed> signal is emitted at the end of a single
-user-visible operation on the contents of the B<Gnome::Gtk3::Editable>.
+The I<changed> signal is emitted at the end of a single user-visible operation on the contents of the B<Gnome::Gtk3::Editable>.
 
-E.g., a paste operation that replaces the contents of the
-selection will cause only one signal emission (even though it
-is implemented by first deleting the selection, then inserting
-the new content, and may cause multiple I<notify>::text signals
-to be emitted).
+E.g., a paste operation that replaces the contents of the selection will cause only one signal emission (even though it is implemented by first deleting the selection, then inserting the new content, and may cause multiple I<notify>::text signals to be emitted).
 
   method handler (
-    Int :$_handle_id,
     Gnome::GObject::Object :_widget($editable),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
   );
 
 =item $editable; the object which received the signal
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:delete-text:
-=head3 delete-text
+=head2 delete-text
 
-This signal is emitted when text is deleted from
-the widget by the user. The default handler for
-this signal will normally be responsible for deleting
-the text, so by connecting to this signal and then
-stopping the signal with C<g-signal-stop-emission()>, it
-is possible to modify the range of deleted text, or
-prevent it from being deleted entirely. The I<start-pos>
-and I<end-pos> parameters are interpreted as for
-C<delete-text()>.
+This signal is emitted when text is deleted from the widget by the user. The default handler for this signal will normally be responsible for deleting the text, so by connecting to this signal and then stopping the signal with C<g-signal-stop-emission()> (I<not yet defined!!>), it is possible to modify the range of deleted text, or prevent it from being deleted entirely. The I<$start-pos> and I<$end-pos> parameters are interpreted as for C<delete-text()>.
 
   method handler (
     Int $start_pos,
     Int $end_pos,
-    Int :$_handle_id,
     Gnome::GObject::Object :_widget($editable),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
   );
 
 =item $editable; the object which received the signal
-
 =item $start_pos; the starting position
-
 =item $end_pos; the end position
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:insert-text:
-=head3 insert-text
+=head2 insert-text
 
-This signal is emitted when text is inserted into
-the widget by the user. The default handler for
-this signal will normally be responsible for inserting
-the text, so by connecting to this signal and then
-stopping the signal with C<g-signal-stop-emission()>, it
-is possible to modify the inserted text, or prevent
-it from being inserted entirely.
+This signal is emitted when text is inserted into the widget by the user. The default handler for this signal will normally be responsible for inserting the text, so by connecting to this signal and then stopping the signal with C<g-signal-stop-emission()> (I<not yet defined!!>), it is possible to modify the inserted text, or prevent it from being inserted entirely.
 
   method handler (
     Str $new_text,
     Int $new_text_length,
-    Unknown type G_TYPE_POINTER $position,
+    CArray[glong] $position,
     Int :$_handle_id,
     Gnome::GObject::Object :_widget($editable),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
   );
 
 =item $editable; the object which received the signal
-
 =item $new_text; the new text to insert
-
-=item $new_text_length; the length of the new text, in bytes,
-or -1 if new-text is nul-terminated
-=item $position; (inout) (type int): the position, in characters,
-at which to insert the new text. this is an in-outparameter.  After the signal emission is finished, itshould point after the newly inserted text.
+=item $new_text_length; the length of the new text, in bytes, or -1 if new-text is nul-terminated.
+=item $position; a pointer to the position in characters, at which to insert the new text. this is an in-outparameter. After the signal emission is finished, it should point after the newly inserted text.
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object.
 
 =end pod
