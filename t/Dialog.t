@@ -39,11 +39,13 @@ unless %*ENV<raku_test_all>:exists {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  my Gnome::Gtk3::Box $content-box = $d.get-content-area-rk;
-  is $content-box.get-name, 'GtkBox', '.get-content-area-rk()';
+  my Gnome::Gtk3::Box() $content-box = $d.get-content-area;
+  is $content-box.get-name, 'GtkBox', '.get-content-area()';
 
-  my Gnome::Gtk3::HeaderBar $header-bar = $d.get-header-bar-rk;
-  nok $header-bar.is-valid, '.get-header-bar-rk()';
+  my Gnome::Gtk3::HeaderBar() $header-bar = $d.get-header-bar;
+  nok $header-bar.is-valid, '.get-header-bar()';
+
+  $d.add-button( 'Stop', 4556);
 
 #`{{
   is $d.get-response-for-widget, GTK_RESPONSE_NONE,
@@ -54,13 +56,8 @@ subtest 'Manipulations', {
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
   my @pvs = $d.get-properties( 'use-header-bar', Bool);
-  is-deeply @pvs, [0,], 'use-header-bar';
+  is-deeply @pvs, [ 0], 'properties: use-header-bar';
 }
-
-#-------------------------------------------------------------------------------
-done-testing;
-
-=finish
 
 #-------------------------------------------------------------------------------
 subtest 'Inherit Gnome::Gtk3::Dialog', {
@@ -79,51 +76,9 @@ subtest 'Inherit Gnome::Gtk3::Dialog', {
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Interface ...', {
-}
+done-testing;
 
-#-------------------------------------------------------------------------------
-subtest 'Properties ...', {
-  use Gnome::GObject::Value;
-  use Gnome::GObject::Type;
-
-  #my Gnome::Gtk3::Dialog $d .= new;
-
-  sub test-property (
-    $type, Str $prop, Str $routine, $value,
-    Bool :$approx = False, Bool :$is-local = False
-  ) {
-    my Gnome::GObject::Value $gv .= new(:init($type));
-    $d.get-property( $prop, $gv);
-    my $gv-value = $gv."$routine"();
-    if $approx {
-      is-approx $gv-value, $value,
-        "property $prop, value: " ~ $gv-value;
-    }
-
-    # dependency on local settings might result in different values
-    elsif $is-local {
-      if $gv-value ~~ /$value/ {
-        like $gv-value, /$value/, "property $prop, value: " ~ $gv-value;
-      }
-
-      else {
-        ok 1, "property $prop, value: " ~ $gv-value;
-      }
-    }
-
-    else {
-      is $gv-value, $value,
-        "property $prop, value: " ~ $gv-value;
-    }
-    $gv.clear-object;
-  }
-
-  # example calls
-  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', False);
-  #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
-  #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
-}
+=finish
 
 #-------------------------------------------------------------------------------
 subtest 'Themes ...', {
