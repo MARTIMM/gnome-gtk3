@@ -47,7 +47,11 @@ else {
 }
 ```
 
-We need an Error class from Glib and a Pixbuf class from Gdk3 `(1`. Next, the window is created and the image loaded in a Pixbuf `(2`. When there is an error, e.g. the image file isn't found, an error is set and a default broken image is loaded in the Pixbuf instead. You can check the error by calling `.last-error()` `(3`. If the error is valid, an error occurred `(4`. If not, the icon can be set `(5` with the following result;
+1) We need an Error class from Glib and a Pixbuf class from Gdk3.
+2) Next, the window is created and the image loaded in a Pixbuf.
+3) When there is an error, e.g. the image file isn't found, an error is set and a default broken image is loaded in the Pixbuf instead. You can check the error by calling `.last-error()`.
+4) If the error is valid, an error occurred.
+5) If not, the icon can be set with the following result;
 
 ![new icon](images/window-deco2.png)
 
