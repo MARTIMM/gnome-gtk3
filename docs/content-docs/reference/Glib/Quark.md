@@ -10,11 +10,11 @@ Quarks are associations between strings and integer identifiers or a *GQuark*. G
 
 Quarks are used for example to specify error domains, see also *Gnome::Glib::Error*.
 
-To create a new quark from a string, use `g_quark_from_string()`.
+To create a new quark from a string, use `from-string()`.
 
-To find the string corresponding to a given *GQuark*, use `g_quark_to_string()`.
+To find the string corresponding to a given *GQuark*, use `to-string()`.
 
-To find the *GQuark* corresponding to a given string, use `g_quark_try_string()`.
+To find the *GQuark* corresponding to a given string, use `try-string()`.
 
 Synopsis
 ========
@@ -31,12 +31,10 @@ Example
     use Gnome::Glib::Quark;
 
     my Gnome::Glib::Quark $quark .= new;
-    my UInt $q = $quark.try-string('my string');
-    is $q, 0, 'no quark for string';
+    my UInt $q = $quark.try-string('my string'); # 0
 
     $q = $quark.from-string('my 2nd string');
-    is $quark.from-string('my 2nd string'), $q, "2nd string has got quark $q";
-    is $quark.to-string($q), 'my 2nd string', "2nd string found from quark";
+    $quark.to-string($q);                        # 'my 2nd string'
 
 new
 ---
@@ -47,8 +45,26 @@ Create a new quark object.
 
     multi method new ( )
 
-[[g_] quark_] try_string
-------------------------
+from-string
+-----------
+
+Gets the *GQuark* identifying the given string. If the string does not currently have an associated *GQuark*, a new *GQuark* is created, using a copy of the string.
+
+Returns: the *GQuark* identifying the string, or 0 if *$string* is undefined
+
+    method from-string ( Str $string --> GQuark )
+
+  * Str $string: a string
+
+to-string
+---------
+
+Gets the string associated with the given GQuark.
+
+    method to-string ( GQuark $quark --> Str  )
+
+try-string
+----------
 
 Gets the *GQuark* associated with the given string, or 0 if string is undefined or it has no associated *GQuark*.
 
@@ -56,25 +72,7 @@ If you want the GQuark to be created if it doesn't already exist, use `g_quark_f
 
 Returns: the *GQuark* associated with the string, or 0 if *$string* is undefined or there is no *GQuark* associated with it.
 
-    method g_quark_try_string ( Str $string --> Int  )
+    method try-string ( Str $string --> GQuark )
 
   * Str $string: a string
-
-[[g_] quark_] from_string
--------------------------
-
-Gets the *GQuark* identifying the given string. If the string does not currently have an associated *GQuark*, a new *GQuark* is created, using a copy of the string.
-
-Returns: the *GQuark* identifying the string, or 0 if *$string* is undefined
-
-    method g_quark_from_string ( Str $string --> Int  )
-
-  * Str $string: a string
-
-[[g_] quark_] to_string
------------------------
-
-Gets the string associated with the given GQuark.
-
-    method g_quark_to_string ( Int $quark --> Str  )
 
