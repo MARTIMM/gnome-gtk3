@@ -113,7 +113,7 @@ subtest 'Button as container', {
       is $l.get-text, 'xyz', 'text label from button 1';
     }
   }
-  $b.gtk_container_foreach( X.new, 'cfe');
+  $b.foreach( X.new, 'cfe');
 
 
   my Gnome::Gtk3::Label $label .= new(:text('pqr'));

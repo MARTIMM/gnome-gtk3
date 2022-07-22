@@ -28,18 +28,17 @@ C<Gnome::Gtk3::ListBox>
   # to be 'listboxFromGui'.
   my Gnome::Gtk3::ListBox $lb .= new(:build-id<listboxFromGui>);
 
-
-  my Gnome::Glib::List $gl .= new(:native-object($lb.get-children));
+  my Gnome::Glib::List() $gl = $lb.get-children);
   for ^$gl.g-list-length -> $entry-index {
-    my Gnome::Gtk3::ListBoxRow $lb-row .=
-      new(:widget($lb.get-row-at-index($entry-index)));
+    my Gnome::Gtk3::ListBoxRow() $lb-row =
+      $lb.get-row-at-index($entry-index);
 
     next unless $lb-row.is-selected;
 
-    # This row is selected and has a Grid (for example, can be anything
-    # you've created!!)
-    my Gnome::Gtk3::Grid $lb-grid .= new(:widget($lb-row.get_child()));
-    ...
+    # This row is selected and has a Grid (just as an example,
+    # it can be anything you've created!!)
+    my Gnome::Gtk3::Grid() $lb-grid = $lb-row.get-child;
+    …
   }
 
 =end pod

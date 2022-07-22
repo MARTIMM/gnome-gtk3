@@ -218,7 +218,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
       try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
       if ?$s {
         Gnome::N::deprecate(
-          "$native-sub", $new-patt.subst('gtk-button-'),
+          $native-sub, $new-patt.subst('gtk-button-'),
           '0.47.4', '0.50.0'
         );
       }

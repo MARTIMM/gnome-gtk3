@@ -169,7 +169,6 @@ method get-child-rk ( *%options --> Gnome::GObject::Object ) {
   $o ~~ N-GObject ?? Gnome::GObject::Widget.new(:native-object($o)) !! $o
 }
 
-sub gtk_bin_get_child ( N-GObject $bin )
-  returns N-GObject
+sub gtk_bin_get_child ( N-GObject $bin --> N-GObject )
   is native(&gtk-lib)
   { * }

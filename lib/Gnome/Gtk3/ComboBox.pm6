@@ -16,7 +16,7 @@ A B<Gnome::Gtk3::ComboBox> is a widget that allows the user to choose from a lis
 
 The B<Gnome::Gtk3::ComboBox> uses the model-view pattern; the list of valid choices is specified in the form of a tree model, and the display of the choices can be adapted to the data in the model by using cell renderers, as you would in a tree view. This is possible since B<Gnome::Gtk3::ComboBox> implements the B<Gnome::Gtk3::CellLayout> interface. The tree model holding the valid choices is not restricted to a flat list, it can be a real tree, and the popup will reflect the tree structure.
 
-To allow the user to enter values not in the model, the “has-entry” property allows the B<Gnome::Gtk3::ComboBox> to contain a B<Gnome::Gtk3::Entry>. This entry can be accessed by calling C<gtk_bin_get_child()> on the combo box.
+To allow the user to enter values not in the model, the “has-entry” property allows the B<Gnome::Gtk3::ComboBox> to contain a B<Gnome::Gtk3::Entry>. This entry can be accessed by calling C<get-child()> on the combo box.
 
 For a simple list of textual choices, the model-view API of B<Gnome::Gtk3::ComboBox> can be a bit overwhelming. In this case, B<Gnome::Gtk3::ComboBoxText> offers a simple alternative. Both B<Gnome::Gtk3::ComboBox> and B<Gnome::Gtk3::ComboBoxText> can contain an entry.
 

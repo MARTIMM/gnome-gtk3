@@ -18,7 +18,9 @@ The first type of container widget has a single child widget and derives from B<
 
 The second type of container can have more than one child; its purpose is to manage layout. This means that these containers assign sizes and positions to their children. For example, a B<Gnome::Gtk3::HBox> arranges its children in a horizontal row, and a B<Gnome::Gtk3::Grid> arranges the widgets it contains in a two-dimensional grid.
 
+=begin comment
 For implementations of B<Gnome::Gtk3::Container> the virtual method B<Gnome::Gtk3::ContainerClass>.C<forall()> is always required, since it's used for drawing and other internal operations on the children. If the B<Gnome::Gtk3::Container> implementation expect to have non internal children it's needed to implement both B<Gnome::Gtk3::ContainerClass>.C<add()> and B<Gnome::Gtk3::ContainerClass>.C<remove()>. If the B<Gnome::Gtk3::Container> implementation has internal children, they should be added with C<gtk_widget_set_parent()> on C<init()> and removed with C<gtk_widget_unparent()> in the B<Gnome::Gtk3::WidgetClass>.C<destroy()> implementation. See more about implementing custom widgets at https://wiki.gnome.org/HowDoI/CustomWidgets
+=end comment
 
 =head2 Height for width geometry management
 
@@ -825,21 +827,15 @@ sub gtk_container_forall (
 =begin pod
 =head2 foreach
 
-Invokes a callback method on each non-internal child of this container. See C<forall()> for details on what constitutes an “internal” child. For all practical purposes, this function should iterate over precisely those child widgets that were added to the container by the application with explicit C<add()> calls.
-
-=comment It is permissible to remove the child from the I<callback> handler.
-
-Most applications should use C<foreach()>, rather than C<forall()>.
+Invokes a callback method on each child of this container. For all practical purposes, this function should iterate over precisely those child widgets that were added to the container by the application with explicit C<add()> calls.
 
   method foreach (
     Any:D $callback-object, Str:D $callback-name, *%user-options
   )
 
 =item $callback-object; An object where the callback method is defined
-=item $callback-name; method name of the callback. A name ending in C<-rk> gets a raku widget instead of a native object.
-=item %user-options; A list of named arguments which are provided to the callback. A special named argumend, C<:give-raku-objects>, is used to provide raku objects instead of the native objects in the same way the extension C<-rk> would do. This might be a better way because one can check the named argument if a raku object is provided or not, see examples below.
-
-=comment B<Note that this is an experiment, It might be that only the named argument name is used or the method name>.
+=item $callback-name; method name of the callback.
+=item %user-options; A list of named arguments which are provided to the callback.
 
 =head3 Example
 
@@ -869,19 +865,7 @@ method foreach ( Any:D $func-object, Str:D $func-name, *%user-options ) {
       self._f('GtkContainer'),
       -> $no, $d {
         CATCH { default { .message.note; .backtrace.concise.note } }
-
-#`{{
-        if $func-name ~~ m/ '-rk' $/ or
-           %user-options<give-raku-objects>:exists
-        {
-          my Gnome::GObject::Object $rk = self._wrap-native-type-from-no($no);
-          $func-object."$func-name"( $rk, |%user-options)
-        }
-
-        else {
-}}
-          $func-object."$func-name"( $no, |%user-options)
-#        }
+        $func-object."$func-name"( $no, |%user-options)
       },
       OpaquePointer
     );
@@ -945,16 +929,14 @@ sub gtk_container_get_border_width (
 
 #-------------------------------------------------------------------------------
 #TM:1:get-children:
-#TM:1:get-children-rk
 =begin pod
-=head2 get-children, get-children-rk
+=head2 get-children
 
 Returns the container’s non-internal children. See C<forall()> for details on what constitutes an "internal" child.
 
 Returns: a newly-allocated list of the container’s non-internal children.
 
   method get-children ( --> N-GList )
-  method get-children-rk ( --> Gnome::Glib::List )
 
 =end pod
 
@@ -963,6 +945,10 @@ method get-children ( --> N-GList ) {
 }
 
 method get-children-rk ( --> Gnome::Glib::List ) {
+  Gnome::N::deprecate(
+    'get-children-rk', 'get-children', '0.48.6', '0.50.0'
+  );
+
   Gnome::Glib::List.new(
     :native-object(gtk_container_get_children(self._f('GtkContainer')))
   )
@@ -1013,7 +999,7 @@ sub gtk_container_get_focus_child (
 
 Retrieves the horizontal focus adjustment for the container. See C<set-focus-hadjustment()>.
 
-Returns: the horizontal focus adjustment, or C<undefined> if none has been set. In the C<-rk> case, an invalid Widget is returned. It is a native object for B<Gnome::Gtk3::Adjustment>.
+Returns: the horizontal focus adjustment, or C<undefined> if none has been set.
 
   method get-focus-hadjustment ( --> N-GObject )
 

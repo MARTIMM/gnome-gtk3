@@ -65,8 +65,8 @@ subtest 'Manipulations1', {
   is $a.get-lower, 10, '.set-focus-vadjustment() .get-focus-vadjustment()';
 
 # Travis returns other info e.g. 'window' here is 'GtkWindow' there
-#  my Gnome::Gtk3::WidgetPath $wp = $w.get-path-for-child-rk($g);
-#  like $wp.to-string, /window <-[\s]>+ \s grid/, '.get-path-for-child-rk()';
+#  my Gnome::Gtk3::WidgetPath() $wp = $w.get-path-for-child($g);
+#  like $wp.to-string, /window <-[\s]>+ \s grid/, '.get-path-for-child()';
 #my Gnome::Gtk3::WidgetPath() $wp =  $w.get-path-for-child($g);
 #note $wp.is-valid, ', ', $wp.to-string;
 #note $w.get-path-for-child($g).(Gnome::Gtk3::WidgetPath).to-string;
@@ -128,10 +128,10 @@ subtest 'Manipulations2', {
     my Gnome::Gtk3::Grid $g .= new;
     $w.add($g);
 
-    my Gnome::Glib::List $gl .= new(:native-object($w.get-children));
+    my Gnome::Glib::List() $gl = $w.get-children;
     is $gl.length, 1, '.get-children()';
-    $gl = $w.get-children-rk;
-    is $gl.length, 1, '.get-children-rk()';
+    $gl = $w.get-children;
+    is $gl.length, 1, '.get-children()';
   }
 }
 
