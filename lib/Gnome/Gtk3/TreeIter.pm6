@@ -90,6 +90,11 @@ class N-GtkTreeIter is export is repr('CStruct') {
     $!userdata2 := nativecast( Pointer, $userdata2);
     $!userdata3 := nativecast( Pointer, $userdata3);
   }
+
+  method COERCE ( $no --> N-GtkTreeIter ) {
+    note "Coercing from {$no.^name} to ", self.^name if $Gnome::N::x-debug;
+    nativecast( N-GtkTreeIter, $no)
+  }
 }
 
 
@@ -152,7 +157,7 @@ method _fallback ( $native-sub is copy --> Callable ) {
 
 #-------------------------------------------------------------------------------
 # ? no ref/unref for a variant type
-method native-object-ref ( $n-native-object --> Any ) {
+method native-object-ref ( $n-native-object ) {
   $n-native-object
 }
 
