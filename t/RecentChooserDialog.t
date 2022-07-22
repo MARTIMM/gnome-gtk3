@@ -44,8 +44,8 @@ unless %*ENV<raku_test_all>:exists {
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
   my Gnome::Glib::List $l = $rcd.get-items;
-  diag '.get-items(); ' ~ $l.g_list_length;
-  if $l.g_list_length {
+  diag '.get-items(); ' ~ $l.length;
+  if $l.length {
     my Gnome::Gtk3::RecentInfo $ri .= new(:native-object($l.data));
     my $uris = $rcd.get-uris;
     is $ri.get-uri, $uris[0], '.get-uris() / .get-uri()';

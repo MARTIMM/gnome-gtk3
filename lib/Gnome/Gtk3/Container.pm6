@@ -794,7 +794,7 @@ sub gtk_container_class_list_child_properties (
 
 #`{{
 #-------------------------------------------------------------------------------
-#TM:0:forall:
+# TM:0:forall:
 =begin pod
 =head2 forall
 

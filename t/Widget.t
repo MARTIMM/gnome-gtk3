@@ -519,20 +519,13 @@ subtest 'Signals ...', {
   class SignalHandlers {
     has Bool $!signal-processed = False;
 
-    method m-act (
-      Int $group_cycling,
-      Gnome::Gtk3::Widget :$_widget, gulong :$_handler-id
-       --> Int
-    ) {
+    method m-act ( Int $group_cycling --> gboolean ) {
       ok $group_cycling, 'arg $group_cycling';
       $!signal-processed = True;
+      1
     }
 
-    method k-fail (
-      Int $direction,
-      Gnome::Gtk3::Widget :$_widget, gulong :$_handler-id
-      --> Int
-    ) {
+    method k-fail ( Int $direction --> gboolean ) {
       is GtkDirectionType($direction), GTK_DIR_UP, 'arg $direction';
       $!signal-processed = True;
       1
