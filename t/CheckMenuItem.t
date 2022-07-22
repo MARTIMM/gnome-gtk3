@@ -112,10 +112,10 @@ subtest 'Signals ...', {
     has Bool $!signal-processed = False;
 
     method is-toggled (
-      Gnome::Gtk3::CheckMenuItem :$_widget, gulong :$_handler-id
+      Gnome::Gtk3::CheckMenuItem() :_native-object($menu-item),
+      gulong :$_handler-id
     ) {
-
-      isa-ok $_widget, Gnome::Gtk3::CheckMenuItem;
+      isa-ok $menu-item, Gnome::Gtk3::CheckMenuItem;
       $!signal-processed = True;
     }
 

@@ -163,7 +163,6 @@ subtest 'Interface TreeModel', {
 }
 
 #-------------------------------------------------------------------------------
-#Gnome::N::debug(:on);
 subtest 'Signals TreeModel', {
 
   my class X {
@@ -177,23 +176,23 @@ subtest 'Signals TreeModel', {
       $!ro-signal = False;
     }
 
-    method rc ( N-GObject $p, N-GtkTreeIter $i, :$widget ) {
+    method rc ( N-GObject $p, N-GtkTreeIter() $i ) {
       $!rc-signal = True;
     }
 
-    method ri ( N-GObject $p, N-GtkTreeIter $i, :$widget ) {
+    method ri ( N-GObject $p, N-GtkTreeIter() $i ) {
       $!ri-signal = True;
     }
 
-    method rd ( N-GObject $p, :$widget ) {
+    method rd ( N-GObject $p ) {
       $!rd-signal = True;
     }
 
-    method rct ( N-GObject $p, N-GtkTreeIter $i, :$widget ) {
+    method rct ( N-GObject $p, N-GtkTreeIter() $i ) {
       $!rct-signal = True;
     }
 
-    method ro ( N-GObject $p, N-GtkTreeIter $i, CArray[int32] $a, :$widget ) {
+    method ro ( N-GObject $p, N-GtkTreeIter() $i, CArray[int32] $a ) {
       $!ro-signal = True;
       is $a[0], 1, 'row 1 now at row 0';
     }
@@ -209,7 +208,10 @@ subtest 'Signals TreeModel', {
   $iter = $ls.get-iter-first;
   $tp .= new(:first);
 
+#Gnome::N::debug(:on);
   $ls.row-changed( $tp, $iter);
+#Gnome::N::debug(:off);
+
   ok $x.rc-signal, 'row-changed signal processed';
   $ls.row-inserted( $tp, $iter);
   ok $x.ri-signal, 'row-inserted signal processed';

@@ -1,18 +1,22 @@
 use v6;
-#use lib '../gnome-native/lib';
+#use lib '../gnome-glib/lib';
 use NativeCall;
 use Test;
 
+use Gnome::N::X;
 use Gnome::N::N-GObject;
-use Gnome::Glib::Error;
-use Gnome::Glib::Quark;
-use Gnome::Gtk3::CssProvider;
-use Gnome::Gio::File;
-
-#use Gnome::N::X;
 #Gnome::N::debug(:on);
 
+use Gnome::Glib::Error;
+use Gnome::Glib::Quark;
+
+use Gnome::Gtk3::CssProvider;
+
+use Gnome::Gio::File;
+
+
 #-------------------------------------------------------------------------------
+
 my $dir = 't/css';
 mkdir $dir unless $dir.IO ~~ :e;
 my Str $css-file = $dir ~ '/test.css';
@@ -47,7 +51,7 @@ my Gnome::Gtk3::CssProvider $cp;
 subtest 'ISA test', {
   $cp .= new;
   ok $cp.is-valid, '.new()';
-  $cp .= new( :named<Breeze>, :variant<dark>);
+  $cp .= new( :name<Breeze>, :variant<dark>);
   ok $cp.is-valid, '.new( :named, :variant)';
 }
 
@@ -89,11 +93,11 @@ subtest 'Manipulations', {
     has Bool $.signal-processed is rw;
 
     method handle-error (
-      N-GObject $section, N-GError $e,
+      N-GObject $section, Gnome::Glib::Error() $error,
       Gnome::GObject::Object :native-object($provider)
     ) {
       my Gnome::Glib::Quark $quark .= new;
-      my Gnome::Glib::Error $error .= new(:native-object($e));
+#      my Gnome::Glib::Error $error .= new(:native-object($e));
       test($error);
       $!signal-processed = True;
     }

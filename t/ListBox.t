@@ -48,7 +48,7 @@ subtest 'Manipulations', {
   # Get a list of widgets. There is only one row and is a ListBoxRow. This
   # widget is automatically inserted when the grid was added to the ListBox.
   my Gnome::Glib::List $gl .= new(:native-object($lb.get-children));
-  is $gl.g-list-length, 1, 'one listbox row in listbox';
+  is $gl.length, 1, 'one listbox row in listbox';
 
   # Get the row and create the ListBoxRow from the native object
   my Gnome::Gtk3::ListBoxRow $lb-row .= new(
@@ -65,7 +65,7 @@ subtest 'Manipulations', {
   # Get the native grid object from a child and create the Grid again.
   my Gnome::Gtk3::Grid $lb-grid .= new(:native-object($lb-row.get_child()));
   $gl .= new(:native-object($lb-grid.get-children));
-  is $gl.g-list-length, 2, 'two entries in grid';
+  is $gl.length, 2, 'two entries in grid';
 
   my Gnome::Gtk3::CheckButton $lb-cb .= new(
     :native-object($lb-grid.get-child-at( 0, 0))
