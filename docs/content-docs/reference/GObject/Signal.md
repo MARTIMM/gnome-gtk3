@@ -6,6 +6,8 @@ A means for customization of object behaviour and a general purpose notification
 Description
 ===========
 
+**Gnome::GObject::Signal** is a role used by **Gnome::GObject::Object** to provide a means to register signals or disconnect them.
+
 Synopsis
 ========
 
@@ -27,34 +29,41 @@ Example
     use Gnome::Gdk3::Events;
     use Gnome::Gtk3::Window;
 
-    # Get a window object
-    my Gnome::Gtk3::Window $w .= new( ... );
+    # Create a window object
+    my Gnome::Gtk3::Window $w .= new( … );
 
     # Define proper handler. The handler API must describe all arguments
     # and their types.
     my Callable $handler = sub (
       N-GObject $native-widget, N-GdkEvent $event, OpaquePointer $ignored
     ) {
-      ...
+      …
     }
 
     # Connect signal to the handler.
     $w.connect-object( 'button-press-event', $handler);
 
-The other option to connect a signal is to use the `register-signal()` method defined in **Gnome::GObject::Object**. It all depends on how elaborate things are or taste.
+The other option to connect a signal is to use the `register-signal()` method defined in **Gnome::GObject::Object**. It all depends on how elaborate things are or your taste.
 
     use Gnome::Gdk3::Events;
     use Gnome::Gtk3::Window;
 
-    # Define handler method. The handler API must describe all positional
-    # arguments and their types.
-    method mouse-event ( N-GdkEvent $event, :$_widget , :$_handler-id) { ... }
+    class MyClass {
+      # Define handler method. The handler API must describe all positional
+      # arguments and their types.
+      method mouse-event (
+        N-GdkEvent $event,
+        Gnome::Gtk3::Window() :$_native-object,
+        Int :$_handler-id) { … }
 
-    # Get a window object
-    my Gnome::Gtk3::Window $w .= new( ... );
+      # Get a window object
+      my Gnome::Gtk3::Window $w .= new( … );
 
-    # Then register
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
+      # Then register
+      $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+      …
+    }
 
 When some of the primitive types are needed like `gboolean` or `guint`, you can just use the module **Gnome::N::GlibToRakuTypes** and leave the types as they are found in the docs. It might be tricky to choose the proper type: e.g. is a `guint` an `unsigned int32` or `unsigned int64`? By the way, enumerations can be typed `GEnum`.
 
@@ -76,7 +85,7 @@ emit-by-name
 
 Emits a signal. Note that `g_signal_emit_by_name()` resets the return value to the default if no handlers are connected.
 
-    g_signal_emit_by_name (
+    emit-by-name (
       Str $detailed-signal, *@handler-arguments,
       Array :$parameters, :$return-type
     )
@@ -96,7 +105,7 @@ Emits a signal. Note that `g_signal_emit_by_name()` resets the return value to t
 
       # The extra argument here is $toggle
       method enable-debugging-handler (
-        gboolean $toggle, Gnome::Gtk3::Window :$_widget
+        gboolean $toggle, Gnome::Gtk3::Window() :$_native-object
         --> gboolean
       ) {
         ...
@@ -118,23 +127,23 @@ Emits a signal. Note that `g_signal_emit_by_name()` resets the return value to t
 
       ...
 
-[[g_] signal_] handler_disconnect
----------------------------------
+handler-disconnect
+------------------
 
 Disconnects a handler from an instance so it will not be called during any future or currently ongoing emissions of the signal it has been connected to. The handler_id becomes invalid and may be reused.
 
-The handler_id has to be a valid signal handler id, connected to a signal of instance.
+The `$handler-id` has to be a valid signal handler id, connected to a signal of instance.
 
-    g_signal_handler_disconnect( Int $handler_id )
+    handler-disconnect ( Int $handler-id )
 
   * $handler_id; Handler id of the handler to be disconnected.
 
-[g_] signal_name
-----------------
+signal-name
+-----------
 
 Given the signal's identifier, finds its name. Two different signals may have the same name, if they have differing types.
 
-    g_signal_name( UInt $signal-id --> Str )
+    signal-name( UInt $signal-id --> Str )
 
   * $signal-id; the signal's identifying number.
 

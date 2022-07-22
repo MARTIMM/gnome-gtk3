@@ -149,18 +149,14 @@ Register a handler to process a signal or an event. There are several types of c
 
     The following reserved named arguments are available;
 
-      * `:$_widget`; The instance which registered the signal
-
       * `:$_handler-id`; The handler id which is returned from the registration
 
-      * `:$_native-object`; The native object provided by the caller. This object sometimes is usefull when the variable `$_widget` became invalid. An easy test and repair;
+      * `:$_native-object`; The native object provided by the caller.
 
           method some-handler (
             …,
-            Gnome::Gtk3::Button :_widget($button) is copy,
-            N-GObject :_native-object($no)
+            Gnome::Gtk3::Button() :_native-object($button)
           ) {
-            $button .= new(:native-object($no)) unless $button.is-valid;
             …
           }
 
@@ -174,7 +170,7 @@ The method returns a handler id which can be used for example to disconnect the 
 
     <table class="pod-table">
     <thead><tr>
-    <th>Raku type</th> <th>Native type</th> <th>Native Raku type</th>
+    <th>Raku type</th> <th>Native glib type</th> <th>Native Raku type</th>
     </tr></thead>
     <tbody>
     <tr> <td>Bool</td> <td>gboolean</td> <td>int32</td> </tr> <tr> <td>UInt</td> <td>guint</td> <td>uint32/uint64</td> </tr> <tr> <td>Int</td> <td>gint</td> <td>int32/int64</td> </tr> <tr> <td>Num</td> <td>gfloat</td> <td>num32</td> </tr> <tr> <td>Rat</td> <td>gdouble</td> <td>num64</td> </tr>
@@ -191,7 +187,9 @@ An example of a registration and the handlers signature to handle a button click
 
     # Handler class with callback methods
     class ButtonHandlers {
-      method click-button ( :$_widget, :$_handler_id, :$my-option ) {
+      method click-button (
+        Gnome::Gtk3::Button() :_native-object($button),
+        Int :$_handler_id, :$my-option ) {
         …
       }
     }
@@ -207,10 +205,13 @@ An example where a keyboard press is handled.
     # Handler class with callback methods
     class KeyboardHandlers {
       method keyboard-handler (
-        N-GdkEvent $event, :$_widget, :$_handler_id, :$my-option
+        N-GdkEvent $event,
+        Int :$_handler_id, :$my-option
+        Gnome::Gtk3::Window() :_native-object($bwindow),
         --> gboolean
       ) {
         …
+
       }
     }
 
@@ -296,7 +297,7 @@ Sets properties on an object.
 
 Note that the "notify" signals are queued and only emitted (in reverse order) after all properties have been set.
 
-    method set-properties ( Str $prop-name, $prop-value, … )
+    method set-properties ( Str :$prop-name($prop-value), … )
 
   * Str $prop-name; name of a property to set.
 
@@ -311,7 +312,7 @@ A button has e.g. the properties `label` and `use-underline`. To set those and r
     …
 
     method my-button-click-event-handler (
-      Gnome::Gtk3::Button :_widget($button)
+      Gnome::Gtk3::Button :_native-object($button)
     ) {
       # Get the properties set elsewhere on the button
       my @rv = $button.get-properties( 'label', Str, 'use-underline', Bool);
@@ -357,8 +358,6 @@ Start a thread in such a way that the function can modify the user interface in 
   * %user-options; Any other user data in whatever type provided as one or more named arguments except for :start-time and :new-context. These arguments are provided to the user handler when the callback is invoked.
 
     There will always be one named argument `:$widget` which holds the class object on which the thread is started. The name 'widget' is therefore reserved.
-
-    The named attribute `:$widget` will be deprecated in the future. The name will be changed into `:$_widget` to give the user a free hand in user provided named arguments. The names starting with '_' will then be reserved to provide special info to the user.
 
     The following named arguments can be used in the callback handler next to the other user definable options;
 
