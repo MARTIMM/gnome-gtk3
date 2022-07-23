@@ -57,6 +57,7 @@ layout: sidebar
 
   * Changed docs here and there to remove old uses of deprecated arguments and methods in example code.
   * Added `COERCE()` routine in **Gnome::Gtk3::TreeIter** to coerce from `N-GObject` to `N-GtkTreeIter`. Also done in **Gnome::Glib::Error**.
+  * Method
 
 * 2022-07-16 0.48.6
   * Revisited the **Gnome::Gtk3::Dialog** module. all `…-rk()` are obsoleted. E.g. use `my Gnome::Gtk3::Box() $content-area = $dialog.get-content-area;` instead of `my Gnome::Gtk3::Box $content-area = $dialog.get-content-area-rk;` or `my Gnome::Gtk3::Box $content-area .= new(:native-object($dialog.get-content-area));`
