@@ -5,6 +5,59 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+* 2022-07-15 0.48.7
+  * Revisited modules from the Gnome::Glib distribution. Quite a few bugs are removed from **Gnome::Glib::Error**, many method return types are changed to native types instead of the Raku classes conform the latest ideas. Again very unfortunate that for these I cannot install deprecation code because the dispatch of multi methods are not looking at return types.
+    An example from the **Gnome::Glib::List** module;
+    ```
+    # next line
+    my Gnome::Glib::List $l .= new(:native-object($my-grid.get-children));
+
+    # or like this
+
+    my Gnome::Glib::List $l = $w.get-children-rk;
+
+    would become
+
+    my Gnome::Glib::List() $l = $w.get-children;
+    ```
+
+    Also the methods in that List module are modified, so the use of e.g. `append()` would become;
+    ```
+    my Gnome::Glib::List() $integer-list;         # note the '()' !!
+    my $int-pointer = CArray[gint].new;
+    $int-pointer[0] = 42;
+    $integer-list .= append(nativecast( gpointer, $int-pointer));
+    $int-pointer[0] = 43;
+    $integer-list .= append(nativecast( gpointer, $int-pointer));
+    ```
+
+  * Changed **Gnome::Gtk3::Container**. Missed a few `…-rk()` deprecations.
+
+  * **NOTE 1: All these changes regarding the `…-rk()` can be changed before the deprecation messages are installed. This will save you for some irritating changes occurring later on when I am able to change the methods.**
+
+  * **NOTE 2: What came to mind is the use of `:$_widget` in event callbacks. This can easily be replaced by `:$_native_object` (already defined). The latter is always defined while the first might be destroyed by the user to free memory.**
+    An example to show the use of `:$_native_object` with the `add` signal callback handler from **Gnome::Gtk3::Container**. The handler is defined as;
+    ```
+    method handler (
+      N-GObject $n-widget,
+      Gnome::Gtk3::Container :_widget($container),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
+    ```
+    This could be implemented as
+    ```
+    method add-event (
+      N-GObject $added-widget,
+      Gnome::Gtk3::Container() :_native-object($container)
+    ) { … }
+    ```
+    From this, it follows that the named argument `:$_widget` is not useful anymore. Therefore, this named argument is deprecated too.
+
+  * Changed docs here and there to remove old uses of deprecated arguments and methods in example code.
+  * Added `COERCE()` routine in **Gnome::Gtk3::TreeIter** to coerce from `N-GObject` to `N-GtkTreeIter`. Also done in **Gnome::Glib::Error**.
+
 * 2022-07-16 0.48.6
   * Revisited the **Gnome::Gtk3::Dialog** module. all `…-rk()` are obsoleted. E.g. use `my Gnome::Gtk3::Box() $content-area = $dialog.get-content-area;` instead of `my Gnome::Gtk3::Box $content-area = $dialog.get-content-area-rk;` or `my Gnome::Gtk3::Box $content-area .= new(:native-object($dialog.get-content-area));`
   * Revisited the **Gnome::Gtk3::Editable** module.
