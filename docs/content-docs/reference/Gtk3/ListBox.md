@@ -201,29 +201,41 @@ Since: 3.10
 
     method gtk_list_box_get_adjustment ( --> N-GObject  )
 
-[[gtk_] list_box_] selected_foreach
------------------------------------
+selected-foreach
+----------------
 
 Calls a function for each selected child. Note that the selection cannot be modified from within this function.
 
-Since: 3.14
-
-    method gtk_list_box_selected_foreach (
+    method selected-foreach (
       $callback-object, Str $callback_name, *%user-options
     )
 
   * $callback-object; Object wherein the callback method is declared
 
-  * Str $callback-name; Name of the callback method
+  * $callback-name; Name of the callback method
 
   * %user-options; named arguments which will be provided to the callback
 
 The callback method signature is
 
     method f (
-      Gnome::Gtk3::ListBox $listbox, Gnome::Gtk3::GtkListRow $row,
-      *%user-options
+      N-GObject $listbox, N-GObject $row, *%user-options
     )
+
+### Example
+
+In the example below, the callback `cb` has the native objects provided as `N-GObject` coerced into **Gnome::Gtk3::ListBox** and **Gnome::Gtk3::ListBoxRow** using the `()`.
+
+    class X {
+      method cb (
+        Gnome::Gtk3::ListBox() $lbx, Gnome::Gtk3::ListBoxRow() $lbxr, :$test ) {
+        is $lbx.widget-get-name(), 'GtkListBox', 'listbox';
+        is $lbxr.widget-get-name(), 'GtkListBoxRow', 'listboxrow';
+        is $test, 'abc', 'user option';
+      }
+    }
+
+    $lb.selected-foreach( X.new, 'cb', :test<abc>);
 
 [[gtk_] list_box_] get_selected_rows
 ------------------------------------

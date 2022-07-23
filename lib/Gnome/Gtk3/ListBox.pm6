@@ -362,41 +362,98 @@ sub gtk_list_box_get_adjustment ( N-GObject $box )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_list_box_selected_foreach:
+#TM:1:selected-foreach:
 =begin pod
-=head2 [[gtk_] list_box_] selected_foreach
+=head2 selected-foreach
 
 Calls a function for each selected child. Note that the selection cannot be modified from within this function.
 
-Since: 3.14
-
-  method gtk_list_box_selected_foreach (
+  method selected-foreach (
     $callback-object, Str $callback_name, *%user-options
   )
 
 =item $callback-object; Object wherein the callback method is declared
-=item Str $callback-name; Name of the callback method
+=item $callback-name; Name of the callback method
 =item %user-options; named arguments which will be provided to the callback
 
 The callback method signature is
 
   method f (
-    Gnome::Gtk3::ListBox $listbox, Gnome::Gtk3::GtkListRow $row,
-    *%user-options
+    N-GObject $listbox, N-GObject $row, *%user-options
   )
 
+
+=head3 Example
+
+In the example below, the callback C<cb> has the native objects provided as C<N-GObject> coerced into B<Gnome::Gtk3::ListBox> and B<Gnome::Gtk3::ListBoxRow> using the C<()>.
+
+  class X {
+    method cb (
+      Gnome::Gtk3::ListBox() $lbx, Gnome::Gtk3::ListBoxRow() $lbxr, :$test ) {
+      is $lbx.widget-get-name(), 'GtkListBox', 'listbox';
+      is $lbxr.widget-get-name(), 'GtkListBoxRow', 'listboxrow';
+      is $test, 'abc', 'user option';
+    }
+  }
+
+  $lb.selected-foreach( X.new, 'cb', :test<abc>);
+
+
 =end pod
-sub gtk_list_box_selected_foreach (
-  N-GObject $box, Any:D $func-object, Str:D $func-name, *%user-options
+method selected-foreach (
+  Any:D $func-object, Str:D $func-name, *%user-options
 ) {
   if $func-object.^can($func-name) {
     _gtk_list_box_selected_foreach(
-      $box,
+      self._f('GtkListBox'),
       sub ( $n-lb, $n-lbr, $d ) {
         CATCH { default { .message.note; .backtrace.concise.note } }
+
+# TODO; after deprecation, the call to user function must be like
+# $func-object."$func-name"( $n-lb, $n-lbr, |%user-options)
+#
+my Method $sh = $func-object.^lookup($func-name);
+my @ps = $sh.signature.params;
+#note 'foreach handler: ', @ps>>.type;
+my ( $arg1, $arg2);
+if @ps[1].type.^name ~~ /^ 'Gnome::Gtk3::ListBox(' .*? ')' $/ {
+  $arg1 = $n-lb;
+}
+
+elsif @ps[1].type.^name ~~ /^ 'Gnome::Gtk3::ListBox' $/ {
+  $arg1 = Gnome::Gtk3::ListBox.new(:native-object($n-lb));
+  Gnome::N::deprecate(
+    'arg type Gnome::Gtk3::ListBox in callback handler',
+    'Gnome::Gtk3::ListBox()',
+    '0.48.6', '0.50.0'
+  );
+}
+
+else {
+  $arg1 = $n-lb;
+}
+
+
+if @ps[2].type.^name ~~ /^ 'Gnome::Gtk3::ListBoxRow(' .*? ')' $/ {
+  $arg2 = $n-lbr;
+}
+
+elsif @ps[2].type.^name ~~ /^ 'Gnome::Gtk3::ListBoxRow' $/ {
+  $arg2 = Gnome::Gtk3::ListBoxRow.new(:native-object($n-lbr));
+  Gnome::N::deprecate(
+    'arg type Gnome::Gtk3::ListBoxRow in callback handler',
+    'Gnome::Gtk3::ListBoxRow()',
+    '0.48.6', '0.50.0'
+  );
+}
+
+else {
+  $arg2 = $n-lbr;
+}
+
         $func-object."$func-name"(
-          Gnome::Gtk3::ListBox.new(:native-object($n-lb)),
-          Gnome::Gtk3::ListBoxRow.new(:native-object($n-lbr)),
+          # $n-lb, $n-lbr,
+          $arg1, $arg2,
           |%user-options
         )
       },
