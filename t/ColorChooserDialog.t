@@ -100,12 +100,7 @@ subtest 'Signals ...', {
   class SignalHandlers {
     has Bool $!signal-processed = False;
 
-    method clr-act (
-      N-GObject $color,
-      Gnome::Gtk3::ColorChooser :$_widget, gulong :$_handler-id
-    ) {
-
-      isa-ok $_widget, Gnome::Gtk3::ColorChooser;
+    method clr-act ( N-GObject $color, gulong :$_handler-id ) {
       $!signal-processed = True;
     }
 

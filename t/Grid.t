@@ -31,7 +31,7 @@ subtest 'Manipulations', {
   my Gnome::Gtk3::Button $button .= new(:label('press here'));
   $g.attach( $button, 0, 0, 1, 1);
   $gl .= new(:native-object($g.get-children));
-  is $gl.g-list-length, 1, '.gtk-grid-attach()';
+  is $gl.length, 1, '.gtk-grid-attach()';
   $gl.clear-object;
 
   $g.remove-row(0);

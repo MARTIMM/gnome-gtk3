@@ -111,7 +111,7 @@ subtest 'Signals ...', {
 
     method ... (
       'any-args',
-      Gnome::Gtk3::CellLayout :$_widget, gulong :$_handler-id
+      Gnome::Gtk3::CellLayout() :_native-object($_widget), gulong :$_handler-id
       # --> ...
     ) {
 
@@ -170,4 +170,3 @@ subtest 'Signals ...', {
 
   is $p.result, 'done', 'emitter finished';
 }
-

@@ -111,20 +111,22 @@ subtest 'Signals ...', {
     has Bool $!signal-processed = False;
 
     method a-ch (
-      Gnome::Gtk3::Adjustment :$_widget, gulong :$_handler-id
+      Gnome::Gtk3::Adjustment() :_native-object($w), gulong :$_handler-id
     ) {
-      isa-ok $_widget, Gnome::Gtk3::Adjustment;
+      isa-ok $w, Gnome::Gtk3::Adjustment;
       $!signal-processed = True;
     }
 
     method a-vch (
-      Gnome::Gtk3::Adjustment :$_widget, gulong :$_handler-id
+      Gnome::Gtk3::Adjustment() :_native-object($w), gulong :$_handler-id
     ) {
-      isa-ok $_widget, Gnome::Gtk3::Adjustment;
+      isa-ok $w, Gnome::Gtk3::Adjustment;
       $!signal-processed = True;
     }
 
-    method signal-emitter ( Gnome::Gtk3::Adjustment :$_widget --> Str ) {
+    method signal-emitter (
+      Gnome::Gtk3::Adjustment :$_widget --> Str
+    ) {
 
       $_widget.set-step-increment(2.1);
       while $main.gtk-events-pending() { $main.iteration-do(False); }

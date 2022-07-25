@@ -82,8 +82,8 @@ subtest 'Manipulations', {
     #.unselect-all;
 
     my Gnome::Glib::List $l = .get-items;
-    diag '.get-items(); ' ~ $l.g_list_length;
-    if $l.g_list_length {
+    diag '.get-items(); ' ~ $l.length;
+    if $l.length {
       my Gnome::Gtk3::RecentInfo $ri .= new(:native-object($l.data));
       my $uris = .get-uris;
       is $ri.get-uri, $uris[0], '.get-uris() / .get-uri()';
@@ -186,7 +186,7 @@ subtest 'Signals ...', {
 
     method ... (
       'any-args',
-      Gnome::Gtk3::RecentChooser :$_widget, gulong :$_handler-id
+      Gnome::Gtk3::RecentChooser() :_native-object($_widget), gulong :$_handler-id
       # --> ...
     ) {
 
