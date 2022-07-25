@@ -1349,7 +1349,6 @@ note "get-signals: ", ($arg-count, $signal-arg-types[$arg-count], $item-src-doc)
 
     # Add the arguments given by the register-signal() method
     $signal-doc ~= Q:qq:to/EOSIG/;
-          Gnome::{$*raku-lib-name}::{$*raku-class-name} :_widget(\$$items-src-doc[0][0]),
           Int :\$_handler-id,
           N-GObject :\$_native-object,
           *\%user-options
@@ -1370,9 +1369,8 @@ note "get-signals: ", ($arg-count, $signal-arg-types[$arg-count], $item-src-doc)
     }
 
     # And the extra provided arguments
-    $signal-doc ~= "=item \$$items-src-doc[0][0]; The instance which registered the signal\n";
     $signal-doc ~= "=item \$_handler-id; The handler id which is returned from the registration\n";
-    $signal-doc ~= "=item \$_native-object; The native object provided by the caller wrapped in the Raku object.\n";
+    $signal-doc ~= "=item \$_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.\n";
     $signal-doc ~= "=item \%user-options; A list of named arguments provided at the C<register-signal\()> method\n";
 
 #note "GS 3: $signal-doc";
@@ -2006,7 +2004,6 @@ note "  IDoc1: $item-count, ", $idoc;
         $widget-var-name = $idoc<item-name>;
         $first-arg = [~]
           "Int :\$_handle_id,\n",
-          "    $idoc<item-type> \:_widget\(\$$widget-var-name\)\n",
           "    N-GObject :\$_native-object"
           ;
       }
@@ -2030,10 +2027,8 @@ note "  IDoc2: $idoc<item-name> eq $widget-var-name";
     }
     # add an item
 #    $signal-doc ~= "=item \$_handle_id; the registered event handler id\n";
-#    $signal-doc ~= "=item \$_widget; the Raku widget used to register\n";
     $signal-doc ~= "=item \$_handler-id; The handler id which is returned from the registration\n";
-    $signal-doc ~= "=item \$_widget; The instance which registered the signal\n";
-    $signal-doc ~= "=item \$_native-object; The native object provided by the caller wrapped in the Raku object.\n";
+    $signal-doc ~= "=item \$_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.\n";
 
     $signal-doc-entries{$signal-name} = $signal-doc;
 
@@ -3683,19 +3678,19 @@ sub generate-test ( ) {
 
         method … (
           'any-args',
-          $class :\$_widget, gulong :\$_handler-id
+          $class\() :\$_native-object, gulong :\$_handler-id
           # --> …
         ) {
 
-          isa-ok \$_widget, $class;
+          isa-ok \$_native-object, $class;
           \$!signal-processed = True;
         }
 
-        method signal-emitter ( $class :\$widget --> Str ) {
+        method signal-emitter ( $class :\$_widget --> Str ) {
 
           while \$main.gtk-events-pending\() { \$main.iteration-do\(False); }
 
-          \$widget.emit-by-name\(
+          \$_widget.emit-by-name\(
             'signal',
           #  'any-args',
           #  :return-type(int32),
@@ -3706,7 +3701,7 @@ sub generate-test ( ) {
           while \$main.gtk-events-pending\() { \$main.iteration-do\(False); }
 
           #\$!signal-processed = False;
-          #\$widget.emit-by-name\(
+          #\$_widget.emit-by-name\(
           #  'signal',
           #  'any-args',
           #  :return-type(int32),
