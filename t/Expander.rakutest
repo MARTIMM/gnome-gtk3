@@ -44,7 +44,7 @@ subtest 'Manipulations', {
   $e.set-label-fill(True);
   ok $e.get-label-fill, '.set-label-fill() / .get-label-fill()';
 
-  
+
 }
 
 #-------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ subtest 'Signals …', {
 
     method … (
       'any-args',
-      Gnome::Gtk3::Expander :$_widget, gulong :$_handler-id
+      Gnome::Gtk3::Expander() :_native-object($_widget), gulong :$_handler-id
       # --> …
     ) {
 

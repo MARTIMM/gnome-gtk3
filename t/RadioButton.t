@@ -90,10 +90,10 @@ subtest 'Signals ...', {
   my Bool $triggered = False;
 
   class X {
-    method r-event ( :$_widget ) {
-      isa-ok $_widget, Gnome::Gtk3::RadioButton,
+    method r-event ( Gnome::Gtk3::RadioButton() :_native-object($w) ) {
+      isa-ok $w, Gnome::Gtk3::RadioButton,
              'signal received on proper widget';
-      my Gnome::Glib::SList $l = $_widget.get-group-rk;
+      my Gnome::Glib::SList $l = $w.get-group-rk;
       is $l.g-slist-length, 4, 'group now has four members';
       $triggered = True;
     }

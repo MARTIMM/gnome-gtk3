@@ -120,7 +120,7 @@ subtest 'Signals ...', {
 
     method ... (
       'any-args',
-      Gnome::Gtk3::Selection :$_widget, gulong :$_handler-id
+      Gnome::Gtk3::Selection() :_native-object($_widget), gulong :$_handler-id
       # --> ...
     ) {
 

@@ -5,6 +5,10 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+* 2022-07-26 0.48.8
+  * Changed **Gnome::Gtk3::ListBox**
+  * Removed dependencies on :_widget in test files
+
 * 2022-07-15 0.48.7
   * Revisited modules from the Gnome::Glib distribution. Quite a few bugs are removed from **Gnome::Glib::Error**, many method return types are changed to native types instead of the Raku classes conform the latest ideas. Again very unfortunate that for these I cannot install deprecation code because the dispatch of multi methods are not looking at return types.
     An example from the **Gnome::Glib::List** module;

@@ -113,7 +113,7 @@ subtest 'Signals ...', {
 
     method ... (
       'any-args',
-      Gnome::Gtk3::Scrollable :$_widget, gulong :$_handler-id
+      Gnome::Gtk3::Scrollable() :_native-object($_widget), gulong :$_handler-id
       # --> ...
     ) {
 

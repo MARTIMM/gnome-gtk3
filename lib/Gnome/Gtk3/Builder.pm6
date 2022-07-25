@@ -475,9 +475,7 @@ Parses a resource file containing a [GtkBuilder UI definition][BUILDER-UI] and m
 
 Most users will probably want to use C<new-from-resource()>.
 
-If an error occurs, 0 will be returned and I<error> will be assigned a B<Gnome::Gtk3::Error> from the B<Gnome::Gtk3::TK-BUILDER-ERROR>, B<Gnome::Gtk3::-MARKUP-ERROR> or B<Gnome::Gtk3::-RESOURCE-ERROR> domain.
-
-It’s not really reasonable to attempt to handle failures of this call. The only reasonable thing to do when an error is detected is to call C<g-error()>.
+=comment It’s not really reasonable to attempt to handle failures of this call. The only reasonable thing to do when an error is detected is to call C<g-error()>.
 
 Returns: An invalid error object on success, Otherwise call C<.message()> on the error object to find out what went wrong.
 
@@ -486,7 +484,7 @@ Returns: An invalid error object on success, Otherwise call C<.message()> on the
 =item $resource_path; the path of the resource file to parse
 =end pod
 
-method add-from-resource ( Str $resource_path --> UInt ) {
+method add-from-resource ( Str $resource_path --> Gnome::Glib::Error ) {
   my CArray[N-GError] $error .= new(N-GError);
 
   gtk_builder_add_from_resource(

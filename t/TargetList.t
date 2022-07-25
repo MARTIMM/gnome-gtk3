@@ -214,7 +214,7 @@ subtest 'Signals ...', {
 
     method ... (
       'any-args',
-      Gnome::Gtk3::TargetList :$_widget, gulong :$_handler-id
+      Gnome::Gtk3::TargetList() :_native-object($_widget), gulong :$_handler-id
       # --> ...
     ) {
 

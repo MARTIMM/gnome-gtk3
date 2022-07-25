@@ -153,11 +153,11 @@ subtest 'Signals ...', {
     has Bool $!signal-processed = False;
 
     method enable-debugging-handler (
-      Int $toggle, Gnome::Gtk3::Window :$_widget
+      Int $toggle, Gnome::Gtk3::Window() :_native-object($w)
       --> Int
     ) {
 
-      isa-ok $_widget, Gnome::Gtk3::Window;
+      isa-ok $w, Gnome::Gtk3::Window;
       is $toggle, 1, 'test $toggle';
       $!signal-processed = True;
 

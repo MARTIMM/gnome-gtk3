@@ -1,6 +1,7 @@
 #!/usr/bin/env raku
 
 use v6.d;
+use lib '/home/marcel/Languages/Raku/Projects/gnome-gtk3/lib';
 #use lib '/home/marcel/Languages/Raku/Projects/gnome-gobject/lib';
 #use lib '../gnome-native/lib';
 #use lib '../gnome-glib/lib';
@@ -56,7 +57,8 @@ class AppSignalHandlers:ver<0.4.3> is Gnome::Gtk3::Application {
   }
 
   #-----------------------------------------------------------------------------
-  submethod BUILD ( :$!resource-section ) {
+  submethod BUILD ( Str :$!resource-section ) {
+#CONTROL { when CX::Warn {  note .gist; .resume; } }
 
     my Gnome::Gio::Resource $r .= new(:load<GResources/Application.gresource>);
     $r.register;
@@ -102,13 +104,16 @@ class AppSignalHandlers:ver<0.4.3> is Gnome::Gtk3::Application {
   }
 
   #-----------------------------------------------------------------------------
-  method app-startup ( AppSignalHandlers :_widget($app) ) {
+  # NOTE: Do not use this: 'AppSignalHandlers() :_native-object($app)' because
+  # the coercion process will create a new object, this object!
+  method app-startup ( ) {
 note 'app registered';
   }
 
   #-----------------------------------------------------------------------------
-  method app-activate ( AppSignalHandlers :_widget($app) ) {
+  method app-activate ( ) {
 note 'app activated';
+#CONTROL { when CX::Warn {  note .gist; .resume; } }
 
     $!app-rbpath = self.get-resource-base-path;
 
@@ -116,6 +121,7 @@ note 'app activated';
     my Gnome::Glib::Error $e = $builder.add-from-resource(
       "$!app-rbpath/$!resource-section/ApplicationMenu.ui"
     );
+
     die $e.message if $e.is-valid;
 
 #!!! get/set-app-menu removed from version 4. https://gitlab.gnome.org/GNOME/Initiatives/-/wikis/App-Menu-Retirement
@@ -158,16 +164,16 @@ note 'app activated';
     $notification.set-priority(G_NOTIFICATION_PRIORITY_URGENT);
 
     my Str $title = 'ex-app-note';
-    $app.send-notification( $title, $notification);
-    $app.start-thread(
-      $app, 'remove-notification', :start-time(now+5), :$title
+    self.send-notification( $title, $notification);
+    self.start-thread(
+      self, 'remove-notification', :start-time(now+5), :$title
     );
   }
 
   #-----------------------------------------------------------------------------
-  method remove-notification ( AppSignalHandlers :_widget($app), :$title ) {
+  method remove-notification ( :$title ) {
     note 'remove message';
-    $app.withdraw-notification($title);
+    self.withdraw-notification($title);
   }
 
   #-----------------------------------------------------------------------------
@@ -200,10 +206,8 @@ note 'app activated';
   }
 
   #-----------------------------------------------------------------------------
-  method local-options (
-    N-GObject $n-vd, AppSignalHandlers :_widget($app) --> Int
-  ) {
-note 'local options: ', @*ARGS.gist;
+  method local-options ( N-GObject $n-vd, --> Int ) {
+#note 'local options: ', @*ARGS.gist;
 
 #`{{ works combined with self.add-main-option(…)
     my Gnome::Glib::VariantDict $vd .= new(:native-object($n-vd));
@@ -222,30 +226,26 @@ note 'local options: ', @*ARGS.gist;
       $exit-code = 0;
     }
 
-note $o.gist;
+#note $o.gist;
 
     note "return with $exit-code\n";
     $exit-code
   }
 
   #-----------------------------------------------------------------------------
-  method remote-options (
-    N-GObject $n-cl, AppSignalHandlers :_widget($app) --> Int
-  ) {
+  method remote-options ( Gnome::Gio::ApplicationCommandLine() $cl --> Int ) {
 
     my Int $exit-code = 0;
-    my Gnome::Gio::ApplicationCommandLine $cl .= new(:native-object($n-cl));
-
     my Array $args = $cl.get-arguments;
-note "remote args: $args.gist()";
+#note "remote args: $args.gist()";
     my Capture $o = get-options-from( $args[1..*-1], 'version', 'show:s');
-note $o.gist;
+#note $o.gist;
     my Str $file-to-show = $o.<show> if ($o.<show> // '') and $o.<show>.IO.r;
 
 
-for @$o -> $a {
-  note "arg : $a";
-}
+#for @$o -> $a {
+#  note "arg : $a";
+#}
 
     self.activate unless $cl.get-is-remote;
 
@@ -262,12 +262,12 @@ for @$o -> $a {
 
 #`{{
   #-----------------------------------------------------------------------------
-  method app-end-session ( AppSignalHandlers :_widget($app) ) {
+  method app-end-session ( ) {
 note 'session end';
   }
 
   #-----------------------------------------------------------------------------
-  method app-shutdown ( AppSignalHandlers :_widget($app) ) {
+  method app-shutdown ( ) {
 note 'app shutdown';
   }
 }}
@@ -276,48 +276,39 @@ note 'app shutdown';
   # when triggered by window manager, $win-man is True. Otherwise widget
   # is a button and a label can be retrieved
   method exit-program (
-    :$_widget, Bool :$win-man = False
+    :$_native-object, Bool :$win-man = False
   ) {
-    note $_widget.get-label unless $win-man;
+    note $_native-object.().get-label unless $win-man;
     self.quit;
   }
 
   #-- [menu] -------------------------------------------------------------------
   # File > New
-  method file-new ( N-GObject $n-parameter ) {
-    my Gnome::Glib::Variant $v .= new(:native-object($n-parameter));
-    note $v.print() if $v.is-valid;
+  method file-new ( Gnome::Glib::Variant() $parameter ) {
+    note $parameter.print() if $parameter.is-valid;
     note "Select 'New' from 'File' menu";
   }
 
   # File > Quit
-  method file-quit ( N-GObject $n-parameter ) {
+  method file-quit ( Gnome::Glib::Variant() $parameter ) {
     note "Select 'Quit' from 'File' menu";
-    my Gnome::Glib::Variant $v .= new(:native-object($n-parameter));
-    note $v.print() if $v.is-valid;
+    note $parameter.print() if $parameter.is-valid;
 
     self.quit;
   }
 
   # File > Compressed
   method select-compression (
-    N-GObject $n-value,
-    Gnome::Gio::SimpleAction :_widget($file-compress-action) is copy,
-    N-GObject :_native-object($no)
+    Gnome::Glib::Variant() $value,
+    Gnome::Gio::SimpleAction() :_native-object($file-compress-action)
   ) {
     note 'valid action: ', $file-compress-action.is-valid;
-    note 'valid no: ', $no.gist;
-
-    $file-compress-action .= new(:native-object($no))
-      unless $file-compress-action.is-valid;
-
     note "Select 'Compressed' from 'File' menu";
 #    note $file-compress-action.get-name;
-    my Gnome::Glib::Variant $v .= new(:native-object($n-value));
-    note "Set to $v.print()" if $v.is-valid;
+    note "Set to $value.print()" if $value.is-valid;
 
     $file-compress-action.set-state(
-      Gnome::Glib::Variant.new(:parse("$v.print()"))
+      Gnome::Glib::Variant.new(:parse("$value.print()"))
     );
   }
 
@@ -339,6 +330,8 @@ $flags +|= G_APPLICATION_HANDLES_COMMAND_LINE;  # if $*cmd;
 #$flags +|= G_APPLICATION_SEND_ENVIRONMENT;
 #$flags +|= G_APPLICATION_IS_SERVICE;
 # +| G_APPLICATION_NON_UNIQUE),
+
+
 
 my AppSignalHandlers $ah .= new(
 #  :app-id('io.github.martimm.test.application'),
