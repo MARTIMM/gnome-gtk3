@@ -2040,12 +2040,13 @@ This signal is useful when using the theming layer standalone.
 
   method handler (
     Int :$_handle_id,
-    Gnome::Gtk3::StyleContext :$_widget,
+    Gnome::Gtk3::StyleContext() :$_native_object,
     *%user-options
   );
 
-=item $_handle_id; the registered event handler id
-=item $_widget; the object which received the signal.
+=item $_handle_id; the registered event handler id=item $_widget; the object which received the signal.
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =end pod
 
