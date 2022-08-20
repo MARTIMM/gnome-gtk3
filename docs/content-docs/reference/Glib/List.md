@@ -134,6 +134,43 @@ Note that the return value is the new start of the list, if *list* was empty; ma
 
 `append()` has to traverse the entire list to find the end, which is inefficient when adding multiple elements. A common idiom to avoid the inefficiency is to use `prepend()` and reverse the list with `reverse()` when all elements have been added.
 
+### Example
+
+    use Gnome::N::GlibToRakuTypes;
+    use Gnome::Glib::List;
+
+    class IntList {
+
+      has Gnome::Glib::List() $!int-list;
+
+      submethod BUILD () {
+        $!int-list .= new;
+      }
+
+      # A list item is a pointer to your data. We need to convert it into one.
+      # This works for simple data. Raku Structures can not be stored
+      # because it is not native and garbage collection might destroy it.
+      method pack ( Int $n --> gpointer ) {
+        my $o = CArray[gint].new($n);
+        nativecast( gpointer, $o)
+      }
+
+      # To get it back we must get the data from where the list item points to
+      method unpack ( gpointer $p --> Int ) {
+        my $o = nativecast( CArray[gint], $p);
+        $o[0]
+      }
+
+      method append ( Int:D $n ) {
+        $!int-list .= append(self.pack($n);
+      }
+
+      method get( Int:D $index --> Int ) {
+        $!int-list .= first;
+        self.unpack($!int-list.nth-data($index)) // Int
+      }
+    }
+
 Returns: either *list* or the new start of the **Gnome::Glib::List** if *list* was `undefined`
 
     method append ( Pointer $data --> Gnome::Glib::List )
@@ -149,7 +186,7 @@ This function is for example used to move an element in the list.
 
 Returns: the start of the new **Gnome::Glib::List**, which equals *list1* if not `undefined`
 
-    method concat ( N-GList $list --> Gnome::Glib::List )
+    method concat ( N-GList() $list --> Gnome::Glib::List )
 
   * N-GList $list; the **Gnome::Glib::List** to add to the end of this list **Gnome::Glib::List**, this must point to the top of the list
 
