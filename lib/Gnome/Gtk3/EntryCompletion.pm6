@@ -12,7 +12,7 @@ Completion functionality for GtkEntry
 
 =head1 Description
 
- B<Gnome::Gtk3::EntryCompletion> is an auxiliary object to be used in conjunction with B<Gnome::Gtk3::Entry> to provide the completion functionality. It implements the B<Gnome::Gtk3::CellLayout> interface, to allow the user to add extra cells to the B<Gnome::Gtk3::TreeView> with completion matches.
+B<Gnome::Gtk3::EntryCompletion> is an auxiliary object to be used in conjunction with B<Gnome::Gtk3::Entry> to provide the completion functionality. It implements the B<Gnome::Gtk3::CellLayout> interface, to allow the user to add extra cells to the B<Gnome::Gtk3::TreeView> with completion matches.
 
 “Completion functionality” means that when the user modifies the text in the entry, B<Gnome::Gtk3::EntryCompletion> checks which rows in the model match the current content of the entry, and displays a list of matches. By default, the matching is done by comparing the entry text case-insensitively against the text column of the model (see C<set-text-column()>), but this can be overridden with a custom match function (see C<gtk-entry-completion-set-match-func()>).
 
@@ -81,8 +81,8 @@ also does Gnome::Gtk3::CellLayout;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
-#-------------------------------------------------------------------------------
 
+#-------------------------------------------------------------------------------
 =begin pod
 =head1 Methods
 =head2 new

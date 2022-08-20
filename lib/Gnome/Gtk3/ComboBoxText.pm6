@@ -119,7 +119,7 @@ Creates a new B<Gnome::Gtk3::ComboBoxText>, which is a B<Gnome::Gtk3::ComboBox> 
 
 Creates a new B<Gnome::Gtk3::ComboBoxText>, which is a B<Gnome::Gtk3::ComboBox> just displaying strings. The combo box created by this function has an entry.
 
-  multi method new ( Any :$entry! )
+  multi method new ( Bool :$entry! )
 
 =item $entry; named argument only checkd for its existence
 
@@ -158,7 +158,7 @@ submethod BUILD ( *%options ) {
     # process all other options
     else {
       my $no;
-      if %options<entry>:exists {
+      if ?%options<entry>  {
         $no = _gtk_combo_box_text_new_with_entry;
       }
 
