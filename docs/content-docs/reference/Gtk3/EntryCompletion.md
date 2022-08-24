@@ -6,7 +6,7 @@ Completion functionality for GtkEntry
 Description
 ===========
 
-    B<Gnome::Gtk3::EntryCompletion> is an auxiliary object to be used in conjunction with B<Gnome::Gtk3::Entry> to provide the completion functionality. It implements the B<Gnome::Gtk3::CellLayout> interface, to allow the user to add extra cells to the B<Gnome::Gtk3::TreeView> with completion matches.
+**Gnome::Gtk3::EntryCompletion** is an auxiliary object to be used in conjunction with **Gnome::Gtk3::Entry** to provide the completion functionality. It implements the **Gnome::Gtk3::CellLayout** interface, to allow the user to add extra cells to the **Gnome::Gtk3::TreeView** with completion matches.
 
 “Completion functionality” means that when the user modifies the text in the entry, **Gnome::Gtk3::EntryCompletion** checks which rows in the model match the current content of the entry, and displays a list of matches. By default, the matching is done by comparing the entry text case-insensitively against the text column of the model (see `set-text-column()`), but this can be overridden with a custom match function (see `gtk-entry-completion-set-match-func()`).
 

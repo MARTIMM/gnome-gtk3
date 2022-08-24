@@ -101,7 +101,7 @@ Creates a new **Gnome::Gtk3::ComboBoxText**, which is a **Gnome::Gtk3::ComboBox*
 
 Creates a new **Gnome::Gtk3::ComboBoxText**, which is a **Gnome::Gtk3::ComboBox** just displaying strings. The combo box created by this function has an entry.
 
-    multi method new ( Any :$entry! )
+    multi method new ( Bool :$entry! )
 
   * $entry; named argument only checkd for its existence
 
