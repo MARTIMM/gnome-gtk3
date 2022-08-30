@@ -1300,13 +1300,13 @@ sub get-signals ( Str:D $source-content is copy ) {
       unless $signal-classes{$signal-class}:exists;
     $signal-classes{$signal-class}.push: $signal-name;
 
-#note "GS 0: $*lib-class-name, $function-doc, $signal-name, ", |$signal-args.gist;
+note "GS 0: $*lib-class-name, $function-doc, $signal-name, ", $signal-args.join(', ');
 
     my ( $signal-doc, $items-src-doc) = get-arg-doc($function-doc);
-#note "GS 1: $signal-doc, ", @$items-src-doc.gist;
+note "GS 1: $signal-doc, ", @$items-src-doc.gist;
 
     my ( $return-type, $signal-arg-types) = get-arg-types(@$signal-args);
-#note "GS 2: $return-type", @$signal-arg-types.gist;
+note "GS 2: $return-type", @$signal-arg-types.gist;
 
 
     # start pod doc
@@ -1427,10 +1427,11 @@ sub get-signal-function-declaration ( Str:D $source-content is rw --> List ) {
   /;
 
   my Str $function-doc = ~($<signal-doc> // '');
-#note "FDoc 0 $*lib-class-name: \n", $function-doc;
+note "\nget-signal-function-declaration 0 $*lib-class-name: \n", $function-doc;
 
   # possibly no documentation
   if ?$function-doc {
+    # remove from source
     $source-content ~~ s/$function-doc//;
 
     # Get lib class name and remove line from source
@@ -1438,10 +1439,10 @@ sub get-signal-function-declaration ( Str:D $source-content is rw --> List ) {
       ^^ \s+ '*' \s+
          $*lib-class-name '::' $<signal-name> = [ [<alnum> || '-']+ ]
     /;
-    $signal-name = ~($<signal-name> // '');
+    $signal-name = ($<signal-name> // '').Str;
     $function-doc ~~
-      s/ ^^ \s+ '*' \s+ $*lib-class-name '::' $signal-name '::'? //;
-#note "FDoc 1 ", $function-doc;
+      s/ ^^ \s+ '*' \s+ $*lib-class-name '::' $signal-name ':'? //;
+#note "get-signal-function-declaration 1 ", $function-doc;
   }
 
   # Get some more info from the function call
@@ -1455,22 +1456,29 @@ sub get-signal-function-declaration ( Str:D $source-content is rw --> List ) {
     ] ');'
   /;
 }}
+
   $source-content ~~ m/
     $<signal-args> = [
-      'g_signal_new'
+      [ 'g_signal_new_class_handler' || 'g_signal_new' ]
+      \s* '(' \s* ['I_("' || '"'] $signal-name ['")' || '"']
       .*? ');'                              # till the signal spec ends
     ]
   /;
 
 
+#if $signal-name ~~ m/ 'preedit-changed' / {
+note $?LINE, ', ', ($<signal-args> // '-').Str;
+#exit;
+#}
+
   # Save and remove from source
   my Str $signal-args-text = ~($<signal-args>//'');
   $function-doc = '' unless $signal-args-text;
 
-#note "FDoc 3: $function-doc\n$signal-args-text";
+note "get-signal-function-declaration 3: $signal-name, $signal-args-text";
 
-  $signal-args-text ~~ s/ ');' //;
   $source-content ~~ s/$signal-args-text//;
+  $signal-args-text ~~ s/ ');' //;
 #     s/ 'g_signal_new' '_class_handler'? \s* '(' $signal-args-text ');' //;
 
     # When there's no doc, signal name must be retrieved from function argument.
@@ -1486,11 +1494,11 @@ sub get-signal-function-declaration ( Str:D $source-content is rw --> List ) {
       s/ 'G_STRUCT_OFFSET' \s* \( <-[\)]>+ \) /G_STRUCT_OFFSET/;
     my @signal-args = ();
     for $signal-args-text.split(/ \s* ',' \s* /) -> $sarg {
-#note "  arg: '$sarg'";
+#note "get-signal-function-declaration: arg = '$sarg'";
       @signal-args.push: $sarg;
     }
 
-#note "FDoc 4: ", ( $signal-name, |@signal-args).join(', ');
+note "get-signal-function-declaration 4: ", ( $signal-name, |@signal-args).join(', ');
 
   ( $signal-name, $function-doc, @signal-args)
 }
@@ -1588,6 +1596,7 @@ sub get-arg-types ( @signal-args --> List ) {
 
   # process handler argument types. nbr args at 8, types at 9 and further
   my @signal-arg-types = 'N-GObject';
+note 'get-arg-types: ', @signal-args.join(', ');
   my Int $arg-count = @signal-args[8].Int;
   for ^$arg-count -> $i {
 #note "  A[9 + $i]: @signal-args[9 + $i]";
