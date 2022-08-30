@@ -5,6 +5,9 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+* 2022-08-28 0.48.9
+  * Revisited module **Gnome::Gtk3::Entry**.
+
 * 2022-07-26 0.48.8
   * Changed **Gnome::Gtk3::ListBox**
   * Removed dependencies on :_widget in test files

@@ -132,9 +132,9 @@ Drag                      |S | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓|
 DragDest                  |S | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
 DragSource                |S | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
 DrawingArea               |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
-Editable                  |  | ✗| ✓| ✓| ✓| ✓| ✗|  |  | ✗| ✓| ✓| ✓| < fbck sg prp
+Editable                  |  | ✗| ✓| ✓| ✓| ✓| ✗|  |  | ✗| ✓| ✓| ✓|
+Entry                     |  | ✓| ✓| ✓| ✓| ✓| ✓|  |  |  | ✓| ✓| ✓| < fbck sg prp
 | Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
-Entry                     |  | ✓|  |  |  |  |  |  |  |  |  |  |  |  
 EntryCompletion           |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅖|  | ⅗| ✓| ✓| ✓|  
 Enums                     |S |  |  |  |  | ✗| ✗|  | ✗| ✗|  |  |  |  
 EventBox                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|

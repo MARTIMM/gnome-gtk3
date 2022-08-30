@@ -76,6 +76,7 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 
     unit class MyGuiClass;
     also is Gnome::Gtk3::Entry;
+    also does Gnome::Gtk3::Editable;
 
     submethod new ( |c ) {
       # let the Gnome::Gtk3::Entry class process the options
@@ -118,1223 +119,1505 @@ Create an object using a native object from a builder. See also **Gnome::GObject
 
     multi method new ( Str :$build-id! )
 
-[[gtk_] entry_] get_buffer
---------------------------
+get-activates-default
+---------------------
 
-Get the **Gnome::Gtk3::EntryBuffer** object which holds the text for this widget.
+Retrieves the value set by `set_activates_default()`.
 
-Since: 2.18
+Returns: `True` if the entry will activate the default widget
 
-Returns: (transfer none): A **Gnome::Gtk3::EntryBuffer** object.
+    method get-activates-default ( --> Bool )
 
-    method gtk_entry_get_buffer ( --> N-GObject  )
+get-alignment
+-------------
 
-[[gtk_] entry_] set_buffer
---------------------------
-
-Set the **Gnome::Gtk3::EntryBuffer** object which holds the text for this widget.
-
-Since: 2.18
-
-    method gtk_entry_set_buffer ( N-GObject $buffer )
-
-  * N-GObject $buffer; a **Gnome::Gtk3::EntryBuffer**
-
-[[gtk_] entry_] get_text_area
------------------------------
-
-Gets the area where the entry’s text is drawn. This function is useful when drawing something to the entry in a draw callback.
-
-If the entry is not realized, *text_area* is filled with zeros.
-
-See also `gtk_entry_get_icon_area()`.
-
-Since: 3.0
-
-    method gtk_entry_get_text_area ( N-GObject $text_area )
-
-  * N-GObject $text_area; (out): Return location for the text area.
-
-[[gtk_] entry_] set_visibility
-------------------------------
-
-Sets whether the contents of the entry are visible or not. When visibility is set to `0`, characters are displayed as the invisible char, and will also appear that way when the text in the entry widget is copied elsewhere.
-
-By default, GTK+ picks the best invisible character available in the current font, but it can be changed with `gtk_entry_set_invisible_char()`.
-
-Note that you probably want to set *input-purpose* to `GTK_INPUT_PURPOSE_PASSWORD` or `GTK_INPUT_PURPOSE_PIN` to inform input methods about the purpose of this entry, in addition to setting visibility to `0`.
-
-    method gtk_entry_set_visibility ( Int $visible )
-
-  * Int $visible; `1` if the contents of the entry are displayed as plaintext
-
-[[gtk_] entry_] get_visibility
-------------------------------
-
-Retrieves whether the text in *entry* is visible. See `gtk_entry_set_visibility()`.
-
-Returns: `1` if the text is currently visible
-
-    method gtk_entry_get_visibility ( --> Int  )
-
-[[gtk_] entry_] set_invisible_char
-----------------------------------
-
-Sets the character to use in place of the actual text when `gtk_entry_set_visibility()` has been called to set text visibility to `0`. i.e. this is the character used in “password mode” to show the user how many characters have been typed. By default, GTK+ picks the best invisible char available in the current font. If you set the invisible char to 0, then the user will get no feedback at all; there will be no text on the screen as they type.
-
-    method gtk_entry_set_invisible_char ( gunichar $ch )
-
-  * UInt $ch; a Unicode character. This is a 4 byte UCS representation of
-
-[[gtk_] entry_] get_invisible_char
-----------------------------------
-
-Retrieves the character displayed in place of the real characters for entries with visibility set to false. See `gtk_entry_set_invisible_char()`.
-
-Returns: the current invisible char, or 0, if the entry does not show invisible text at all.
-
-    method gtk_entry_get_invisible_char ( --> UInt  )
-
-[[gtk_] entry_] unset_invisible_char
-------------------------------------
-
-Unsets the invisible char previously set with `gtk_entry_set_invisible_char()`. So that the default invisible char is used again.
-
-Since: 2.16
-
-    method gtk_entry_unset_invisible_char ( )
-
-[[gtk_] entry_] set_has_frame
------------------------------
-
-Sets whether the entry has a beveled frame around it.
-
-    method gtk_entry_set_has_frame ( Int $setting )
-
-  * Int $setting; new value
-
-[[gtk_] entry_] get_has_frame
------------------------------
-
-Gets the value set by `gtk_entry_set_has_frame()`.
-
-Returns: whether the entry has a beveled frame
-
-    method gtk_entry_get_has_frame ( --> Int  )
-
-[[gtk_] entry_] set_overwrite_mode
-----------------------------------
-
-Sets whether the text is overwritten when typing in the **Gnome::Gtk3::Entry**.
-
-Since: 2.14
-
-    method gtk_entry_set_overwrite_mode ( Int $overwrite )
-
-  * Int $overwrite; new value
-
-[[gtk_] entry_] get_overwrite_mode
-----------------------------------
-
-Gets the value set by `gtk_entry_set_overwrite_mode()`.
-
-Returns: whether the text is overwritten when typing.
-
-Since: 2.14
-
-    method gtk_entry_get_overwrite_mode ( --> Int  )
-
-[[gtk_] entry_] set_max_length
-------------------------------
-
-Sets the maximum allowed length of the contents of the widget. If the current contents are longer than the given length, then they will be truncated to fit.
-
-This is equivalent to:
-
-|[<!-- language="C" --> **Gnome::Gtk3::EntryBuffer** *buffer; buffer = gtk_entry_get_buffer (entry); gtk_entry_buffer_set_max_length (buffer, max); ]|
-
-    method gtk_entry_set_max_length ( Int $max )
-
-  * Int $max; the maximum length of the entry, or 0 for no maximum. (other than the maximum length of entries.) The value passed in will be clamped to the range 0-65536.
-
-[[gtk_] entry_] get_max_length
-------------------------------
-
-Retrieves the maximum allowed length of the text in *entry*. See `gtk_entry_set_max_length()`.
-
-This is equivalent to:
-
-|[<!-- language="C" --> **Gnome::Gtk3::EntryBuffer** *buffer; buffer = gtk_entry_get_buffer (entry); gtk_entry_buffer_get_max_length (buffer); ]|
-
-Returns: the maximum allowed number of characters in **Gnome::Gtk3::Entry**, or 0 if there is no maximum.
-
-    method gtk_entry_get_max_length ( --> Int  )
-
-[[gtk_] entry_] get_text_length
--------------------------------
-
-Retrieves the current length of the text in *entry*.
-
-This is equivalent to:
-
-|[<!-- language="C" --> **Gnome::Gtk3::EntryBuffer** *buffer; buffer = gtk_entry_get_buffer (entry); gtk_entry_buffer_get_length (buffer); ]|
-
-Returns: the current number of characters in **Gnome::Gtk3::Entry**, or 0 if there are none.
-
-Since: 2.14
-
-    method gtk_entry_get_text_length ( --> UInt  )
-
-[[gtk_] entry_] set_activates_default
--------------------------------------
-
-If *setting* is `1`, pressing Enter in the *entry* will activate the default widget for the window containing the entry. This usually means that the dialog box containing the entry will be closed, since the default widget is usually one of the dialog buttons.
-
-(For experts: if *setting* is `1`, the entry calls `gtk_window_activate_default()` on the window containing the entry, in the default handler for the *activate* signal.)
-
-    method gtk_entry_set_activates_default ( Int $setting )
-
-  * Int $setting; `1` to activate window’s default widget on Enter keypress
-
-[[gtk_] entry_] get_activates_default
--------------------------------------
-
-Retrieves the value set by `gtk_entry_set_activates_default()`.
-
-Returns: `1` if the entry will activate the default widget
-
-    method gtk_entry_get_activates_default ( --> Int  )
-
-[[gtk_] entry_] set_width_chars
--------------------------------
-
-Changes the size request of the entry to be about the right size for *n_chars* characters. Note that it changes the size request, the size can still be affected by how you pack the widget into containers. If *n_chars* is -1, the size reverts to the default entry size.
-
-    method gtk_entry_set_width_chars ( Int $n_chars )
-
-  * Int $n_chars; width in chars
-
-[[gtk_] entry_] get_width_chars
--------------------------------
-
-Gets the value set by `gtk_entry_set_width_chars()`.
-
-Returns: number of chars to request space for, or negative if unset
-
-    method gtk_entry_get_width_chars ( --> Int  )
-
-[[gtk_] entry_] set_max_width_chars
------------------------------------
-
-Sets the desired maximum width in characters of *entry*.
-
-Since: 3.12
-
-    method gtk_entry_set_max_width_chars ( Int $n_chars )
-
-  * Int $n_chars; the new desired maximum width, in characters
-
-[[gtk_] entry_] get_max_width_chars
------------------------------------
-
-Retrieves the desired maximum width of *entry*, in characters. See `gtk_entry_set_max_width_chars()`.
-
-Returns: the maximum width of the entry, in characters
-
-Since: 3.12
-
-    method gtk_entry_get_max_width_chars ( --> Int  )
-
-[[gtk_] entry_] set_text
-------------------------
-
-Sets the text in the widget to the given value, replacing the current contents.
-
-See `gtk_entry_buffer_set_text()`.
-
-    method gtk_entry_set_text ( Str $text )
-
-  * Str $text; the new text
-
-[[gtk_] entry_] get_text
-------------------------
-
-Retrieves the contents of the entry widget. See also `gtk_editable_get_chars()`.
-
-This is equivalent to:
-
-|[<!-- language="C" --> **Gnome::Gtk3::EntryBuffer** *buffer; buffer = gtk_entry_get_buffer (entry); gtk_entry_buffer_get_text (buffer); ]|
-
-Returns: a pointer to the contents of the widget as a string. This string points to internally allocated storage in the widget and must not be freed, modified or stored.
-
-    method gtk_entry_get_text ( --> Str  )
-
-[[gtk_] entry_] set_alignment
------------------------------
-
-Sets the alignment for the contents of the entry. This controls the horizontal positioning of the contents when the displayed text is shorter than the width of the entry.
-
-Since: 2.4
-
-    method gtk_entry_set_alignment ( Num $xalign )
-
-  * Num $xalign; The horizontal alignment, from 0 (left) to 1 (right). Reversed for RTL layouts
-
-[[gtk_] entry_] get_alignment
------------------------------
-
-Gets the value set by `gtk_entry_set_alignment()`.
+Gets the value set by `set_alignment()`.
 
 Returns: the alignment
 
-Since: 2.4
+    method get-alignment ( --> Num )
 
-    method gtk_entry_get_alignment ( --> Num  )
+get-buffer
+----------
 
-[[gtk_] entry_] set_completion
-------------------------------
+Get the **Gnome::Gtk3::EntryBuffer** object which holds the text for this widget.
 
-Sets *completion* to be the auxiliary completion object to use with *entry*. All further configuration of the completion mechanism is done on *completion* using the **Gnome::Gtk3::EntryCompletion** API. Completion is disabled if *completion* is set to `Any`.
+Returns: A **Gnome::Gtk3::EntryBuffer** object.
 
-Since: 2.4
+    method get-buffer ( --> N-GObject )
 
-    method gtk_entry_set_completion ( N-GObject $completion )
-
-  * N-GObject $completion; (allow-none): The **Gnome::Gtk3::EntryCompletion** or `Any`
-
-[[gtk_] entry_] get_completion
-------------------------------
+get-completion
+--------------
 
 Returns the auxiliary completion object currently in use by *entry*.
 
-Returns: (transfer none): The auxiliary completion object currently in use by *entry*.
+Returns: The auxiliary completion object currently in use by *entry*.
 
-Since: 2.4
+    method get-completion ( --> N-GObject )
 
-    method gtk_entry_get_completion ( --> N-GObject  )
+get-current-icon-drag-source
+----------------------------
 
-[[gtk_] entry_] set_cursor_hadjustment
---------------------------------------
+Returns the index of the icon which is the source of the current DND operation, or -1.
 
-Hooks up an adjustment to the cursor position in an entry, so that when the cursor is moved, the adjustment is scrolled to show that position. See `gtk_scrolled_window_get_hadjustment()` for a typical way of obtaining the adjustment.
+This function is meant to be used in a *drag-data-get from Gnome::Gtk3::Widget* callback.
 
-The adjustment has to be in pixel units and in the same coordinate system as the entry.
+Returns: index of the icon which is the source of the current DND operation, or -1.
 
-Since: 2.12
+    method get-current-icon-drag-source ( --> Int )
 
-    method gtk_entry_set_cursor_hadjustment ( N-GObject $adjustment )
+get-cursor-hadjustment
+----------------------
 
-  * N-GObject $adjustment; (nullable): an adjustment which should be adjusted when the cursor is moved, or `Any`
+Retrieves the horizontal cursor adjustment for the entry. See `set_cursor_hadjustment()`.
 
-[[gtk_] entry_] get_cursor_hadjustment
---------------------------------------
+Returns: the horizontal cursor adjustment, or `undefined` if none has been set.
 
-Retrieves the horizontal cursor adjustment for the entry. See `gtk_entry_set_cursor_hadjustment()`.
+    method get-cursor-hadjustment ( --> N-GObject )
 
-Returns: (transfer none) (nullable): the horizontal cursor adjustment, or `Any` if none has been set.
+get-has-frame
+-------------
 
-Since: 2.12
+Gets the value set by `set_has_frame()`.
 
-    method gtk_entry_get_cursor_hadjustment ( --> N-GObject  )
+Returns: whether the entry has a beveled frame
 
-[[gtk_] entry_] set_progress_fraction
--------------------------------------
+    method get-has-frame ( --> Bool )
 
-Causes the entry’s progress indicator to “fill in” the given fraction of the bar. The fraction should be between 0.0 and 1.0, inclusive.
+get-icon-activatable
+--------------------
 
-Since: 2.16
+Returns whether the icon is activatable.
 
-    method gtk_entry_set_progress_fraction ( Num $fraction )
+Returns: `True` if the icon is activatable.
 
-  * Num $fraction; fraction of the task that’s been completed
+    method get-icon-activatable ( GtkEntryIconPosition $icon_pos --> Bool )
 
-[[gtk_] entry_] get_progress_fraction
--------------------------------------
+  * $icon_pos; Icon position
 
-Returns the current fraction of the task that’s been completed. See `gtk_entry_set_progress_fraction()`.
+get-icon-area
+-------------
 
-Returns: a fraction from 0.0 to 1.0
+Gets the area where entry’s icon at *icon_pos* is drawn. This function is useful when drawing something to the entry in a draw callback.
 
-Since: 2.16
+If the entry is not realized or has no icon at the given position, *icon_area* is filled with zeros. Otherwise, *icon_area* will be filled with the icon’s allocation, relative to *entry*’s allocation.
 
-    method gtk_entry_get_progress_fraction ( --> Num  )
+See also `get_text_area()`
 
-[[gtk_] entry_] set_progress_pulse_step
----------------------------------------
+    method get-icon-area ( GtkEntryIconPosition $icon_pos, N-GObject() $icon_area )
 
-Sets the fraction of total entry width to move the progress bouncing block for each call to `gtk_entry_progress_pulse()`.
+  * $icon_pos; Icon position
 
-Since: 2.16
+  * $icon_area; Return location for the icon’s area
 
-    method gtk_entry_set_progress_pulse_step ( Num $fraction )
+get-icon-at-pos
+---------------
 
-  * Num $fraction; fraction between 0.0 and 1.0
+Finds the icon at the given position and return its index. The position’s coordinates are relative to the *entry*’s top left corner. If *x*, *y* doesn’t lie inside an icon, -1 is returned. This function is intended for use in a *query-tooltip from Gnome::Gtk3::Widget* signal handler.
 
-[[gtk_] entry_] get_progress_pulse_step
----------------------------------------
+Returns: the index of the icon at the given position, or -1
 
-Retrieves the pulse step set with `gtk_entry_set_progress_pulse_step()`.
+    method get-icon-at-pos ( Int() $x, Int() $y --> Int )
 
-Returns: a fraction from 0.0 to 1.0
+  * $x; the x coordinate of the position to find
 
-Since: 2.16
+  * $y; the y coordinate of the position to find
 
-    method gtk_entry_get_progress_pulse_step ( --> Num  )
+get-icon-gicon
+--------------
 
-[[gtk_] entry_] progress_pulse
-------------------------------
+Retrieves the **Gnome::Gio::Icon** used for the icon, or `undefined` if there is no icon or if the icon was set by some other method (e.g., by stock, pixbuf, or icon name).
 
-Indicates that some progress is made, but you don’t know how much. Causes the entry’s progress indicator to enter “activity mode,” where a block bounces back and forth. Each call to `gtk_entry_progress_pulse()` causes the block to move by a little bit (the amount of movement per pulse is determined by `gtk_entry_set_progress_pulse_step()`).
+Returns: A **Gnome::Gio::Icon**, or `undefined` if no icon is set or if the icon is not a **Gnome::Gio::Icon**
 
-Since: 2.16
+    method get-icon-gicon ( GtkEntryIconPosition $icon_pos --> N-GObject )
 
-    method gtk_entry_progress_pulse ( )
+  * $icon_pos; Icon position
 
-[[gtk_] entry_] get_placeholder_text
-------------------------------------
+get-icon-name
+-------------
 
-Retrieves the text that will be displayed when *entry* is empty and unfocused
+Retrieves the icon name used for the icon, or `undefined` if there is no icon or if the icon was set by some other method (e.g., by pixbuf, stock or gicon).
 
-Returns: a pointer to the placeholder text as a string. This string points to internally allocated storage in the widget and must not be freed, modified or stored.
+Returns: An icon name, or `undefined` if no icon is set or if the icon wasn’t set from an icon name
 
-Since: 3.2
+    method get-icon-name ( GtkEntryIconPosition $icon_pos --> Str )
 
-    method gtk_entry_get_placeholder_text ( --> Str  )
+  * $icon_pos; Icon position
 
-[[gtk_] entry_] set_placeholder_text
-------------------------------------
+get-icon-pixbuf
+---------------
 
-Sets text to be displayed in *entry* when it is empty and unfocused. This can be used to give a visual hint of the expected contents of the **Gnome::Gtk3::Entry**.
+Retrieves the image used for the icon.
 
-Note that since the placeholder text gets removed when the entry received focus, using this feature is a bit problematic if the entry is given the initial focus in a window. Sometimes this can be worked around by delaying the initial focus setting until the first key event arrives.
+Unlike the other methods of setting and getting icon data, this method will work regardless of whether the icon was set using a **Gnome::Gdk3::Pixbuf**, a **Gnome::Gio::Icon**, a stock item, or an icon name.
 
-Since: 3.2
+Returns: A **Gnome::Gdk3::Pixbuf**, or `undefined` if no icon is set for this position.
 
-    method gtk_entry_set_placeholder_text ( Str $text )
+    method get-icon-pixbuf ( GtkEntryIconPosition $icon_pos --> N-GObject )
 
-  * Str $text; (nullable): a string to be displayed when *entry* is empty and unfocused, or `Any`
+  * $icon_pos; Icon position
 
-[[gtk_] entry_] set_icon_from_pixbuf
-------------------------------------
+get-icon-sensitive
+------------------
 
-Sets the icon shown in the specified position using a pixbuf.
+Returns whether the icon appears sensitive or insensitive.
 
-If *pixbuf* is `Any`, no icon will be shown in the specified position.
+Returns: `True` if the icon is sensitive.
 
-Since: 2.16
+    method get-icon-sensitive ( GtkEntryIconPosition $icon_pos --> Bool )
 
-    method gtk_entry_set_icon_from_pixbuf (
-      GtkEntryIconPosition $icon_pos, N-GObject $pixbuf
-    )
+  * $icon_pos; Icon position
 
-  * GtkEntryIconPosition $icon_pos; Icon position
-
-  * N-GObject $pixbuf; (allow-none): A **Gnome::Gdk3::Pixbuf**, or `Any`
-
-[[gtk_] entry_] set_icon_from_icon_name
----------------------------------------
-
-Sets the icon shown in the entry at the specified position from the current icon theme.
-
-If the icon name isn’t known, a “broken image” icon will be displayed instead.
-
-If *icon_name* is `Any`, no icon will be shown in the specified position.
-
-Since: 2.16
-
-    method gtk_entry_set_icon_from_icon_name (
-      GtkEntryIconPosition $icon_pos, Str $icon_name
-    )
-
-  * GtkEntryIconPosition $icon_pos; The position at which to set the icon
-
-  * Str $icon_name; (allow-none): An icon name, or `Any`
-
-[[gtk_] entry_] set_icon_from_gicon
------------------------------------
-
-Sets the icon shown in the entry at the specified position from the current icon theme. If the icon isn’t known, a “broken image” icon will be displayed instead.
-
-If *icon* is `Any`, no icon will be shown in the specified position.
-
-Since: 2.16
-
-    method gtk_entry_set_icon_from_gicon (
-      GtkEntryIconPosition $icon_pos, N-GObject $icon
-    )
-
-  * GtkEntryIconPosition $icon_pos; The position at which to set the icon
-
-  * N-GObject $icon; (allow-none): The icon to set, or `Any`
-
-[[gtk_] entry_] get_icon_storage_type
--------------------------------------
+get-icon-storage-type
+---------------------
 
 Gets the type of representation being used by the icon to store image data. If the icon has no image data, the return value will be `GTK_IMAGE_EMPTY`.
 
 Returns: image representation being used
 
-Since: 2.16
+    method get-icon-storage-type ( GtkEntryIconPosition $icon_pos --> GtkImageType )
 
-    method gtk_entry_get_icon_storage_type (
-      GtkEntryIconPosition $icon_pos
-      --> GtkImageType
-    )
+  * $icon_pos; Icon position
 
-  * GtkEntryIconPosition $icon_pos; Icon position
-
-[[gtk_] entry_] get_icon_pixbuf
--------------------------------
-
-Retrieves the image used for the icon.
-
-Unlike the other methods of setting and getting icon data, this method will work regardless of whether the icon was set using a **Gnome::Gdk3::Pixbuf**, a **GIcon**, a stock item, or an icon name.
-
-Returns: (transfer none) (nullable): A **Gnome::Gdk3::Pixbuf**, or `Any` if no icon is set for this position.
-
-Since: 2.16
-
-    method gtk_entry_get_icon_pixbuf (
-      GtkEntryIconPosition $icon_pos --> N-GObject
-    )
-
-  * GtkEntryIconPosition $icon_pos; Icon position
-
-[[gtk_] entry_] get_icon_name
------------------------------
-
-Retrieves the icon name used for the icon, or `Any` if there is no icon or if the icon was set by some other method (e.g., by pixbuf, stock or gicon).
-
-Returns: (nullable): An icon name, or `Any` if no icon is set or if the icon wasn’t set from an icon name
-
-Since: 2.16
-
-    method gtk_entry_get_icon_name ( GtkEntryIconPosition $icon_pos --> Str )
-
-  * GtkEntryIconPosition $icon_pos; Icon position
-
-[[gtk_] entry_] get_icon_gicon
-------------------------------
-
-Retrieves the **GIcon** used for the icon, or `Any` if there is no icon or if the icon was set by some other method (e.g., by stock, pixbuf, or icon name).
-
-Returns: (transfer none) (nullable): A **GIcon**, or `Any` if no icon is set or if the icon is not a **GIcon**
-
-Since: 2.16
-
-    method gtk_entry_get_icon_gicon (
-      GtkEntryIconPosition $icon_pos --> N-GObject
-    )
-
-  * GtkEntryIconPosition $icon_pos; Icon position
-
-[[gtk_] entry_] set_icon_activatable
-------------------------------------
-
-Sets whether the icon is activatable.
-
-Since: 2.16
-
-    method gtk_entry_set_icon_activatable (
-      GtkEntryIconPosition $icon_pos, Int $activatable
-    )
-
-  * GtkEntryIconPosition $icon_pos; Icon position
-
-  * Int $activatable; `1` if the icon should be activatable
-
-[[gtk_] entry_] get_icon_activatable
-------------------------------------
-
-Returns whether the icon is activatable.
-
-Returns: `1` if the icon is activatable.
-
-Since: 2.16
-
-    method gtk_entry_get_icon_activatable (
-      GtkEntryIconPosition $icon_pos --> Int
-    )
-
-  * GtkEntryIconPosition $icon_pos; Icon position
-
-[[gtk_] entry_] set_icon_sensitive
-----------------------------------
-
-Sets the sensitivity for the specified icon.
-
-Since: 2.16
-
-    method gtk_entry_set_icon_sensitive (
-      GtkEntryIconPosition $icon_pos, Int $sensitive
-    )
-
-  * GtkEntryIconPosition $icon_pos; Icon position
-
-  * Int $sensitive; Specifies whether the icon should appear sensitive or insensitive
-
-[[gtk_] entry_] get_icon_sensitive
-----------------------------------
-
-Returns whether the icon appears sensitive or insensitive.
-
-Returns: `1` if the icon is sensitive.
-
-Since: 2.16
-
-    method gtk_entry_get_icon_sensitive (
-      GtkEntryIconPosition $icon_pos --> Int
-    )
-
-  * GtkEntryIconPosition $icon_pos; Icon position
-
-[[gtk_] entry_] get_icon_at_pos
--------------------------------
-
-Finds the icon at the given position and return its index. The position’s coordinates are relative to the *entry*’s top left corner. If *x*, *y* doesn’t lie inside an icon, -1 is returned. This function is intended for use in a *query-tooltip* signal handler.
-
-Returns: the index of the icon at the given position, or -1
-
-Since: 2.16
-
-    method gtk_entry_get_icon_at_pos ( Int $x, Int $y --> Int  )
-
-  * Int $x; the x coordinate of the position to find
-
-  * Int $y; the y coordinate of the position to find
-
-[[gtk_] entry_] set_icon_tooltip_text
--------------------------------------
-
-Sets *tooltip* as the contents of the tooltip for the icon at the specified position.
-
-Use `Any` for *tooltip* to remove an existing tooltip.
-
-See also `gtk_widget_set_tooltip_text()` and `gtk_entry_set_icon_tooltip_markup()`.
-
-Since: 2.16
-
-    method gtk_entry_set_icon_tooltip_text (
-      GtkEntryIconPosition $icon_pos, Str $tooltip
-    )
-
-  * GtkEntryIconPosition $icon_pos; the icon position
-
-  * Str $tooltip; (allow-none): the contents of the tooltip for the icon, or `Any`
-
-[[gtk_] entry_] get_icon_tooltip_text
--------------------------------------
+get-icon-tooltip-markup
+-----------------------
 
 Gets the contents of the tooltip on the icon at the specified position in *entry*.
 
-Returns: (nullable): the tooltip text, or `Any`. Free the returned string with `g_free()` when done.
+Returns: the tooltip text, or `undefined`. Free the returned string with `g_free()` when done.
 
-Since: 2.16
+    method get-icon-tooltip-markup ( GtkEntryIconPosition $icon_pos --> Str )
 
-    method gtk_entry_get_icon_tooltip_text (
-      GtkEntryIconPosition $icon_pos --> Str
-    )
+  * $icon_pos; the icon position
 
-  * GtkEntryIconPosition $icon_pos; the icon position
-
-[[gtk_] entry_] get_icon_tooltip_markup
----------------------------------------
+get-icon-tooltip-text
+---------------------
 
 Gets the contents of the tooltip on the icon at the specified position in *entry*.
 
-Returns: (nullable): the tooltip text, or `Any`. Free the returned string with `g_free()` when done.
+Returns: the tooltip text, or `undefined`. Free the returned string with `g_free()` when done.
 
-Since: 2.16
+    method get-icon-tooltip-text ( GtkEntryIconPosition $icon_pos --> Str )
 
-    method gtk_entry_get_icon_tooltip_markup (
-      GtkEntryIconPosition $icon_pos --> Str
-    )
+  * $icon_pos; the icon position
 
-  * GtkEntryIconPosition $icon_pos; the icon position
-
-[[gtk_] entry_] get_current_icon_drag_source
---------------------------------------------
-
-Returns the index of the icon which is the source of the current DND operation, or -1.
-
-This function is meant to be used in a *drag-data-get* callback.
-
-Returns: index of the icon which is the source of the current DND operation, or -1.
-
-Since: 2.16
-
-    method gtk_entry_get_current_icon_drag_source ( --> Int  )
-
-[[gtk_] entry_] get_icon_area
------------------------------
-
-Gets the area where entry’s icon at *icon_pos* is drawn. This function is useful when drawing something to the entry in a draw callback.
-
-If the entry is not realized or has no icon at the given position, *icon_area* is filled with zeros.
-
-See also `gtk_entry_get_text_area()`
-
-Since: 3.0
-
-    method gtk_entry_get_icon_area (
-      GtkEntryIconPosition $icon_pos, N-GObject $icon_area
-    )
-
-  * GtkEntryIconPosition $icon_pos; Icon position
-
-  * N-GObject $icon_area; (out): Return location for the icon’s area
-
-[[gtk_] entry_] im_context_filter_keypress
-------------------------------------------
-
-Allow the **Gnome::Gtk3::Entry** input method to internally handle key press and release events. If this function returns `1`, then no further processing should be done for this key event. See `gtk_im_context_filter_keypress()`.
-
-Note that you are expected to call this function from your handler when overriding key event handling. This is needed in the case when you need to insert your own key handling between the input method and the default key event handling of the **Gnome::Gtk3::Entry**. See `gtk_text_view_reset_im_context()` for an example of use.
-
-Returns: `1` if the input method handled the key event.
-
-Since: 2.22
-
-    method gtk_entry_im_context_filter_keypress ( N-GdkEventKey $event --> Int  )
-
-  * N-GdkEventKey $event; (type **Gnome::Gdk3::.EventKey**): the key event
-
-[[gtk_] entry_] reset_im_context
---------------------------------
-
-Reset the input method context of the entry if needed.
-
-This can be necessary in the case where modifying the buffer would confuse on-going input method behavior.
-
-Since: 2.22
-
-    method gtk_entry_reset_im_context ( )
-
-[[gtk_] entry_] set_input_purpose
----------------------------------
-
-Sets the *input-purpose* property which can be used by on-screen keyboards and other input methods to adjust their behaviour.
-
-Since: 3.6
-
-    method gtk_entry_set_input_purpose ( GtkInputPurpose $purpose )
-
-  * GtkInputPurpose $purpose; the purpose
-
-[[gtk_] entry_] get_input_purpose
----------------------------------
-
-Gets the value of the *input-purpose* property.
-
-Since: 3.6
-
-    method gtk_entry_get_input_purpose ( --> GtkInputPurpose  )
-
-[[gtk_] entry_] set_input_hints
--------------------------------
-
-Sets the *input-hints* property, which allows input methods to fine-tune their behaviour.
-
-Since: 3.6
-
-    method gtk_entry_set_input_hints ( GtkInputHints $hints )
-
-  * GtkInputHints $hints; the hints
-
-[[gtk_] entry_] get_input_hints
--------------------------------
+get-input-hints
+---------------
 
 Gets the value of the *input-hints* property.
 
-Since: 3.6
+    method get-input-hints ( --> GtkInputHints )
 
-    method gtk_entry_get_input_hints ( --> GtkInputHints  )
+get-input-purpose
+-----------------
 
-[[gtk_] entry_] grab_focus_without_selecting
---------------------------------------------
+Gets the value of the *input-purpose* property.
+
+    method get-input-purpose ( --> GtkInputPurpose )
+
+get-invisible-char
+------------------
+
+Retrieves the character displayed in place of the real characters for entries with visibility set to false. See `set_invisible_char()`.
+
+Returns: the current invisible char, or 0, if the entry does not show invisible text at all.
+
+    method get-invisible-char ( --> gunichar )
+
+get-max-length
+--------------
+
+Retrieves the maximum allowed length of the text in *entry*. See `set_max_length()`.
+
+This is equivalent to getting *entry*'s **Gnome::Gtk3::EntryBuffer** and calling `buffer_get_max_length()` on it.
+
+Returns: the maximum allowed number of characters in **Gnome::Gtk3::Entry**, or 0 if there is no maximum.
+
+    method get-max-length ( --> Int )
+
+get-max-width-chars
+-------------------
+
+Retrieves the desired maximum width of *entry*, in characters. See `set_max_width_chars()`.
+
+Returns: the maximum width of the entry, in characters
+
+    method get-max-width-chars ( --> Int )
+
+get-overwrite-mode
+------------------
+
+Gets the value set by `set_overwrite_mode()`.
+
+Returns: whether the text is overwritten when typing.
+
+    method get-overwrite-mode ( --> Bool )
+
+get-placeholder-text
+--------------------
+
+Retrieves the text that will be displayed when *entry* is empty and unfocused
+
+Returns: a pointer to the placeholder text as a string. This string points to internally allocated storage in the widget and must not be freed, modified or stored.
+
+    method get-placeholder-text ( --> Str )
+
+get-progress-fraction
+---------------------
+
+Returns the current fraction of the task that’s been completed. See `set_progress_fraction()`.
+
+Returns: a fraction from 0.0 to 1.0
+
+    method get-progress-fraction ( --> Num )
+
+get-progress-pulse-step
+-----------------------
+
+Retrieves the pulse step set with `set_progress_pulse_step()`.
+
+Returns: a fraction from 0.0 to 1.0
+
+    method get-progress-pulse-step ( --> Num )
+
+get-text
+--------
+
+Retrieves the contents of the entry widget. See also `gtk_editable_get_chars()`.
+
+This is equivalent to getting *entry*'s **Gnome::Gtk3::EntryBuffer** and calling `buffer_get_text()` on it.
+
+Returns: a pointer to the contents of the widget as a string. This string points to internally allocated storage in the widget and must not be freed, modified or stored.
+
+    method get-text ( --> Str )
+
+get-text-area
+-------------
+
+Gets the area where the entry’s text is drawn. This function is useful when drawing something to the entry in a draw callback.
+
+If the entry is not realized, *text_area* is filled with zeros.
+
+See also `get_icon_area()`.
+
+    method get-text-area ( N-GObject() $text_area )
+
+  * $text_area; Return location for the text area.
+
+get-text-length
+---------------
+
+Retrieves the current length of the text in *entry*.
+
+This is equivalent to getting *entry*'s **Gnome::Gtk3::EntryBuffer** and calling `buffer_get_length()` on it.
+
+Returns: the current number of characters in **Gnome::Gtk3::Entry**, or 0 if there are none.
+
+    method get-text-length ( --> UInt )
+
+get-visibility
+--------------
+
+Retrieves whether the text in *entry* is visible. See `set_visibility()`.
+
+Returns: `True` if the text is currently visible
+
+    method get-visibility ( --> Bool )
+
+get-width-chars
+---------------
+
+Gets the value set by `set_width_chars()`.
+
+Returns: number of chars to request space for, or negative if unset
+
+    method get-width-chars ( --> Int )
+
+grab-focus-without-selecting
+----------------------------
 
 Causes *entry* to have keyboard focus.
 
 It behaves like `gtk_widget_grab_focus()`, except that it doesn't select the contents of the entry. You only want to call this on some special entries which the user usually doesn't want to replace all text in, such as search-as-you-type entries.
 
-Since: 3.16
+    method grab-focus-without-selecting ( )
 
-    method gtk_entry_grab_focus_without_selecting ( )
+im-context-filter-keypress
+--------------------------
+
+Allow the **Gnome::Gtk3::Entry** input method to internally handle key press and release events. If this function returns `True`, then no further processing should be done for this key event. See `gtk_im_context_filter_keypress()`.
+
+Note that you are expected to call this function from your handler when overriding key event handling. This is needed in the case when you need to insert your own key handling between the input method and the default key event handling of the **Gnome::Gtk3::Entry**. See `gtk_text_view_reset_im_context()` for an example of use.
+
+Returns: `True` if the input method handled the key event.
+
+    method im-context-filter-keypress ( N-GdkEvent $event --> Bool )
+
+  * $event; (type Gdk.EventKey): the key event
+
+progress-pulse
+--------------
+
+Indicates that some progress is made, but you don’t know how much. Causes the entry’s progress indicator to enter “activity mode,” where a block bounces back and forth. Each call to `progress_pulse()` causes the block to move by a little bit (the amount of movement per pulse is determined by `set_progress_pulse_step()`).
+
+    method progress-pulse ( )
+
+reset-im-context
+----------------
+
+Reset the input method context of the entry if needed.
+
+This can be necessary in the case where modifying the buffer would confuse on-going input method behavior.
+
+    method reset-im-context ( )
+
+set-activates-default
+---------------------
+
+If *setting* is `True`, pressing Enter in the *entry* will activate the default widget for the window containing the entry. This usually means that the dialog box containing the entry will be closed, since the default widget is usually one of the dialog buttons.
+
+(For experts: if *setting* is `True`, the entry calls `gtk_window_activate_default()` on the window containing the entry, in the default handler for the *activate* signal.)
+
+    method set-activates-default ( Bool $setting )
+
+  * $setting; `True` to activate window’s default widget on Enter keypress
+
+set-alignment
+-------------
+
+Sets the alignment for the contents of the entry. This controls the horizontal positioning of the contents when the displayed text is shorter than the width of the entry.
+
+    method set-alignment ( Num() $xalign )
+
+  * $xalign; The horizontal alignment, from 0 (left) to 1 (right). Reversed for RTL layouts
+
+set-buffer
+----------
+
+Set the **Gnome::Gtk3::EntryBuffer** object which holds the text for this widget.
+
+    method set-buffer ( N-GObject() $buffer )
+
+  * $buffer; a **Gnome::Gtk3::EntryBuffer**
+
+set-completion
+--------------
+
+Sets *completion* to be the auxiliary completion object to use with *entry*. All further configuration of the completion mechanism is done on *completion* using the **Gnome::Gtk3::EntryCompletion** API. Completion is disabled if *completion* is set to `undefined`.
+
+    method set-completion ( N-GObject() $completion )
+
+  * $completion; The **Gnome::Gtk3::EntryCompletion** or `undefined`
+
+set-cursor-hadjustment
+----------------------
+
+Hooks up an adjustment to the cursor position in an entry, so that when the cursor is moved, the adjustment is scrolled to show that position. See `gtk_scrolled_window_get_hadjustment()` for a typical way of obtaining the adjustment.
+
+The adjustment has to be in pixel units and in the same coordinate system as the entry.
+
+    method set-cursor-hadjustment ( N-GObject() $adjustment )
+
+  * $adjustment; an adjustment which should be adjusted when the cursor is moved, or `undefined`
+
+set-has-frame
+-------------
+
+Sets whether the entry has a beveled frame around it.
+
+    method set-has-frame ( Bool $setting )
+
+  * $setting; new value
+
+set-icon-activatable
+--------------------
+
+Sets whether the icon is activatable.
+
+    method set-icon-activatable ( GtkEntryIconPosition $icon_pos, Bool $activatable )
+
+  * $icon_pos; Icon position
+
+  * $activatable; `True` if the icon should be activatable
+
+set-icon-drag-source
+--------------------
+
+Sets up the icon at the given position so that GTK+ will start a drag operation when the user clicks and drags the icon.
+
+To handle the drag operation, you need to connect to the usual *drag-data-get from Gnome::Gtk3::Widget* (or possibly *drag-data-delete from Gnome::Gtk3::Widget*) signal, and use `get_current_icon_drag_source()` in your signal handler to find out if the drag was started from an icon.
+
+By default, GTK+ uses the icon as the drag icon. You can use the *drag-begin from Gnome::Gtk3::Widget* signal to set a different icon. Note that you have to use `g_signal_connect_after()` to ensure that your signal handler gets executed after the default handler.
+
+    method set-icon-drag-source ( GtkEntryIconPosition $icon_pos, N-GtkTargetList $target_list, GdkDragAction $actions )
+
+  * $icon_pos; icon position
+
+  * $target_list; the targets (data formats) in which the data can be provided
+
+  * $actions; a bitmask of the allowed drag actions
+
+set-icon-from-gicon
+-------------------
+
+Sets the icon shown in the entry at the specified position from the current icon theme. If the icon isn’t known, a “broken image” icon will be displayed instead.
+
+If *icon* is `undefined`, no icon will be shown in the specified position.
+
+    method set-icon-from-gicon ( GtkEntryIconPosition $icon_pos, N-GObject() $icon )
+
+  * $icon_pos; The position at which to set the icon
+
+  * $icon; The icon to set, or `undefined`
+
+set-icon-from-icon-name
+-----------------------
+
+Sets the icon shown in the entry at the specified position from the current icon theme.
+
+If the icon name isn’t known, a “broken image” icon will be displayed instead.
+
+If *icon_name* is `undefined`, no icon will be shown in the specified position.
+
+    method set-icon-from-icon-name ( GtkEntryIconPosition $icon_pos, Str $icon_name )
+
+  * $icon_pos; The position at which to set the icon
+
+  * $icon_name; An icon name, or `undefined`
+
+set-icon-from-pixbuf
+--------------------
+
+Sets the icon shown in the specified position using a pixbuf.
+
+If *pixbuf* is `undefined`, no icon will be shown in the specified position.
+
+    method set-icon-from-pixbuf ( GtkEntryIconPosition $icon_pos, N-GObject() $pixbuf )
+
+  * $icon_pos; Icon position
+
+  * $pixbuf; A **Gnome::Gdk3::Pixbuf**, or `undefined`
+
+set-icon-sensitive
+------------------
+
+Sets the sensitivity for the specified icon.
+
+    method set-icon-sensitive ( GtkEntryIconPosition $icon_pos, Bool $sensitive )
+
+  * $icon_pos; Icon position
+
+  * $sensitive; Specifies whether the icon should appear sensitive or insensitive
+
+set-icon-tooltip-text
+---------------------
+
+Sets *tooltip* as the contents of the tooltip for the icon at the specified position.
+
+Use `undefined` for *tooltip* to remove an existing tooltip.
+
+See also `gtk_widget_set_tooltip_text()` and `set_icon_tooltip_markup()`.
+
+If you unset the widget tooltip via `gtk_widget_set_tooltip_text()` or `gtk_widget_set_tooltip_markup()`, this sets GtkWidget:has-tooltip to `False`, which suppresses icon tooltips too. You can resolve this by then calling `gtk_widget_set_has_tooltip()` to set GtkWidget:has-tooltip back to `True`, or setting at least one non-empty tooltip on any icon achieves the same result.
+
+    method set-icon-tooltip-text ( GtkEntryIconPosition $icon_pos, Str $tooltip )
+
+  * $icon_pos; the icon position
+
+  * $tooltip; the contents of the tooltip for the icon, or `undefined`
+
+set-input-hints
+---------------
+
+Sets the *input-hints* property, which allows input methods to fine-tune their behaviour.
+
+    method set-input-hints ( GtkInputHints $hints )
+
+  * $hints; the hints
+
+set-input-purpose
+-----------------
+
+Sets the *input-purpose* property which can be used by on-screen keyboards and other input methods to adjust their behaviour.
+
+    method set-input-purpose ( GtkInputPurpose $purpose )
+
+  * $purpose; the purpose
+
+set-invisible-char
+------------------
+
+Sets the character to use in place of the actual text when `set_visibility()` has been called to set text visibility to `False`. i.e. this is the character used in “password mode” to show the user how many characters have been typed. By default, GTK+ picks the best invisible char available in the current font. If you set the invisible char to 0, then the user will get no feedback at all; there will be no text on the screen as they type.
+
+    method set-invisible-char ( gunichar $ch )
+
+  * $ch; a Unicode character
+
+set-max-length
+--------------
+
+Sets the maximum allowed length of the contents of the widget. If the current contents are longer than the given length, then they will be truncated to fit.
+
+This is equivalent to getting *entry*'s **Gnome::Gtk3::EntryBuffer** and calling `buffer_set_max_length()` on it. ]|
+
+    method set-max-length ( Int() $max )
+
+  * $max; the maximum length of the entry, or 0 for no maximum. (other than the maximum length of entries.) The value passed in will be clamped to the range 0-65536.
+
+set-max-width-chars
+-------------------
+
+Sets the desired maximum width in characters of *entry*.
+
+    method set-max-width-chars ( Int() $n_chars )
+
+  * $n_chars; the new desired maximum width, in characters
+
+set-overwrite-mode
+------------------
+
+Sets whether the text is overwritten when typing in the **Gnome::Gtk3::Entry**.
+
+    method set-overwrite-mode ( Bool $overwrite )
+
+  * $overwrite; new value
+
+set-placeholder-text
+--------------------
+
+Sets text to be displayed in *entry* when it is empty and unfocused. This can be used to give a visual hint of the expected contents of the **Gnome::Gtk3::Entry**.
+
+Note that since the placeholder text gets removed when the entry received focus, using this feature is a bit problematic if the entry is given the initial focus in a window. Sometimes this can be worked around by delaying the initial focus setting until the first key event arrives.
+
+    method set-placeholder-text ( Str $text )
+
+  * $text; a string to be displayed when *entry* is empty and unfocused, or `undefined`
+
+set-progress-fraction
+---------------------
+
+Causes the entry’s progress indicator to “fill in” the given fraction of the bar. The fraction should be between 0.0 and 1.0, inclusive.
+
+    method set-progress-fraction ( Num() $fraction )
+
+  * $fraction; fraction of the task that’s been completed
+
+set-progress-pulse-step
+-----------------------
+
+Sets the fraction of total entry width to move the progress bouncing block for each call to `progress_pulse()`.
+
+    method set-progress-pulse-step ( Num() $fraction )
+
+  * $fraction; fraction between 0.0 and 1.0
+
+set-text
+--------
+
+Sets the text in the widget to the given value, replacing the current contents.
+
+See `buffer_set_text()`.
+
+    method set-text ( Str $text )
+
+  * $text; the new text
+
+set-visibility
+--------------
+
+Sets whether the contents of the entry are visible or not. When visibility is set to `False`, characters are displayed as the invisible char, and will also appear that way when the text in the entry widget is copied elsewhere.
+
+By default, GTK+ picks the best invisible character available in the current font, but it can be changed with `set_invisible_char()`.
+
+Note that you probably want to set *input-purpose* to `GTK_INPUT_PURPOSE_PASSWORD` or `GTK_INPUT_PURPOSE_PIN` to inform input methods about the purpose of this entry, in addition to setting visibility to `False`.
+
+    method set-visibility ( Bool $visible )
+
+  * $visible; `True` if the contents of the entry are displayed as plaintext
+
+set-width-chars
+---------------
+
+Changes the size request of the entry to be about the right size for *n_chars* characters. Note that it changes the size request, the size can still be affected by how you pack the widget into containers. If *n_chars* is -1, the size reverts to the default entry size.
+
+    method set-width-chars ( Int() $n_chars )
+
+  * $n_chars; width in chars
+
+unset-invisible-char
+--------------------
+
+Unsets the invisible char previously set with `set_invisible_char()`. So that the default invisible char is used again.
+
+    method unset-invisible-char ( )
 
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
-
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
--------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, N-GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### tabs
-
-A list of tabstops to apply to the text of the entry.
-
-Since: 3.8
-
-    method handler (
-      ,
-      *%user-options
-    );
-
-### populate-popup
-
-The *populate-popup* signal gets emitted before showing the context menu of the entry.
-
-If you need to add items to the context menu, connect to this signal and append your items to the *widget*, which will be a **Gnome::Gtk3::Menu** in this case.
-
-If *populate-all* is `1`, this signal will also be emitted to populate touch popups. In this case, *widget* will be a different container, e.g. a **Gnome::Gtk3::Toolbar**. The signal handler should not make assumptions about the type of *widget*.
-
-    method handler (
-      - $popup,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($entry),
-      *%user-options
-    );
-
-  * $entry; The entry on which the signal is emitted
-
-  * $popup; the container that is being populated
-
-### activate
+activate
+--------
 
 The *activate* signal is emitted when the user hits the Enter key.
 
-While this signal is used as a [keybinding signal][**Gnome::Gtk3::BindingSignal**], it is also commonly used by applications to intercept activation of entries.
+While this signal is used as a [keybinding signal][GtkBindingSignal], it is also commonly used by applications to intercept activation of entries.
 
 The default bindings for this signal are all forms of the Enter key.
 
     method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($entry),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $entry; The entry on which the signal is emitted
+  * $_handler-id; The handler id which is returned from the registration
 
-### move-cursor
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
 
-The *move-cursor* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted when the user initiates a cursor movement. If the cursor is not visible in *entry*, this signal causes the viewport to be moved instead.
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
-Applications should not connect to it, but may emit it with `g_signal_emit_by_name()` if they need to control the cursor programmatically.
+backspace
+---------
 
-The default bindings for this signal come in two variants, the variant with the Shift modifier extends the selection, the variant without the Shift modifer does not. There are too many key combinations to list them all here. - Arrow keys move by individual characters/lines - Ctrl-arrow key combinations move by words/paragraphs - Home/End keys move to the ends of the buffer
+The *backspace* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user asks for it.
+
+The default bindings for this signal are Backspace and Shift-Backspace.
 
     method handler (
-      Str $step,
-      - $count,
-      - $extend_selection,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($entry),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $entry; the object which received the signal
+  * $_handler-id; The handler id which is returned from the registration
 
-  * $step; the granularity of the move, as a **Gnome::Gtk3::MovementStep**
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
 
-  * $count; the number of *step* units to move
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
-  * $extend_selection; `1` if the move should extend the selection
+copy-clipboard
+--------------
 
-### insert-at-cursor
+The *copy-clipboard* signal is a [keybinding signal][GtkBindingSignal] which gets emitted to copy the selection to the clipboard.
 
-The *insert-at-cursor* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted when the user initiates the insertion of a fixed string at the cursor.
-
-This signal has no default bindings.
+The default bindings for this signal are Ctrl-c and Ctrl-Insert.
 
     method handler (
-      Unknown type GTK_TYPE_DELETE_TYPE $string,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($entry),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $entry; the object which received the signal
+  * $_handler-id; The handler id which is returned from the registration
 
-  * $string; the string to insert
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
 
-### delete-from-cursor
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
-The *delete-from-cursor* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted when the user initiates a text deletion.
+cut-clipboard
+-------------
+
+The *cut-clipboard* signal is a [keybinding signal][GtkBindingSignal] which gets emitted to cut the selection to the clipboard.
+
+The default bindings for this signal are Ctrl-x and Shift-Delete.
+
+    method handler (
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+delete-from-cursor
+------------------
+
+The *delete-from-cursor* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user initiates a text deletion.
 
 If the *type* is `GTK_DELETE_CHARS`, GTK+ deletes the selection if there is one, otherwise it deletes the requested number of characters.
 
 The default bindings for this signal are Delete for deleting a character and Ctrl-Delete for deleting a word.
 
     method handler (
-      - $type,
-      - $count,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($entry),
+      Unknown type: GTK_TYPE_DELETE_TYPE $type,
+      Int $count,
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
-
-  * $entry; the object which received the signal
+    )
 
   * $type; the granularity of the deletion, as a **Gnome::Gtk3::DeleteType**
 
   * $count; the number of *type* units to delete
 
-### backspace
+  * $_handler-id; The handler id which is returned from the registration
 
-The *backspace* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted when the user asks for it.
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
 
-The default bindings for this signal are Backspace and Shift-Backspace.
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
-    method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($entry),
-      *%user-options
-    );
+icon-press
+----------
 
-  * $entry; the object which received the signal
-
-### cut-clipboard
-
-The *cut-clipboard* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to cut the selection to the clipboard.
-
-The default bindings for this signal are Ctrl-x and Shift-Delete.
+The *icon-press* signal is emitted when an activatable icon is clicked.
 
     method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($entry),
+      Unknown type: GTK_TYPE_ENTRY_ICON_POSITION $icon_pos,
+      Unknown type: GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE $event,
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $entry; the object which received the signal
+  * $icon_pos; The position of the clicked icon
 
-### copy-clipboard
+  * $event; the button press event
 
-The *copy-clipboard* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to copy the selection to the clipboard.
+  * $_handler-id; The handler id which is returned from the registration
 
-The default bindings for this signal are Ctrl-c and Ctrl-Insert.
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+icon-release
+------------
+
+The *icon-release* signal is emitted on the button release from a mouse click over an activatable icon.
 
     method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($entry),
+      Unknown type: GTK_TYPE_ENTRY_ICON_POSITION $icon_pos,
+      Unknown type: GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE $event,
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $entry; the object which received the signal
+  * $icon_pos; The position of the clicked icon
 
-### paste-clipboard
+  * $event; the button release event
 
-The *paste-clipboard* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to paste the contents of the clipboard into the text view.
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+insert-at-cursor
+----------------
+
+The *insert-at-cursor* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user initiates the insertion of a fixed string at the cursor.
+
+This signal has no default bindings.
+
+    method handler (
+      Str $string,
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
+
+  * $string; the string to insert
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+insert-emoji
+------------
+
+The *insert-emoji* signal is a [keybinding signal][GtkBindingSignal] which gets emitted to present the Emoji chooser for the *entry*.
+
+The default bindings for this signal are Ctrl-. and Ctrl-;.27
+
+    method handler (
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+move-cursor
+-----------
+
+The *move-cursor* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user initiates a cursor movement. If the cursor is not visible in *entry*, this signal causes the viewport to be moved instead.
+
+Applications should not connect to it, but may emit it with `g_signal_emit_by_name()` if they need to control the cursor programmatically.
+
+The default bindings for this signal come in two variants, the variant with the Shift modifier extends the selection, the variant without the Shift modifer does not. There are too many key combinations to list them all here. - Arrow keys move by individual characters/lines - Ctrl-arrow key combinations move by words/paragraphs - Home/End keys move to the ends of the buffer
+
+    method handler (
+      Unknown type: GTK_TYPE_MOVEMENT_STEP $step,
+      Int $count,
+      Bool $extend_selection,
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
+
+  * $step; the granularity of the move, as a **Gnome::Gtk3::MovementStep**
+
+  * $count; the number of *step* units to move
+
+  * $extend_selection; `True` if the move should extend the selection
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+paste-clipboard
+---------------
+
+The *paste-clipboard* signal is a [keybinding signal][GtkBindingSignal] which gets emitted to paste the contents of the clipboard into the text view.
 
 The default bindings for this signal are Ctrl-v and Shift-Insert.
 
     method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($entry),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $entry; the object which received the signal
+  * $_handler-id; The handler id which is returned from the registration
 
-### toggle-overwrite
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
 
-The *toggle-overwrite* signal is a [keybinding signal][**Gnome::Gtk3::BindingSignal**] which gets emitted to toggle the overwrite mode of the entry.
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+populate-popup
+--------------
+
+The *populate-popup* signal gets emitted before showing the context menu of the entry.
+
+If you need to add items to the context menu, connect to this signal and append your items to the *widget*, which will be a **Gnome::Gtk3::Menu** in this case.
+
+If *populate-all* is `True`, this signal will also be emitted to populate touch popups. In this case, *widget* will be a different container, e.g. a **Gnome::Gtk3::Toolbar**. The signal handler should not make assumptions about the type of *widget*.
+
+    method handler (
+      N-GObject #`{ native widget } $widget,
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
+
+  * $widget; the container that is being populated
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+preedit-changed
+---------------
+
+If an input method is used, the typed text will not immediately be committed to the buffer. So if you are interested in the text, connect to this signal.
+
+    method handler (
+      Str $preedit,
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
+
+  * $preedit; the current preedit string
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+toggle-overwrite
+----------------
+
+The *toggle-overwrite* signal is a [keybinding signal][GtkBindingSignal] which gets emitted to toggle the overwrite mode of the entry.
 
 The default bindings for this signal is Insert.
 
     method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($entry),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $entry; the object which received the signal
+  * $_handler-id; The handler id which is returned from the registration
 
-### icon-press
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
 
-The *icon-press* signal is emitted when an activatable icon is clicked.
-
-Since: 2.16
-
-    method handler (
-      Unknown type GTK_TYPE_ENTRY_ICON_POSITION $icon_pos,
-      Unknown type GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE $event,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($entry),
-      *%user-options
-    );
-
-  * $entry; The entry on which the signal is emitted
-
-  * $icon_pos; The position of the clicked icon
-
-  * $event; (type **Gnome::Gdk3::.EventButton**): the button press event
-
-### icon-release
-
-The *icon-release* signal is emitted on the button release from a mouse click over an activatable icon.
-
-Since: 2.16
-
-    method handler (
-      Str $icon_pos,
-      - $event,
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($entry),
-      *%user-options
-    );
-
-  * $entry; The entry on which the signal is emitted
-
-  * $icon_pos; The position of the clicked icon
-
-  * $event; (type **Gnome::Gdk3::.EventButton**): the button release event
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+activates-default
+-----------------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
+Whether to activate the default widget (such as the default button in a dialog when Enter is pressed)
 
-Supported properties
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is FALSE.
+
+attributes
+----------
+
+A list of style attributes to apply to the text of the label
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOXED
+
+  * The type of this G_TYPE_BOXED object is PANGO_TYPE_ATTR_LIST
+
+  * Parameter is readable and writable.
+
+buffer
+------
+
+Text buffer object which actually stores entry text
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
+
+  * The type of this G_TYPE_OBJECT object is GTK_TYPE_ENTRY_BUFFER
+
+  * Parameter is readable and writable.
+
+  * Parameter is set on construction of object.
+
+caps-lock-warning
+-----------------
+
+Whether password entries will show a warning when Caps Lock is on
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
+
+completion
+----------
+
+The auxiliary completion object
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
+
+  * The type of this G_TYPE_OBJECT object is GTK_TYPE_ENTRY_COMPLETION
+
+  * Parameter is readable and writable.
+
+cursor-position
+---------------
+
+The current position of the insertion cursor in chars
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
+
+  * Parameter is readable.
+
+  * Minimum value is 0.
+
+  * Maximum value is GTK_ENTRY_BUFFER_MAX_SIZE.
+
+  * Default value is 0.
+
+editable
+--------
+
+Whether the entry contents can be edited
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
+
+enable-emoji-completion
+-----------------------
+
+Whether to suggest Emoji replacements
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is FALSE.
+
+has-frame
+---------
+
+FALSE removes outside bevel from entry
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
+
+im-module
+---------
+
+Which IM module should be used
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
+
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
+
+input-hints
+-----------
+
+Hints for the text field behaviour
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_FLAGS
+
+  * The type of this G_TYPE_FLAGS object is GTK_TYPE_INPUT_HINTS
+
+  * Parameter is readable and writable.
+
+  * Default value is GTK_INPUT_HINT_NONE.
+
+input-purpose
+-------------
+
+Purpose of the text field
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_ENUM
+
+  * The type of this G_TYPE_ENUM object is GTK_TYPE_INPUT_PURPOSE
+
+  * Parameter is readable and writable.
+
+  * Default value is GTK_INPUT_PURPOSE_FREE_FORM.
+
+invisible-char
+--------------
+
+The character to use when masking entry contents (in \password mode\)
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_UNICHAR
+
+invisible-char-set
+------------------
+
+Whether the invisible character has been set
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is FALSE.
+
+max-length
+----------
+
+Maximum number of characters for this entry. Zero if no maximum
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
+
+  * Parameter is readable and writable.
+
+  * Minimum value is 0.
+
+  * Maximum value is GTK_ENTRY_BUFFER_MAX_SIZE.
+
+  * Default value is 0.
+
+max-width-chars
+---------------
+
+The desired maximum width of the entry, in characters
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
+
+  * Parameter is readable and writable.
+
+  * Minimum value is -1.
+
+  * Maximum value is G_MAXINT.
+
+  * Default value is -1.
+
+overwrite-mode
+--------------
+
+Whether new text overwrites existing text
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is FALSE.
+
+placeholder-text
+----------------
+
+Show text in the entry when it's empty and unfocused
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
+
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
+
+populate-all
+------------
+
+Whether to emit *populate-popup* for touch popups
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is FALSE.
+
+primary-icon-activatable
+------------------------
+
+Whether the primary icon is activatable
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
+
+primary-icon-gicon
+------------------
+
+GIcon for primary icon
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
+
+  * The type of this G_TYPE_OBJECT object is G_TYPE_ICON
+
+  * Parameter is readable and writable.
+
+primary-icon-name
+-----------------
+
+Icon name for primary icon
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
+
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
+
+primary-icon-pixbuf
+-------------------
+
+Primary pixbuf for the entry
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
+
+  * The type of this G_TYPE_OBJECT object is GDK_TYPE_PIXBUF
+
+  * Parameter is readable and writable.
+
+primary-icon-sensitive
+----------------------
+
+Whether the primary icon is sensitive
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
+
+primary-icon-storage-type
+-------------------------
+
+The representation being used for primary icon
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_ENUM
+
+  * The type of this G_TYPE_ENUM object is GTK_TYPE_IMAGE_TYPE
+
+  * Parameter is readable.
+
+  * Default value is GTK_IMAGE_EMPTY.
+
+primary-icon-tooltip-markup
+---------------------------
+
+The contents of the tooltip on the primary icon
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
+
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
+
+primary-icon-tooltip-text
+-------------------------
+
+The contents of the tooltip on the primary icon
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
+
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
+
+progress-fraction
+-----------------
+
+The current fraction of the task that's been completed
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_DOUBLE
+
+  * Parameter is readable and writable.
+
+  * Minimum value is 0.0.
+
+  * Maximum value is 1.0.
+
+  * Default value is 0.0.
+
+progress-pulse-step The fraction of total entry width to move the progress bouncing block for each call to gtk_entry_progress_pulse()
+-------------------------------------------------------------------------------------------------------------------------------------
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_DOUBLE
+
+  * Parameter is readable and writable.
+
+  * Minimum value is 0.0.
+
+  * Maximum value is 1.0.
+
+  * Default value is 0.1.
+
+scroll-offset
+-------------
+
+Number of pixels of the entry scrolled off the screen to the left
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
+
+  * Parameter is readable.
+
+  * Minimum value is 0.
+
+  * Maximum value is G_MAXINT.
+
+  * Default value is 0.
+
+secondary-icon-activatable
+--------------------------
+
+Whether the secondary icon is activatable
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
+
+secondary-icon-gicon
 --------------------
 
-### Cursor Position
+GIcon for secondary icon
 
-The **Gnome::GObject::Value** type of property *cursor-position* is `G_TYPE_INT`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
 
-### Selection Bound
+  * The type of this G_TYPE_OBJECT object is G_TYPE_ICON
 
-The **Gnome::GObject::Value** type of property *selection-bound* is `G_TYPE_INT`.
+  * Parameter is readable and writable.
 
-### Editable
+secondary-icon-name
+-------------------
 
-Whether the entry contents can be edited Default value: True
+Icon name for secondary icon
 
-The **Gnome::GObject::Value** type of property *editable* is `G_TYPE_BOOLEAN`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
-### Maximum length
+  * Parameter is readable and writable.
 
-The **Gnome::GObject::Value** type of property *max-length* is `G_TYPE_INT`.
+  * Default value is undefined.
 
-### Visibility
+secondary-icon-pixbuf
+---------------------
 
-FALSE displays the \invisible char\ instead of the actual text (password mode) Default value: True
+Secondary pixbuf for the entry
 
-The **Gnome::GObject::Value** type of property *visibility* is `G_TYPE_BOOLEAN`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
 
-### Has Frame
+  * The type of this G_TYPE_OBJECT object is GDK_TYPE_PIXBUF
 
-FALSE removes outside bevel from entry Default value: True
+  * Parameter is readable and writable.
 
-The **Gnome::GObject::Value** type of property *has-frame* is `G_TYPE_BOOLEAN`.
+secondary-icon-sensitive
+------------------------
 
-### Invisible character
+Whether the secondary icon is sensitive
 
-The **Gnome::GObject::Value** type of property *invisible-char* is `G_TYPE_UNICHAR`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-### Activates default
+  * Parameter is readable and writable.
 
-Whether to activate the default widget (such as the default button in a dialog when Enter is pressed) Default value: False
+  * Default value is TRUE.
 
-The **Gnome::GObject::Value** type of property *activates-default* is `G_TYPE_BOOLEAN`.
+secondary-icon-storage-type
+---------------------------
 
-### Width in chars
+The representation being used for secondary icon
 
-The **Gnome::GObject::Value** type of property *width-chars* is `G_TYPE_INT`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_ENUM
 
-### Maximum width in characters
+  * The type of this G_TYPE_ENUM object is GTK_TYPE_IMAGE_TYPE
 
-The desired maximum width of the entry, in characters. If this property is set to -1, the width will be calculated automatically. Since: 3.12
+  * Parameter is readable.
 
-The **Gnome::GObject::Value** type of property *max-width-chars* is `G_TYPE_INT`.
+  * Default value is GTK_IMAGE_EMPTY.
 
-### Scroll offset
+secondary-icon-tooltip-markup
+-----------------------------
 
-The **Gnome::GObject::Value** type of property *scroll-offset* is `G_TYPE_INT`.
+The contents of the tooltip on the secondary icon
 
-### Text
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
-The contents of the entry Default value:
+  * Parameter is readable and writable.
 
-The **Gnome::GObject::Value** type of property *text* is `G_TYPE_STRING`.
+  * Default value is undefined.
 
-### X align
+secondary-icon-tooltip-text
+---------------------------
 
-The horizontal alignment, from 0 (left) to 1 (right). Reversed for RTL layouts. Since: 2.4
+The contents of the tooltip on the secondary icon
 
-The **Gnome::GObject::Value** type of property *xalign* is `G_TYPE_FLOAT`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
-### Truncate multiline
+  * Parameter is readable and writable.
 
-When `1`, pasted multi-line text is truncated to the first line. Since: 2.10
+  * Default value is undefined.
 
-The **Gnome::GObject::Value** type of property *truncate-multiline* is `G_TYPE_BOOLEAN`.
+selection-bound
+---------------
 
-### Overwrite mode
+The position of the opposite end of the selection from the cursor in chars
 
-If text is overwritten when typing in the **Gnome::Gtk3::Entry**. Since: 2.14
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
 
-The **Gnome::GObject::Value** type of property *overwrite-mode* is `G_TYPE_BOOLEAN`.
+  * Parameter is readable.
 
-### Text length
+  * Minimum value is 0.
 
-The length of the text in the **Gnome::Gtk3::Entry**. Since: 2.14
+  * Maximum value is GTK_ENTRY_BUFFER_MAX_SIZE.
 
-The **Gnome::GObject::Value** type of property *text-length* is `G_TYPE_UINT`.
+  * Default value is 0.
 
-### Invisible character set
+show-emoji-icon
+---------------
 
-Whether the invisible char has been set for the **Gnome::Gtk3::Entry**. Since: 2.16
+Whether to show an icon for Emoji
 
-The **Gnome::GObject::Value** type of property *invisible-char-set* is `G_TYPE_BOOLEAN`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-### Caps Lock warning
+  * Parameter is readable and writable.
 
-Whether password entries will show a warning when Caps Lock is on. Note that the warning is shown using a secondary icon, and thus does not work if you are using the secondary icon position for some other purpose. Since: 2.16
+  * Default value is FALSE.
 
-The **Gnome::GObject::Value** type of property *caps-lock-warning* is `G_TYPE_BOOLEAN`.
+tabs
+----
 
-### Progress Fraction
+A list of tabstop locations to apply to the text of the entry
 
-The current fraction of the task that's been completed. Since: 2.16
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOXED
 
-The **Gnome::GObject::Value** type of property *progress-fraction* is `G_TYPE_DOUBLE`.
+  * The type of this G_TYPE_BOXED object is PANGO_TYPE_TAB_ARRAY
 
-### Progress Pulse Step
+  * Parameter is readable and writable.
 
-The fraction of total entry width to move the progress bouncing block for each call to `gtk_entry_progress_pulse()`. Since: 2.16
+text
+----
 
-The **Gnome::GObject::Value** type of property *progress-pulse-step* is `G_TYPE_DOUBLE`.
+The contents of the entry
 
-### Placeholder text
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
-The text that will be displayed in the **Gnome::Gtk3::Entry** when it is empty and unfocused. Since: 3.2
+  * Parameter is readable and writable.
 
-The **Gnome::GObject::Value** type of property *placeholder-text* is `G_TYPE_STRING`.
+text-length
+-----------
 
-### Primary icon name
+Length of the text currently in the entry
 
-The icon name to use for the primary icon for the entry. Since: 2.16
+  * **Gnome::GObject::Value** type of this property is G_TYPE_UINT
 
-The **Gnome::GObject::Value** type of property *primary-icon-name* is `G_TYPE_STRING`.
+  * Parameter is readable.
 
-### Secondary icon name
+  * Minimum value is 0.
 
-The icon name to use for the secondary icon for the entry. Since: 2.16
+  * Maximum value is G_MAXUINT16.
 
-The **Gnome::GObject::Value** type of property *secondary-icon-name* is `G_TYPE_STRING`.
+  * Default value is 0.
 
-### Primary storage type
+truncate-multiline
+------------------
 
-The representation which is used for the primary icon of the entry. Since: 2.16 Widget type: GTK_TYPE_IMAGE_TYPE
+Whether to truncate multiline pastes to one line.
 
-The **Gnome::GObject::Value** type of property *primary-icon-storage-type* is `G_TYPE_ENUM`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-### Secondary storage type
+  * Parameter is readable and writable.
 
-The representation which is used for the secondary icon of the entry. Since: 2.16 Widget type: GTK_TYPE_IMAGE_TYPE
+  * Default value is FALSE.
 
-The **Gnome::GObject::Value** type of property *secondary-icon-storage-type* is `G_TYPE_ENUM`.
+visibility
+----------
 
-### Primary icon activatable
+FALSE displays the \invisible char\ instead of the actual text (password mode)
 
-Whether the primary icon is activatable. GTK+ emits the *icon-press* and *icon-release* signals only on sensitive, activatable icons. Sensitive, but non-activatable icons can be used for purely informational purposes. Since: 2.16
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-The **Gnome::GObject::Value** type of property *primary-icon-activatable* is `G_TYPE_BOOLEAN`.
+  * Parameter is readable and writable.
 
-### Secondary icon activatable
+  * Default value is TRUE.
 
-Whether the secondary icon is activatable. GTK+ emits the *icon-press* and *icon-release* signals only on sensitive, activatable icons. Sensitive, but non-activatable icons can be used for purely informational purposes. Since: 2.16
+width-chars
+-----------
 
-The **Gnome::GObject::Value** type of property *secondary-icon-activatable* is `G_TYPE_BOOLEAN`.
+Number of characters to leave space for in the entry
 
-### Primary icon sensitive
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
 
-Whether the primary icon is sensitive. An insensitive icon appears grayed out. GTK+ does not emit the *icon-press* and *icon-release* signals and does not allow DND from insensitive icons. An icon should be set insensitive if the action that would trigger when clicked is currently not available. Since: 2.16
+  * Parameter is readable and writable.
 
-The **Gnome::GObject::Value** type of property *primary-icon-sensitive* is `G_TYPE_BOOLEAN`.
+  * Minimum value is -1.
 
-### Secondary icon sensitive
+  * Maximum value is G_MAXINT.
 
-Whether the secondary icon is sensitive. An insensitive icon appears grayed out. GTK+ does not emit the *icon-press* and *icon-release* signals and does not allow DND from insensitive icons. An icon should be set insensitive if the action that would trigger when clicked is currently not available. Since: 2.16
+  * Default value is -1.
 
-The **Gnome::GObject::Value** type of property *secondary-icon-sensitive* is `G_TYPE_BOOLEAN`.
+xalign
+------
 
-### Primary icon tooltip text
+The horizontal alignment, from 0 (left to 1 (right). Reversed for RTL layouts.)
 
-The contents of the tooltip on the primary icon. Also see `gtk_entry_set_icon_tooltip_text()`. Since: 2.16
+  * **Gnome::GObject::Value** type of this property is G_TYPE_FLOAT
 
-The **Gnome::GObject::Value** type of property *primary-icon-tooltip-text* is `G_TYPE_STRING`.
+  * Parameter is readable and writable.
 
-### Secondary icon tooltip text
+  * Minimum value is 0.0.
 
-The contents of the tooltip on the secondary icon. Also see `gtk_entry_set_icon_tooltip_text()`. Since: 2.16
+  * Maximum value is 1.0.
 
-The **Gnome::GObject::Value** type of property *secondary-icon-tooltip-text* is `G_TYPE_STRING`.
-
-### Primary icon tooltip markup
-
-The contents of the tooltip on the primary icon, which is marked up with the [Pango text markup language][PangoMarkupFormat]. Also see `gtk_entry_set_icon_tooltip_markup()`. Since: 2.16
-
-The **Gnome::GObject::Value** type of property *primary-icon-tooltip-markup* is `G_TYPE_STRING`.
-
-### Secondary icon tooltip markup
-
-The contents of the tooltip on the secondary icon, which is marked up with the [Pango text markup language][PangoMarkupFormat]. Also see `gtk_entry_set_icon_tooltip_markup()`. Since: 2.16
-
-The **Gnome::GObject::Value** type of property *secondary-icon-tooltip-markup* is `G_TYPE_STRING`.
-
-### IM module
-
-Which IM (input method) module should be used for this entry. See **Gnome::Gtk3::IMContext**. Setting this to a non-`Any` value overrides the system-wide IM module setting. See the **Gnome::Gtk3::Settings** *gtk-im-module* property. Since: 2.16
-
-The **Gnome::GObject::Value** type of property *im-module* is `G_TYPE_STRING`.
-
-### Purpose
-
-The purpose of this text field. This property can be used by on-screen keyboards and other input methods to adjust their behaviour. Note that setting the purpose to `GTK_INPUT_PURPOSE_PASSWORD` or `GTK_INPUT_PURPOSE_PIN` is independent from setting *visibility*. Since: 3.6 Widget type: GTK_TYPE_INPUT_PURPOSE
-
-The **Gnome::GObject::Value** type of property *input-purpose* is `G_TYPE_ENUM`.
-
-### hints
-
-Additional hints (beyond *input-purpose*) that allow input methods to fine-tune their behaviour. Since: 3.6
-
-The **Gnome::GObject::Value** type of property *input-hints* is `G_TYPE_FLAGS`.
-
-### Populate all
-
-If *populate-all* is `1`, the *populate-popup* signal is also emitted for touch popups. Since: 3.8
-
-The **Gnome::GObject::Value** type of property *populate-all* is `G_TYPE_BOOLEAN`.
+  * Default value is 0.0.
 
