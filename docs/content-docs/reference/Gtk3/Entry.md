@@ -42,15 +42,6 @@ The undershoot nodes are used to draw the underflow indication when content is s
 
 When touch is used and touch selection handles are shown, they are using CSS nodes with name cursor-handle. They get the .top or .bottom style class depending on where they are shown in relation to the selection. If there is just a single handle for the text cursor, it gets the style class .insertion-cursor.
 
-Implemented Interfaces
-----------------------
-
-Gnome::Gtk3::Entry implements
-
-  * Gnome::Gtk3::Editable
-
-  * Gnome::Gtk3::CellEditable
-
 ![](plantuml/Entry.svg)
 
 See Also
@@ -107,13 +98,19 @@ Methods
 new
 ---
 
+### default, no options
+
 Create a new plain object.
 
     multi method new ( )
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :native-object
+
+Create an object using a native object from elsewhere. See also **Gnome::N::TopLevelSupportClass**.
 
     multi method new ( N-GObject :$native-object! )
+
+### :build-id
 
 Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 
@@ -1390,8 +1387,10 @@ The current fraction of the task that's been completed
 
   * Default value is 0.0.
 
-progress-pulse-step The fraction of total entry width to move the progress bouncing block for each call to gtk_entry_progress_pulse()
--------------------------------------------------------------------------------------------------------------------------------------
+progress-pulse-step
+-------------------
+
+The fraction of total entry width to move the progress bouncing block for each call to gtk_entry_progress_pulse()
 
   * **Gnome::GObject::Value** type of this property is G_TYPE_DOUBLE
 

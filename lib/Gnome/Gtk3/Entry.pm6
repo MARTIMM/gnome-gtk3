@@ -12,6 +12,7 @@ A single line text entry field
 
 ![](images/entry.png)
 
+
 =head1 Description
 
 The B<Gnome::Gtk3::Entry> widget is a single line text entry widget. A fairly large set of key bindings are supported by default. If the entered text is longer than the allocation of the widget, the widget will scroll so that the cursor position is visible.
@@ -52,12 +53,6 @@ The undershoot nodes are used to draw the underflow indication when content is s
 
 When touch is used and touch selection handles are shown, they are using CSS nodes with name cursor-handle. They get the .top or .bottom style class depending on where they are shown in relation to the selection. If there is just a single handle for the text cursor, it gets the style class .insertion-cursor.
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::Entry implements
-=item Gnome::Gtk3::Editable
-=item Gnome::Gtk3::CellEditable
-
 
 =comment head2 Uml Diagram
 
@@ -73,6 +68,7 @@ B<Gnome::Gtk3::TextView>, B<Gnome::Gtk3::EntryCompletion>
 
   unit class Gnome::Gtk3::Entry;
   also is Gnome::Gtk3::Widget;
+
 
 =head2 Inheriting this class
 
@@ -152,14 +148,21 @@ my Bool $signals-added = False;
 =begin pod
 =head1 Methods
 =head2 new
+=head3 default, no options
 
 Create a new plain object.
 
   multi method new ( )
 
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+
+=head3 :native-object
+
+Create an object using a native object from elsewhere. See also B<Gnome::N::TopLevelSupportClass>.
 
   multi method new ( N-GObject :$native-object! )
+
+
+=head3 :build-id
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -2561,6 +2564,7 @@ The current fraction of the task that's been completed
 =comment -----------------------------------------------------------------------
 =comment #TP:0:progress-pulse-step:
 =head2 progress-pulse-step
+
 The fraction of total entry width to move the progress bouncing block for each call to gtk_entry_progress_pulse()
 
 =item B<Gnome::GObject::Value> type of this property is G_TYPE_DOUBLE
