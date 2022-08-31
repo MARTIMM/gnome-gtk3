@@ -1300,13 +1300,13 @@ sub get-signals ( Str:D $source-content is copy ) {
       unless $signal-classes{$signal-class}:exists;
     $signal-classes{$signal-class}.push: $signal-name;
 
-note "GS 0: $*lib-class-name, $function-doc, $signal-name, ", $signal-args.join(', ');
+#note "GS 0: $*lib-class-name, $function-doc, $signal-name, ", $signal-args.join(', ');
 
     my ( $signal-doc, $items-src-doc) = get-arg-doc($function-doc);
-note "GS 1: $signal-doc, ", @$items-src-doc.gist;
+#note "GS 1: $signal-doc, ", @$items-src-doc.gist;
 
     my ( $return-type, $signal-arg-types) = get-arg-types(@$signal-args);
-note "GS 2: $return-type", @$signal-arg-types.gist;
+#note "GS 2: $return-type", @$signal-arg-types.gist;
 
 
     # start pod doc
@@ -1344,7 +1344,7 @@ note "GS 2: $return-type", @$signal-arg-types.gist;
       }
 }}
       $signal-doc ~= "    $signal-arg-types[$arg-count] \$$item-src-doc,\n";
-note "get-signals: ", ($arg-count, $signal-arg-types[$arg-count], $item-src-doc)>>.gist.join(', ');
+#note "get-signals: ", ($arg-count, $signal-arg-types[$arg-count], $item-src-doc)>>.gist.join(', ');
     }
 
     # Add the arguments given by the register-signal() method
@@ -1427,7 +1427,7 @@ sub get-signal-function-declaration ( Str:D $source-content is rw --> List ) {
   /;
 
   my Str $function-doc = ~($<signal-doc> // '');
-note "\nget-signal-function-declaration 0 $*lib-class-name: \n", $function-doc;
+#note "\nget-signal-function-declaration 0 $*lib-class-name: \n", $function-doc;
 
   # possibly no documentation
   if ?$function-doc {
@@ -1475,7 +1475,7 @@ note $?LINE, ', ', ($<signal-args> // '-').Str;
   my Str $signal-args-text = ~($<signal-args>//'');
   $function-doc = '' unless $signal-args-text;
 
-note "get-signal-function-declaration 3: $signal-name, $signal-args-text";
+#note "get-signal-function-declaration 3: $signal-name, $signal-args-text";
 
   $source-content ~~ s/$signal-args-text//;
   $signal-args-text ~~ s/ ');' //;
@@ -1498,7 +1498,7 @@ note "get-signal-function-declaration 3: $signal-name, $signal-args-text";
       @signal-args.push: $sarg;
     }
 
-note "get-signal-function-declaration 4: ", ( $signal-name, |@signal-args).join(', ');
+#note "get-signal-function-declaration 4: ", ( $signal-name, |@signal-args).join(', ');
 
   ( $signal-name, $function-doc, @signal-args)
 }
