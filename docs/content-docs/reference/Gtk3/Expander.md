@@ -46,6 +46,11 @@ Declaration
     unit class Gnome::Gtk3::Expander;
     also is Gnome::Gtk3::Bin;
 
+Uml Diagram
+-----------
+
+![](plantuml/Expander.svg)
+
 Inheriting this class
 ---------------------
 

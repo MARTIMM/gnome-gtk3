@@ -76,9 +76,9 @@ B<Gnome::Gtk3::Expander> has three CSS nodes, the main node with the name expand
   also is Gnome::Gtk3::Bin;
 
 
-=comment head2 Uml Diagram
+=head2 Uml Diagram
 
-=comment ![](plantuml/Expander.svg)
+![](plantuml/Expander.svg)
 
 
 =head2 Inheriting this class
