@@ -275,76 +275,57 @@ This functions creates and adds a **Gnome::Gtk3::CellRendererText** for the sele
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
-
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
--------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### action-activated
+action-activated
+----------------
 
 Gets emitted when an action is activated.
 
     method handler (
       Int $index,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
-
-  * $widget; the object which received the signal
+    )
 
   * $index; the index of the activated action
 
-### cursor-on-match
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+cursor-on-match
+---------------
 
 Gets emitted when a match from the cursor is on a match of the list. The default behaviour is to replace the contents of the entry with the contents of the text column in the row pointed to by *iter*.
 
-Note that *model* is the model that was passed to `set-model()`.
+Note that *model* is the model that was passed to `set_model()`.
 
 Returns: `True` if the signal has been handled
 
     method handler (
-      Unknown type GTK_TYPE_TREE_MODEL $model,
-      N-GtkTreeIter #`{ native Gnome::Gtk3::TreeIter } $iter,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Unknown type: GTK_TYPE_TREE_MODEL $model,
+      N-GtkTreeIter $iter,
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-      --> Int
-    );
 
-  * $widget; the object which received the signal
+      --> Bool
+    )
 
   * $model; the **Gnome::Gtk3::TreeModel** containing the matches
 
   * $iter; a **Gnome::Gtk3::TreeIter** positioned at the selected match
 
-### insert-prefix
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+insert-prefix
+-------------
 
 Gets emitted when the inline autocompletion is triggered. The default behaviour is to make the entry display the whole prefix and select the newly inserted part.
 
@@ -354,117 +335,176 @@ Returns: `True` if the signal has been handled
 
     method handler (
       Str $prefix,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-      --> Int
-    );
 
-  * $widget; the object which received the signal
+      --> Bool
+    )
 
   * $prefix; the common prefix of all possible completions
 
-### match-selected
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+match-selected
+--------------
 
 Gets emitted when a match from the list is selected. The default behaviour is to replace the contents of the entry with the contents of the text column in the row pointed to by *iter*.
 
-Note that *model* is the model that was passed to `set-model()`.
+Note that *model* is the model that was passed to `set_model()`.
 
 Returns: `True` if the signal has been handled
 
     method handler (
-      Unknown type GTK_TYPE_TREE_MODEL $model,
-      N-GtkTreeIter #`{ native Gnome::Gtk3::TreeIter } $iter,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Unknown type: GTK_TYPE_TREE_MODEL $model,
+      N-GtkTreeIter $iter,
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-      --> Int
-    );
 
-  * $widget; the object which received the signal
+      --> Bool
+    )
 
   * $model; the **Gnome::Gtk3::TreeModel** containing the matches
 
   * $iter; a **Gnome::Gtk3::TreeIter** positioned at the selected match
 
-### no-matches
+  * $_handler-id; The handler id which is returned from the registration
 
-Gets emitted when the filter model has zero number of rows in completion-complete method. (In other words when GtkEntryCompletion is out of suggestions)
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+no-matches
+----------
+
+Gets emitted when the filter model has zero number of rows in completion_complete method. (In other words when GtkEntryCompletion is out of suggestions)
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $widget; the object which received the signal
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
+cell-area
+---------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.get-property( 'label', $gv);
-    $gv.set-string('my text label');
+The GtkCellArea used to layout cells
 
-Supported properties
---------------------
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
 
-### Cell Area: cell-area
+  * The type of this G_TYPE_OBJECT object is GTK_TYPE_CELL_AREA
 
-The **Gnome::Gtk3::CellArea** used to layout cell renderers in the treeview column.
+  * Parameter is readable and writable.
 
-If no area is specified when creating the entry completion with `new-with-area()` a horizontally oriented **Gnome::Gtk3::CellAreaBox** will be used.
+  * Parameter is set on construction of object.
 
-    Widget type: GTK_TYPE_CELL_AREA
+inline-completion
+-----------------
 
-The **Gnome::GObject::Value** type of property *cell-area* is `G_TYPE_OBJECT`.
+Whether the common prefix should be inserted automatically
 
-### Inline completion: inline-completion
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-Determines whether the common prefix of the possible completions should be inserted automatically in the entry. Note that this requires text-column to be set, even if you are using a custom match function.
+  * Parameter is readable and writable.
 
-The **Gnome::GObject::Value** type of property *inline-completion* is `G_TYPE_BOOLEAN`.
+  * Default value is FALSE.
 
-### Inline selection: inline-selection
+inline-selection
+----------------
 
-Determines whether the possible completions on the popup will appear in the entry as you navigate through them.
+Your description here
 
-The **Gnome::GObject::Value** type of property *inline-selection* is `G_TYPE_BOOLEAN`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-### Minimum Key Length: minimum-key-length
+  * Parameter is readable and writable.
 
-The **Gnome::GObject::Value** type of property *minimum-key-length* is `G_TYPE_INT`.
+  * Default value is FALSE.
 
-### Completion Model: model
+minimum-key-length
+------------------
 
-The model to find matches in Widget type: GTK-TYPE-TREE-MODEL
+Minimum length of the search key in order to look up matches
 
-The **Gnome::GObject::Value** type of property *model* is `G_TYPE_OBJECT`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
 
-### Popup completion: popup-completion
+  * Parameter is readable and writable.
 
-Determines whether the possible completions should be shown in a popup window.
+  * Minimum value is 0.
 
-The **Gnome::GObject::Value** type of property *popup-completion* is `G_TYPE_BOOLEAN`.
+  * Maximum value is G_MAXINT.
 
-### Popup set width: popup-set-width
+  * Default value is 1.
 
-Determines whether the completions popup window will be resized to the width of the entry.
+model
+-----
 
-The **Gnome::GObject::Value** type of property *popup-set-width* is `G_TYPE_BOOLEAN`.
+The model to find matches in
 
-### Popup single match: popup-single-match
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
 
-Determines whether the completions popup window will shown for a single possible completion. You probably want to set this to `False` if you are using [inline completion][GtkEntryCompletion--inline-completion].
+  * The type of this G_TYPE_OBJECT object is GTK_TYPE_TREE_MODEL
 
-The **Gnome::GObject::Value** type of property *popup-single-match* is `G_TYPE_BOOLEAN`.
+  * Parameter is readable and writable.
 
-### Text column: text-column
+popup-completion
+----------------
 
-The column of the model containing the strings. Note that the strings must be UTF-8.
+Whether the completions should be shown in a popup window
 
-The **Gnome::GObject::Value** type of property *text-column* is `G_TYPE_INT`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
+
+popup-set-width
+---------------
+
+If TRUE, the popup window will have the same size as the entry
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
+
+popup-single-match
+------------------
+
+If TRUE, the popup window will appear for a single match.
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
+
+text-column
+-----------
+
+The column of the model containing the strings.
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
+
+  * Parameter is readable and writable.
+
+  * Minimum value is -1.
+
+  * Maximum value is G_MAXINT.
+
+  * Default value is -1.
 

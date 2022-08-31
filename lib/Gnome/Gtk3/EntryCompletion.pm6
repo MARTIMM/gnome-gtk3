@@ -863,6 +863,266 @@ sub _gtk_entry_completion_new_with_area ( N-GObject $area --> N-GObject )
 =begin pod
 =head1 Signals
 
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:action-activated:
+=head2 action-activated
+
+Gets emitted when an action is activated.
+
+  method handler (
+    Int $index,
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $index; the index of the activated action
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:cursor-on-match:
+=head2 cursor-on-match
+
+Gets emitted when a match from the cursor is on a match
+of the list. The default behaviour is to replace the contents
+of the entry with the contents of the text column in the row
+pointed to by I<iter>.
+
+Note that I<model> is the model that was passed to
+C<set_model()>.
+
+Returns: C<True> if the signal has been handled
+
+  method handler (
+    Unknown type: GTK_TYPE_TREE_MODEL $model,
+    N-GtkTreeIter $iter,
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+
+    --> Bool
+  )
+
+=item $model; the B<Gnome::Gtk3::TreeModel> containing the matches
+=item $iter; a B<Gnome::Gtk3::TreeIter> positioned at the selected match
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:insert-prefix:
+=head2 insert-prefix
+
+Gets emitted when the inline autocompletion is triggered.
+The default behaviour is to make the entry display the
+whole prefix and select the newly inserted part.
+
+Applications may connect to this signal in order to insert only a
+smaller part of the I<prefix> into the entry - e.g. the entry used in
+the B<Gnome::Gtk3::FileChooser> inserts only the part of the prefix up to the
+next '/'.
+
+Returns: C<True> if the signal has been handled
+
+  method handler (
+    Str $prefix,
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+
+    --> Bool
+  )
+
+=item $prefix; the common prefix of all possible completions
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:match-selected:
+=head2 match-selected
+
+Gets emitted when a match from the list is selected.
+The default behaviour is to replace the contents of the
+entry with the contents of the text column in the row
+pointed to by I<iter>.
+
+Note that I<model> is the model that was passed to
+C<set_model()>.
+
+Returns: C<True> if the signal has been handled
+
+  method handler (
+    Unknown type: GTK_TYPE_TREE_MODEL $model,
+    N-GtkTreeIter $iter,
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+
+    --> Bool
+  )
+
+=item $model; the B<Gnome::Gtk3::TreeModel> containing the matches
+=item $iter; a B<Gnome::Gtk3::TreeIter> positioned at the selected match
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:no-matches:
+=head2 no-matches
+
+Gets emitted when the filter model has zero
+number of rows in completion_complete method.
+(In other words when GtkEntryCompletion is out of
+suggestions)
+
+  method handler (
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=end pod
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:cell-area:
+=head2 cell-area
+
+The GtkCellArea used to layout cells
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_OBJECT
+=item The type of this G_TYPE_OBJECT object is GTK_TYPE_CELL_AREA
+=item Parameter is readable and writable.
+=item Parameter is set on construction of object.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:inline-completion:
+=head2 inline-completion
+
+Whether the common prefix should be inserted automatically
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:inline-selection:
+=head2 inline-selection
+
+Your description here
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:minimum-key-length:
+=head2 minimum-key-length
+
+Minimum length of the search key in order to look up matches
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_INT
+=item Parameter is readable and writable.
+=item Minimum value is 0.
+=item Maximum value is G_MAXINT.
+=item Default value is 1.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:model:
+=head2 model
+
+The model to find matches in
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_OBJECT
+=item The type of this G_TYPE_OBJECT object is GTK_TYPE_TREE_MODEL
+=item Parameter is readable and writable.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:popup-completion:
+=head2 popup-completion
+
+Whether the completions should be shown in a popup window
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is TRUE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:popup-set-width:
+=head2 popup-set-width
+
+If TRUE, the popup window will have the same size as the entry
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is TRUE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:popup-single-match:
+=head2 popup-single-match
+
+If TRUE, the popup window will appear for a single match.
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is TRUE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:text-column:
+=head2 text-column
+
+The column of the model containing the strings.
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_INT
+=item Parameter is readable and writable.
+=item Minimum value is -1.
+=item Maximum value is G_MAXINT.
+=item Default value is -1.
+
+=end pod
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=finish
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Signals
+
 There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
 
 =head2 First method
