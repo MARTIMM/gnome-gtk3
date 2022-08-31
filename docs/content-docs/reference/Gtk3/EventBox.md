@@ -99,25 +99,25 @@ This problem doesn’t occur for visible event boxes, because in that case, the 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
+above-child
+-----------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.get-property( 'label', $gv);
-    $gv.set-string('my text label');
+Whether the event-trapping window of the eventbox is above the window of the child widget as opposed to below it.
 
-Supported properties
---------------------
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-### Above child: above-child
+  * Parameter is readable and writable.
 
-Whether the event-trapping window of the eventbox is above the window of the child widget as opposed to below it. Default value: False
+  * Default value is FALSE.
 
-The **Gnome::GObject::Value** type of property *above-child* is `G_TYPE_BOOLEAN`.
+visible-window
+--------------
 
-### Visible Window: visible-window
+Whether the event box is visible, as opposed to invisible and only used to trap events.
 
-Whether the event box is visible, as opposed to invisible and only used to trap events. Default value: True
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-The **Gnome::GObject::Value** type of property *visible-window* is `G_TYPE_BOOLEAN`.
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
 

@@ -281,6 +281,37 @@ sub _gtk_event_box_new ( --> N-GObject )
 =begin pod
 =head1 Properties
 
+=comment -----------------------------------------------------------------------
+=comment #TP:1:above-child:
+=head2 above-child
+
+Whether the event-trapping window of the eventbox is above the window of the child widget as opposed to below it.
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:visible-window:
+=head2 visible-window
+
+Whether the event box is visible, as opposed to invisible and only used to trap events.
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is TRUE.
+
+=end pod
+
+
+
+
+=finish
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
 An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
 
   my Gnome::Gtk3::Label $label .= new;
