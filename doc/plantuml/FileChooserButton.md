@@ -25,7 +25,7 @@ class Gnome::Gtk3::FileChooser <<(R,#80ffff)>>
 'Class connections
 Gnome::N::TopLevelClassSupport <|-- Gnome::GObject::Object
 Gnome::GObject::Object <|-- Gnome::GObject::InitialyUnowned
-Gnome::GObject::InitialyUnowned <|--- Gnome::Gtk3::Widget
+Gnome::GObject::InitialyUnowned <|-- Gnome::Gtk3::Widget
 Gnome::Gtk3::Container -|> Gnome::Gtk3::Widget
 Gnome::Gtk3::Box -|> Gnome::Gtk3::Container
 Gnome::Gtk3::FileChooserButton -|> Gnome::Gtk3::Box
