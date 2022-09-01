@@ -24,12 +24,12 @@ I<Gnome::Gtk3::FileChooser> allows for shortcuts to various places in the filesy
 
 When the user is finished selecting files in a I<Gnome::Gtk3::FileChooser>, your program can get the selected names either as filenames or as URIs. For URIs, the normal escaping rules are applied if the URI contains non-ASCII characters. However, filenames are always returned in the character set specified by the `G_FILENAME_ENCODING` environment variable. Please see the GLib documentation for more details about this variable.
 
-This means that while you can pass the result of C<gtk_file_chooser_get_filename()> to C<open()> or C<fopen()>, you may not be able to directly set it as the text of a I<Gnome::Gtk3::Label> widget unless you convert it first to UTF-8, which all GTK+ widgets expect. You should use C<g_filename_to_utf8()> to convert filenames into strings that can be passed to GTK+ widgets. B<Note: open() and fopen() are C functions which are not needed by the Raku user. Furthermore, the Str Raku type is already UTF-8>.
+This means that while you can pass the result of C<.get-filename()> to Raku C<IO>, you may not be able to directly set it as the text of a I<Gnome::Gtk3::Label> widget unless you convert it first to UTF-8, which all GTK+ widgets expect. You should use C<g_filename_to_utf8()> to convert filenames into strings that can be passed to GTK+ widgets. B<Note: open() and fopen() are C functions which are not needed by the Raku user. Furthermore, the Str Raku type is already UTF-8>.
 
 =begin comment
 =head2 Adding a Preview Widget
 
-You can add a custom preview widget to a file chooser and then get notification about when the preview needs to be updated. To install a preview widget, use C<gtk_file_chooser_set_preview_widget()>. Then, connect to the prop I<update-preview> signal to get notified when you need to update the contents of the preview.
+You can add a custom preview widget to a file chooser and then get notification about when the preview needs to be updated. To install a preview widget, use C<.set_preview_widget()>. Then, connect to the prop I<update-preview> signal to get notified when you need to update the contents of the preview.
 
 Your callback should use C<gtk_file_chooser_get_preview_filename()> to see what needs previewing. Once you have generated the preview for the corresponding file, you must call C<gtk_file_chooser_set_preview_widget_active()> with a boolean flag (B<Int for Raku>) that indicates whether your callback could successfully generate a preview.
 
@@ -71,9 +71,10 @@ update_preview_cb (B<Gnome::Gtk3::FileChooser> *file_chooser, gpointer data)
 ]|
 =end comment
 
+
 =head2 Adding Extra Widgets
 
-You can add extra widgets to a file chooser to provide options that are not present in the default design. For example, you can add a toggle button to give the user the option to open a file in read-only mode. You can use C<gtk_file_chooser_set_extra_widget()> to insert additional widgets in a file chooser.
+You can add extra widgets to a file chooser to provide options that are not present in the default design. For example, you can add a toggle button to give the user the option to open a file in read-only mode. You can use C<.set-extra-widget()> to insert additional widgets in a file chooser.
 
 =begin comment
 An example for adding extra widgets:
@@ -92,20 +93,18 @@ An example for adding extra widgets:
 
 If you want to set more than one extra widget in the file chooser, you can a container such as a I<Gnome::Gtk3::Box> or a I<Gnome::Gtk3::Grid> and include your widgets in it. Then, set the container as the whole extra widget.
 
-=head2 Known implementations
-
-=item Gnome::Gtk3::FileChooserButton
-=item [Gnome::Gtk3::FileChooserDialog](FileChooserDialog.html)
-=item Gnome::Gtk3::FileChooserWidget
 
 =head2 See Also
 
 I<Gnome::Gtk3::FileChooserDialog>, I<Gnome::Gtk3::FileChooserWidget>, I<Gnome::Gtk3::FileChooserButton>
 
+
 =head1 Synopsis
 =head2 Declaration
 
   unit role Gnome::Gtk3::FileChooser;
+  also is Gnome::GObject::Object;
+
 
 =head2 Example to show how to get filenames from the dialog
 
@@ -246,14 +245,62 @@ method _add_file_chooser_signal_types ( Str $class-name ) {
 # an instated object
 method _file_chooser_interface ( Str $native-sub --> Callable ) {
 
+  my Str $new-patt = $native-sub.subst( '_', '-', :g);
+
   my Callable $s;
   try { $s = &::("gtk_file_chooser_$native-sub"); };
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  if ?$s {
+    Gnome::N::deprecate(
+      "gtk_file_chooser_$native-sub", $new-patt, '0.47.4', '0.50.0'
+    );
+  }
+
+  else {
+    try { $s = &::("gtk_$native-sub"); } unless ?$s;
+    if ?$s {
+      Gnome::N::deprecate(
+        "gtk_$native-sub", $new-patt.subst('file-chooser-'),
+        '0.47.4', '0.50.0'
+      );
+    }
+
+    else {
+      try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+      if ?$s {
+        Gnome::N::deprecate(
+          "$native-sub", $new-patt.subst('gtk-file-chooser-'),
+          '0.47.4', '0.50.0'
+        );
+      }
+    }
+  }
 
   $s
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=finish
 #-------------------------------------------------------------------------------
 #TM:0:gtk_file_chooser_error_quark:
 =begin pod
