@@ -1596,7 +1596,7 @@ sub get-arg-types ( @signal-args --> List ) {
 
   # process handler argument types. nbr args at 8, types at 9 and further
   my @signal-arg-types = 'N-GObject';
-note 'get-arg-types: ', @signal-args.join(', ');
+#note 'get-arg-types: ', @signal-args.join(', ');
   my Int $arg-count = @signal-args[8].Int;
   for ^$arg-count -> $i {
 #note "  A[9 + $i]: @signal-args[9 + $i]";
