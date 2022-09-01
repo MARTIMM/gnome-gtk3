@@ -134,26 +134,26 @@ DragSource                |S | ✗| ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓|
 DrawingArea               |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
 Editable                  |  | ✗| ✓| ✓| ✓| ✓| ✗|  |  | ✗| ✓| ✓| ✓|
 Entry                     |  | ✓| ✓| ✓| ✓| ✓| ✓|  |  |  | ✓| ✓| ✓|
-EntryCompletion           |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅖|  | ⅗| ✓| ✓| ✓| < fbck sg prp
-| Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
-Enums                     |S |  |  |  |  | ✗| ✗|  | ✗| ✗|  |  |  |  
+EntryCompletion           |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅖|  | ⅗| ✓| ✓| ✓|
+Enums                     |S | ✗| ✓| ✓| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| < fbck sg prp
 EventBox                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
 Expander                  |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  |  | ✓| ✓| ✓|
+| Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
 FileChooser               |R | ✗|  |  |  |  |  |  |  |  |  |  |  |
-FileChooserButton         |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  | ⅓|  |  |  |  
-FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+FileChooserButton         |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  | ⅓|  |  |  |
+FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |  |  |
 FileChooserWidget         |  |  | ✓| ✓| ✓| ✓| ✓| ✓|  | ✓| ✓| ✓| ✓|
-FileFilter                |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+FileFilter                |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Fixed                     |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
-Frame                     |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+Frame                     |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Grid                      |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
 HeaderBar                 |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ⅘| ✓| ✓| ✓|
-IconTheme                 |  |  | ✓|  |  |  |  |  |  |  |  |  |  |  
-IconView                  |  |  | ✓|  |  |  |  |  |  |  |  |  |  |  
+IconTheme                 |  |  | ✓|  |  |  |  |  |  |  |  |  |  |
+IconView                  |  |  | ✓|  |  |  |  |  |  |  |  |  |  |
 Image                     |  |  | ✓| ✓| ✓| ✗| ✓| ¾| ✗| ⅕| ✓| ✓| ✓|
 Label                     |  | ✓| ✓| ✓| ✓|  | ✓| ⅘|  | ⅔| ✓| ✓| ✓|
 Layout                    |  | ✓| ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
-LevelBar                  |  |  |  |  |  |  |  |  |  |  |  |  |  |  
+LevelBar                  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 ListBox                   |  | ✓| ✓| ✓| ✓| ✓| ✓|  |  |  | ✓| ✓| ✓| < fbck sg prp
 ListBoxRow                |  |  |  |  |  |  |  |  |  |  |  |  |  |  
 ListStore                 |  |  |  |  |  |  |  |  |  |  |  |  |  |  
