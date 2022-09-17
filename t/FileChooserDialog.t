@@ -34,10 +34,10 @@ unless %*ENV<raku_test_all>:exists {
 #-------------------------------------------------------------------------------
 subtest 'Interface FileChooser', {
   $fcd.set-action(GTK_FILE_CHOOSER_ACTION_SAVE);
-  is $fcd.get-action, GTK_FILE_CHOOSER_ACTION_SAVE.value,
+  is $fcd.get-action, GTK_FILE_CHOOSER_ACTION_SAVE,
      'GtkFileChooserAction save';
   $fcd.set-action(GTK_FILE_CHOOSER_ACTION_OPEN);
-  is $fcd.get-action, GTK_FILE_CHOOSER_ACTION_OPEN.value,
+  is $fcd.get-action, GTK_FILE_CHOOSER_ACTION_OPEN,
      'GtkFileChooserAction open';
   $fcd.set-action(GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
   is GtkFileChooserAction($fcd.get-action),
@@ -48,7 +48,7 @@ subtest 'Interface FileChooser', {
      GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER,
      'GtkFileChooserAction create folder';
 
-  $fcd.set-local-only(1);
+  $fcd.set-local-only(True);
   ok ?$fcd.get-local-only, '.set-local-only / .get-local-only';
 }
 

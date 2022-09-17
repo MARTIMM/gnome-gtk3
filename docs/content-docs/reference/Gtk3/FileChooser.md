@@ -26,23 +26,14 @@ File Names and Encodings
 
 When the user is finished selecting files in a *Gnome::Gtk3::FileChooser*, your program can get the selected names either as filenames or as URIs. For URIs, the normal escaping rules are applied if the URI contains non-ASCII characters. However, filenames are always returned in the character set specified by the `G_FILENAME_ENCODING` environment variable. Please see the GLib documentation for more details about this variable.
 
-This means that while you can pass the result of `gtk_file_chooser_get_filename()` to `open()` or `fopen()`, you may not be able to directly set it as the text of a *Gnome::Gtk3::Label* widget unless you convert it first to UTF-8, which all GTK+ widgets expect. You should use `g_filename_to_utf8()` to convert filenames into strings that can be passed to GTK+ widgets. **Note: open() and fopen() are C functions which are not needed by the Raku user. Furthermore, the Str Raku type is already UTF-8**.
+This means that while you can pass the result of `.get-filename()` to Raku `IO`, you may not be able to directly set it as the text of a *Gnome::Gtk3::Label* widget unless you convert it first to UTF-8, which all GTK+ widgets expect. You should use `g_filename_to_utf8()` to convert filenames into strings that can be passed to GTK+ widgets. **Note: open() and fopen() are C functions which are not needed by the Raku user. Furthermore, the Str Raku type is already UTF-8**.
 
 Adding Extra Widgets
 --------------------
 
-You can add extra widgets to a file chooser to provide options that are not present in the default design. For example, you can add a toggle button to give the user the option to open a file in read-only mode. You can use `gtk_file_chooser_set_extra_widget()` to insert additional widgets in a file chooser.
+You can add extra widgets to a file chooser to provide options that are not present in the default design. For example, you can add a toggle button to give the user the option to open a file in read-only mode. You can use `.set-extra-widget()` to insert additional widgets in a file chooser.
 
 If you want to set more than one extra widget in the file chooser, you can a container such as a *Gnome::Gtk3::Box* or a *Gnome::Gtk3::Grid* and include your widgets in it. Then, set the container as the whole extra widget.
-
-Known implementations
----------------------
-
-  * Gnome::Gtk3::FileChooserButton
-
-  * [Gnome::Gtk3::FileChooserDialog](FileChooserDialog.html)
-
-  * Gnome::Gtk3::FileChooserWidget
 
 See Also
 --------
@@ -56,6 +47,7 @@ Declaration
 -----------
 
     unit role Gnome::Gtk3::FileChooser;
+    also is Gnome::GObject::Object;
 
 Example to show how to get filenames from the dialog
 ----------------------------------------------------
@@ -126,168 +118,131 @@ These identify the various errors that can occur while calling *Gnome::Gtk3::Fil
 Methods
 =======
 
-[[gtk_] file_chooser_] error_quark
-----------------------------------
+add-choice
+----------
 
-Returns: The error quark used for *Gnome::Gtk3::FileChooser* errors.
+Adds a 'choice' to the file chooser. This is typically implemented as a combobox or, for boolean choices, as a checkbutton. You can select a value using `set_choice()` before the dialog is shown, and you can obtain the user-selected value in the *response* signal handler using `get-choice()`.
 
-Since: 2.4
+Compare `set-extra-widget()`.
 
-    method gtk_file_chooser_error_quark ( --> int32  )
+    method add-choice ( Str $id, Str $label, CArray[Str] $options, CArray[Str] $option_labels )
 
-[[gtk_] file_chooser_] set_action
----------------------------------
+  * $id; id for the added choice
 
-Sets the type of operation that the chooser is performing; the user interface is adapted to suit the selected action. For example, an option to create a new folder might be shown if the action is `GTK_FILE_CHOOSER_ACTION_SAVE` but not if the action is `GTK_FILE_CHOOSER_ACTION_OPEN`.
+  * $label; user-visible label for the added choice
 
-Since: 2.4
+  * $options; ids for the options of the choice, or `undefined` for a boolean choice
 
-    method gtk_file_chooser_set_action ( GtkFileChooserAction $action )
+  * $option_labels; user-visible labels for the options, must be the same length as *options*
 
-  * GtkFileChooserAction $action; the action that the file selector is performing
+add-filter
+----------
 
-[[gtk_] file_chooser_] get_action
----------------------------------
+Adds *filter* to the list of filters that the user can select between. When a filter is selected, only files that are passed by that filter are displayed.
 
-Gets the type of operation that the file chooser is performing; see `gtk_file_chooser_set_action()`.
+Note that the *chooser* takes ownership of the filter, so you have to ref and sink it if you want to keep a reference.
+
+    method add-filter ( N-GObject() $filter )
+
+  * $filter; a **Gnome::Gtk3::FileFilter**
+
+add-shortcut-folder
+-------------------
+
+Adds a folder to be displayed with the shortcut folders in a file chooser. Note that shortcut folders do not get saved, as they are provided by the application. For example, you can use this to add a “/usr/share/mydrawprogram/Clipart” folder to the volume list.
+
+Returns: `True` if the folder could be added successfully, `False` otherwise. In the latter case, the *error* will be set as appropriate.
+
+    method add-shortcut-folder ( Str $folder, N-GError $error --> Bool )
+
+  * $folder; (type filename): filename of the folder to add
+
+  * $error; location to store error, or `undefined`
+
+add-shortcut-folder-uri
+-----------------------
+
+Adds a folder URI to be displayed with the shortcut folders in a file chooser. Note that shortcut folders do not get saved, as they are provided by the application. For example, you can use this to add a “file:///usr/share/mydrawprogram/Clipart” folder to the volume list.
+
+Returns: `True` if the folder could be added successfully, `False` otherwise. In the latter case, the *error* will be set as appropriate.
+
+    method add-shortcut-folder-uri ( Str $uri, N-GError $error --> Bool )
+
+  * $uri; URI of the folder to add
+
+  * $error; location to store error, or `undefined`
+
+error-quark
+-----------
+
+Registers an error quark for **Gnome::Gtk3::FileChooser** if necessary.
+
+Returns: The error quark used for **Gnome::Gtk3::FileChooser** errors.
+
+    method error-quark ( --> UInt )
+
+get-action
+----------
+
+Gets the type of operation that the file chooser is performing; see `set_action()`.
 
 Returns: the action that the file selector is performing
 
-Since: 2.4
+    method get-action ( --> GtkFileChooserAction )
 
-    method gtk_file_chooser_get_action ( --> GtkFileChooserAction )
+get-choice
+----------
 
-[[gtk_] file_chooser_] set_local_only
--------------------------------------
+Gets the currently selected option in the 'choice' with the given ID.
 
-Sets whether only local files can be selected in the file selector. If *$local_only* is `1` (the default), then the selected file or files are guaranteed to be accessible through the operating systems native file system and therefore the application only needs to worry about the filename functions in *Gnome::Gtk3::FileChooser*, like `gtk_file_chooser_get_filename()`, rather than the URI functions like `gtk_file_chooser_get_uri()`,
+Returns: the ID of the currenly selected option
 
-On some systems non-native files may still be available using the native filesystem via a userspace filesystem (FUSE).
+    method get-choice ( Str $id --> Str )
 
-Since: 2.4
+  * $id; the ID of the choice to get
 
-    method gtk_file_chooser_set_local_only ( Int $local_only )
+get-create-folders
+------------------
 
-  * Int $local_only; `1` if only local files can be selected
+Gets whether file choser will offer to create new folders. See `set_create_folders()`.
 
-[[gtk_] file_chooser_] get_local_only
--------------------------------------
+Returns: `True` if the Create Folder button should be displayed.
 
-Gets whether only local files can be selected in the file selector. See `gtk_file_chooser_set_local_only()`
+    method get-create-folders ( --> Bool )
 
-Returns: `1` if only local files can be selected.
+get-current-folder
+------------------
 
-Since: 2.4
+Gets the current folder of *chooser* as a local filename. See `set_current_folder()`.
 
-    method gtk_file_chooser_get_local_only ( --> Int )
+Note that this is the folder that the file chooser is currently displaying (e.g. "/home/username/Documents"), which is not the same as the currently-selected folder if the chooser is in `GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER` mode (e.g. "/home/username/Documents/selected-folder/". To get the currently-selected folder in that mode, use `get_uri()` as the usual way to get the selection.
 
-[[gtk_] file_chooser_] set_select_multiple
-------------------------------------------
+Returns: (type filename): the full path of the current folder, or `undefined` if the current path cannot be represented as a local filename. Free with `g_free()`. This function will also return `undefined` if the file chooser was unable to load the last folder that was requested from it; for example, as would be for calling `set_current_folder()` on a nonexistent folder.
 
-Sets whether multiple files can be selected in the file selector. This is only relevant if the action is set to be `GTK_FILE_CHOOSER_ACTION_OPEN` or `GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER`.
+    method get-current-folder ( --> Str )
 
-Since: 2.4
+get-current-folder-file
+-----------------------
 
-    method gtk_file_chooser_set_select_multiple ( Int $select_multiple )
+Gets the current folder of *chooser* as **Gnome::Gio::File**. See `get_current_folder_uri()`.
 
-  * Int $select_multiple; `1` if multiple files can be selected.
+Returns: the **Gnome::Gio::File** for the current folder.
 
-[[gtk_] file_chooser_] get_select_multiple
-------------------------------------------
+    method get-current-folder-file ( --> N-GObject )
 
-Gets whether multiple files can be selected in the file selector. See `gtk_file_chooser_set_select_multiple()`.
+get-current-folder-uri
+----------------------
 
-Returns: `1` if multiple files can be selected.
+Gets the current folder of *chooser* as an URI. See `set_current_folder_uri()`.
 
-Since: 2.4
+Note that this is the folder that the file chooser is currently displaying (e.g. "file:///home/username/Documents"), which is not the same as the currently-selected folder if the chooser is in `GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER` mode (e.g. "file:///home/username/Documents/selected-folder/". To get the currently-selected folder in that mode, use `get_uri()` as the usual way to get the selection.
 
-    method gtk_file_chooser_get_select_multiple ( --> Int  )
+Returns: the URI for the current folder. Free with `g_free()`. This function will also return `undefined` if the file chooser was unable to load the last folder that was requested from it; for example, as would be for calling `set_current_folder_uri()` on a nonexistent folder.
 
-[[gtk_] file_chooser_] set_show_hidden
---------------------------------------
+    method get-current-folder-uri ( --> Str )
 
-Sets whether hidden files and folders are displayed in the file selector.
-
-Since: 2.6
-
-    method gtk_file_chooser_set_show_hidden ( Int $show_hidden )
-
-  * Int $show_hidden; `1` if hidden files and folders should be displayed.
-
-[[gtk_] file_chooser_] get_show_hidden
---------------------------------------
-
-Gets whether hidden files and folders are displayed in the file selector. See `gtk_file_chooser_set_show_hidden()`.
-
-Returns: `1` if hidden files and folders are displayed.
-
-Since: 2.6
-
-    method gtk_file_chooser_get_show_hidden ( --> Int  )
-
-[[gtk_] file_chooser_] set_do_overwrite_confirmation
-----------------------------------------------------
-
-Sets whether a file chooser in `GTK_FILE_CHOOSER_ACTION_SAVE` mode will present a confirmation dialog if the user types a file name that already exists. This is `0` by default.
-
-If set to `1`, the *chooser* will emit the prop *confirm-overwrite* signal when appropriate.
-
-If all you need is the stock confirmation dialog, set this property to `1`. You can override the way confirmation is done by actually handling the prop *confirm-overwrite* signal; please refer to its documentation for the details.
-
-Since: 2.8
-
-    method gtk_file_chooser_set_do_overwrite_confirmation ( Int $do_overwrite_confirmation )
-
-  * Int $do_overwrite_confirmation; whether to confirm overwriting in save mode
-
-[[gtk_] file_chooser_] get_do_overwrite_confirmation
-----------------------------------------------------
-
-Queries whether a file chooser is set to confirm for overwriting when the user types a file name that already exists.
-
-Returns: `1` if the file chooser will present a confirmation dialog; `0` otherwise.
-
-Since: 2.8
-
-    method gtk_file_chooser_get_do_overwrite_confirmation ( --> Int  )
-
-[[gtk_] file_chooser_] set_create_folders
------------------------------------------
-
-Sets whether file choser will offer to create new folders. This is only relevant if the action is not set to be `GTK_FILE_CHOOSER_ACTION_OPEN`.
-
-Since: 2.18
-
-    method gtk_file_chooser_set_create_folders ( Int $create_folders )
-
-  * Int $create_folders; `1` if the Create Folder button should be displayed
-
-[[gtk_] file_chooser_] get_create_folders
------------------------------------------
-
-Gets whether file choser will offer to create new folders. See `gtk_file_chooser_set_create_folders()`.
-
-Returns: `1` if the Create Folder button should be displayed.
-
-Since: 2.18
-
-    method gtk_file_chooser_get_create_folders ( --> Int  )
-
-[[gtk_] file_chooser_] set_current_name
----------------------------------------
-
-Sets the current name in the file selector, as if entered by the user. Note that the name passed in here is a UTF-8 string rather than a filename. This function is meant for such uses as a suggested name in a “Save As...” dialog. You can pass “Untitled.doc” or a similarly suitable suggestion for the *name*.
-
-If you want to preselect a particular existing file, you should use `gtk_file_chooser_set_filename()` or `gtk_file_chooser_set_uri()` instead. Please see the documentation for those functions for an example of using `gtk_file_chooser_set_current_name()` as well.
-
-Since: 2.4
-
-    method gtk_file_chooser_set_current_name ( Str $name )
-
-  * Str $name; (type filename): the filename to use, as a UTF-8 string
-
-[[gtk_] file_chooser_] get_current_name
----------------------------------------
+get-current-name
+----------------
 
 Gets the current name in the file selector, as entered by the user in the text entry for “Name”.
 
@@ -295,115 +250,326 @@ This is meant to be used in save dialogs, to get the currently typed filename wh
 
 Returns: The raw text from the file chooser’s “Name” entry. Free this with `g_free()`. Note that this string is not a full pathname or URI; it is whatever the contents of the entry are. Note also that this string is in UTF-8 encoding, which is not necessarily the system’s encoding for filenames.
 
-Since: 3.10
+    method get-current-name ( --> Str )
 
-    method gtk_file_chooser_get_current_name ( --> Str  )
+get-do-overwrite-confirmation
+-----------------------------
 
-[[gtk_] file_chooser_] get_filename
------------------------------------
+Queries whether a file chooser is set to confirm for overwriting when the user types a file name that already exists.
+
+Returns: `True` if the file chooser will present a confirmation dialog; `False` otherwise.
+
+    method get-do-overwrite-confirmation ( --> Bool )
+
+get-extra-widget
+----------------
+
+Gets the current extra widget; see `set_extra_widget()`.
+
+Returns: the current extra widget, or `undefined`
+
+    method get-extra-widget ( --> N-GObject )
+
+get-file
+--------
+
+Gets the **Gnome::Gio::File** for the currently selected file in the file selector. If multiple files are selected, one of the files will be returned at random.
+
+If the file chooser is in folder mode, this function returns the selected folder.
+
+Returns: a selected **Gnome::Gio::File**. You own the returned file; use `g_object_unref()` to release it.
+
+    method get-file ( --> N-GObject )
+
+get-filename
+------------
 
 Gets the filename for the currently selected file in the file selector. The filename is returned as an absolute path. If multiple files are selected, one of the filenames will be returned at random.
 
 If the file chooser is in folder mode, this function returns the selected folder.
 
-Returns: (nullable) (type filename): The currently selected filename, or `Any` if no file is selected, or the selected file can't be represented with a local filename. Free with `g_free()`.
+Returns: (type filename): The currently selected filename, or `undefined` if no file is selected, or the selected file can't be represented with a local filename. Free with `g_free()`.
 
-Since: 2.4
+    method get-filename ( --> Str )
 
-    method gtk_file_chooser_get_filename ( --> Str  )
+get-filenames
+-------------
 
-[[gtk_] file_chooser_] set_filename
------------------------------------
+Lists all the selected files and subfolders in the current folder of *chooser*. The returned names are full absolute paths. If files in the current folder cannot be represented as local filenames they will be ignored. (See `get_uris()`)
 
-Sets *filename* as the current filename for the file chooser, by changing to the file’s parent folder and actually selecting the file in list; all other files will be unselected. If the *chooser* is in `GTK_FILE_CHOOSER_ACTION_SAVE` mode, the file’s base name will also appear in the dialog’s file name entry.
+Returns: (element-type filename) : a **Gnome::Gio::SList** containing the filenames of all selected files and subfolders in the current folder. Free the returned list with `g_slist_free()`, and the filenames with `g_free()`.
 
-Note that the file must exist, or nothing will be done except for the directory change.
+    method get-filenames ( --> N-GSList )
 
-You should use this function only when implementing a save dialog for which you already have a file name to which the user may save. For example, when the user opens an existing file and then does *Save As...* to save a copy or a modified version. If you don’t have a file name already — for example, if the user just created a new file and is saving it for the first time, do not call this function. Instead, use something similar to this:
+get-files
+---------
 
-    my Gnome::Gtk3::FileChooserDialog $fcd .= new(:title('Choose a file'));
-    my Gnome::Gtk3::FileChooser $fc .= new(:widget($fcd));
+Lists all the selected files and subfolders in the current folder of *chooser* as **Gnome::Gio::File**. An internal function, see `get_uris()`.
 
-    my Document $doc .= new;
-    ... add content to doc ...
+Returns: (element-type GFile) : a **Gnome::Gio::SList** containing a **Gnome::Gio::File** for each selected file and subfolder in the current folder. Free the returned list with `g_slist_free()`, and the files with `g_object_unref()`.
 
-    if $doc.is-new {
-      # the user just created a new document
-      $fc.set-current-name("Untitled document");
-    }
+    method get-files ( --> N-GSList )
 
-    else {
-      # the user edited an existing document
-      $fc.set-filename($existing-filename);
-    }
+get-filter
+----------
 
-    my $status = $fcd.gtk-dialog-run;
+Gets the current filter; see `set_filter()`.
 
-In the first case, the file chooser will present the user with useful suggestions as to where to save his new file. In the second case, the file’s existing location is already known, so the file chooser will use it.
+Returns: the current filter, or `undefined`
 
-Since: 2.4
+    method get-filter ( --> N-GObject )
 
-    method gtk_file_chooser_set_filename ( Str $filename )
+get-local-only
+--------------
 
-  * Str $filename; (type filename): the filename to set as current
+Gets whether only local files can be selected in the file selector. See `set_local_only()`
 
-[[gtk_] file_chooser_] select_filename
---------------------------------------
+Returns: `True` if only local files can be selected.
+
+    method get-local-only ( --> Bool )
+
+get-preview-file
+----------------
+
+Gets the **Gnome::Gio::File** that should be previewed in a custom preview Internal function, see `get_preview_uri()`.
+
+Returns: the **Gnome::Gio::File** for the file to preview, or `undefined` if no file is selected. Free with `g_object_unref()`.
+
+    method get-preview-file ( --> N-GObject )
+
+get-preview-filename
+--------------------
+
+Gets the filename that should be previewed in a custom preview widget. See `set_preview_widget()`.
+
+Returns: (type filename): the filename to preview, or `undefined` if no file is selected, or if the selected file cannot be represented as a local filename. Free with `g_free()`
+
+    method get-preview-filename ( --> Str )
+
+get-preview-uri
+---------------
+
+Gets the URI that should be previewed in a custom preview widget. See `set_preview_widget()`.
+
+Returns: the URI for the file to preview, or `undefined` if no file is selected. Free with `g_free()`.
+
+    method get-preview-uri ( --> Str )
+
+get-preview-widget
+------------------
+
+Gets the current preview widget; see `set_preview_widget()`.
+
+Returns: the current preview widget, or `undefined`
+
+    method get-preview-widget ( --> N-GObject )
+
+get-preview-widget-active
+-------------------------
+
+Gets whether the preview widget set by `set_preview_widget()` should be shown for the current filename. See `set_preview_widget_active()`.
+
+Returns: `True` if the preview widget is active for the current filename.
+
+    method get-preview-widget-active ( --> Bool )
+
+get-select-multiple
+-------------------
+
+Gets whether multiple files can be selected in the file selector. See `set_select_multiple()`.
+
+Returns: `True` if multiple files can be selected.
+
+    method get-select-multiple ( --> Bool )
+
+get-show-hidden
+---------------
+
+Gets whether hidden files and folders are displayed in the file selector. See `set_show_hidden()`.
+
+Returns: `True` if hidden files and folders are displayed.
+
+    method get-show-hidden ( --> Bool )
+
+get-uri
+-------
+
+Gets the URI for the currently selected file in the file selector. If multiple files are selected, one of the filenames will be returned at random.
+
+If the file chooser is in folder mode, this function returns the selected folder.
+
+Returns: The currently selected URI, or `undefined` if no file is selected. If `set_local_only()` is set to `True` (the default) a local URI will be returned for any FUSE locations. Free with `g_free()`
+
+    method get-uri ( --> Str )
+
+get-uris
+--------
+
+Lists all the selected files and subfolders in the current folder of *chooser*. The returned names are full absolute URIs.
+
+Returns: (element-type utf8) : a **Gnome::Gio::SList** containing the URIs of all selected files and subfolders in the current folder. Free the returned list with `g_slist_free()`, and the filenames with `g_free()`.
+
+    method get-uris ( --> N-GSList )
+
+get-use-preview-label
+---------------------
+
+Gets whether a stock label should be drawn with the name of the previewed file. See `set_use_preview_label()`.
+
+Returns: `True` if the file chooser is set to display a label with the name of the previewed file, `False` otherwise.
+
+    method get-use-preview-label ( --> Bool )
+
+list-filters
+------------
+
+Lists the current set of user-selectable filters; see `add_filter()`, `remove_filter()`.
+
+Returns: (element-type GtkFileFilter) (transfer container): a **Gnome::Gio::SList** containing the current set of user selectable filters. The contents of the list are owned by GTK+, but you must free the list itself with `g_slist_free()` when you are done with it.
+
+    method list-filters ( --> N-GSList )
+
+list-shortcut-folder-uris
+-------------------------
+
+Queries the list of shortcut folders in the file chooser, as set by `add_shortcut_folder_uri()`.
+
+Returns: (element-type utf8) : A list of folder URIs, or `undefined` if there are no shortcut folders. Free the returned list with `g_slist_free()`, and the URIs with `g_free()`.
+
+    method list-shortcut-folder-uris ( --> N-GSList )
+
+list-shortcut-folders
+---------------------
+
+Queries the list of shortcut folders in the file chooser, as set by `add_shortcut_folder()`.
+
+Returns: (element-type filename) : A list of folder filenames, or `undefined` if there are no shortcut folders. Free the returned list with `g_slist_free()`, and the filenames with `g_free()`.
+
+    method list-shortcut-folders ( --> N-GSList )
+
+remove-choice
+-------------
+
+Removes a 'choice' that has been added with `add_choice()`.
+
+    method remove-choice ( Str $id )
+
+  * $id; the ID of the choice to remove
+
+remove-filter
+-------------
+
+Removes *filter* from the list of filters that the user can select between.
+
+    method remove-filter ( N-GObject() $filter )
+
+  * $filter; a **Gnome::Gtk3::FileFilter**
+
+remove-shortcut-folder
+----------------------
+
+Removes a folder from a file chooser’s list of shortcut folders.
+
+Returns: `True` if the operation succeeds, `False` otherwise. In the latter case, the *error* will be set as appropriate.
+
+See also: `add_shortcut_folder()`
+
+    method remove-shortcut-folder ( Str $folder, N-GError $error --> Bool )
+
+  * $folder; (type filename): filename of the folder to remove
+
+  * $error; location to store error, or `undefined`
+
+remove-shortcut-folder-uri
+--------------------------
+
+Removes a folder URI from a file chooser’s list of shortcut folders.
+
+Returns: `True` if the operation succeeds, `False` otherwise. In the latter case, the *error* will be set as appropriate.
+
+See also: `add_shortcut_folder_uri()`
+
+    method remove-shortcut-folder-uri ( Str $uri, N-GError $error --> Bool )
+
+  * $uri; URI of the folder to remove
+
+  * $error; location to store error, or `undefined`
+
+select-all
+----------
+
+Selects all the files in the current folder of a file chooser.
+
+    method select-all ( )
+
+select-file
+-----------
+
+Selects the file referred to by *file*. An internal function. See `_select_uri()`.
+
+Returns: Not useful.
+
+    method select-file ( N-GObject() $file, N-GError $error --> Bool )
+
+  * $file; the file to select
+
+  * $error; location to store error, or `undefined`
+
+select-filename
+---------------
 
 Selects a filename. If the file name isn’t in the current folder of *chooser*, then the current folder of *chooser* will be changed to the folder containing *filename*.
 
 Returns: Not useful.
 
-See also: `gtk_file_chooser_set_filename()`
+See also: `set_filename()`
 
-Since: 2.4
+    method select-filename ( Str $filename --> Bool )
 
-    method gtk_file_chooser_select_filename ( Str $filename --> Int  )
+  * $filename; (type filename): the filename to select
 
-  * Str $filename; (type filename): the filename to select
+select-uri
+----------
 
-[[gtk_] file_chooser_] unselect_filename
-----------------------------------------
+Selects the file to by *uri*. If the URI doesn’t refer to a file in the current folder of *chooser*, then the current folder of *chooser* will be changed to the folder containing *filename*.
 
-Unselects a currently selected filename. If the filename is not in the current directory, does not exist, or is otherwise not currently selected, does nothing.
+Returns: Not useful.
 
-Since: 2.4
+    method select-uri ( Str $uri --> Bool )
 
-    method gtk_file_chooser_unselect_filename ( Str $filename )
+  * $uri; the URI to select
 
-  * Str $filename; (type filename): the filename to unselect
+set-action
+----------
 
-[[gtk_] file_chooser_] select_all
----------------------------------
+Sets the type of operation that the chooser is performing; the user interface is adapted to suit the selected action. For example, an option to create a new folder might be shown if the action is `GTK_FILE_CHOOSER_ACTION_SAVE` but not if the action is `GTK_FILE_CHOOSER_ACTION_OPEN`.
 
-Selects all the files in the current folder of a file chooser.
+    method set-action ( GtkFileChooserAction $action )
 
-Since: 2.4
+  * $action; the action that the file selector is performing
 
-    method gtk_file_chooser_select_all ( )
+set-choice
+----------
 
-[[gtk_] file_chooser_] unselect_all
------------------------------------
+Selects an option in a 'choice' that has been added with `add_choice()`. For a boolean choice, the possible options are "true" and "false".
 
-Unselects all the files in the current folder of a file chooser.
+    method set-choice ( Str $id, Str $option )
 
-Since: 2.4
+  * $id; the ID of the choice to set
 
-    method gtk_file_chooser_unselect_all ( )
+  * $option; the ID of the option to select
 
-[[gtk_] file_chooser_] get_filenames
-------------------------------------
+set-create-folders
+------------------
 
-Lists all the selected files and subfolders in the current folder of *chooser*. The returned names are full absolute paths. If files in the current folder cannot be represented as local filenames they will be ignored. (See `gtk_file_chooser_get_uris()`)
+Sets whether file choser will offer to create new folders. This is only relevant if the action is not set to be `GTK_FILE_CHOOSER_ACTION_OPEN`.
 
-Returns: (element-type filename) (transfer full): a *GSList* containing the filenames of all selected files and subfolders in the current folder. Free the returned list with `g_slist_free()`, and the filenames with `g_free()`.
+    method set-create-folders ( Bool $create_folders )
 
-Since: 2.4
+  * $create_folders; `True` if the Create Folder button should be displayed
 
-    method gtk_file_chooser_get_filenames ( --> N-GSList  )
-
-[[gtk_] file_chooser_] set_current_folder
------------------------------------------
+set-current-folder
+------------------
 
 Sets the current folder for *chooser* from a local filename. The user will be shown the full contents of the current folder, plus user interface elements for navigating to other folders.
 
@@ -411,717 +577,478 @@ In general, you should not use this function. See the [section on setting up a f
 
 Returns: Not useful.
 
-Since: 2.4
+    method set-current-folder ( Str $filename --> Bool )
 
-    method gtk_file_chooser_set_current_folder ( Str $filename --> Int  )
+  * $filename; (type filename): the full path of the new current folder
 
-  * Str $filename; (type filename): the full path of the new current folder
+set-current-folder-file
+-----------------------
 
-[[gtk_] file_chooser_] get_current_folder
------------------------------------------
+Sets the current folder for *chooser* from a **Gnome::Gio::File**. Internal function, see `set_current_folder_uri()`.
 
-Gets the current folder of *chooser* as a local filename. See `gtk_file_chooser_set_current_folder()`.
+Returns: `True` if the folder could be changed successfully, `False` otherwise.
 
-Note that this is the folder that the file chooser is currently displaying (e.g. "/home/username/Documents"), which is not the same as the currently-selected folder if the chooser is in `GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER` mode (e.g. "/home/username/Documents/selected-folder/". To get the currently-selected folder in that mode, use `gtk_file_chooser_get_uri()` as the usual way to get the selection.
+    method set-current-folder-file ( N-GObject() $file, N-GError $error --> Bool )
 
-Returns: (nullable) (type filename): the full path of the current folder, or `Any` if the current path cannot be represented as a local filename. Free with `g_free()`. This function will also return `Any` if the file chooser was unable to load the last folder that was requested from it; for example, as would be for calling `gtk_file_chooser_set_current_folder()` on a nonexistent folder.
+  * $file; the **Gnome::Gio::File** for the new folder
 
-Since: 2.4
+  * $error; location to store error, or `undefined`.
 
-    method gtk_file_chooser_get_current_folder ( --> Str  )
-
-[[gtk_] file_chooser_] get_uri
-------------------------------
-
-Gets the URI for the currently selected file in the file selector. If multiple files are selected, one of the filenames will be returned at random.
-
-If the file chooser is in folder mode, this function returns the selected folder.
-
-Returns: (nullable) (transfer full): The currently selected URI, or `Any` if no file is selected. If `gtk_file_chooser_set_local_only()` is set to `1` (the default) a local URI will be returned for any FUSE locations. Free with `g_free()`
-
-Since: 2.4
-
-    method gtk_file_chooser_get_uri ( --> Str  )
-
-[[gtk_] file_chooser_] set_uri
-------------------------------
-
-Sets the file referred to by *uri* as the current file for the file chooser, by changing to the URI’s parent folder and actually selecting the URI in the list. If the *chooser* is `GTK_FILE_CHOOSER_ACTION_SAVE` mode, the URI’s base name will also appear in the dialog’s file name entry.
-
-Note that the URI must exist, or nothing will be done except for the directory change.
-
-You should use this function only when implementing a save dialog for which you already have a file name to which the user may save. For example, when the user opens an existing file and then does Save As... to save a copy or a modified version. If you don’t have a file name already — for example, if the user just created a new file and is saving it for the first time, do not call this function. Instead, use something similar to this: |[<!-- language="C" --> if (document_is_new) { // the user just created a new document gtk_file_chooser_set_current_name (chooser, "Untitled document"); } else { // the user edited an existing document gtk_file_chooser_set_uri (chooser, existing_uri); } ]|
-
-In the first case, the file chooser will present the user with useful suggestions as to where to save his new file. In the second case, the file’s existing location is already known, so the file chooser will use it.
-
-Returns: Not useful.
-
-Since: 2.4
-
-    method gtk_file_chooser_set_uri ( Str $uri --> Int  )
-
-  * Str $uri; the URI to set as current
-
-[[gtk_] file_chooser_] select_uri
----------------------------------
-
-Selects the file to by *uri*. If the URI doesn’t refer to a file in the current folder of *chooser*, then the current folder of *chooser* will be changed to the folder containing *filename*.
-
-Returns: Not useful.
-
-Since: 2.4
-
-    method gtk_file_chooser_select_uri ( Str $uri --> Int  )
-
-  * Str $uri; the URI to select
-
-[[gtk_] file_chooser_] unselect_uri
------------------------------------
-
-Unselects the file referred to by *uri*. If the file is not in the current directory, does not exist, or is otherwise not currently selected, does nothing.
-
-Since: 2.4
-
-    method gtk_file_chooser_unselect_uri ( Str $uri )
-
-  * Str $uri; the URI to unselect
-
-[[gtk_] file_chooser_] get_uris
--------------------------------
-
-Lists all the selected files and subfolders in the current folder of *chooser*. The returned names are full absolute URIs.
-
-Returns: (element-type utf8) (transfer full): a *GSList* containing the URIs of all selected files and subfolders in the current folder. Free the returned list with `g_slist_free()`, and the filenames with `g_free()`.
-
-Since: 2.4
-
-    method gtk_file_chooser_get_uris ( --> N-GSList  )
-
-[[gtk_] file_chooser_] set_current_folder_uri
----------------------------------------------
+set-current-folder-uri
+----------------------
 
 Sets the current folder for *chooser* from an URI. The user will be shown the full contents of the current folder, plus user interface elements for navigating to other folders.
 
 In general, you should not use this function. See the [section on setting up a file chooser dialog][gtkfilechooserdialog-setting-up] for the rationale behind this.
 
-Returns: `1` if the folder could be changed successfully, `0` otherwise.
+Returns: `True` if the folder could be changed successfully, `False` otherwise.
 
-Since: 2.4
+    method set-current-folder-uri ( Str $uri --> Bool )
 
-    method gtk_file_chooser_set_current_folder_uri ( Str $uri --> Int  )
+  * $uri; the URI for the new current folder
 
-  * Str $uri; the URI for the new current folder
+set-current-name
+----------------
 
-[[gtk_] file_chooser_] get_current_folder_uri
----------------------------------------------
+Sets the current name in the file selector, as if entered by the user. Note that the name passed in here is a UTF-8 string rather than a filename. This function is meant for such uses as a suggested name in a “Save As...” dialog. You can pass “Untitled.doc” or a similarly suitable suggestion for the *name*.
 
-Gets the current folder of *chooser* as an URI. See `gtk_file_chooser_set_current_folder_uri()`.
+If you want to preselect a particular existing file, you should use `set_filename()` or `set_uri()` instead. Please see the documentation for those functions for an example of using `set_current_name()` as well.
 
-Note that this is the folder that the file chooser is currently displaying (e.g. "file:///home/username/Documents"), which is not the same as the currently-selected folder if the chooser is in `GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER` mode (e.g. "file:///home/username/Documents/selected-folder/". To get the currently-selected folder in that mode, use `gtk_file_chooser_get_uri()` as the usual way to get the selection.
+    method set-current-name ( Str $name )
 
-Returns: (nullable) (transfer full): the URI for the current folder. Free with `g_free()`. This function will also return `Any` if the file chooser was unable to load the last folder that was requested from it; for example, as would be for calling `gtk_file_chooser_set_current_folder_uri()` on a nonexistent folder.
+  * $name; (type utf8): the filename to use, as a UTF-8 string
 
-Since: 2.4
+set-do-overwrite-confirmation
+-----------------------------
 
-    method gtk_file_chooser_get_current_folder_uri ( --> Str  )
+Sets whether a file chooser in `GTK_FILE_CHOOSER_ACTION_SAVE` mode will present a confirmation dialog if the user types a file name that already exists. This is `False` by default.
 
-[[gtk_] file_chooser_] get_file
--------------------------------
+If set to `True`, the *chooser* will emit the *confirm-overwrite* signal when appropriate.
 
-Gets the *GFile* for the currently selected file in the file selector. If multiple files are selected, one of the files will be returned at random.
+If all you need is the stock confirmation dialog, set this property to `True`. You can override the way confirmation is done by actually handling the *confirm-overwrite* signal; please refer to its documentation for the details.
 
-If the file chooser is in folder mode, this function returns the selected folder.
+    method set-do-overwrite-confirmation ( Bool $do_overwrite_confirmation )
 
-Returns: (transfer full): a selected *GFile*. You own the returned file; use `g_object_unref()` to release it.
+  * $do_overwrite_confirmation; whether to confirm overwriting in save mode
 
-Since: 2.14
-
-    method gtk_file_chooser_get_file ( --> N-GObject  )
-
-[[gtk_] file_chooser_] select_file
-----------------------------------
-
-Selects the file referred to by *file*. An internal function. See `_gtk_file_chooser_select_uri()`.
-
-Returns: Not useful.
-
-Since: 2.14
-
-    method gtk_file_chooser_select_file ( N-GObject $file, N-GError $error --> Int  )
-
-  * N-GObject $file; the file to select
-
-  * N-GError $error; (allow-none): location to store error, or `Any`
-
-[[gtk_] file_chooser_] unselect_file
-------------------------------------
-
-Unselects the file referred to by *file*. If the file is not in the current directory, does not exist, or is otherwise not currently selected, does nothing.
-
-Since: 2.14
-
-    method gtk_file_chooser_unselect_file ( N-GObject $file )
-
-  * N-GObject $file; a *GFile*
-
-[[gtk_] file_chooser_] get_files
---------------------------------
-
-Lists all the selected files and subfolders in the current folder of *chooser* as *GFile*. An internal function, see `gtk_file_chooser_get_uris()`.
-
-Returns: (element-type GFile) (transfer full): a *GSList* containing a *GFile* for each selected file and subfolder in the current folder. Free the returned list with `g_slist_free()`, and the files with `g_object_unref()`.
-
-Since: 2.14
-
-    method gtk_file_chooser_get_files ( --> N-GSList  )
-
-[[gtk_] file_chooser_] set_current_folder_file
-----------------------------------------------
-
-Sets the current folder for *chooser* from a *GFile*. Internal function, see `gtk_file_chooser_set_current_folder_uri()`.
-
-Returns: `1` if the folder could be changed successfully, `0` otherwise.
-
-Since: 2.14
-
-    method gtk_file_chooser_set_current_folder_file ( N-GObject $file, N-GError $error --> Int  )
-
-  * N-GObject $file; the *GFile* for the new folder
-
-  * N-GError $error; (allow-none): location to store error, or `Any`.
-
-[[gtk_] file_chooser_] get_current_folder_file
-----------------------------------------------
-
-Gets the current folder of *chooser* as *GFile*. See `gtk_file_chooser_get_current_folder_uri()`.
-
-Returns: (transfer full): the *GFile* for the current folder.
-
-Since: 2.14
-
-    method gtk_file_chooser_get_current_folder_file ( --> N-GObject  )
-
-[[gtk_] file_chooser_] set_preview_widget
------------------------------------------
-
-Sets an application-supplied widget to use to display a custom preview of the currently selected file. To implement a preview, after setting the preview widget, you connect to the prop *update-preview* signal, and call `gtk_file_chooser_get_preview_filename()` or `gtk_file_chooser_get_preview_uri()` on each change. If you can display a preview of the new file, update your widget and set the preview active using `gtk_file_chooser_set_preview_widget_active()`. Otherwise, set the preview inactive.
-
-When there is no application-supplied preview widget, or the application-supplied preview widget is not active, the file chooser will display no preview at all.
-
-Since: 2.4
-
-    method gtk_file_chooser_set_preview_widget ( N-GObject $preview_widget )
-
-  * N-GObject $preview_widget; widget for displaying preview.
-
-[[gtk_] file_chooser_] get_preview_widget
------------------------------------------
-
-Gets the current preview widget; see `gtk_file_chooser_set_preview_widget()`.
-
-Returns: (nullable) (transfer none): the current preview widget, or `Any`
-
-Since: 2.4
-
-    method gtk_file_chooser_get_preview_widget ( --> N-GObject  )
-
-[[gtk_] file_chooser_] set_preview_widget_active
-------------------------------------------------
-
-Sets whether the preview widget set by `gtk_file_chooser_set_preview_widget()` should be shown for the current filename. When *active* is set to false, the file chooser may display an internally generated preview of the current file or it may display no preview at all. See `gtk_file_chooser_set_preview_widget()` for more details.
-
-Since: 2.4
-
-    method gtk_file_chooser_set_preview_widget_active ( Int $active )
-
-  * Int $active; whether to display the user-specified preview widget
-
-[[gtk_] file_chooser_] get_preview_widget_active
-------------------------------------------------
-
-Gets whether the preview widget set by `gtk_file_chooser_set_preview_widget()` should be shown for the current filename. See `gtk_file_chooser_set_preview_widget_active()`.
-
-Returns: `1` if the preview widget is active for the current filename.
-
-Since: 2.4
-
-    method gtk_file_chooser_get_preview_widget_active ( --> Int  )
-
-[[gtk_] file_chooser_] set_use_preview_label
---------------------------------------------
-
-Sets whether the file chooser should display a stock label with the name of the file that is being previewed; the default is `1`. Applications that want to draw the whole preview area themselves should set this to `0` and display the name themselves in their preview widget.
-
-See also: `gtk_file_chooser_set_preview_widget()`
-
-Since: 2.4
-
-    method gtk_file_chooser_set_use_preview_label ( Int $use_label )
-
-  * Int $use_label; whether to display a stock label with the name of the previewed file
-
-[[gtk_] file_chooser_] get_use_preview_label
---------------------------------------------
-
-Gets whether a stock label should be drawn with the name of the previewed file. See `gtk_file_chooser_set_use_preview_label()`.
-
-Returns: `1` if the file chooser is set to display a label with the name of the previewed file, `0` otherwise.
-
-    method gtk_file_chooser_get_use_preview_label ( --> Int  )
-
-[[gtk_] file_chooser_] get_preview_filename
--------------------------------------------
-
-Gets the filename that should be previewed in a custom preview widget. See `gtk_file_chooser_set_preview_widget()`.
-
-Returns: (nullable) (type filename): the filename to preview, or `Any` if no file is selected, or if the selected file cannot be represented as a local filename. Free with `g_free()`
-
-Since: 2.4
-
-    method gtk_file_chooser_get_preview_filename ( --> Str  )
-
-[[gtk_] file_chooser_] get_preview_uri
---------------------------------------
-
-Gets the URI that should be previewed in a custom preview widget. See `gtk_file_chooser_set_preview_widget()`.
-
-Returns: (nullable) (transfer full): the URI for the file to preview, or `Any` if no file is selected. Free with `g_free()`.
-
-Since: 2.4
-
-    method gtk_file_chooser_get_preview_uri ( --> Str  )
-
-[[gtk_] file_chooser_] get_preview_file
----------------------------------------
-
-Gets the *GFile* that should be previewed in a custom preview Internal function, see `gtk_file_chooser_get_preview_uri()`.
-
-Returns: (nullable) (transfer full): the *GFile* for the file to preview, or `Any` if no file is selected. Free with `g_object_unref()`.
-
-Since: 2.14
-
-    method gtk_file_chooser_get_preview_file ( --> N-GObject  )
-
-[[gtk_] file_chooser_] set_extra_widget
----------------------------------------
+set-extra-widget
+----------------
 
 Sets an application-supplied widget to provide extra options to the user.
 
-Since: 2.4
+    method set-extra-widget ( N-GObject() $extra_widget )
 
-    method gtk_file_chooser_set_extra_widget ( N-GObject $extra_widget )
+  * $extra_widget; widget for extra options
 
-  * N-GObject $extra_widget; widget for extra options
+set-file
+--------
 
-[[gtk_] file_chooser_] get_extra_widget
----------------------------------------
+Sets *file* as the current filename for the file chooser, by changing to the file’s parent folder and actually selecting the file in list. If the *chooser* is in `GTK_FILE_CHOOSER_ACTION_SAVE` mode, the file’s base name will also appear in the dialog’s file name entry.
 
-Gets the current preview widget; see `gtk_file_chooser_set_extra_widget()`.
+If the file name isn’t in the current folder of *chooser*, then the current folder of *chooser* will be changed to the folder containing *filename*. This is equivalent to a sequence of `unselect_all()` followed by `select_filename()`.
 
-Returns: (nullable) (transfer none): the current extra widget, or `Any`
+Note that the file must exist, or nothing will be done except for the directory change.
 
-Since: 2.4
+If you are implementing a save dialog, you should use this function if you already have a file name to which the user may save; for example, when the user opens an existing file and then does Save As...
 
-    method gtk_file_chooser_get_extra_widget ( --> N-GObject  )
+Returns: An error object. It is valid when the call fails.
 
-[[gtk_] file_chooser_] add_filter
----------------------------------
+    method set-file ( N-GObject() $file --> N-GError )
 
-Adds *filter* to the list of filters that the user can select between. When a filter is selected, only files that are passed by that filter are displayed.
+  * $file; the **Gnome::Gio::File** to set as the current file.
 
-Note that the *chooser* takes ownership of the filter, so you have to ref and sink it if you want to keep a reference.
+set-filename
+------------
 
-Since: 2.4
+Sets *filename* as the current filename for the file chooser, by changing to the file’s parent folder and actually selecting the file in list; all other files will be unselected. If the *chooser* is in `GTK_FILE_CHOOSER_ACTION_SAVE` mode, the file’s base name will also appear in the dialog’s file name entry.
 
-    method gtk_file_chooser_add_filter ( N-GObject $filter )
+Note that the file must exist, or nothing will be done except for the directory change.
 
-  * N-GObject $filter; (transfer full): a *Gnome::Gtk3::FileFilter*
+You should use this function only when implementing a save dialog for which you already have a file name to which the user may save. For example, when the user opens an existing file and then does Save As... to save a copy or a modified version. If you don’t have a file name already — for example, if the user just created a new file and is saving it for the first time, do not call this function. Instead, use something similar to this: |[<!-- language="C" --> if (document_is_new) { // the user just created a new document set_current_name (chooser, "Untitled document"); } else { // the user edited an existing document set_filename (chooser, existing_filename); } ]|
 
-[[gtk_] file_chooser_] remove_filter
-------------------------------------
+In the first case, the file chooser will present the user with useful suggestions as to where to save his new file. In the second case, the file’s existing location is already known, so the file chooser will use it.
 
-Removes *filter* from the list of filters that the user can select between.
+Returns: Not useful.
 
-Since: 2.4
+    method set-filename ( Str $filename --> Bool )
 
-    method gtk_file_chooser_remove_filter ( N-GObject $filter )
+  * $filename; (type filename): the filename to set as current
 
-  * N-GObject $filter; a *Gnome::Gtk3::FileFilter*
-
-[[gtk_] file_chooser_] list_filters
------------------------------------
-
-Lists the current set of user-selectable filters; see `gtk_file_chooser_add_filter()`, `gtk_file_chooser_remove_filter()`.
-
-Returns: (element-type **Gnome::Gtk3::FileFilter**) (transfer container): a *GSList* containing the current set of user selectable filters. The contents of the list are owned by GTK+, but you must free the list itself with `g_slist_free()` when you are done with it.
-
-Since: 2.4
-
-    method gtk_file_chooser_list_filters ( --> N-GSList  )
-
-[[gtk_] file_chooser_] set_filter
----------------------------------
+set-filter
+----------
 
 Sets the current filter; only the files that pass the filter will be displayed. If the user-selectable list of filters is non-empty, then the filter should be one of the filters in that list. Setting the current filter when the list of filters is empty is useful if you want to restrict the displayed set of files without letting the user change it.
 
-Since: 2.4
+    method set-filter ( N-GObject() $filter )
 
-    method gtk_file_chooser_set_filter ( N-GObject $filter )
+  * $filter; a **Gnome::Gtk3::FileFilter**
 
-  * N-GObject $filter; a *Gnome::Gtk3::FileFilter*
+set-local-only
+--------------
 
-[[gtk_] file_chooser_] get_filter
----------------------------------
+Sets whether only local files can be selected in the file selector. If *local_only* is `True` (the default), then the selected file or files are guaranteed to be accessible through the operating systems native file system and therefore the application only needs to worry about the filename functions in **Gnome::Gtk3::FileChooser**, like `get_filename()`, rather than the URI functions like `get_uri()`,
 
-Gets the current filter; see `gtk_file_chooser_set_filter()`.
+On some systems non-native files may still be available using the native filesystem via a userspace filesystem (FUSE).
 
-Returns: (nullable) (transfer none): the current filter, or `Any`
+    method set-local-only ( Bool $local_only )
 
-Since: 2.4
+  * $local_only; `True` if only local files can be selected
 
-    method gtk_file_chooser_get_filter ( --> N-GObject  )
+set-preview-widget
+------------------
 
-[[gtk_] file_chooser_] add_shortcut_folder
-------------------------------------------
+Sets an application-supplied widget to use to display a custom preview of the currently selected file. To implement a preview, after setting the preview widget, you connect to the *update-preview* signal, and call `get_preview_filename()` or `get_preview_uri()` on each change. If you can display a preview of the new file, update your widget and set the preview active using `set_preview_widget_active()`. Otherwise, set the preview inactive.
 
-Adds a folder to be displayed with the shortcut folders in a file chooser. Internal function, see `gtk_file_chooser_add_shortcut_folder()`.
+When there is no application-supplied preview widget, or the application-supplied preview widget is not active, the file chooser will display no preview at all.
 
-Returns: `1` if the folder could be added successfully, `0` otherwise.
+    method set-preview-widget ( N-GObject() $preview_widget )
 
-Since: 2.4
+  * $preview_widget; widget for displaying preview.
 
-    method gtk_file_chooser_add_shortcut_folder ( Str $folder, N-GError $error --> Int  )
+set-preview-widget-active
+-------------------------
 
-  * Str $folder; file for the folder to add
+Sets whether the preview widget set by `set_preview_widget()` should be shown for the current filename. When *active* is set to false, the file chooser may display an internally generated preview of the current file or it may display no preview at all. See `set_preview_widget()` for more details.
 
-  * N-GError $error; (allow-none): location to store error, or `Any`
+    method set-preview-widget-active ( Bool $active )
 
-[[gtk_] file_chooser_] remove_shortcut_folder
----------------------------------------------
+  * $active; whether to display the user-specified preview widget
 
-Removes a folder from the shortcut folders in a file chooser. Internal function, see `gtk_file_chooser_remove_shortcut_folder()`.
+set-select-multiple
+-------------------
 
-Returns: `1` if the folder could be removed successfully, `0` otherwise.
+Sets whether multiple files can be selected in the file selector. This is only relevant if the action is set to be `GTK_FILE_CHOOSER_ACTION_OPEN` or `GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER`.
 
-Since: 2.4
+    method set-select-multiple ( Bool $select_multiple )
 
-    method gtk_file_chooser_remove_shortcut_folder ( Str $folder, N-GError $error --> Int  )
+  * $select_multiple; `True` if multiple files can be selected.
 
-  * Str $folder; file for the folder to remove
+set-show-hidden
+---------------
 
-  * N-GError $error; (allow-none): location to store error, or `Any`
+Sets whether hidden files and folders are displayed in the file selector.
 
-[[gtk_] file_chooser_] list_shortcut_folders
---------------------------------------------
+    method set-show-hidden ( Bool $show_hidden )
 
-Queries the list of shortcut folders in the file chooser, as set by `gtk_file_chooser_add_shortcut_folder()`.
+  * $show_hidden; `True` if hidden files and folders should be displayed.
 
-Returns: (nullable) (element-type filename) (transfer full): A list of folder filenames, or `Any` if there are no shortcut folders. Free the returned list with `g_slist_free()`, and the filenames with `g_free()`.
+set-uri
+-------
 
-Since: 2.4
+Sets the file referred to by *uri* as the current file for the file chooser, by changing to the URI’s parent folder and actually selecting the URI in the list. If the *chooser* is `GTK_FILE_CHOOSER_ACTION_SAVE` mode, the URI’s base name will also appear in the dialog’s file name entry.
 
-    method gtk_file_chooser_list_shortcut_folders ( --> N-GSList  )
+Note that the URI must exist, or nothing will be done except for the directory change.
 
-[[gtk_] file_chooser_] add_shortcut_folder_uri
-----------------------------------------------
+You should use this function only when implementing a save dialog for which you already have a file name to which the user may save. For example, when the user opens an existing file and then does Save As... to save a copy or a modified version. If you don’t have a file name already — for example, if the user just created a new file and is saving it for the first time, do not call this function. Instead, use something similar to this: |[<!-- language="C" --> if (document_is_new) { // the user just created a new document set_current_name (chooser, "Untitled document"); } else { // the user edited an existing document set_uri (chooser, existing_uri); } ]|
 
-Adds a folder URI to be displayed with the shortcut folders in a file chooser. Note that shortcut folders do not get saved, as they are provided by the application. For example, you can use this to add a “file:///usr/share/mydrawprogram/Clipart” folder to the volume list.
+    In the first case, the file chooser will present the user with useful suggestions as to where to save his new file. In the second case, the file’s existing location is already known, so the file chooser will use it.
 
-Returns: `1` if the folder could be added successfully, `0` otherwise. In the latter case, the *error* will be set as appropriate.
+Returns: Not useful.
 
-Since: 2.4
+    method set-uri ( Str $uri --> Bool )
 
-    method gtk_file_chooser_add_shortcut_folder_uri ( Str $uri, N-GError $error --> Int  )
+  * $uri; the URI to set as current
 
-  * Str $uri; URI of the folder to add
+set-use-preview-label
+---------------------
 
-  * N-GError $error; (allow-none): location to store error, or `Any`
+Sets whether the file chooser should display a stock label with the name of the file that is being previewed; the default is `True`. Applications that want to draw the whole preview area themselves should set this to `False` and display the name themselves in their preview widget.
 
-[[gtk_] file_chooser_] remove_shortcut_folder_uri
--------------------------------------------------
+See also: `set_preview_widget()`
 
-Removes a folder URI from a file chooser’s list of shortcut folders.
+    method set-use-preview-label ( Bool $use_label )
 
-Returns: `1` if the operation succeeds, `0` otherwise. In the latter case, the *error* will be set as appropriate.
+  * $use_label; whether to display a stock label with the name of the previewed file
 
-See also: `gtk_file_chooser_add_shortcut_folder_uri()`
+unselect-all
+------------
 
-Since: 2.4
+Unselects all the files in the current folder of a file chooser.
 
-    method gtk_file_chooser_remove_shortcut_folder_uri ( Str $uri, N-GError $error --> Int  )
+    method unselect-all ( )
 
-  * Str $uri; URI of the folder to remove
+unselect-file
+-------------
 
-  * N-GError $error; (allow-none): location to store error, or `Any`
+Unselects the file referred to by *file*. If the file is not in the current directory, does not exist, or is otherwise not currently selected, does nothing.
 
-[[gtk_] file_chooser_] list_shortcut_folder_uris
-------------------------------------------------
+    method unselect-file ( N-GObject() $file )
 
-Queries the list of shortcut folders in the file chooser, as set by `gtk_file_chooser_add_shortcut_folder_uri()`.
+  * $file; a **Gnome::Gio::File**
 
-Returns: (nullable) (element-type utf8) (transfer full): A list of folder URIs, or `Any` if there are no shortcut folders. Free the returned list with `g_slist_free()`, and the URIs with `g_free()`.
+unselect-filename
+-----------------
 
-Since: 2.4
+Unselects a currently selected filename. If the filename is not in the current directory, does not exist, or is otherwise not currently selected, does nothing.
 
-    method gtk_file_chooser_list_shortcut_folder_uris ( --> N-GSList  )
+    method unselect-filename ( Str $filename )
 
-[[gtk_] file_chooser_] add_choice
----------------------------------
+  * $filename; (type filename): the filename to unselect
 
-Adds a 'choice' to the file chooser. This is typically implemented as a combobox or, for boolean choices, as a checkbutton. You can select a value using `gtk_file_chooser_set_choice()` before the dialog is shown, and you can obtain the user-selected value in the prop *response* signal handler using `gtk_file_chooser_get_choice()`.
+unselect-uri
+------------
 
-Compare `gtk_file_chooser_set_extra_widget()`.
+Unselects the file referred to by *uri*. If the file is not in the current directory, does not exist, or is otherwise not currently selected, does nothing.
 
-Since: 3.22
+    method unselect-uri ( Str $uri )
 
-    method gtk_file_chooser_add_choice ( Str $id, Str $label, CArray[Str] $options, CArray[Str] $option_labels )
-
-  * Str $id; id for the added choice
-
-  * Str $label; user-visible label for the added choice
-
-  * CArray[Str] $options; ids for the options of the choice, or `Any` for a boolean choice
-
-  * CArray[Str] $option_labels; user-visible labels for the options, must be the same length as *options*
-
-[[gtk_] file_chooser_] remove_choice
-------------------------------------
-
-Removes a 'choice' that has been added with `gtk_file_chooser_add_choice()`.
-
-Since: 3.22
-
-    method gtk_file_chooser_remove_choice ( Str $id )
-
-  * Str $id; the ID of the choice to remove
-
-[[gtk_] file_chooser_] set_choice
----------------------------------
-
-Selects an option in a 'choice' that has been added with `gtk_file_chooser_add_choice()`. For a boolean choice, the possible options are "true" and "false".
-
-Since: 3.22
-
-    method gtk_file_chooser_set_choice ( Str $id, Str $option )
-
-  * Str $id; the ID of the choice to set
-
-  * Str $option; the ID of the option to select
-
-[[gtk_] file_chooser_] get_choice
----------------------------------
-
-Gets the currently selected option in the 'choice' with the given ID.
-
-Returns: the ID of the currenly selected option Since: 3.22
-
-    method gtk_file_chooser_get_choice ( Str $id --> Str  )
-
-  * Str $id; the ID of the choice to get
+  * $uri; the URI to unselect
 
 Signals
 =======
 
-Register any signal as follows. See also **Gnome::GObject::Object**.
-
-    my Bool $is-registered = $my-widget.register-signal (
-      $handler-object, $handler-name, $signal-name,
-      :$user-option1, ..., :$user-optionN
-    )
-
-Supported signals
+confirm-overwrite
 -----------------
-
-### current-folder-changed
-
-This signal is emitted when the current folder in a *Gnome::Gtk3::FileChooser* changes. This can happen due to the user performing some action that changes folders, such as selecting a bookmark or visiting a folder on the file list. It can also happen as a result of calling a function to explicitly change the current folder in a file chooser.
-
-Normally you do not need to connect to this signal, unless you need to keep track of which folder a file chooser is showing.
-
-See also: `gtk_file_chooser_set_current_folder()`, `gtk_file_chooser_get_current_folder()`, `gtk_file_chooser_set_current_folder_uri()`, `gtk_file_chooser_get_current_folder_uri()`.
-
-    method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($chooser),
-      :$user-option1, ..., :$user-optionN
-    );
-
-  * $chooser; the object which received the signal.
-
-### selection-changed
-
-This signal is emitted when there is a change in the set of selected files in a *Gnome::Gtk3::FileChooser*. This can happen when the user modifies the selection with the mouse or the keyboard, or when explicitly calling functions to change the selection.
-
-Normally you do not need to connect to this signal, as it is easier to wait for the file chooser to finish running, and then to get the list of selected files using the functions mentioned below.
-
-See also: `gtk_file_chooser_select_filename()`, `gtk_file_chooser_unselect_filename()`, `gtk_file_chooser_get_filename()`, `gtk_file_chooser_get_filenames()`, `gtk_file_chooser_select_uri()`, `gtk_file_chooser_unselect_uri()`, `gtk_file_chooser_get_uri()`, `gtk_file_chooser_get_uris()`.
-
-    method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($chooser),
-      :$user-option1, ..., :$user-optionN
-    );
-
-  * $chooser; the object which received the signal.
-
-### update-preview
-
-This signal is emitted when the preview in a file chooser should be regenerated. For example, this can happen when the currently selected file changes. You should use this signal if you want your file chooser to have a preview widget.
-
-Once you have installed a preview widget with `gtk_file_chooser_set_preview_widget()`, you should update it when this signal is emitted. You can use the functions `gtk_file_chooser_get_preview_filename()` or `gtk_file_chooser_get_preview_uri()` to get the name of the file to preview. Your widget may not be able to preview all kinds of files; your callback must call `gtk_file_chooser_set_preview_widget_active()` to inform the file chooser about whether the preview was generated successfully or not.
-
-See also: `gtk_file_chooser_set_preview_widget()`, `gtk_file_chooser_set_preview_widget_active()`, `gtk_file_chooser_set_use_preview_label()`, `gtk_file_chooser_get_preview_filename()`, `gtk_file_chooser_get_preview_uri()`.
-
-    method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($chooser),
-      :$user-option1, ..., :$user-optionN
-    );
-
-  * $chooser; the object which received the signal.
-
-### file-activated
-
-This signal is emitted when the user "activates" a file in the file chooser. This can happen by double-clicking on a file in the file list, or by pressing *Enter*.
-
-Normally you do not need to connect to this signal. It is used internally by *Gnome::Gtk3::FileChooserDialog* to know when to activate the default button in the dialog.
-
-See also: `gtk_file_chooser_get_filename()`, `gtk_file_chooser_get_filenames()`, `gtk_file_chooser_get_uri()`, `gtk_file_chooser_get_uris()`.
-
-    method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($chooser),
-      :$user-option1, ..., :$user-optionN
-    );
-
-  * $chooser; the object which received the signal.
-
-### confirm-overwrite
 
 This signal gets emitted whenever it is appropriate to present a confirmation dialog when the user has selected a file name that already exists. The signal only gets emitted when the file chooser is in `GTK_FILE_CHOOSER_ACTION_SAVE` mode.
 
-Most applications just need to turn on the *do-overwrite-confirmation* property (or call the `gtk_file_chooser_set_do_overwrite_confirmation()` function), and they will automatically get a stock confirmation dialog. Applications which need to customize this behavior should do that, and also connect to the prop *confirm-overwrite* signal.
+Most applications just need to turn on the *do-overwrite-confirmation* property (or call the `set_do_overwrite_confirmation()` function), and they will automatically get a stock confirmation dialog. Applications which need to customize this behavior should do that, and also connect to the *confirm-overwrite* signal.
 
-A signal handler for this signal must return a **GtkFileChooserConfirmation** value, which indicates the action to take. If the handler determines that the user wants to select a different filename, it should return `GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN`. If it determines that the user is satisfied with his choice of file name, it should return `GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME`. On the other hand, if it determines that the stock confirmation dialog should be used, it should return `GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM`.
+A signal handler for this signal must return a **Gnome::Gtk3::FileChooserConfirmation** value, which indicates the action to take. If the handler determines that the user wants to select a different filename, it should return `GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN`. If it determines that the user is satisfied with his choice of file name, it should return `GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME`. On the other hand, if it determines that the stock confirmation dialog should be used, it should return `GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM`. The following example illustrates this.
 
-Returns: a **GtkFileChooserConfirmation** value that indicates which action to take after emitting the signal.
+## Custom confirmation ## {**gtkfilechooser**-confirmation}
 
-Since: 2.8
+|[<!-- language="C" --> static GtkFileChooserConfirmation confirm_overwrite_callback (GtkFileChooser *chooser, gpointer data) { char *uri;
+
+uri = get_uri (chooser);
+
+if (is_uri_read_only (uri)) { if (user_wants_to_replace_read_only_file (uri)) return GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME; else return GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN; } else return GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM; // fall back to the default dialog }
+
+...
+
+chooser = dialog_new (...);
+
+set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE); g_signal_connect (chooser, "confirm-overwrite", G_CALLBACK (confirm_overwrite_callback), NULL);
+
+if (gtk_dialog_run (chooser) == GTK_RESPONSE_ACCEPT) save_to_file (get_filename (GTK_FILE_CHOOSER (chooser));
+
+gtk_widget_destroy (chooser); ]|
+
+Returns: a **Gnome::Gtk3::FileChooserConfirmation** value that indicates which action to take after emitting the signal.
 
     method handler (
-      Int :$_handler_id,
-      Gnome::GObject::Object :_widget($chooser),
-      :$user-option1, ..., :$user-optionN
-      --> GtkFileChooserConfirmation
-    );
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
 
-  * $chooser; the object which received the signal.
+      --> Unknown type: GTK_TYPE_FILE_CHOOSER_CONFIRMATION
+    )
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+current-folder-changed
+----------------------
+
+This signal is emitted when the current folder in a **Gnome::Gtk3::FileChooser** changes. This can happen due to the user performing some action that changes folders, such as selecting a bookmark or visiting a folder on the file list. It can also happen as a result of calling a function to explicitly change the current folder in a file chooser.
+
+Normally you do not need to connect to this signal, unless you need to keep track of which folder a file chooser is showing.
+
+See also: `set_current_folder()`, `get_current_folder()`, `set_current_folder_uri()`, `get_current_folder_uri()`.
+
+    method handler (
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+file-activated
+--------------
+
+This signal is emitted when the user "activates" a file in the file chooser. This can happen by double-clicking on a file in the file list, or by pressing `Enter`.
+
+Normally you do not need to connect to this signal. It is used internally by **Gnome::Gtk3::FileChooserDialog** to know when to activate the default button in the dialog.
+
+See also: `get_filename()`, `get_filenames()`, `get_uri()`, `get_uris()`.
+
+    method handler (
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+selection-changed
+-----------------
+
+This signal is emitted when there is a change in the set of selected files in a **Gnome::Gtk3::FileChooser**. This can happen when the user modifies the selection with the mouse or the keyboard, or when explicitly calling functions to change the selection.
+
+Normally you do not need to connect to this signal, as it is easier to wait for the file chooser to finish running, and then to get the list of selected files using the functions mentioned below.
+
+See also: `select_filename()`, `unselect_filename()`, `get_filename()`, `get_filenames()`, `select_uri()`, `unselect_uri()`, `get_uri()`, `get_uris()`.
+
+    method handler (
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+update-preview
+--------------
+
+This signal is emitted when the preview in a file chooser should be regenerated. For example, this can happen when the currently selected file changes. You should use this signal if you want your file chooser to have a preview widget.
+
+Once you have installed a preview widget with `set_preview_widget()`, you should update it when this signal is emitted. You can use the functions `get_preview_filename()` or `get_preview_uri()` to get the name of the file to preview. Your widget may not be able to preview all kinds of files; your callback must call `set_preview_widget_active()` to inform the file chooser about whether the preview was generated successfully or not.
+
+Please see the example code in [Using a Preview Widget][gtkfilechooser-preview].
+
+See also: `set_preview_widget()`, `set_preview_widget_active()`, `set_use_preview_label()`, `get_preview_filename()`, `get_preview_uri()`.
+
+    method handler (
+      Int :$_handler-id,
+      N-GObject :$_native-object,
+      *%user-options
+    )
+
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
-
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
-
-Supported properties
---------------------
-
-### Action
-
-The **Gnome::GObject::Value** type of property *action* is `G_TYPE_ENUM`.
+action
+------
 
 The type of operation that the file selector is performing
 
-Default value: False Flags: GTK_PARAM_READWRITE
+  * **Gnome::GObject::Value** type of this property is G_TYPE_ENUM
 
-### Filter
+  * The type of this G_TYPE_ENUM object is GTK_TYPE_FILE_CHOOSER_ACTION
 
-The **Gnome::GObject::Value** type of property *filter* is `G_TYPE_OBJECT`.
+  * Parameter is readable and writable.
 
-The current filter for selecting which files are displayed
+  * Default value is GTK_FILE_CHOOSER_ACTION_OPEN.
 
-Widget type: GTK_TYPE_FILE_FILTER Flags: GTK_PARAM_READWRITE
+create-folders
+--------------
 
-### Local Only
+Whether a file chooser not in open mode will offer the user to create new folders.
 
-The **Gnome::GObject::Value** type of property *local-only* is `G_TYPE_BOOLEAN`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-Whether the selected file(s should be limited to local file: URLs)
+  * Parameter is readable and writable.
 
-Default value: True
+  * Default value is TRUE.
 
-### Preview Widget Active
+do-overwrite-confirmation
+-------------------------
 
-The **Gnome::GObject::Value** type of property *preview-widget-active* is `G_TYPE_BOOLEAN`.
+Whether a file chooser in save mode will present an overwrite confirmation dialog if necessary.
 
-Whether the application supplied widget for custom previews should be shown.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-Default value: True
+  * Parameter is readable and writable.
 
-### Use Preview Label
+  * Default value is FALSE.
 
-The **Gnome::GObject::Value** type of property *use-preview-label* is `G_TYPE_BOOLEAN`.
-
-Whether to display a stock label with the name of the previewed file.
-
-Default value: True
-
-### Select Multiple
-
-The **Gnome::GObject::Value** type of property *select-multiple* is `G_TYPE_BOOLEAN`.
-
-Whether to allow multiple files to be selected
-
-Default value: False
-
-### Show Hidden
-
-The **Gnome::GObject::Value** type of property *show-hidden* is `G_TYPE_BOOLEAN`.
-
-Whether the hidden files and folders should be displayed
-
-Default value: False
-
-### Do overwrite confirmation
-
-The **Gnome::GObject::Value** type of property *do-overwrite-confirmation* is `G_TYPE_BOOLEAN`.
-
-Whether a file chooser in `GTK_FILE_CHOOSER_ACTION_SAVE` mode will present an overwrite confirmation dialog if the user selects a file name that already exists.
-
-Since: 2.8
-
-Default value: False
-
-### Allow folder creation
-
-The **Gnome::GObject::Value** type of property *create-folders* is `G_TYPE_BOOLEAN`.
-
-Whether a file chooser not in `GTK_FILE_CHOOSER_ACTION_OPEN` mode will offer the user to create new folders.
-
-Since: 2.18
-
-Default value: True
-
-Not yet supported properties
-----------------------------
-
-### Preview widget
-
-The **Gnome::GObject::Value** type of property *preview-widget* is `G_TYPE_OBJECT`.
-
-Application supplied widget for custom previews.
-
-Widget type: GTK_TYPE_WIDGET Flags: GTK_PARAM_READWRITE
-
-### Extra widget
-
-The **Gnome::GObject::Value** type of property *extra-widget* is `G_TYPE_OBJECT`.
+extra-widget
+------------
 
 Application supplied widget for extra options.
 
-Widget type: GTK_TYPE_WIDGET Flags: GTK_PARAM_READWRITE
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
+
+  * The type of this G_TYPE_OBJECT object is GTK_TYPE_WIDGET
+
+  * Parameter is readable and writable.
+
+filter
+------
+
+The current filter for selecting which files are displayed
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
+
+  * The type of this G_TYPE_OBJECT object is GTK_TYPE_FILE_FILTER
+
+  * Parameter is readable and writable.
+
+local-only
+----------
+
+Whether the selected file(s should be limited to local file: URLs)
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
+
+preview-widget
+--------------
+
+Application supplied widget for custom previews.
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
+
+  * The type of this G_TYPE_OBJECT object is GTK_TYPE_WIDGET
+
+  * Parameter is readable and writable.
+
+preview-widget-active
+---------------------
+
+Whether the application supplied widget for custom previews should be shown.
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
+
+select-multiple
+---------------
+
+Whether to allow multiple files to be selected
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is FALSE.
+
+show-hidden
+-----------
+
+Whether the hidden files and folders should be displayed
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is FALSE.
+
+use-preview-label
+-----------------
+
+Whether to display a stock label with the name of the previewed file.
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is TRUE.
 
