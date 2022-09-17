@@ -29,6 +29,7 @@ B<Gnome::Gtk3::FileChooserButton> has a CSS node with name “filechooserbutton�
 
 B<Gnome::Gtk3::FileChooserDialog>
 
+
 =head1 Synopsis
 =head2 Declaration
 
@@ -80,6 +81,8 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+use Gnome::N::GlibToRakuTypes;
+
 use Gnome::Gtk3::Box;
 use Gnome::Gtk3::FileChooser;
 
@@ -112,6 +115,18 @@ Creates a B<Gnome::Gtk3::FileChooserButton> widget which uses I<dialog> as its f
 
   multi method new ( N-GObject :$dialog! )
 =end comment
+
+=head3 :native-object
+
+Create an object using a native object from elsewhere. See also B<Gnome::N::TopLevelSupportClass>.
+
+  multi method new ( N-GObject :$native-object! )
+
+=head3 :build-id
+
+Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+
+  multi method new ( Str :$build-id! )
 
 =end pod
 
@@ -170,12 +185,12 @@ submethod BUILD ( *%options ) {
       }
       }}
 
-      #`{{ when there are no defaults use this
+      ##`{{ when there are no defaults use this
       # check if there are any options
       elsif %options.elems == 0 {
         die X::Gnome.new(:message('No options specified ' ~ self.^name));
       }
-      }}
+      #}}
 
       #`{{ when there are defaults use this instead
       # create default object
@@ -196,11 +211,35 @@ submethod BUILD ( *%options ) {
 # no pod. user does not have to know about it.
 method _fallback ( $native-sub is copy --> Callable ) {
 
+  my Str $new-patt = $native-sub.subst( '_', '-', :g);
+
   my Callable $s;
   try { $s = &::("gtk_file_chooser_button_$native-sub"); };
-# check for gtk_, gdk_, g_, pango_, cairo_ !!!
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  if ?$s {
+    Gnome::N::deprecate(
+      "gtk_file_chooser_button_$native-sub", $new-patt, '0.47.4', '0.50.0'
+    );
+  }
+
+  else {
+    try { $s = &::("gtk_$native-sub"); } unless ?$s;
+    if ?$s {
+      Gnome::N::deprecate(
+        "gtk_$native-sub", $new-patt.subst('file-chooser-button-'),
+        '0.47.4', '0.50.0'
+      );
+    }
+
+    else {
+      try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+      if ?$s {
+        Gnome::N::deprecate(
+          "$native-sub", $new-patt.subst('gtk-file-chooser-button-'),
+          '0.47.4', '0.50.0'
+        );
+      }
+    }
+  }
 
   # then in interfaces
   $s = self._file_chooser_interface($native-sub) unless ?$s;
@@ -211,6 +250,242 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s
 }
 
+#-------------------------------------------------------------------------------
+#TM:1:get-title:
+=begin pod
+=head2 get-title
+
+Retrieves the title of the browse dialog used by I<button>. The returned value should not be modified or freed.
+
+Returns: a pointer to the browse dialog’s title.
+
+  method get-title ( --> Str )
+
+=end pod
+
+method get-title ( --> Str ) {
+  gtk_file_chooser_button_get_title( self._get-native-object-no-reffing)
+}
+
+sub gtk_file_chooser_button_get_title (
+  N-GObject $button --> gchar-ptr
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:get-width-chars:
+=begin pod
+=head2 get-width-chars
+
+Retrieves the width in characters of the I<button> widget’s entry and/or label.
+
+Returns: an integer width (in characters) that the button will use to size itself.
+
+  method get-width-chars ( --> Int )
+
+=end pod
+
+method get-width-chars ( --> Int ) {
+  gtk_file_chooser_button_get_width_chars( self._get-native-object-no-reffing)
+}
+
+sub gtk_file_chooser_button_get_width_chars (
+  N-GObject $button --> gint
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:set-title:
+=begin pod
+=head2 set-title
+
+Modifies the I<title> of the browse dialog used by I<button>.
+
+  method set-title ( Str $title )
+
+=item $title; the new browse dialog title.
+=end pod
+
+method set-title ( Str $title ) {
+  gtk_file_chooser_button_set_title( self._get-native-object-no-reffing, $title);
+}
+
+sub gtk_file_chooser_button_set_title (
+  N-GObject $button, gchar-ptr $title
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:set-width-chars:
+=begin pod
+=head2 set-width-chars
+
+Sets the width (in characters) that I<button> will use to I<n_chars>.
+
+  method set-width-chars ( Int() $n_chars )
+
+=item $n_chars; the new width, in characters.
+=end pod
+
+method set-width-chars ( Int() $n_chars ) {
+  gtk_file_chooser_button_set_width_chars( self._get-native-object-no-reffing, $n_chars);
+}
+
+sub gtk_file_chooser_button_set_width_chars (
+  N-GObject $button, gint $n_chars
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_file_chooser_button_new:
+#`{{
+=begin pod
+=head2 _gtk_file_chooser_button_new
+
+Creates a new file-selecting button widget.
+
+Returns: a new button widget.
+
+  method _gtk_file_chooser_button_new ( Str $title, GtkFileChooserAction $action --> N-GObject )
+
+=item $title; the title of the browse dialog.
+=item $action; the open mode for the widget.
+=end pod
+}}
+
+sub _gtk_file_chooser_button_new ( gchar-ptr $title, GEnum $action --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_file_chooser_button_new')
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:0:_gtk_file_chooser_button_new_with_dialog:
+#`{{
+=begin pod
+=head2 _gtk_file_chooser_button_new_with_dialog
+
+Creates a B<Gnome::Gtk3::FileChooserButton> widget which uses I<dialog> as its file-picking window.
+
+Note that I<dialog> must be a B<Gnome::Gtk3::Dialog> (or subclass) which implements the B<Gnome::Gtk3::FileChooser> interface and must not have C<GTK_DIALOG_DESTROY_WITH_PARENT> set.
+
+Also note that the dialog needs to have its confirmative button added with response C<GTK_RESPONSE_ACCEPT> or C<GTK_RESPONSE_OK> in order for the button to take over the file selected in the dialog.
+
+Returns: a new button widget.
+
+  method _gtk_file_chooser_button_new_with_dialog ( N-GObject() $dialog --> N-GObject )
+
+=item $dialog; (type Gtk.Dialog): the widget to use as dialog
+=end pod
+}}
+
+sub _gtk_file_chooser_button_new_with_dialog ( N-GObject $dialog --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_file_chooser_button_new_with_dialog')
+  { * }
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Signals
+
+
+=comment -----------------------------------------------------------------------
+=comment #TS:0:file-set:
+=head2 file-set
+
+The I<file-set> signal is emitted when the user selects a file.
+
+Note that this signal is only emitted when the user
+changes the file.
+
+  method handler (
+    Int :$_handler-id,
+    N-GObject :$_native-object,
+    *%user-options
+  )
+
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
+
+=end pod
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:dialog:
+=head2 dialog
+
+The file chooser dialog to use.
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_OBJECT
+=item The type of this G_TYPE_OBJECT object is GTK_TYPE_FILE_CHOOSER
+=item Parameter is writable.
+=item Parameter is set on construction of object.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:title:
+=head2 title
+
+The title of the file chooser dialog.
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
+=item Parameter is readable and writable.
+=item Default value is _(DEFAULT_TITLE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:width-chars:
+=head2 width-chars
+
+The desired width of the button widget, in characters.
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_INT
+=item Parameter is readable and writable.
+=item Minimum value is -1.
+=item Maximum value is G_MAXINT.
+=item Default value is -1.
+
+=end pod
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=finish
 
 #-------------------------------------------------------------------------------
 #TM:1:_gtk_file_chooser_button_new:

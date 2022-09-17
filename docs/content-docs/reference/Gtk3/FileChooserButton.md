@@ -83,120 +83,115 @@ Create a new FileChooserButton object.
       GtkFileChooserAction :$action = GTK_FILE_CHOOSER_ACTION_OPEN
     )
 
-[[gtk_] file_chooser_button_] get_title
----------------------------------------
+### :native-object
+
+Create an object using a native object from elsewhere. See also **Gnome::N::TopLevelSupportClass**.
+
+    multi method new ( N-GObject :$native-object! )
+
+### :build-id
+
+Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+
+    multi method new ( Str :$build-id! )
+
+get-title
+---------
 
 Retrieves the title of the browse dialog used by *button*. The returned value should not be modified or freed.
 
 Returns: a pointer to the browse dialog’s title.
 
-    method gtk_file_chooser_button_get_title ( --> Str )
+    method get-title ( --> Str )
 
-[[gtk_] file_chooser_button_] set_title
----------------------------------------
-
-Modifies the *title* of the browse dialog used by *button*.
-
-    method gtk_file_chooser_button_set_title ( Str $title )
-
-  * Str $title; the new browse dialog title.
-
-[[gtk_] file_chooser_button_] get_width_chars
----------------------------------------------
+get-width-chars
+---------------
 
 Retrieves the width in characters of the *button* widget’s entry and/or label.
 
 Returns: an integer width (in characters) that the button will use to size itself.
 
-    method gtk_file_chooser_button_get_width_chars ( --> Int )
+    method get-width-chars ( --> Int )
 
-[[gtk_] file_chooser_button_] set_width_chars
----------------------------------------------
+set-title
+---------
+
+Modifies the *title* of the browse dialog used by *button*.
+
+    method set-title ( Str $title )
+
+  * $title; the new browse dialog title.
+
+set-width-chars
+---------------
 
 Sets the width (in characters) that *button* will use to *n_chars*.
 
-    method gtk_file_chooser_button_set_width_chars ( Int $n_chars )
+    method set-width-chars ( Int() $n_chars )
 
-  * Int $n_chars; the new width, in characters.
+  * $n_chars; the new width, in characters.
 
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `g_signal_connect_object()` directly from **Gnome::GObject::Signal**.
-
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
--------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `g_signal_connect_object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
-### file-set
+file-set
+--------
 
 The *file-set* signal is emitted when the user selects a file.
 
 Note that this signal is only emitted when the user changes the file.
 
-Since: 2.12
-
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $widget; the object which received the signal.
+  * $_handler-id; The handler id which is returned from the registration
+
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+dialog
+------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
+The file chooser dialog to use.
 
-Supported properties
---------------------
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
 
-### Dialog
+  * The type of this G_TYPE_OBJECT object is GTK_TYPE_FILE_CHOOSER
 
-Instance of the **Gnome::Gtk3::FileChooserDialog** associated with the button. Widget type: GTK_TYPE_FILE_CHOOSER
+  * Parameter is writable.
 
-The **Gnome::GObject::Value** type of property *dialog* is `G_TYPE_OBJECT`.
+  * Parameter is set on construction of object.
 
-### Title
+title
+-----
 
-Title to put on the **Gnome::Gtk3::FileChooserDialog** associated with the button.
+The title of the file chooser dialog.
 
-The **Gnome::GObject::Value** type of property *title* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
-### Width In Characters
+  * Parameter is readable and writable.
 
-The width of the entry and label inside the button, in characters.
+  * Default value is _(DEFAULT_TITLE.
 
-The **Gnome::GObject::Value** type of property *width-chars* is `G_TYPE_INT`.
+width-chars
+-----------
+
+The desired width of the button widget, in characters.
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
+
+  * Parameter is readable and writable.
+
+  * Minimum value is -1.
+
+  * Maximum value is G_MAXINT.
+
+  * Default value is -1.
 

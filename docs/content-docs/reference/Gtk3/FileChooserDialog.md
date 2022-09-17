@@ -116,11 +116,6 @@ This is because *Gnome::Gtk3::FileChooserDialog* must intercept responses and sw
 
 To summarize, make sure you use a *ResponseType* when you use *Gnome::Gtk3::FileChooserDialog* to ensure proper operation.
 
-Implemented Interfaces
-----------------------
-
-  * [Gnome::Gtk3::FileChooser](FileChooser.html)
-
 See Also
 --------
 
@@ -163,25 +158,7 @@ new
 
 ### multi method new ( GtkFileChooserAction :$action! )
 
-    multi method new (
-      GtkFileChooserAction :$action!, Str :$title, Gnome::GObject::Object $parent,
-      List :$buttons-spec
-    )
-
-Create an object using a native object from elsewhere. See also *gtk_file_chooser_dialog_new()* below.
-
-### multi method new ( N-GObject :$native-object! )
-
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
-
-### multi method new ( Str :$build-id! )
-
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
-
-[gtk_] file_chooser_dialog_new
-------------------------------
-
-Creates a new file chooser dialog. This function is analogous to `gtk_dialog_new_with_buttons()`. This method is called when creating the object using *.new(:action(...), ...)*.
+Creates a new file chooser dialog. This function is analogous to `Gnome::Gtk3::Dialog.new( :$title, :$parent, :$flags, :$buttons-spec)`. This method is called when creating the object using *.new(:action(...), ...)*.
 
 Returns: a new native file chooser dialog.
 
@@ -204,4 +181,19 @@ Since: 2.4
     * Str $button-label to go on the button.
 
     * $response-code, an Int, GtkResponseType or other enum (with int values) to return for the button. Taking a GtkResponseType will help the chooser dialog make a proper decision if needed. Otherwise, the user can always check codes returned by the dialog to find out what to do next.
+
+    multi method new (
+      GtkFileChooserAction :$action!, Str :$title, Gnome::GObject::Object $parent,
+      List :$buttons-spec
+    )
+
+Create an object using a native object from elsewhere. See also *gtk_file_chooser_dialog_new()* below.
+
+### multi method new ( N-GObject :$native-object! )
+
+Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+
+### multi method new ( Str :$build-id! )
+
+Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
 

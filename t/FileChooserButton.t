@@ -7,6 +7,7 @@ use Gnome::Gtk3::FileChooserButton;
 
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
+use Gnome::N::GlibToRakuTypes;
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::FileChooserButton $fcb;
@@ -30,25 +31,33 @@ subtest 'Manipulations', {
   $fcb.set-title('abc');
   is $fcb.get-title, 'abc', '.set-title() / .get-title()';
 
-  # $fcb.get-width-chars; returns -1 because it is not mapped
+  $fcb.set-width-chars(10);
+  is $fcb.get-width-chars, 10, '.set-width-chars() / .get-width-chars()';
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Inherit Gnome::Gtk3::FileChooserButton', {
+  class MyClass is Gnome::Gtk3::FileChooserButton {
+    method new ( |c ) {
+      self.bless( :GtkFileChooserButton, |c);
+    }
+
+    submethod BUILD ( *%options ) {
+
+    }
+  }
+
+  my MyClass $mgc .= new;
+  isa-ok $mgc, Gnome::Gtk3::FileChooserButton, '.new()';
 }
 
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
-  use Gnome::GObject::Value;
-  use Gnome::GObject::Type;
-
   my Gnome::Gtk3::FileChooserButton $fcb .= new(:title('test to select'));
+  $fcb.set-width-chars(10);
 
-  sub test-property ( $type, Str $prop, Str $routine, $value ) {
-    my Gnome::GObject::Value $gv .= new(:init($type));
-    $fcb.get-property( $prop, $gv);
-    my $gv-value = $gv."$routine"();
-    is $gv-value, $value, "property $prop";
-    $gv.clear-object;
-  }
-
-  test-property( G_TYPE_STRING, 'title', 'get-string', 'test to select');
+  my @r = $fcb.get-properties( 'title', Str, 'width-chars', Int);
+  is-deeply @r, [ 'test to select', 10], "properties: 'title', 'width-chars'";
 }
 
 #`{{

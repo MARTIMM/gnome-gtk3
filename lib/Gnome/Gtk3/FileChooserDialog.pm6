@@ -112,14 +112,11 @@ This is because I<Gnome::Gtk3::FileChooserDialog> must intercept responses and s
 
 To summarize, make sure you use a I<ResponseType> when you use I<Gnome::Gtk3::FileChooserDialog> to ensure proper operation.
 
-=head2 Implemented Interfaces
-
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::FileChooser](FileChooser.html)
 
 =head2 See Also
 
 B<Gnome::Gtk3::FileChooser>, B<Gnome::Gtk3::Dialog>.
+
 
 =head1 Synopsis
 =head2 Declaration
@@ -127,6 +124,12 @@ B<Gnome::Gtk3::FileChooser>, B<Gnome::Gtk3::Dialog>.
   unit class Gnome::Gtk3::FileChooserDialog;
   also is Gnome::Gtk3::Dialog;
   also does Gnome::Gtk3::FileChooser;
+
+
+=comment head2 Uml Diagram
+
+=comment ![](plantuml/FileChooserDialog.svg)
+
 
 =head2 Example
 
@@ -172,6 +175,27 @@ my Bool $signals-added = False;
 =head2 new
 
 =head3 multi method new ( GtkFileChooserAction :$action! )
+
+Creates a new file chooser dialog. This function is analogous to C<Gnome::Gtk3::Dialog.new( :$title, :$parent, :$flags, :$buttons-spec)>. This method is called when creating the object using I<.new(:action(...), ...)>.
+
+Returns: a new native file chooser dialog.
+
+Since: 2.4
+
+  method gtk_file_chooser_dialog_new (
+    Str $title, N-GObject $parent, GtkFileChooserAction $action,
+    *@buttons-spec
+    --> N-GObject
+  )
+
+=item Str $title; Title of the dialog, or C<Any>.
+=item N-GObject $parent; Transient parent of the dialog, or C<Any>.
+=item GtkFileChooserAction $action; Open or save mode for the dialog.
+
+=item *@buttons-spec is a list button specifications. The list has an even number of members of which;
+=item2 Str $button-label to go on the button.
+=item2 $response-code, an Int, GtkResponseType or other enum (with int values) to return for the button. Taking a GtkResponseType will help the chooser dialog make a proper decision if needed. Otherwise, the user can always check codes returned by the dialog to find out what to do next.
+
 
   multi method new (
     GtkFileChooserAction :$action!, Str :$title, Gnome::GObject::Object $parent,
@@ -221,7 +245,7 @@ submethod BUILD ( *%options ) {
     }
 
     self._set-native-object(
-      gtk_file_chooser_dialog_new( $title, $parent, %options<action>, |@buttons)
+      _gtk_file_chooser_dialog_new( $title, $parent, %options<action>, |@buttons)
     );
   }
 
@@ -241,6 +265,7 @@ submethod BUILD ( *%options ) {
   self._set-class-info('GtkFileChooserDialog');
 }
 
+#`{{
 #-------------------------------------------------------------------------------
 method _fallback ( $native-sub is copy --> Callable ) {
 
@@ -257,9 +282,11 @@ method _fallback ( $native-sub is copy --> Callable ) {
   # return result
   $s;
 }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:4:gtk_file_chooser_dialog_new:
+#`{{
 =begin pod
 =head2 [gtk_] file_chooser_dialog_new
 
@@ -284,12 +311,12 @@ Since: 2.4
 =item2 $response-code, an Int, GtkResponseType or other enum (with int values) to return for the button. Taking a GtkResponseType will help the chooser dialog make a proper decision if needed. Otherwise, the user can always check codes returned by the dialog to find out what to do next.
 
 =end pod
+}}
 
-sub gtk_file_chooser_dialog_new (
+sub _gtk_file_chooser_dialog_new (
   Str $title, N-GObject $parent, GtkFileChooserAction $action, *@buttons
   --> N-GObject
 ) {
-
   # create parameter list and start with inserting fixed arguments
   my @parameterList = (
     Parameter.new(type => Str),         # $title
