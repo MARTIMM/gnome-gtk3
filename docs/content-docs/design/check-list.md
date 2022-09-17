@@ -135,13 +135,13 @@ DrawingArea               |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓|
 Editable                  |  | ✗| ✓| ✓| ✓| ✓| ✗|  |  | ✗| ✓| ✓| ✓|
 Entry                     |  | ✓| ✓| ✓| ✓| ✓| ✓|  |  |  | ✓| ✓| ✓|
 EntryCompletion           |  | ✓| ✓| ✓| ✓| ✓| ✓| ⅖|  | ⅗| ✓| ✓| ✓|
-Enums                     |S | ✗| ✓| ✓| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| < fbck sg prp
+Enums                     |S | ✗| ✓| ✓| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✗|
 EventBox                  |  |  | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ✓| ✓| ✓| ✓|
 Expander                  |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  |  | ✓| ✓| ✓|
+FileChooser               |R | ✗| ✓| ✓| ✓| ✓| ✓|  |  |  | ✓| ✓| ✓|
+FileChooserButton         |  | ✓| ✓| ✓| ✓| ✓| ✓| ¾|  | ⅔| ✓| ✓| ✓|
+FileChooserDialog         |  | ✗| ✓| ✓| ✓| ✗| ✗| ¾| ✗| ✗| ✓| ✓| ✓| < fbck sg prp
 | Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
-FileChooser               |R | ✗|  |  |  |  |  |  |  |  |  |  |  |
-FileChooserButton         |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  | ⅓|  |  |  |
-FileChooserDialog         |  |  |  |  |  |  |  |  |  |  |  |  |  |
 FileChooserWidget         |  |  | ✓| ✓| ✓| ✓| ✓| ✓|  | ✓| ✓| ✓| ✓|
 FileFilter                |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Fixed                     |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|

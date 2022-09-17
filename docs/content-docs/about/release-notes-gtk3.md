@@ -6,7 +6,7 @@ layout: sidebar
 ---
 # Release notes
 * 2022-08-31 0.48.10
-  * Revisited modules **Gnome::Gtk3::EntryCompletion**, **Gnome::Gtk3::EventBox**.
+  * Revisited modules **Gnome::Gtk3::EntryCompletion**, **Gnome::Gtk3::EventBox**, **Gnome::Gtk3::FileChooser**, **Gnome::Gtk3::FileChooserButton**.
 
 * 2022-08-28 0.48.9
   * Revisited module **Gnome::Gtk3::Entry**.
