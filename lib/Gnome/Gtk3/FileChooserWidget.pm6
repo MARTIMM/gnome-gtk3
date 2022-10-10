@@ -73,7 +73,7 @@ use Gnome::Gtk3::Box;
 use Gnome::Gtk3::FileChooser;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::FileChooserWidget:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::FileChooserWidget:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Box;
 also does Gnome::Gtk3::FileChooser;
 
@@ -135,14 +135,12 @@ submethod BUILD ( *%options ) {
 
     # process all other options
     else {
-      my $no;
-      if ? %options<action> {
-        #$no = %options<___x___>;
-        #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
+      my N-GObject() $no;
+      if %options<action>:exists {
         $no = _gtk_file_chooser_widget_new(%options<action>);
       }
 
-      #`{{ use this when the module is not made inheritable
+      ##`{{ use this when the module is not made inheritable
       # check if there are unknown options
       elsif %options.elems {
         die X::Gnome.new(
@@ -152,14 +150,14 @@ submethod BUILD ( *%options ) {
           )
         );
       }
-      }}
+      #}}
 
-      #`{{ when there are no defaults use this
+      ##`{{ when there are no defaults use this
       # check if there are any options
       elsif %options.elems == 0 {
         die X::Gnome.new(:message('No options specified ' ~ self.^name));
       }
-      }}
+      #}}
 
       #`{{ when there are defaults use this instead
       # create default object
@@ -201,34 +199,6 @@ sub _gtk_file_chooser_widget_new ( GEnum $action --> N-GObject )
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Signals
-
-There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
-
-=head2 First method
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
-
-  # handler method
-  method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-  # connect a signal on window object
-  my Gnome::Gtk3::Window $w .= new( ... );
-  $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-=head2 Second method
-
-  my Gnome::Gtk3::Window $w .= new( ... );
-  my Callable $handler = sub (
-    N-GObject $native, GdkEvent $event, OpaquePointer $data
-  ) {
-    ...
-  }
-
-  $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<connect-object()> are using the signatures of the handler routines to setup the native call interface.
-
-=head2 Supported signals
 
 
 =comment -----------------------------------------------------------------------
@@ -516,14 +486,6 @@ The default binding for this signal is `Alt + Up`.
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
-
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.get-property( 'label', $gv);
-  $gv.set-string('my text label');
-
-=head2 Supported properties
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:search-mode:

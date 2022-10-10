@@ -5,6 +5,8 @@ use Test;
 use Gnome::Gtk3::FileChooser;
 use Gnome::Gtk3::FileChooserWidget;
 
+use Gnome::N::GlibToRakuTypes;
+
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
@@ -14,6 +16,7 @@ my Gnome::Gtk3::FileChooserWidget $fcw;
 subtest 'ISA test', {
   $fcw .= new(:action(GTK_FILE_CHOOSER_ACTION_OPEN));
   isa-ok $fcw, Gnome::Gtk3::FileChooserWidget, '.new(:action)';
+  ok $fcw.is-valid, '.new(:action)';
 }
 
 #-------------------------------------------------------------------------------
@@ -25,11 +28,11 @@ unless %*ENV<raku_test_all>:exists {
 
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
+#`{{
   use Gnome::GObject::Value;
   use Gnome::GObject::Type;
 
   #my Gnome::Gtk3::FileChooserWidget $fcw .= new;
-
   sub test-property (
     $type, Str $prop, Str $routine, $value,
     Bool :$approx = False, Bool :$is-local = False
@@ -65,6 +68,13 @@ subtest 'Properties ...', {
   # example calls
   test-property( G_TYPE_BOOLEAN, 'search-mode', 'get-boolean', 0);
   test-property( G_TYPE_STRING, 'subtitle', 'get-string', Str);
+}}
+
+#  my Gnome::Gtk3::FileChooserWidget $fcw .= new;
+  my @r = $fcw.get-properties( 'search-mode', gboolean, 'subtitle', Str);
+  is-deeply @r, [ 0, '' ], 'properties: ' ~ (
+    'search-mode', 'subtitle'
+  ).join(', ');
 }
 
 #-------------------------------------------------------------------------------

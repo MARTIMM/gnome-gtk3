@@ -60,37 +60,6 @@ Create a FileChooserWidget object using a native object returned from a builder.
 Signals
 =======
 
-There are two ways to connect to a signal. The first option you have is to use `register-signal()` from **Gnome::GObject::Object**. The second option is to use `connect-object()` directly from **Gnome::GObject::Signal**.
-
-First method
-------------
-
-The positional arguments of the signal handler are all obligatory as well as their types. The named attributes `:$widget` and user data are optional.
-
-    # handler method
-    method mouse-event ( GdkEvent $event, :$widget ) { ... }
-
-    # connect a signal on window object
-    my Gnome::Gtk3::Window $w .= new( ... );
-    $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-Second method
--------------
-
-    my Gnome::Gtk3::Window $w .= new( ... );
-    my Callable $handler = sub (
-      N-GObject $native, GdkEvent $event, OpaquePointer $data
-    ) {
-      ...
-    }
-
-    $w.connect-object( 'button-press-event', $handler);
-
-Also here, the types of positional arguments in the signal handler are important. This is because both methods `register-signal()` and `connect-object()` are using the signatures of the handler routines to setup the native call interface.
-
-Supported signals
------------------
-
 ### desktop-folder
 
 The *desktop-folder* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user asks for it.
@@ -315,16 +284,6 @@ The default binding for this signal is `Alt + Up`.
 
 Properties
 ==========
-
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
-
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.get-property( 'label', $gv);
-    $gv.set-string('my text label');
-
-Supported properties
---------------------
 
 ### Search mode: search-mode
 
