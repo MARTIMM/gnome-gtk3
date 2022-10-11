@@ -14,8 +14,9 @@ use Gnome::N::GlibToRakuTypes;
 my Gnome::Gtk3::FileChooserWidget $fcw;
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
+  $fcw .= new;
+  ok $fcw.is-valid, '.new()';
   $fcw .= new(:action(GTK_FILE_CHOOSER_ACTION_OPEN));
-  isa-ok $fcw, Gnome::Gtk3::FileChooserWidget, '.new(:action)';
   ok $fcw.is-valid, '.new(:action)';
 }
 

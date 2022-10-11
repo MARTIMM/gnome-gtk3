@@ -43,7 +43,9 @@ new
 
 Create a new FileChooserWidget object.
 
-    multi method new ( GtkFileChooserAction :$action! )
+    multi method new (
+      GtkFileChooserAction :$action! = GTK_FILE_CHOOSER_ACTION_OPEN
+    )
 
 ### :native-object
 

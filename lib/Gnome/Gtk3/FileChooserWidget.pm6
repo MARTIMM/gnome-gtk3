@@ -89,7 +89,9 @@ my Bool $signals-added = False;
 
 Create a new FileChooserWidget object.
 
-  multi method new ( GtkFileChooserAction :$action! )
+  multi method new (
+    GtkFileChooserAction :$action! = GTK_FILE_CHOOSER_ACTION_OPEN
+  )
 
 =head3 :native-object
 
@@ -109,7 +111,6 @@ Create a FileChooserWidget object using a native object returned from a builder.
 #TM:1:new(:action):
 #TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
 #TM:4:new(:build-id):Gnome::GObject::Object
-
 submethod BUILD ( *%options ) {
 
   # add signal info in the form of w*<signal-name>.
@@ -152,19 +153,19 @@ submethod BUILD ( *%options ) {
       }
       #}}
 
-      ##`{{ when there are no defaults use this
+      #`{{ when there are no defaults use this
       # check if there are any options
       elsif %options.elems == 0 {
         die X::Gnome.new(:message('No options specified ' ~ self.^name));
       }
-      #}}
+      }}
 
-      #`{{ when there are defaults use this instead
+      ##`{{ when there are defaults use this instead
       # create default object
       else {
-        $no = _gtk_file_chooser_widget_new();
+        $no = _gtk_file_chooser_widget_new(GTK_FILE_CHOOSER_ACTION_OPEN);
       }
-      }}
+      #}}
 
       self._set-native-object($no);
     }
