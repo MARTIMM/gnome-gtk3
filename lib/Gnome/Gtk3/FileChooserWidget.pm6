@@ -204,7 +204,7 @@ sub _gtk_file_chooser_widget_new ( GEnum $action --> N-GObject )
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:desktop-folder:
-=head3 desktop-folder
+=head2 desktop-folder
 
 The I<desktop-folder> signal is a [keybinding signal][GtkBindingSignal]
 which gets emitted when the user asks for it.
@@ -215,21 +215,20 @@ folder in the file list.
 The default binding for this signal is `Alt + D`.
 
   method handler (
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($widget),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
-  );
+  )
 
-=item $widget; the object which received the signal
-
-=item $_handle_id; the registered event handler id
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:down-folder:
-=head3 down-folder
+=head2 down-folder
 
-The I<down-folder> signal is a [keybinding signal][GtkBindingSignal]
-which gets emitted when the user asks for it.
+The I<down-folder> signal is a keybinding signal which gets emitted when the user asks for it.
 
 This is used to make the file chooser go to a child of the current folder
 in the file hierarchy. The subfolder that will be used is displayed in the
@@ -240,21 +239,20 @@ chooser to switch to the "baz" subfolder.
 The default binding for this signal is `Alt + Down`.
 
   method handler (
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($widget),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
-  );
+  )
 
-=item $widget; the object which received the signal
-
-=item $_handle_id; the registered event handler id
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:home-folder:
-=head3 home-folder
+=head2 home-folder
 
-The I<home-folder> signal is a [keybinding signal][GtkBindingSignal]
-which gets emitted when the user asks for it.
+The I<home-folder> signal is a keybinding signal which gets emitted when the user asks for it.
 
 This is used to make the file chooser show the user's home
 folder in the file list.
@@ -262,21 +260,20 @@ folder in the file list.
 The default binding for this signal is `Alt + Home`.
 
   method handler (
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($widget),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
-  );
+  )
 
-=item $widget; the object which received the signal
-
-=item $_handle_id; the registered event handler id
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:location-popup:
-=head3 location-popup
+=head2 location-popup
 
-The I<location-popup> signal is a [keybinding signal][GtkBindingSignal]
-which gets emitted when the user asks for it.
+The I<location-popup> signal is a keybinding signal which gets emitted when the user asks for it.
 
 This is used to make the file chooser show a "Location" prompt which
 the user can use to manually type the name of the file he wishes to select.
@@ -289,23 +286,21 @@ itself for access to home directories.
 
   method handler (
     Str $path,
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($widget),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
-  );
-
-=item $widget; the object which received the signal
+  )
 
 =item $path; a string that gets put in the text entry for the file name
-
-=item $_handle_id; the registered event handler id
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:location-popup-on-paste:
-=head3 location-popup-on-paste
+=head2 location-popup-on-paste
 
-The I<location-popup-on-paste> signal is a [keybinding signal][GtkBindingSignal]
-which gets emitted when the user asks for it.
+The I<location-popup-on-paste> signal is a keybinding signal which gets emitted when the user asks for it.
 
 This is used to make the file chooser show a "Location" prompt when the user
 pastes into a B<Gnome::Gtk3::FileChooserWidget>.
@@ -313,20 +308,20 @@ pastes into a B<Gnome::Gtk3::FileChooserWidget>.
 The default binding for this signal is `Control + V`.
 
   method handler (
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($widget),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
-  );
+  )
 
-=item $widget; the object which received the signal
-
-=item $_handle_id; the registered event handler id
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:location-toggle-popup:
-=head3 location-toggle-popup
+=head2 location-toggle-popup
 
-The I<location-toggle-popup> signal is a [keybinding signal][GtkBindingSignal]
+The I<location-toggle-popup> signal is a keybinding signal
 which gets emitted when the user asks for it.
 
 This is used to toggle the visibility of a "Location" prompt which the user
@@ -335,20 +330,20 @@ can use to manually type the name of the file he wishes to select.
 The default binding for this signal is `Control + L`.
 
   method handler (
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($widget),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
-  );
+  )
 
-=item $widget; the object which received the signal
-
-=item $_handle_id; the registered event handler id
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:places-shortcut:
-=head3 places-shortcut
+=head2 places-shortcut
 
-The I<places-shortcut> signal is a [keybinding signal][GtkBindingSignal]
+The I<places-shortcut> signal is a keybinding signal
 which gets emitted when the user asks for it.
 
 This is used to move the focus to the places sidebar.
@@ -356,24 +351,24 @@ This is used to move the focus to the places sidebar.
 The default binding for this signal is `Alt + P`.
 
   method handler (
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($widget),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
-  );
+  )
 
-=item $widget; the object which received the signal
-
-=item $_handle_id; the registered event handler id
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:quick-bookmark:
-=head3 quick-bookmark
+=head2 quick-bookmark
 
-The I<quick-bookmark> signal is a [keybinding signal][GtkBindingSignal]
+The I<quick-bookmark> signal is a keybinding signal
 which gets emitted when the user asks for it.
 
 This is used to make the file chooser switch to the bookmark specified
-in the I<bookmark-index> parameter. For example, if you have three bookmarks,
+in the I<bookmark_index> parameter. For example, if you have three bookmarks,
 you can pass 0, 1, 2 to this signal to switch to each of them, respectively.
 
 The default binding for this signal is `Alt + 1`, `Alt + 2`,
@@ -384,22 +379,21 @@ bookmark at index 10.
 
   method handler (
     Int $bookmark_index,
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($widget),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
-  );
-
-=item $widget; the object which received the signal
+  )
 
 =item $bookmark_index; the number of the bookmark to switch to
-
-=item $_handle_id; the registered event handler id
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:recent-shortcut:
-=head3 recent-shortcut
+=head2 recent-shortcut
 
-The I<recent-shortcut> signal is a [keybinding signal][GtkBindingSignal]
+The I<recent-shortcut> signal is a keybinding signal
 which gets emitted when the user asks for it.
 
 This is used to make the file chooser show the Recent location.
@@ -407,20 +401,20 @@ This is used to make the file chooser show the Recent location.
 The default binding for this signal is `Alt + R`.
 
   method handler (
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($widget),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
-  );
+  )
 
-=item $widget; the object which received the signal
-
-=item $_handle_id; the registered event handler id
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:search-shortcut:
-=head3 search-shortcut
+=head2 search-shortcut
 
-The I<search-shortcut> signal is a [keybinding signal][GtkBindingSignal]
+The I<search-shortcut> signal is a keybinding signal
 which gets emitted when the user asks for it.
 
 This is used to make the file chooser show the search entry.
@@ -428,20 +422,20 @@ This is used to make the file chooser show the search entry.
 The default binding for this signal is `Alt + S`.
 
   method handler (
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($widget),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
-  );
+  )
 
-=item $widget; the object which received the signal
-
-=item $_handle_id; the registered event handler id
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:show-hidden:
-=head3 show-hidden
+=head2 show-hidden
 
-The I<show-hidden> signal is a [keybinding signal][GtkBindingSignal]
+The I<show-hidden> signal is a keybinding signal
 which gets emitted when the user asks for it.
 
 This is used to make the file chooser display hidden files.
@@ -449,20 +443,20 @@ This is used to make the file chooser display hidden files.
 The default binding for this signal is `Control + H`.
 
   method handler (
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($widget),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
-  );
+  )
 
-=item $widget; the object which received the signal
-
-=item $_handle_id; the registered event handler id
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =comment -----------------------------------------------------------------------
 =comment #TS:0:up-folder:
-=head3 up-folder
+=head2 up-folder
 
-The I<up-folder> signal is a [keybinding signal][GtkBindingSignal]
+The I<up-folder> signal is a keybinding signal
 which gets emitted when the user asks for it.
 
 This is used to make the file chooser go to the parent of the current folder
@@ -471,38 +465,39 @@ in the file hierarchy.
 The default binding for this signal is `Alt + Up`.
 
   method handler (
-    Int :$_handle_id,
-    Gnome::GObject::Object :_widget($widget),
+    Int :$_handler-id,
+    N-GObject :$_native-object,
     *%user-options
-  );
+  )
 
-=item $widget; the object which received the signal
-
-=item $_handle_id; the registered event handler id
+=item $_handler-id; The handler id which is returned from the registration
+=item $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+=item %user-options; A list of named arguments provided at the C<register-signal()> method
 
 =end pod
-
 
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Properties
 
-
 =comment -----------------------------------------------------------------------
 =comment #TP:1:search-mode:
-=head3 Search mode: search-mode
+=head2 search-mode
 
 Search mode
-Default value: False
 
-The B<Gnome::GObject::Value> type of property I<search-mode> is C<G_TYPE_BOOLEAN>.
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:subtitle:
-=head3 Subtitle: subtitle
+=head2 subtitle
 
 Subtitle
-Default value:
 
-The B<Gnome::GObject::Value> type of property I<subtitle> is C<G_TYPE_STRING>.
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
+=item Parameter is readable.
+
 =end pod

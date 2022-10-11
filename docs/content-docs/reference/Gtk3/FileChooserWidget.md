@@ -62,7 +62,8 @@ Create a FileChooserWidget object using a native object returned from a builder.
 Signals
 =======
 
-### desktop-folder
+desktop-folder
+--------------
 
 The *desktop-folder* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user asks for it.
 
@@ -71,54 +72,63 @@ This is used to make the file chooser show the user's Desktop folder in the file
 The default binding for this signal is `Alt + D`.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $widget; the object which received the signal
+  * $_handler-id; The handler id which is returned from the registration
 
-  * $_handle_id; the registered event handler id
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
 
-### down-folder
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
-The *down-folder* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user asks for it.
+down-folder
+-----------
+
+The *down-folder* signal is a keybinding signal which gets emitted when the user asks for it.
 
 This is used to make the file chooser go to a child of the current folder in the file hierarchy. The subfolder that will be used is displayed in the path bar widget of the file chooser. For example, if the path bar is showing "/foo/bar/baz", with bar currently displayed, then this will cause the file chooser to switch to the "baz" subfolder.
 
 The default binding for this signal is `Alt + Down`.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $widget; the object which received the signal
+  * $_handler-id; The handler id which is returned from the registration
 
-  * $_handle_id; the registered event handler id
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
 
-### home-folder
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
-The *home-folder* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user asks for it.
+home-folder
+-----------
+
+The *home-folder* signal is a keybinding signal which gets emitted when the user asks for it.
 
 This is used to make the file chooser show the user's home folder in the file list.
 
 The default binding for this signal is `Alt + Home`.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $widget; the object which received the signal
+  * $_handler-id; The handler id which is returned from the registration
 
-  * $_handle_id; the registered event handler id
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
 
-### location-popup
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
-The *location-popup* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user asks for it.
+location-popup
+--------------
+
+The *location-popup* signal is a keybinding signal which gets emitted when the user asks for it.
 
 This is used to make the file chooser show a "Location" prompt which the user can use to manually type the name of the file he wishes to select.
 
@@ -126,176 +136,210 @@ The default bindings for this signal are `Control + L` with a *path* string of "
 
     method handler (
       Str $path,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
-
-  * $widget; the object which received the signal
+    )
 
   * $path; a string that gets put in the text entry for the file name
 
-  * $_handle_id; the registered event handler id
+  * $_handler-id; The handler id which is returned from the registration
 
-### location-popup-on-paste
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
 
-The *location-popup-on-paste* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user asks for it.
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+location-popup-on-paste
+-----------------------
+
+The *location-popup-on-paste* signal is a keybinding signal which gets emitted when the user asks for it.
 
 This is used to make the file chooser show a "Location" prompt when the user pastes into a **Gnome::Gtk3::FileChooserWidget**.
 
 The default binding for this signal is `Control + V`.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $widget; the object which received the signal
+  * $_handler-id; The handler id which is returned from the registration
 
-  * $_handle_id; the registered event handler id
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
 
-### location-toggle-popup
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
-The *location-toggle-popup* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user asks for it.
+location-toggle-popup
+---------------------
+
+The *location-toggle-popup* signal is a keybinding signal which gets emitted when the user asks for it.
 
 This is used to toggle the visibility of a "Location" prompt which the user can use to manually type the name of the file he wishes to select.
 
 The default binding for this signal is `Control + L`.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $widget; the object which received the signal
+  * $_handler-id; The handler id which is returned from the registration
 
-  * $_handle_id; the registered event handler id
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
 
-### places-shortcut
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
-The *places-shortcut* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user asks for it.
+places-shortcut
+---------------
+
+The *places-shortcut* signal is a keybinding signal which gets emitted when the user asks for it.
 
 This is used to move the focus to the places sidebar.
 
 The default binding for this signal is `Alt + P`.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $widget; the object which received the signal
+  * $_handler-id; The handler id which is returned from the registration
 
-  * $_handle_id; the registered event handler id
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
 
-### quick-bookmark
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
-The *quick-bookmark* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user asks for it.
+quick-bookmark
+--------------
 
-This is used to make the file chooser switch to the bookmark specified in the *bookmark-index* parameter. For example, if you have three bookmarks, you can pass 0, 1, 2 to this signal to switch to each of them, respectively.
+The *quick-bookmark* signal is a keybinding signal which gets emitted when the user asks for it.
+
+This is used to make the file chooser switch to the bookmark specified in the *bookmark_index* parameter. For example, if you have three bookmarks, you can pass 0, 1, 2 to this signal to switch to each of them, respectively.
 
 The default binding for this signal is `Alt + 1`, `Alt + 2`, etc. until `Alt + 0`. Note that in the default binding, that `Alt + 1` is actually defined to switch to the bookmark at index 0, and so on successively; `Alt + 0` is defined to switch to the bookmark at index 10.
 
     method handler (
       Int $bookmark_index,
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
-
-  * $widget; the object which received the signal
+    )
 
   * $bookmark_index; the number of the bookmark to switch to
 
-  * $_handle_id; the registered event handler id
+  * $_handler-id; The handler id which is returned from the registration
 
-### recent-shortcut
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
 
-The *recent-shortcut* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user asks for it.
+  * %user-options; A list of named arguments provided at the `register-signal()` method
+
+recent-shortcut
+---------------
+
+The *recent-shortcut* signal is a keybinding signal which gets emitted when the user asks for it.
 
 This is used to make the file chooser show the Recent location.
 
 The default binding for this signal is `Alt + R`.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $widget; the object which received the signal
+  * $_handler-id; The handler id which is returned from the registration
 
-  * $_handle_id; the registered event handler id
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
 
-### search-shortcut
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
-The *search-shortcut* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user asks for it.
+search-shortcut
+---------------
+
+The *search-shortcut* signal is a keybinding signal which gets emitted when the user asks for it.
 
 This is used to make the file chooser show the search entry.
 
 The default binding for this signal is `Alt + S`.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $widget; the object which received the signal
+  * $_handler-id; The handler id which is returned from the registration
 
-  * $_handle_id; the registered event handler id
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
 
-### show-hidden
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
-The *show-hidden* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user asks for it.
+show-hidden
+-----------
+
+The *show-hidden* signal is a keybinding signal which gets emitted when the user asks for it.
 
 This is used to make the file chooser display hidden files.
 
 The default binding for this signal is `Control + H`.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $widget; the object which received the signal
+  * $_handler-id; The handler id which is returned from the registration
 
-  * $_handle_id; the registered event handler id
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
 
-### up-folder
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
-The *up-folder* signal is a [keybinding signal][GtkBindingSignal] which gets emitted when the user asks for it.
+up-folder
+---------
+
+The *up-folder* signal is a keybinding signal which gets emitted when the user asks for it.
 
 This is used to make the file chooser go to the parent of the current folder in the file hierarchy.
 
 The default binding for this signal is `Alt + Up`.
 
     method handler (
-      Int :$_handle_id,
-      Gnome::GObject::Object :_widget($widget),
+      Int :$_handler-id,
+      N-GObject :$_native-object,
       *%user-options
-    );
+    )
 
-  * $widget; the object which received the signal
+  * $_handler-id; The handler id which is returned from the registration
 
-  * $_handle_id; the registered event handler id
+  * $_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.
+
+  * %user-options; A list of named arguments provided at the `register-signal()` method
 
 Properties
 ==========
 
-### Search mode: search-mode
+search-mode
+-----------
 
-Search mode Default value: False
+Search mode
 
-The **Gnome::GObject::Value** type of property *search-mode* is `G_TYPE_BOOLEAN`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-### Subtitle: subtitle
+  * Parameter is readable and writable.
 
-Subtitle Default value:
+  * Default value is FALSE.
 
-The **Gnome::GObject::Value** type of property *subtitle* is `G_TYPE_STRING`.
+subtitle
+--------
+
+Subtitle
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
+
+  * Parameter is readable.
 
