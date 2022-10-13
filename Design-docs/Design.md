@@ -6,6 +6,9 @@ Robert Alen Zimmerman: Bob Dylan
 Farrokh Bulsara: Freddy Mercury
 Stefani Germanotta: Lady Gaga
 
+## rename files
+rename -o .pm6 .rakumod *.pm6
+rename -o .t .rakutest *.t
 
 # Command line
 Recognized options by GTK
