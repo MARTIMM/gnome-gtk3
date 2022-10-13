@@ -68,7 +68,7 @@ subtest 'Manipulations ...', {
   is-deeply $list, ( False, False, 2, GTK_PACK_START), '.query-child-packing()';
 
   $b.reorder-child( $b-secnd-stop, 0);
-  my Gnome::Glib::List $glist = $b.get-children-rk;
+  my Gnome::Glib::List() $glist = $b.get-children;
   is $glist.length, 4, 'list 4 wdgets; 3 buttons and a label';
   # first should be a button
   my Gnome::Gtk3::Button $bttn .= new(
