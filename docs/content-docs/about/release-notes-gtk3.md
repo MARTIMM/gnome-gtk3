@@ -5,9 +5,12 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+* 2022-10-23 0.48.12
+  * Checked **Gnome::Gtk3::FileFilter**.
+
 * 2022-10-10 0.48.11
   * Bugfix in **Gnome::Gtk3::FileChooserWidget**. Also cleanup of pod doc.
-  * File extensions renamed
+  * File extensions renamed.
 
 * 2022-08-31 0.48.10
   * Revisited modules **Gnome::Gtk3::EntryCompletion**, **Gnome::Gtk3::EventBox**, **Gnome::Gtk3::FileChooser**, **Gnome::Gtk3::FileChooserButton**.
