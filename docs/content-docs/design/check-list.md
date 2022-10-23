@@ -141,9 +141,10 @@ Expander                  |  | ✓| ✓| ✓| ✓| ✓| ✓| ½|  |  | ✓| ✓|
 FileChooser               |R | ✗| ✓| ✓| ✓| ✓| ✓|  |  |  | ✓| ✓| ✓|
 FileChooserButton         |  | ✓| ✓| ✓| ✓| ✓| ✓| ¾|  | ⅔| ✓| ✓| ✓|
 FileChooserDialog         |  | ✗| ✓| ✓| ✓| ✗| ✗| ¾| ✗| ✗| ✓| ✓| ✓|
-FileChooserWidget         |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓| ✓| ✓| ✓| < fbck sg prp
+FileChooserWidget         |  | ✗| ✓| ✓| ✓| ✓| ✓| ✓|  | ✓| ✓| ✓| ✓|
+FileFilter                |  | ✗| ✓| ✓| ✓| ✗| ✗| ⅘| ✗| ✗| ✓| ✓| ✓| < fbck sg prp
+
 | Gnome::Gtk3             |T |I |dm|db|ds|de|dp|ts|te|tp|12|14|so|
-FileFilter                |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Fixed                     |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
 Frame                     |  |  |  |  |  |  |  |  |  |  |  |  |  |
 Grid                      |  | ✓| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|

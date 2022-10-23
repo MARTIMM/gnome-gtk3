@@ -10,23 +10,14 @@ A filter for selecting a file subset
 
 =comment ![](images/X.png)
 
+
 =head1 Description
 
-A B<Gnome::Gtk3::FileFilter> can be used to restrict the files being shown in a
-B<Gnome::Gtk3::FileChooser>. Files can be filtered based on their name (with
-C<gtk_file_filter_add_pattern()>), on their mime type (with
-C<gtk_file_filter_add_mime_type()>), or by a custom filter function
-(with C<gtk_file_filter_add_custom()>).
+A B<Gnome::Gtk3::FileFilter> can be used to restrict the files being shown in a B<Gnome::Gtk3::FileChooser>. Files can be filtered based on their name (with C<gtk_file_filter_add_pattern()>), on their mime type (with C<gtk_file_filter_add_mime_type()>), or by a custom filter function (with C<gtk_file_filter_add_custom()>).
 
-Filtering by mime types handles aliasing and subclassing of mime
-types; e.g. a filter for text/plain also matches a file with mime
-type application/rtf, since application/rtf is a subclass of
-text/plain. Note that B<Gnome::Gtk3::FileFilter> allows wildcards for the
-subtype of a mime type, so you can e.g. filter for image/\*.
+Filtering by mime types handles aliasing and subclassing of mime types; e.g. a filter for text/plain also matches a file with mime type application/rtf, since application/rtf is a subclass of text/plain. Note that B<Gnome::Gtk3::FileFilter> allows wildcards for the subtype of a mime type, so you can e.g. filter for image/\*.
 
-Normally, filters are used by adding them to a B<Gnome::Gtk3::FileChooser>,
-see C<gtk_file_chooser_add_filter()>, but it is also possible
-to manually use a filter on a file with C<gtk_file_filter_filter()>.
+Normally, filters are used by adding them to a B<Gnome::Gtk3::FileChooser>, see C<gtk_file_chooser_add_filter()>, but it is also possible to manually use a filter on a file with C<gtk_file_filter_filter()>.
 
 
 =head2 B<Gnome::Gtk3::FileFilter> as B<Gnome::Gtk3::Buildable>
@@ -47,20 +38,46 @@ rules:
     </patterns>
   </object>
 
-=head2 Implemented Interfaces
-
-Gnome::Gtk3::FileFilter implements
-=item [Gnome::Gtk3::Buildable](Buildable.html)
 
 =head2 See Also
 
 B<Gnome::Gtk3::FileChooser>
 
+
 =head1 Synopsis
 =head2 Declaration
 
   unit class Gnome::Gtk3::FileFilter;
+  also is Gnome::GObject::InitiallyUnowned;
   also does Gnome::Gtk3::Buildable;
+
+
+=head2 Uml Diagram
+
+![](plantuml/FileFilter.svg)
+
+
+=begin comment
+=head2 Inheriting this class
+
+Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
+
+  use Gnome::Gtk3::FileFilter;
+
+  unit class MyGuiClass;
+  also is Gnome::Gtk3::FileFilter;
+
+  submethod new ( |c ) {
+    # let the Gnome::Gtk3::FileFilter class process the options
+    self.bless( :GtkFileFilter, |c);
+  }
+
+  submethod BUILD ( ... ) {
+    ...
+  }
+
+=end comment
+
 
 =comment head2 Example
 
@@ -71,6 +88,8 @@ use NativeCall;
 use Gnome::N::X;
 use Gnome::N::N-GObject;
 use Gnome::N::NativeLib;
+use Gnome::N::GlibToRakuTypes;
+
 use Gnome::GObject::InitiallyUnowned;
 
 use Gnome::Gtk3::Buildable;
@@ -141,13 +160,28 @@ class N-GtkFileFilterInfo is repr('CStruct') is export {
 =head1 Methods
 =head2 new
 
+=head3 default, no options
+
 Create a new plain object.
 
   multi method new ( )
 
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+
+=head3 :variant
+
+Deserialize a file filter from an a{sv} variant in the format produced by C<to_gvariant()>.
+
+  multi method new ( N-GObject :$variant! )
+
+
+=head3 :native-object
+
+Create an object using a native object from elsewhere. See also B<Gnome::N::TopLevelSupportClass>.
 
   multi method new ( N-GObject :$native-object! )
+
+
+=head3 :build-id
 
 Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
 
@@ -156,41 +190,98 @@ Create an object using a native object from a builder. See also B<Gnome::GObject
 =end pod
 
 #TM:1:new():
-#TM:0:new(:native-object):
-#TM:0:new(:build-id):
-
+#TM:1:new(:variant):
+#TM:4:new(:native-object):TopLevelSupportClass
+#TM:4:new(:build-id):Object
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
-  return unless self.^name eq 'Gnome::Gtk3::FileFilter';
+  if self.^name eq 'Gnome::Gtk3::FileFilter' #`{{ or %options<GtkFileFilter> }} {
 
-  if ? %options<native-object> || ? %options<widget> || %options<build-id> {
-    # provided in Gnome::GObject::Object
+    # check if native object is set by a parent class
+    if self.is-valid { }
+
+    # check if common options are handled by some parent
+    elsif %options<native-object>:exists { }
+    elsif %options<build-id>:exists { }
+
+    # process all other options
+    else {
+      my N-GObject() $no;
+      if ? %options<variant> {
+        $no = %options<variant>;
+        #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
+        #$no = _gtk_file_filter_new___x___($no);
+        $no = _gtk_file_filter_new_from_gvariant($no);
+      }
+
+      ##`{{ use this when the module is not made inheritable
+      # check if there are unknown options
+      elsif %options.elems {
+        die X::Gnome.new(
+          :message(
+            'Unsupported, undefined, incomplete or wrongly typed options for ' ~
+            self.^name ~ ': ' ~ %options.keys.join(', ')
+          )
+        );
+      }
+      #}}
+
+      #`{{ when there are no defaults use this
+      # check if there are any options
+      elsif %options.elems == 0 {
+        die X::Gnome.new(:message('No options specified ' ~ self.^name));
+      }
+      }}
+
+      ##`{{ when there are defaults use this instead
+      # create default object
+      else {
+        $no = _gtk_file_filter_new();
+      }
+      #}}
+
+      self.set-native-object($no);
+    }
+
+    # only after creating the native-object, the gtype is known
+    self._set-class-info('GtkFileFilter');
   }
-
-  elsif %options.keys.elems {
-    die X::Gnome.new(
-      :message('Unsupported options for ' ~ self.^name ~
-               ': ' ~ %options.keys.join(', ')
-              )
-    );
-  }
-
-  else {#if ? %options<empty> {
-    self._set-native-object(gtk_file_filter_new());
-  }
-
-  # only after creating the native-object, the gtype is known
-  self._set-class-info('GtkFileFilter');
 }
 
 #-------------------------------------------------------------------------------
 method _fallback ( $native-sub is copy --> Callable ) {
 
+  my Str $new-patt = $native-sub.subst( '_', '-', :g);
+
   my Callable $s;
   try { $s = &::("gtk_file_filter_$native-sub"); };
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  if ?$s {
+    Gnome::N::deprecate(
+      "gtk_file_filter_$native-sub", $new-patt, '0.47.4', '0.50.0'
+    );
+  }
+
+  else {
+    try { $s = &::("gtk_$native-sub"); } unless ?$s;
+    if ?$s {
+      Gnome::N::deprecate(
+        "gtk_$native-sub", $new-patt.subst('file-filter-'),
+        '0.47.4', '0.50.0'
+      );
+    }
+
+    else {
+      try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+      if ?$s {
+        Gnome::N::deprecate(
+          "$native-sub", $new-patt.subst('gtk-file-filter-'),
+          '0.47.4', '0.50.0'
+        );
+      }
+    }
+  }
+
   $s = self._buildable_interface($native-sub) unless ?$s;
 
   self._set-class-name-of-sub('GtkFileFilter');
@@ -199,326 +290,252 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s;
 }
 
+#`{{
 #-------------------------------------------------------------------------------
-#TM:2:gtk_file_filter_new:
+#TM:0:add-custom:
 =begin pod
-=head2 [gtk_] file_filter_new
+=head2 add-custom
 
-Creates a new B<Gnome::Gtk3::FileFilter> with no rules added to it.
-Such a filter doesn’t accept any files, so is not
-particularly useful until you add rules with
-C<gtk_file_filter_add_mime_type()>, C<gtk_file_filter_add_pattern()>,
-or C<gtk_file_filter_add_custom()>. To create a filter
-that accepts any file, use:
+Adds rule to a filter that allows files based on a custom callback function. The bitfield I<needed> which is passed in provides information about what sorts of information that the filter function needs; this allows GTK+ to avoid retrieving expensive information when it isn’t needed by the filter.
 
-  my Gnome::Gtk3::FileFilter $filter .= new;
-  $filter.add-pattern("*");
+  method add-custom ( GtkFileFilterFlags $needed, GtkFileFilterFunc $func, Pointer $data, GDestroyNotify $notify )
 
-Returns: a new B<Gnome::Gtk3::FileFilter>
-
-Since: 2.4
-
-  method gtk_file_filter_new ( --> N-GObject  )
-
+=item $needed; bitfield of flags indicating the information that the custom filter function needs.
+=item $func; callback function; if the function returns C<True>, then the file will be displayed.
+=item $data; data to pass to I<func>
+=item $notify; function to call to free I<data> when it is no longer needed.
 =end pod
 
-sub gtk_file_filter_new (  )
-  returns N-GObject
-  is native(&gtk-lib)
+method add-custom (
+  GtkFileFilterFlags $needed, GtkFileFilterFunc $func, Pointer $data,
+  GDestroyNotify $notify
+) {
+  gtk_file_filter_add_custom( self._f('GtkFileFilter'), $needed, $func, $data, $notify);
+}
+
+sub gtk_file_filter_add_custom (
+  N-GObject $filter, GEnum $needed, GtkFileFilterFunc $func, gpointer $data, GDestroyNotify $notify 
+) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
-#TM:1:gtk_file_filter_set_name:
+#TM:1:add-mime-type:
 =begin pod
-=head2 [[gtk_] file_filter_] set_name
-
-Sets the human-readable name of the filter; this is the string
-that will be displayed in the file selector user interface if
-there is a selectable list of filters.
-
-Since: 2.4
-
-  method gtk_file_filter_set_name ( Str $name )
-
-=item Str $name; (allow-none): the human-readable-name for the filter, or C<Any> to remove any existing name.
-
-=end pod
-
-sub gtk_file_filter_set_name ( N-GObject $filter, Str $name )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:1:gtk_file_filter_get_name:
-=begin pod
-=head2 [[gtk_] file_filter_] get_name
-
-Gets the human-readable name for the filter. See C<gtk_file_filter_set_name()>.
-
-Returns: (nullable): The human-readable name of the filter,
-or C<Any>. This value is owned by GTK+ and must not
-be modified or freed.
-
-Since: 2.4
-
-  method gtk_file_filter_get_name ( --> Str  )
-
-
-=end pod
-
-sub gtk_file_filter_get_name ( N-GObject $filter )
-  returns Str
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_file_filter_add_mime_type:
-=begin pod
-=head2 [[gtk_] file_filter_] add_mime_type
+=head2 add-mime-type
 
 Adds a rule allowing a given mime type to I<filter>.
 
-Since: 2.4
+  method add-mime-type ( Str $mime_type )
 
-  method gtk_file_filter_add_mime_type ( Str $mime_type )
-
-=item Str $mime_type; name of a MIME type
-
+=item $mime_type; name of a MIME type
 =end pod
 
-sub gtk_file_filter_add_mime_type ( N-GObject $filter, Str $mime_type )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_file_filter_add_pattern:
-=begin pod
-=head2 [[gtk_] file_filter_] add_pattern
-
-Adds a rule allowing a shell style glob to a filter.
-
-Since: 2.4
-
-  method gtk_file_filter_add_pattern ( Str $pattern )
-
-=item Str $pattern; a shell style glob
-
-=end pod
-
-sub gtk_file_filter_add_pattern ( N-GObject $filter, Str $pattern )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_file_filter_add_pixbuf_formats:
-=begin pod
-=head2 [[gtk_] file_filter_] add_pixbuf_formats
-
-Adds a rule allowing image files in the formats supported
-by B<Gnome::Gdk3::Pixbuf>.
-
-Since: 2.6
-
-  method gtk_file_filter_add_pixbuf_formats ( )
-
-
-=end pod
-
-sub gtk_file_filter_add_pixbuf_formats ( N-GObject $filter )
-  is native(&gtk-lib)
-  { * }
-
-#`{{
-#-------------------------------------------------------------------------------
-#TM:0:gtk_file_filter_add_custom:
-=begin pod
-=head2 [[gtk_] file_filter_] add_custom
-
-Adds rule to a filter that allows files based on a custom callback
-function. The bitfield I<needed> which is passed in provides information
-about what sorts of information that the filter function needs;
-this allows GTK+ to avoid retrieving expensive information when
-it isn’t needed by the filter.
-
-Since: 2.4
-
-  method gtk_file_filter_add_custom ( GtkFileFilterFlags $needed, GtkFileFilterFunc $func, Pointer $data, GDestroyNotify $notify )
-
-=item GtkFileFilterFlags $needed; bitfield of flags indicating the information that the custom filter function needs.
-=item GtkFileFilterFunc $func; callback function; if the function returns C<1>, then the file will be displayed.
-=item Pointer $data; data to pass to I<func>
-=item GDestroyNotify $notify; function to call to free I<data> when it is no longer needed.
-
-=end pod
-
-sub gtk_file_filter_add_custom ( N-GObject $filter, int32 $needed, GtkFileFilterFunc $func, Pointer $data, GDestroyNotify $notify )
-  is native(&gtk-lib)
-  { * }
-}}
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_file_filter_get_needed:
-=begin pod
-=head2 [[gtk_] file_filter_] get_needed
-
-Gets the fields that need to be filled in for the B<Gnome::Gtk3::FileFilterInfo>
-passed to C<gtk_file_filter_filter()>
-
-This function will not typically be used by applications; it
-is intended principally for use in the implementation of
-B<Gnome::Gtk3::FileChooser>.
-
-Returns: bitfield of flags indicating needed fields when
-calling C<gtk_file_filter_filter()>
-
-Since: 2.4
-
-  method gtk_file_filter_get_needed ( --> GtkFileFilterFlags  )
-
-
-=end pod
-
-sub gtk_file_filter_get_needed ( N-GObject $filter )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_file_filter_filter:
-=begin pod
-=head2 [gtk_] file_filter_filter
-
-Tests whether a file should be displayed according to I<filter>.
-The B<Gnome::Gtk3::FileFilterInfo> I<filter_info> should include
-the fields returned from C<gtk_file_filter_get_needed()>.
-
-This function will not typically be used by applications; it
-is intended principally for use in the implementation of
-B<Gnome::Gtk3::FileChooser>.
-
-Returns: C<1> if the file should be displayed
-
-Since: 2.4
-
-  method gtk_file_filter_filter ( N-GtkFileFilterInfo $filter_info --> Int  )
-
-=item N-GtkFileFilterInfo $filter_info; a B<Gnome::Gtk3::FileFilterInfo> containing information about a file.
-
-=end pod
-
-sub gtk_file_filter_filter ( N-GObject $filter, N-GtkFileFilterInfo $filter_info )
-  returns int32
-  is native(&gtk-lib)
-  { * }
-
-#`{{
-#-------------------------------------------------------------------------------
-#TM:0:gtk_file_filter_to_gvariant:
-=begin pod
-=head2 [[gtk_] file_filter_] to_gvariant
-
-Serialize a file filter to an a{sv} variant.
-
-Returns: (transfer none): a new, floating, B<GVariant>
-
-Since: 3.22
-
-  method gtk_file_filter_to_gvariant ( --> N-GObject  )
-
-
-=end pod
-
-sub gtk_file_filter_to_gvariant ( N-GObject $filter )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:0:gtk_file_filter_new_from_gvariant:
-=begin pod
-=head2 [[gtk_] file_filter_] new_from_gvariant
-
-Deserialize a file filter from an a{sv} variant in
-the format produced by C<gtk_file_filter_to_gvariant()>.
-
-Returns: (transfer full): a new B<Gnome::Gtk3::FileFilter> object
-
-Since: 3.22
-
-  method gtk_file_filter_new_from_gvariant ( N-GObject $variant --> N-GObject  )
-
-=item N-GObject $variant; an a{sv} B<GVariant>
-
-=end pod
-
-sub gtk_file_filter_new_from_gvariant ( N-GObject $variant )
-  returns N-GObject
-  is native(&gtk-lib)
-  { * }
-}}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=finish
-#-------------------------------------------------------------------------------
-sub gtk_file_filter_new ( )
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_file_filter_set_name ( N-GObject $filter, Str $name)
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_file_filter_get_name ( N-GObject $filter )
-  returns Str
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_file_filter_add_mime_type ( N-GObject $filter, Str $mime_type)
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_file_filter_add_pattern ( N-GObject $filter, Str $pattern )
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_file_filter_add_pixbuf_formats ( N-GObject $filter )
-  is native(&gtk-lib)
-  { * }
-
-sub gtk_file_filter_add_custom (
-  N-GObject $filter, int32 $filter-flags-needed,
-  &filter-func ( N-GtkFileFilterInfo $filter_info, OpaquePointer),
-  OpaquePointer, &notify ( OpaquePointer )
+method add-mime-type ( Str $mime_type ) {
+  gtk_file_filter_add_mime_type( self._f('GtkFileFilter'), $mime_type);
+}
+
+sub gtk_file_filter_add_mime_type (
+  N-GObject $filter, gchar-ptr $mime_type 
 ) is native(&gtk-lib)
   { * }
 
-sub gtk_file_filter_get_needed ( N-GObject $filter )
-  returns int32 # GtkFileFilterFlags
-  is native(&gtk-lib)
+#-------------------------------------------------------------------------------
+#TM:1:add-pattern:
+=begin pod
+=head2 add-pattern
+
+Adds a rule allowing a shell style glob to a filter.
+
+  method add-pattern ( Str $pattern )
+
+=item $pattern; a shell style glob
+=end pod
+
+method add-pattern ( Str $pattern ) {
+  gtk_file_filter_add_pattern( self._f('GtkFileFilter'), $pattern);
+}
+
+sub gtk_file_filter_add_pattern (
+  N-GObject $filter, gchar-ptr $pattern 
+) is native(&gtk-lib)
   { * }
 
-sub gtk_file_filter_filter ( N-GObject $filter, int32 $filter_info )
+#-------------------------------------------------------------------------------
+#TM:1:add-pixbuf-formats:
+=begin pod
+=head2 add-pixbuf-formats
+
+Adds a rule allowing image files in the formats supported by GdkPixbuf.
+
+  method add-pixbuf-formats ( )
+
+=end pod
+
+method add-pixbuf-formats ( ) {
+  gtk_file_filter_add_pixbuf_formats( self._f('GtkFileFilter'));
+}
+
+sub gtk_file_filter_add_pixbuf_formats (
+  N-GObject $filter 
+) is native(&gtk-lib)
+  { * }
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:filter:
+=begin pod
+=head2 filter
+
+Tests whether a file should be displayed according to I<filter>. The B<Gnome::Gtk3::FileFilterInfo> I<filter_info> should include the fields returned from C<get_needed()>.
+
+This function will not typically be used by applications; it is intended principally for use in the implementation of B<Gnome::Gtk3::FileChooser>.
+
+Returns: C<True> if the file should be displayed
+
+  method filter ( GtkFileFilterInfo $filter_info --> Bool )
+
+=item $filter_info; a B<Gnome::Gtk3::FileFilterInfo> containing information about a file.
+=end pod
+
+method filter ( GtkFileFilterInfo $filter_info --> Bool ) {
+  gtk_file_filter_filter( self._f('GtkFileFilter'), $filter_info).Bool
+}
+
+sub gtk_file_filter_filter (
+  N-GObject $filter, GtkFileFilterInfo $filter_info --> gboolean
+) is native(&gtk-lib)
+  { * }
+}}
+
+#-------------------------------------------------------------------------------
+#TM:1:get-name:
+=begin pod
+=head2 get-name
+
+Gets the human-readable name for the filter. See C<set_name()>.
+
+Returns: The human-readable name of the filter, or C<undefined>. This value is owned by GTK+ and must not be modified or freed.
+
+  method get-name ( --> Str )
+
+=end pod
+
+method get-name ( --> Str ) {
+  gtk_file_filter_get_name( self._f('GtkFileFilter'))
+}
+
+sub gtk_file_filter_get_name (
+  N-GObject $filter --> gchar-ptr
+) is native(&gtk-lib)
+  { * }
+
+#`{{
+#-------------------------------------------------------------------------------
+#TM:0:get-needed:
+=begin pod
+=head2 get-needed
+
+Gets the fields that need to be filled in for the B<Gnome::Gtk3::FileFilterInfo> passed to C<filter()>
+
+This function will not typically be used by applications; it is intended principally for use in the implementation of B<Gnome::Gtk3::FileChooser>.
+
+Returns: bitfield of flags indicating needed fields when calling C<filter()>
+
+  method get-needed ( --> GtkFileFilterFlags )
+
+=end pod
+
+method get-needed ( --> GtkFileFilterFlags ) {
+  gtk_file_filter_get_needed( self._f('GtkFileFilter'))
+}
+
+sub gtk_file_filter_get_needed (
+  N-GObject $filter --> GEnum
+) is native(&gtk-lib)
+  { * }
+}}
+
+#-------------------------------------------------------------------------------
+#TM:1:set-name:
+=begin pod
+=head2 set-name
+
+Sets the human-readable name of the filter; this is the string that will be displayed in the file selector user interface if there is a selectable list of filters.
+
+  method set-name ( Str $name )
+
+=item $name; the human-readable-name for the filter, or C<undefined> to remove any existing name.
+=end pod
+
+method set-name ( Str $name ) {
+  gtk_file_filter_set_name( self._f('GtkFileFilter'), $name);
+}
+
+sub gtk_file_filter_set_name (
+  N-GObject $filter, gchar-ptr $name 
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:to-gvariant:
+=begin pod
+=head2 to-gvariant
+
+Serialize a file filter to an a{sv} variant.
+
+Returns: a new, floating, B<Gnome::Glib::Variant>
+
+  method to-gvariant ( --> N-GObject )
+
+=end pod
+
+method to-gvariant ( --> N-GObject ) {
+  gtk_file_filter_to_gvariant( self._f('GtkFileFilter'))
+}
+
+sub gtk_file_filter_to_gvariant (
+  N-GObject $filter --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_file_filter_new:
+#`{{
+=begin pod
+=head2 _gtk_file_filter_new
+
+Creates a new B<Gnome::Gtk3::FileFilter> with no rules added to it. Such a filter doesn’t accept any files, so is not particularly useful until you add rules with C<add_mime_type()>, C<add_pattern()>, or C<add_custom()>. To create a filter that accepts any file, use: |[<!-- language="C" --> GtkFileFilter *filter = C<new()>; add_pattern (filter, "*"); ]|
+
+Returns: a new B<Gnome::Gtk3::FileFilter>
+
+  method _gtk_file_filter_new ( --> N-GObject )
+
+=end pod
+}}
+
+sub _gtk_file_filter_new (  --> N-GObject )
   is native(&gtk-lib)
+  is symbol('gtk_file_filter_new')
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_file_filter_new_from_gvariant:
+#`{{
+=begin pod
+=head2 _gtk_file_filter_new_from_gvariant
+
+Deserialize a file filter from an a{sv} variant in the format produced by C<to_gvariant()>.
+
+Returns: a new B<Gnome::Gtk3::FileFilter> object
+
+  method _gtk_file_filter_new_from_gvariant ( N-GObject() $variant --> N-GObject )
+
+=item $variant; an a{sv} B<Gnome::Gio::Variant>
+=end pod
+}}
+
+sub _gtk_file_filter_new_from_gvariant ( N-GObject $variant --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_file_filter_new_from_gvariant')
   { * }
