@@ -5,11 +5,17 @@ use Test;
 use Gnome::Gtk3::Fixed;
 use Gnome::Gtk3::Button;
 
+use Gnome::GObject::Type;
+
+#use Gnome::N::GlibToRakuTypes;
+#use Gnome::N::N-GObject;
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::Fixed $f;
+my Gnome::Gtk3::Button $b;
+
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   $f .= new;
@@ -25,7 +31,7 @@ unless %*ENV<raku_test_all>:exists {
 
 #-------------------------------------------------------------------------------
 subtest 'Manipulations', {
-  my Gnome::Gtk3::Button $b .= new(:label<Start>);
+  $b .= new(:label<Start>);
   lives-ok {$f.put( $b, 10, 10);}, '.put()';
   lives-ok {$f.move( $b, 20, 20);}, '.move()';
 }
@@ -46,37 +52,23 @@ subtest 'Inherit Gnome::Gtk3::Fixed', {
   isa-ok $mgc, Gnome::Gtk3::Fixed, '$mgc.new()';
 }
 
-#`{{
 #-------------------------------------------------------------------------------
-subtest 'Properties ...', {
-  use Gnome::GObject::Value;
-  use Gnome::GObject::Type;
+subtest 'Child properties …', {
+#  my Gnome::Gtk3::Fixed $f .= new;
+#  my @r = $f.get-properties( 'x', gint, 'y', gint);
+#  is-deeply @r, [ 20, 20], 'properties: ' ~ (<x y>).join(', ');
 
-  #my Gnome::Gtk3::Fixed $f .= new;
-
-  sub test-property (
-    $type, Str $prop, Str $routine, $value, Bool :$approx = False
-  ) {
-    my Gnome::GObject::Value $gv .= new(:init($type));
-    $f.get-property( $prop, $gv);
-    my $gv-value = $gv."$routine"();
-    if $approx {
-      is-approx $gv-value, $value,
-        "property $prop, value: " ~ $gv-value;
-    }
-
-    else {
-      is $gv-value, $value,
-        "property $prop, value: " ~ $gv-value;
-    }
-    $gv.clear-object;
-  }
-
-  # example calls
-  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', 0);
-  #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
-  #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
+  is $f.child-get-property( $b, 'x', G_TYPE_INT).get-int, 20,
+     'child property x';
+  is $f.child-get-property( $b, 'y', G_TYPE_INT).get-int, 20,
+     'child property y';
 }
+
+#-------------------------------------------------------------------------------
+done-testing;
+
+=finish
+
 
 #-------------------------------------------------------------------------------
 subtest 'Themes ...', {
@@ -154,7 +146,3 @@ subtest 'Signals ...', {
 
   is $p.result, 'done', 'emitter finished';
 }
-}}
-
-#-------------------------------------------------------------------------------
-done-testing;

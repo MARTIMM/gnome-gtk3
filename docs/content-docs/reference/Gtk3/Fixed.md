@@ -91,24 +91,57 @@ move
 
 Moves a child of a **Gnome::Gtk3::Fixed** container to the given position.
 
-    method move ( N-GObject $widget, Int $x, Int $y )
+    method move ( N-GObject() $widget, Int() $x, Int() $y )
 
-  * N-GObject $widget; the child widget.
+  * $widget; the child widget.
 
-  * Int $x; the horizontal position to move the widget to.
+  * $x; the horizontal position to move the widget to.
 
-  * Int $y; the vertical position to move the widget to.
+  * $y; the vertical position to move the widget to.
 
 put
 ---
 
 Adds a widget to a **Gnome::Gtk3::Fixed** container at the given position.
 
-    method put ( N-GObject $widget, Int $x, Int $y )
+    method put ( N-GObject() $widget, Int() $x, Int() $y )
 
-  * N-GObject $widget; the widget to add.
+  * $widget; the widget to add.
 
-  * Int $x; the horizontal position to place the widget at.
+  * $x; the horizontal position to place the widget at.
 
-  * Int $y; the vertical position to place the widget at.
+  * $y; the vertical position to place the widget at.
+
+Properties
+==========
+
+x
+-
+
+X position of child widget
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
+
+  * Parameter is readable and writable.
+
+  * Minimum value is G_MININT.
+
+  * Maximum value is G_MAXINT.
+
+  * Default value is 0.
+
+y
+-
+
+Y position of child widget
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
+
+  * Parameter is readable and writable.
+
+  * Minimum value is G_MININT.
+
+  * Maximum value is G_MAXINT.
+
+  * Default value is 0.
 

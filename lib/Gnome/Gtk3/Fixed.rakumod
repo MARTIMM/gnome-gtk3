@@ -79,7 +79,7 @@ use Gnome::N::GlibToRakuTypes;
 use Gnome::Gtk3::Container;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::Fixed:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::Fixed:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
 #-------------------------------------------------------------------------------
 
@@ -123,7 +123,7 @@ submethod BUILD ( *%options ) {
     # process all options
 
     # check if common options are handled by some parent
-    elsif %options<native-object>:exists or %options<widget>:exists { }
+    elsif %options<native-object>:exists { }
     elsif %options<build-id>:exists { }
 
     else {
@@ -168,22 +168,51 @@ submethod BUILD ( *%options ) {
   }
 }
 
-#`{{
 #-------------------------------------------------------------------------------
-# no pod. user does not have to know about it.
-method _fallback ( $native-sub --> Callable ) {
+#TM:1:move:
+=begin pod
+=head2 move
 
-  my Callable $s;
-  try { $s = &::("gtk_fixed_$native-sub"); };
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+Moves a child of a B<Gnome::Gtk3::Fixed> container to the given position.
 
-  self._set-class-name-of-sub('GtkFixed');
-  $s = callsame unless ?$s;
+  method move ( N-GObject() $widget, Int() $x, Int() $y )
 
-  $s;
+=item $widget; the child widget.
+=item $x; the horizontal position to move the widget to.
+=item $y; the vertical position to move the widget to.
+=end pod
+
+method move ( N-GObject() $widget, Int() $x, Int() $y ) {
+  gtk_fixed_move( self._f('GtkFixed'), $widget, $x, $y);
 }
-}}
+
+sub gtk_fixed_move (
+  N-GObject $fixed, N-GObject $widget, gint $x, gint $y 
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:put:
+=begin pod
+=head2 put
+
+Adds a widget to a B<Gnome::Gtk3::Fixed> container at the given position.
+
+  method put ( N-GObject() $widget, Int() $x, Int() $y )
+
+=item $widget; the widget to add.
+=item $x; the horizontal position to place the widget at.
+=item $y; the vertical position to place the widget at.
+=end pod
+
+method put ( N-GObject() $widget, Int() $x, Int() $y ) {
+  gtk_fixed_put( self._f('GtkFixed'), $widget, $x, $y);
+}
+
+sub gtk_fixed_put (
+  N-GObject $fixed, N-GObject $widget, gint $x, gint $y 
+) is native(&gtk-lib)
+  { * }
 
 #-------------------------------------------------------------------------------
 #TM:1:_gtk_fixed_new:
@@ -206,51 +235,32 @@ sub _gtk_fixed_new (  --> N-GObject )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:1:move:
 =begin pod
-=head2 move
+=head1 Properties
 
-Moves a child of a B<Gnome::Gtk3::Fixed> container to the given position.
+=comment -----------------------------------------------------------------------
+=comment #TP:1:x:
+=head2 x
 
-  method move ( N-GObject $widget, Int $x, Int $y )
+X position of child widget
 
-=item N-GObject $widget; the child widget.
-=item Int $x; the horizontal position to move the widget to.
-=item Int $y; the vertical position to move the widget to.
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_INT
+=item Parameter is readable and writable.
+=item Minimum value is G_MININT.
+=item Maximum value is G_MAXINT.
+=item Default value is 0.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:y:
+=head2 y
+
+Y position of child widget
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_INT
+=item Parameter is readable and writable.
+=item Minimum value is G_MININT.
+=item Maximum value is G_MAXINT.
+=item Default value is 0.
 
 =end pod
-
-method move ( $widget, Int $x, Int $y ) {
-  my $no = $widget;
-  $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
-  gtk_fixed_move( self._get-native-object-no-reffing, $no, $x, $y);
-}
-
-sub gtk_fixed_move ( N-GObject $fixed, N-GObject $widget, gint $x, gint $y  )
-  is native(&gtk-lib)
-  { * }
-
-#-------------------------------------------------------------------------------
-#TM:1:put:
-=begin pod
-=head2 put
-
-Adds a widget to a B<Gnome::Gtk3::Fixed> container at the given position.
-
-  method put ( N-GObject $widget, Int $x, Int $y )
-
-=item N-GObject $widget; the widget to add.
-=item Int $x; the horizontal position to place the widget at.
-=item Int $y; the vertical position to place the widget at.
-
-=end pod
-
-method put ( $widget, Int $x, Int $y ) {
-  my $no = $widget;
-  $no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
-  gtk_fixed_put( self._get-native-object-no-reffing, $no, $x, $y);
-}
-
-sub gtk_fixed_put ( N-GObject $fixed, N-GObject $widget, gint $x, gint $y  )
-  is native(&gtk-lib)
-  { * }
