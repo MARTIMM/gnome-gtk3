@@ -8,11 +8,9 @@ The GLib Runtime type identification and management system
 Description
 ===========
 
-The GType API is the foundation of the GObject system. It provides the facilities for registering and managing all fundamental data types, user-defined object and interface types.
+The GType API is the foundation of the GObject system. It provides the facilities for registering and managing all fundamental data types. To have a type stored next to its value. The class **Gnome::GObject::Value** serves as a vehicle to get values in and out of an object. This class controls a `N-GValue` object which has a type and a value.
 
-For type creation and registration purposes, all types fall into one of two categories: static or dynamic. Static types are never loaded or unloaded at run-time as dynamic types may be.
-
-As mentioned in the [GType conventions](https://developer.gnome.org/gobject/stable/gtype-conventions.html), type names must be at least three characters long. There is no upper length limit. The first character must be a letter (a–z or A–Z) or an underscore (‘_’). Subsequent characters can be letters, numbers or any of ‘-_+’.
+The Glib types such as `gint` and `gfloat` are used to type variables and functions directly and are compiled to the proper sizes when used in code. These types are mapped to the C types like `int` and `float`. In the module **Gnome::N::GlibToRakuTypes**, a mapping is made to be able to map the Glib types to the Raku types.
 
 Synopsis
 ========
@@ -34,6 +32,52 @@ A structure holding information for a specific type. It is filled in by the `que
   * UInt $.class_size: the size of the class structure.
 
   * UInt $.instance_size: the size of the instance structure.
+
+Type names
+----------
+
+  * G_TYPE_CHAR; An 8 bit integer.
+
+  * G_TYPE_UCHAR; An 8 bit unsigned integer.
+
+  * G_TYPE_BOOLEAN; A boolean. This is the size of an int32.
+
+  * G_TYPE_INT; An integer, also the size of an int32.
+
+  * G_TYPE_UINT; An unsigned integer.
+
+  * G_TYPE_LONG; A larger type integer.
+
+  * G_TYPE_ULONG; A larger type unsigned integer.
+
+  * G_TYPE_INT64; A larger type integer.
+
+  * G_TYPE_UINT64; A larger type unsigned integer.
+
+  * G_TYPE_ENUM; An integer used for C enumerations.
+
+  * G_TYPE_FLAGS; An integer used for bitmap flags.
+
+  * G_TYPE_FLOAT; A floating point value.
+
+  * G_TYPE_DOUBLE; A large floating point value.
+
+  * G_TYPE_STRING; A string.
+
+  * G_TYPE_OBJECT; A gnome object.
+
+  * G_TYPE_VARIANT; A variant. See also **Gnome::Glib::Variant**.
+
+To show the glib types together with the Raku types and the type names mentioned above a small table is shown below;
+
+<table class="pod-table">
+<thead><tr>
+<th>Type name</th> <th>Glib type</th> <th>Raku type</th>
+</tr></thead>
+<tbody>
+<tr> <td>G_TYPE_CHAR G_TYPE_UCHAR G_TYPE_BOOLEAN G_TYPE_INT G_TYPE_UINT G_TYPE_LONG G_TYPE_ULONG G_TYPE_INT64 G_TYPE_UINT64 G_TYPE_ENUM G_TYPE_FLAGS G_TYPE_FLOAT G_TYPE_DOUBLE G_TYPE_STRING G_TYPE_OBJECT G_TYPE_VARIANT</td> <td>gchar guchar gboolean gint guint glong gulong gint64 guint64 GEnum GFlag gfloat gdouble gchar-ptr - -</td> <td>int8 uint8 int32 int32 uint32 int64 uint64 int64 uint64 int32 uint32 num32 num64 Str B&lt;Gnome::GObject::Object&gt; B&lt;Gnome::Glib::Variant&gt;.</td> </tr> <tr> <td>Some types might have a longer or shorter size depending on the OS Raku is running on. It is a reflection of the C macro types of the C compiler include files. So to use the proper types, always use the glib type instead of the Raku type which are generated at Build time when B&lt;Gnome::N&gt; is installed.</td> <td></td> <td></td> </tr>
+</tbody>
+</table>
 
 Methods
 =======
@@ -69,9 +113,9 @@ Check if an instance is of type `$iface-gtype`. Returns True if it is.
       N-GObject $instance, UInt $iface_gtype --> Bool
     )
 
-  * GTypeInstance $instance;
+  * N-GObject $instance;
 
-  * N-GObject $iface_type;
+  * UInt $iface_type;
 
 depth
 -----
