@@ -14,8 +14,6 @@ The first type of container widget has a single child widget and derives from **
 
 The second type of container can have more than one child; its purpose is to manage layout. This means that these containers assign sizes and positions to their children. For example, a **Gnome::Gtk3::HBox** arranges its children in a horizontal row, and a **Gnome::Gtk3::Grid** arranges the widgets it contains in a two-dimensional grid.
 
-For implementations of **Gnome::Gtk3::Container** the virtual method **Gnome::Gtk3::ContainerClass**.`forall()` is always required, since it's used for drawing and other internal operations on the children. If the **Gnome::Gtk3::Container** implementation expect to have non internal children it's needed to implement both **Gnome::Gtk3::ContainerClass**.`add()` and **Gnome::Gtk3::ContainerClass**.`remove()`. If the **Gnome::Gtk3::Container** implementation has internal children, they should be added with `gtk_widget_set_parent()` on `init()` and removed with `gtk_widget_unparent()` in the **Gnome::Gtk3::WidgetClass**.`destroy()` implementation. See more about implementing custom widgets at https://wiki.gnome.org/HowDoI/CustomWidgets
-
 Height for width geometry management
 ------------------------------------
 
@@ -109,12 +107,40 @@ Note that some containers, such as **Gnome::Gtk3::ScrolledWindow** or **Gnome::G
 
   * $widget; a widget to be placed inside this container
 
+child-get-property
+------------------
+
+Gets the value of a child property for *child* and this container.
+
+    method child-get-property (
+      N-GObject() $child, Str $property-name, $property-type
+      --> Gnome::GObject::Value
+    )
+
+  * $child; a widget which is a child of this container.
+
+  * $property-name; the name of the property to get.
+
+  * The type for the return value, e.g. G_TYPE_INT32. See also **Gnome::GObject::Type**.
+
+### Example
+
+The **Gnome::Gtk3::Fixed** can contain widgets at fixed locations. The locations of each widget can be asked for using this call.
+
+    my Gnome::Gtk3::Fixed $f .= new;
+    my Gnome::Gtk3::Button $b .= new(:label<Some Button On The Fixed Field>);
+    $f.put( $b, 10, 10);
+
+    # somewhat later
+    my Int $x = $f.child-get-property( $b, 'x', G_TYPE_INT).get-int;
+    my Int $y = $f.child-get-property( $b, 'y', G_TYPE_INT).get-int;
+
+    say "Widget is at ($x, $y)";
+
 foreach
 -------
 
-Invokes a callback method on each non-internal child of this container. See `forall()` for details on what constitutes an “internal” child. For all practical purposes, this function should iterate over precisely those child widgets that were added to the container by the application with explicit `add()` calls.
-
-Most applications should use `foreach()`, rather than `forall()`.
+Invokes a callback method on each child of this container. For all practical purposes, this function should iterate over precisely those child widgets that were added to the container by the application with explicit `add()` calls.
 
     method foreach (
       Any:D $callback-object, Str:D $callback-name, *%user-options
@@ -122,9 +148,9 @@ Most applications should use `foreach()`, rather than `forall()`.
 
   * $callback-object; An object where the callback method is defined
 
-  * $callback-name; method name of the callback. A name ending in `-rk` gets a raku widget instead of a native object.
+  * $callback-name; method name of the callback.
 
-  * %user-options; A list of named arguments which are provided to the callback. A special named argumend, `:give-raku-objects`, is used to provide raku objects instead of the native objects in the same way the extension `-rk` would do. This might be a better way because one can check the named argument if a raku object is provided or not, see examples below.
+  * %user-options; A list of named arguments which are provided to the callback.
 
 ### Example
 
@@ -155,15 +181,14 @@ Returns: the current border width
 
     method get-border-width ( --> UInt )
 
-get-children, get-children-rk
------------------------------
+get-children
+------------
 
 Returns the container’s non-internal children. See `forall()` for details on what constitutes an "internal" child.
 
 Returns: a newly-allocated list of the container’s non-internal children.
 
     method get-children ( --> N-GList )
-    method get-children-rk ( --> Gnome::Glib::List )
 
 get-focus-child
 ---------------
@@ -179,7 +204,7 @@ get-focus-hadjustment
 
 Retrieves the horizontal focus adjustment for the container. See `set-focus-hadjustment()`.
 
-Returns: the horizontal focus adjustment, or `undefined` if none has been set. In the `-rk` case, an invalid Widget is returned. It is a native object for **Gnome::Gtk3::Adjustment**.
+Returns: the horizontal focus adjustment, or `undefined` if none has been set.
 
     method get-focus-hadjustment ( --> N-GObject )
 

@@ -420,38 +420,57 @@ sub gtk_container_child_get (
   { * }
 }}
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:child-get-property:
+#TM:2:child-get-property:Fixed.rakutest
 =begin pod
 =head2 child-get-property
 
 Gets the value of a child property for I<child> and this container.
 
   method child-get-property (
-    N-GObject() $child, Str $property-name, :$property-type
-    --> Any
+    N-GObject() $child, Str $property-name, $property-type
+    --> Gnome::GObject::Value
   )
 
-=item $child; a widget which is a child of this container
-=item $property-name; the name of the property to get
-=item The type for the return value. See also C<Gnome::GObject::Object.get-properties>.
+=item $child; a widget which is a child of this container.
+=item $property-name; the name of the property to get.
+=item The type for the return value, e.g. G_TYPE_INT32. See also B<Gnome::GObject::Type>.
+
+=head3 Example
+
+The B<Gnome::Gtk3::Fixed> can contain widgets at fixed locations. The locations of each widget can be asked for using this call.
+
+  my Gnome::Gtk3::Fixed $f .= new;
+  my Gnome::Gtk3::Button $b .= new(:label<Some Button On The Fixed Field>);
+  $f.put( $b, 10, 10);
+  
+  # somewhat later
+  my Int $x = $f.child-get-property( $b, 'x', G_TYPE_INT).get-int;
+  my Int $y = $f.child-get-property( $b, 'y', G_TYPE_INT).get-int;
+
+  say "Widget is at ($x, $y)";
+
 =end pod
 
 method child-get-property (
-  N-GObject() $child, Str $property-name --> Any
+  N-GObject() $child, Str $property-name, Any $property-type is copy
+  --> Gnome::GObject::Value
 ) {
-  my N-GValue $value .= new;
+  my Gnome::GObject::Value $value .= new(:init($property-type));
+  my N-GValue $n-value = $value._get-native-object;
+
   gtk_container_child_get_property(
-    self._f('GtkContainer'), $child, $property_name, $value
+    self._f('GtkContainer'), $child, $property-name, $n-value
   );
+
+  Gnome::GObject::Value.new(:native-object($n-value));
 }
 
 sub gtk_container_child_get_property (
-  N-GObject $container, N-GObject $child, gchar-ptr $property_name, N-GObject $value
+  N-GObject $container, N-GObject $child,
+  gchar-ptr $property-name, N-GValue $value is rw
 ) is native(&gtk-lib)
   { * }
-}}
 
 #`{{
 #-------------------------------------------------------------------------------
