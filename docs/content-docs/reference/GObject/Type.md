@@ -66,7 +66,7 @@ Type names
 
   * G_TYPE_OBJECT; A gnome object.
 
-  * G_TYPE_VARIANT; A variant. See also **Gnome::Glib::Variant**.
+  * G_TYPE_VARIANT; A variant.
 
 To show the glib types together with the Raku types and the type names mentioned above a small table is shown below;
 
@@ -75,9 +75,11 @@ To show the glib types together with the Raku types and the type names mentioned
 <th>Type name</th> <th>Glib type</th> <th>Raku type</th>
 </tr></thead>
 <tbody>
-<tr> <td>G_TYPE_CHAR G_TYPE_UCHAR G_TYPE_BOOLEAN G_TYPE_INT G_TYPE_UINT G_TYPE_LONG G_TYPE_ULONG G_TYPE_INT64 G_TYPE_UINT64 G_TYPE_ENUM G_TYPE_FLAGS G_TYPE_FLOAT G_TYPE_DOUBLE G_TYPE_STRING G_TYPE_OBJECT G_TYPE_VARIANT</td> <td>gchar guchar gboolean gint guint glong gulong gint64 guint64 GEnum GFlag gfloat gdouble gchar-ptr - -</td> <td>int8 uint8 int32 int32 uint32 int64 uint64 int64 uint64 int32 uint32 num32 num64 Str B&lt;Gnome::GObject::Object&gt; B&lt;Gnome::Glib::Variant&gt;.</td> </tr> <tr> <td>Some types might have a longer or shorter size depending on the OS Raku is running on. It is a reflection of the C macro types of the C compiler include files. So to use the proper types, always use the glib type instead of the Raku type which are generated at Build time when B&lt;Gnome::N&gt; is installed.</td> <td></td> <td></td> </tr>
+<tr> <td>G_TYPE_CHAR</td> <td>gchar</td> <td>int8</td> </tr> <tr> <td>G_TYPE_UCHAR</td> <td>guchar</td> <td>uint8</td> </tr> <tr> <td>G_TYPE_BOOLEAN</td> <td>gboolean</td> <td>int32</td> </tr> <tr> <td>G_TYPE_INT</td> <td>gint</td> <td>int32</td> </tr> <tr> <td>G_TYPE_UINT</td> <td>guint</td> <td>uint32</td> </tr> <tr> <td>G_TYPE_LONG</td> <td>glong</td> <td>int64</td> </tr> <tr> <td>G_TYPE_ULONG</td> <td>gulong</td> <td>uint64</td> </tr> <tr> <td>G_TYPE_INT64</td> <td>gint64</td> <td>int64</td> </tr> <tr> <td>G_TYPE_UINT64</td> <td>guint64</td> <td>uint64</td> </tr> <tr> <td>G_TYPE_ENUM</td> <td>GEnum</td> <td>int32</td> </tr> <tr> <td>G_TYPE_FLAGS</td> <td>GFlag</td> <td>uint32</td> </tr> <tr> <td>G_TYPE_FLOAT</td> <td>gfloat</td> <td>num32</td> </tr> <tr> <td>G_TYPE_DOUBLE</td> <td>gdouble</td> <td>num64</td> </tr> <tr> <td>G_TYPE_STRING</td> <td>gchar-ptr</td> <td>Str</td> </tr> <tr> <td>G_TYPE_OBJECT</td> <td>-</td> <td>Gnome::GObject::Object</td> </tr> <tr> <td>G_TYPE_VARIANT</td> <td>-</td> <td>Gnome::Glib::Variant</td> </tr>
 </tbody>
 </table>
+
+Some types might have a longer or shorter size depending on the OS Raku is running on. It is a reflection of the C macro types of the C compiler include files. So to use the proper types, always use the glib type instead of the Raku type which are generated in the **Gnome::N::GlibToRakuTypes** module at Build time when `Gnome::N` is installed.
 
 Methods
 =======
