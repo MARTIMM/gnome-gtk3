@@ -112,8 +112,8 @@ Adds a widget to a **Gnome::Gtk3::Fixed** container at the given position.
 
   * $y; the vertical position to place the widget at.
 
-Properties
-==========
+Child Properties
+================
 
 x
 -
