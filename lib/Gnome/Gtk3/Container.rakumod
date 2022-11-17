@@ -425,11 +425,11 @@ sub gtk_container_child_get (
 =begin pod
 =head2 child-get-property
 
-Gets the value of a child property for I<child> and this container.
+Gets the value of a child property for I<child> and this container. It returns an undefined value if $property-type can't be processed or when $property-name does not exist.
 
   method child-get-property (
     N-GObject() $child, Str $property-name, $property-type
-    --> Gnome::GObject::Value
+    --> Any
   )
 
 =item $child; a widget which is a child of this container.
@@ -445,25 +445,35 @@ The B<Gnome::Gtk3::Fixed> can contain widgets at fixed locations. The locations 
   $f.put( $b, 10, 10);
   
   # somewhat later
-  my Int $x = $f.child-get-property( $b, 'x', G_TYPE_INT).get-int;
-  my Int $y = $f.child-get-property( $b, 'y', G_TYPE_INT).get-int;
+  my Int $x = $f.child-get-property( $b, 'x', G_TYPE_INT);
+  my Int $y = $f.child-get-property( $b, 'y', G_TYPE_INT);
 
   say "Widget is at ($x, $y)";
 
 =end pod
 
 method child-get-property (
-  N-GObject() $child, Str $property-name, Any $property-type is copy
-  --> Gnome::GObject::Value
+  N-GObject() $child, Str $property-name, Any $property-type --> Any
 ) {
+
   my Gnome::GObject::Value $value .= new(:init($property-type));
-  my N-GValue $n-value = $value._get-native-object;
+  my N-GValue $n-value = $value._get-native-object-no-reffing;
 
   gtk_container_child_get_property(
     self._f('GtkContainer'), $child, $property-name, $n-value
   );
 
-  Gnome::GObject::Value.new(:native-object($n-value));
+  my $v = Gnome::GObject::Value.new(:native-object($n-value));
+
+  my Str $mname = $v.map-type-to-method{$property-type.Str} // Str;
+  if ?$mname {
+    my Bool $can = ?$v.^can($mname);
+    $can ?? $v."$mname"() !! Any
+  }
+
+  else {
+    Any
+  }
 }
 
 sub gtk_container_child_get_property (
