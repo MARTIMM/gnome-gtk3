@@ -72,151 +72,173 @@ Methods
 new
 ---
 
+### default, no options
+
 Create a new default Frame.
 
     multi method new ( )
+
+### :label
 
 Create a new Frame with a label.
 
     multi method new ( :label! )
 
-Create an object using a native object from elsewhere. See also **Gnome::GObject::Object**.
+### :native-object
+
+Create a Frame object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
     multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also **Gnome::GObject::Object**.
+### :build-id
+
+Create a Frame object using a native object returned from a builder. See also **Gnome::GObject::Object**.
 
     multi method new ( Str :$build-id! )
 
-gtk_frame_new
--------------
+get-label
+---------
 
-Creates a new **Gnome::Gtk3::Frame**, with optional label *$label*. If *$label* is `Any`, the label is omitted.
+If the frame’s label widget is a **Gnome::Gtk3::Label**, returns the text in the label widget. (The frame will have a **Gnome::Gtk3::Label** for the label widget if a non-`undefined` argument was passed to `new()`.)
 
-Returns: a new **Gnome::Gtk3::Frame** widget
+Returns: the text in the label, or `undefined` if there was no label widget or the lable widget was not a **Gnome::Gtk3::Label**. This string is owned by GTK+ and must not be modified or freed.
 
-    method gtk_frame_new ( Str $label --> N-GObject )
+    method get-label ( --> Str )
 
-  * Str $label; the text to use as the label of the frame
+get-label-align
+---------------
 
-[gtk_frame_] set_label
-----------------------
+Retrieves the X and Y alignment of the frame’s label. See `set_label_align()`.
 
-Removes the current *label-widget*. If *$label* is not `Any`, creates a new **Gnome::Gtk3::Label** with that text and adds it as the *label-widget*.
-
-    method gtk_frame_set_label ( Str $label )
-
-  * Str $label; the text to use as the label of the frame
-
-[gtk_frame_] get_label
-----------------------
-
-If the frame’s label widget is a **Gnome::Gtk3::Label**, returns the text in the label widget. (The frame will have a **Gnome::Gtk3::Label** for the label widget if a non-`Any` argument was passed to `gtk_frame_new()`.)
-
-Returns: (nullable): the text in the label, or `Any` if there was no label widget or the lable widget was not a **Gnome::Gtk3::Label**. This string is owned by GTK+ and must not be modified or freed.
-
-    method gtk_frame_get_label ( --> Str )
-
-[gtk_frame_] set_label_widget
------------------------------
-
-Sets the *$label-widget* for the frame. This is the widget that will appear embedded in the top edge of the frame as a title.
-
-    method gtk_frame_set_label_widget ( N-GObject $label_widget )
-
-  * N-GObject $label_widget; the new label widget
-
-[gtk_frame_] get_label_widget
------------------------------
-
-Retrieves the label widget for the frame. See `gtk_frame_set_label_widget()`.
-
-Returns: (nullable) (transfer none): the label widget, or `Any` if there is none.
-
-    method gtk_frame_get_label_widget ( --> N-GObject )
-
-[gtk_frame_] set_label_align
-----------------------------
-
-Sets the alignment of the frame widget’s label. The default values for a newly created frame are 0.0 and 0.5.
-
-    method gtk_frame_set_label_align ( Num $xalign, Num $yalign )
-
-  * Num $xalign; The position of the label along the top edge of the widget. A value of 0.0 represents left alignment; 1.0 represents right alignment.
-
-  * Num $yalign; The y alignment of the label. A value of 0.0 aligns under the frame; 1.0 aligns above the frame. If the values are exactly 0.0 or 1.0 the gap in the frame won’t be painted because the label will be completely above or below the frame.
-
-[gtk_frame_] get_label_align
-----------------------------
-
-Retrieves the X and Y alignment of the frame’s label. See `gtk_frame_set_label_align()`.
-
-    method gtk_frame_get_label_align ( --> List )
+    method get-label-align ( --> List )
 
 The list has the following items
 
-  * Num $xalign; location to store X alignment of frame’s label, or `Any`
+  * $xalign; X alignment of frame’s label, or `undefined`
 
-  * Num $yalign; location to store Y alignment of frame’s label, or `Any`
+  * $yalign; Y alignment of frame’s label, or `undefined`
 
-[gtk_frame_] set_shadow_type
-----------------------------
+get-label-widget
+----------------
 
-Sets the *shadow-type* for *frame*, i.e. whether it is drawn without (`GTK_SHADOW_NONE`) or with (other values) a visible border. Values other than `GTK_SHADOW_NONE` are treated identically by **Gnome::Gtk3::Frame**. The chosen type is applied by removing or adding the .flat class to the CSS node named border.
+Retrieves the label widget for the frame. See `set_label_widget()`.
 
-    method gtk_frame_set_shadow_type ( GtkShadowType $type )
+Returns: the label widget, or `undefined` if there is none.
 
-  * GtkShadowType $type; the new **Gnome::Gtk3::ShadowType**
+    method get-label-widget ( --> N-GObject )
 
-[gtk_frame_] get_shadow_type
-----------------------------
+get-shadow-type
+---------------
 
-Retrieves the shadow type of the frame. See `gtk_frame_set_shadow_type()`.
+Retrieves the shadow type of the frame. See `set_shadow_type()`.
 
 Returns: the current shadow type of the frame.
 
-    method gtk_frame_get_shadow_type ( --> GtkShadowType )
+    method get-shadow-type ( --> GtkShadowType )
+
+set-label
+---------
+
+Removes the current *label-widget*. If *label* is not `undefined`, creates a new **Gnome::Gtk3::Label** with that text and adds it as the *label-widget*.
+
+    method set-label ( Str $label )
+
+  * $label; the text to use as the label of the frame
+
+set-label-align
+---------------
+
+Sets the alignment of the frame widget’s label. The default values for a newly created frame are 0.0 and 0.5.
+
+    method set-label-align ( Num() $xalign, Num() $yalign )
+
+  * $xalign; The position of the label along the top edge of the widget. A value of 0.0 represents left alignment; 1.0 represents right alignment.
+
+  * $yalign; The y alignment of the label. A value of 0.0 aligns under the frame; 1.0 aligns above the frame. If the values are exactly 0.0 or 1.0 the gap in the frame won’t be painted because the label will be completely above or below the frame.
+
+set-label-widget
+----------------
+
+Sets the *label-widget* for the frame. This is the widget that will appear embedded in the top edge of the frame as a title.
+
+    method set-label-widget ( N-GObject() $label_widget )
+
+  * $label_widget; the new label widget
+
+set-shadow-type
+---------------
+
+Sets the *shadow-type* for *frame*, i.e. whether it is drawn without (`GTK_SHADOW_NONE`) or with (other values) a visible border. Values other than `GTK_SHADOW_NONE` are treated identically by GtkFrame. The chosen type is applied by removing or adding the .flat class to the CSS node named border.
+
+    method set-shadow-type ( GtkShadowType $type )
+
+  * $type; the new **Gnome::Gtk3::ShadowType**
 
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **gtk_label_set_text('my text label')**.
+label
+-----
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.g-object-get-property( 'label', $gv);
-    $gv.g-value-set-string('my text label');
+Text of the frame's label
 
-Supported properties
---------------------
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
-### Label
+  * Parameter is readable and writable.
 
-Text of the frame's label Default value: Any
+  * Default value is undefined.
 
-The **Gnome::GObject::Value** type of property *label* is `G_TYPE_STRING`.
+label-widget
+------------
 
-### Label xalign
+A widget to display in place of the usual frame label
 
-The horizontal alignment of the label.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
 
-The **Gnome::GObject::Value** type of property *label-xalign* is `G_TYPE_FLOAT`.
+  * The type of this G_TYPE_OBJECT object is GTK_TYPE_WIDGET
 
-### Label yalign
+  * Parameter is readable and writable.
 
-The vertical alignment of the label.
+label-xalign
+------------
 
-The **Gnome::GObject::Value** type of property *label-yalign* is `G_TYPE_FLOAT`.
+The horizontal alignment of the label
 
-### Frame shadow
+  * **Gnome::GObject::Value** type of this property is G_TYPE_FLOAT
 
-Appearance of the frame border Default value: False
+  * Parameter is readable and writable.
 
-The **Gnome::GObject::Value** type of property *shadow-type* is `G_TYPE_ENUM`.
+  * Minimum value is 0.0.
 
-### Label widget
+  * Maximum value is 1.0.
 
-A widget to display in place of the usual frame label Widget type: GTK_TYPE_WIDGET
+  * Default value is 0.0.
 
-The **Gnome::GObject::Value** type of property *label-widget* is `G_TYPE_OBJECT`.
+label-yalign
+------------
+
+The vertical alignment of the label
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_FLOAT
+
+  * Parameter is readable and writable.
+
+  * Minimum value is 0.0.
+
+  * Maximum value is 1.0.
+
+  * Default value is 0.5.
+
+shadow-type
+-----------
+
+Appearance of the frame border
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_ENUM
+
+  * The type of this G_TYPE_ENUM object is GTK_TYPE_SHADOW_TYPE
+
+  * Parameter is readable and writable.
+
+  * Default value is GTK_SHADOW_ETCHED_IN.
 

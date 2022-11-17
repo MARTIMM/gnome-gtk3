@@ -4,10 +4,13 @@ use Test;
 
 use Gnome::GObject::Type;
 use Gnome::GObject::Value;
+
 use Gnome::Gtk3::Frame;
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::Label;
 
+use Gnome::N::GlibToRakuTypes;
+#use Gnome::N::N-GObject;
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
@@ -26,6 +29,22 @@ subtest 'ISA test', {
 unless %*ENV<raku_test_all>:exists {
   done-testing;
   exit;
+}
+
+#-------------------------------------------------------------------------------
+subtest 'Inherit Gnome::Gtk3::Frame', {
+  class MyClass is Gnome::Gtk3::Frame {
+    method new ( |c ) {
+      self.bless( :GtkFrame, |c);
+    }
+
+    submethod BUILD ( *%options ) {
+
+    }
+  }
+
+  my MyClass $mgc .= new;
+  isa-ok $mgc, Gnome::Gtk3::Frame, 'MyClass.new()';
 }
 
 #-------------------------------------------------------------------------------
@@ -52,21 +71,20 @@ subtest 'Manipulations', {
 }
 
 #-------------------------------------------------------------------------------
-subtest 'Properties ...', {
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $f.get-property( 'label', $gv);
-  is $gv.get-string, 'new label', 'property label';
-  $gv.clear-object;
+subtest 'Properties …', {
+#  my Gnome::Gtk3::Frame $f .= new;
+  my @r = $f.get-properties(
+    'label', Str, 'label-xalign', gfloat, 'label-yalign', gfloat,
+    'shadow-type', GEnum, 'label-widget', gpointer
+  );
 
-  $gv .= new(:init(G_TYPE_FLOAT));
-  $f.get-property( 'label-xalign', $gv);
-  is-approx $gv.get-float, 0.8e0, 'property label-xalign';
-  $gv.clear-object;
+  is @r[0], 'new label', 'label';
+  is-approx @r[1], 0.8e0, 'property label-xalign';
+  is-approx @r[2], 0.03e0, 'property label-yalign';
+  is @r[3], GTK_SHADOW_IN.value, 'property shadow-type';
 
-  $gv .= new(:init(G_TYPE_FLOAT));
-  $f.get-property( 'label-yalign', $gv);
-  is-approx $gv.get-float, 0.03e0, 'property label-yalign';
-  $gv.clear-object;
+  my Gnome::Gtk3::Label() $l = @r[4];
+  is $l.get-text, 'new label', 'property label-widget';
 }
 
 #`{{

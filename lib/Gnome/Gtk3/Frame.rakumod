@@ -72,10 +72,13 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
+#use Gnome::N::X;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
+use Gnome::N::GlibToRakuTypes;
+
 use Gnome::Gtk3::Bin;
+use Gnome::Gtk3::Enums;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
@@ -88,50 +91,63 @@ also is Gnome::Gtk3::Bin;
 =head1 Methods
 =head2 new
 
+=head3 default, no options
+
 Create a new default Frame.
 
   multi method new ( )
+
+
+=head3 :label
 
 Create a new Frame with a label.
 
   multi method new ( :label! )
 
-Create an object using a native object from elsewhere. See also B<Gnome::GObject::Object>.
+
+=head3 :native-object
+
+Create a Frame object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
   multi method new ( N-GObject :$native-object! )
 
-Create an object using a native object from a builder. See also B<Gnome::GObject::Object>.
+
+=head3 :build-id
+
+Create a Frame object using a native object returned from a builder. See also B<Gnome::GObject::Object>.
 
   multi method new ( Str :$build-id! )
+
 
 =end pod
 
 #TM:1:new():inheriting
 #TM:1:new():
-#TM:1:new(:native-object):
-#TM:0:new(:build-id):
+#TM:4:new(:native-object):Gnome::N::TopLevelClassSupport
+#TM:4:new(:build-id):Gnome::GObject::Object
 
 submethod BUILD ( *%options ) {
 
   # prevent creating wrong native-objects
   if self.^name eq 'Gnome::Gtk3::Frame' or %options<GtkFrame> {
 
+    # process all named arguments
     if self.is-valid { }
 
-    # process all named arguments
-    elsif %options<widget>:exists or %options<native-object>:exists or
-       %options<build-id>:exists { }
+    # check if common options are handled by some parent
+    elsif %options<native-object>:exists { }
+    elsif %options<build-id>:exists { }
 
     else {
-      my $no;
+      my N-GObject() $no;
 
       if ? %options<label> {
-        $no = gtk_frame_new(%options<label>);
+        $no = _gtk_frame_new(%options<label>);
       }
 
       # create default object
       else {
-        $no = gtk_frame_new(Str);
+        $no = _gtk_frame_new(Str);
       }
 
       self._set-native-object($no);
@@ -146,10 +162,35 @@ submethod BUILD ( *%options ) {
 # no pod. user does not have to know about it.
 method _fallback ( $native-sub is copy --> Callable ) {
 
+  my Str $new-patt = $native-sub.subst( '_', '-', :g);
+
   my Callable $s;
   try { $s = &::("gtk_frame_$native-sub"); };
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  if ?$s {
+    Gnome::N::deprecate(
+      "gtk_frame_$native-sub", $new-patt, '0.47.4', '0.50.0'
+    );
+  }
+
+  else {
+    try { $s = &::("gtk_$native-sub"); } unless ?$s;
+    if ?$s {
+      Gnome::N::deprecate(
+        "gtk_$native-sub", $new-patt.subst('frame-'),
+        '0.47.4', '0.50.0'
+      );
+    }
+
+    else {
+      try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+      if ?$s {
+        Gnome::N::deprecate(
+          "$native-sub", $new-patt.subst('gtk-frame-dialog-'),
+          '0.47.4', '0.50.0'
+        );
+      }
+    }
+  }
 
   self._set-class-name-of-sub('GtkFrame');
   $s = callsame unless ?$s;
@@ -157,6 +198,278 @@ method _fallback ( $native-sub is copy --> Callable ) {
   $s;
 }
 
+
+
+#-------------------------------------------------------------------------------
+#TM:1:get-label:
+=begin pod
+=head2 get-label
+
+If the frame’s label widget is a B<Gnome::Gtk3::Label>, returns the text in the label widget. (The frame will have a B<Gnome::Gtk3::Label> for the label widget if a non-C<undefined> argument was passed to C<new()>.)
+
+Returns: the text in the label, or C<undefined> if there was no label widget or the lable widget was not a B<Gnome::Gtk3::Label>. This string is owned by GTK+ and must not be modified or freed.
+
+  method get-label ( --> Str )
+
+=end pod
+
+method get-label ( --> Str ) {
+  gtk_frame_get_label( self._f('GtkFrame'))
+}
+
+sub gtk_frame_get_label (
+  N-GObject $frame --> gchar-ptr
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:get-label-align:
+=begin pod
+=head2 get-label-align
+
+Retrieves the X and Y alignment of the frame’s label. See C<set_label_align()>.
+
+  method get-label-align ( --> List )
+
+The list has the following items
+=item $xalign; X alignment of frame’s label, or C<undefined>
+=item $yalign; Y alignment of frame’s label, or C<undefined>
+=end pod
+
+method get-label-align ( --> List ) {
+  gtk_frame_get_label_align( self._f('GtkFrame'), my num32 $xa, my num32 $ya);
+  ( $xa, $ya)
+}
+
+sub gtk_frame_get_label_align (
+  N-GObject $frame, gfloat $xalign is rw, gfloat $yalign is rw
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:get-label-widget:
+=begin pod
+=head2 get-label-widget
+
+Retrieves the label widget for the frame. See C<set_label_widget()>.
+
+Returns: the label widget, or C<undefined> if there is none.
+
+  method get-label-widget ( --> N-GObject )
+
+=end pod
+
+method get-label-widget ( --> N-GObject ) {
+  gtk_frame_get_label_widget( self._f('GtkFrame'))
+}
+
+sub gtk_frame_get_label_widget (
+  N-GObject $frame --> N-GObject
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:get-shadow-type:
+=begin pod
+=head2 get-shadow-type
+
+Retrieves the shadow type of the frame. See C<set_shadow_type()>.
+
+Returns: the current shadow type of the frame.
+
+  method get-shadow-type ( --> GtkShadowType )
+
+=end pod
+
+method get-shadow-type ( --> GtkShadowType ) {
+  GtkShadowType(gtk_frame_get_shadow_type( self._f('GtkFrame')))
+}
+
+sub gtk_frame_get_shadow_type (
+  N-GObject $frame --> GEnum
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:set-label:
+=begin pod
+=head2 set-label
+
+Removes the current I<label-widget>. If I<label> is not C<undefined>, creates a new B<Gnome::Gtk3::Label> with that text and adds it as the I<label-widget>.
+
+  method set-label ( Str $label )
+
+=item $label; the text to use as the label of the frame
+=end pod
+
+method set-label ( Str $label ) {
+  gtk_frame_set_label( self._f('GtkFrame'), $label);
+}
+
+sub gtk_frame_set_label (
+  N-GObject $frame, gchar-ptr $label 
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:set-label-align:
+=begin pod
+=head2 set-label-align
+
+Sets the alignment of the frame widget’s label. The default values for a newly created frame are 0.0 and 0.5.
+
+  method set-label-align ( Num() $xalign, Num() $yalign )
+
+=item $xalign; The position of the label along the top edge of the widget. A value of 0.0 represents left alignment; 1.0 represents right alignment.
+=item $yalign; The y alignment of the label. A value of 0.0 aligns under  the frame; 1.0 aligns above the frame. If the values are exactly 0.0 or 1.0 the gap in the frame won’t be painted because the label will be completely above or below the frame.
+=end pod
+
+method set-label-align ( Num() $xalign, Num() $yalign ) {
+  gtk_frame_set_label_align( self._f('GtkFrame'), $xalign, $yalign);
+}
+
+sub gtk_frame_set_label_align (
+  N-GObject $frame, gfloat $xalign, gfloat $yalign 
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:set-label-widget:
+=begin pod
+=head2 set-label-widget
+
+Sets the I<label-widget> for the frame. This is the widget that will appear embedded in the top edge of the frame as a title.
+
+  method set-label-widget ( N-GObject() $label_widget )
+
+=item $label_widget; the new label widget
+=end pod
+
+method set-label-widget ( N-GObject() $label_widget ) {
+  gtk_frame_set_label_widget( self._f('GtkFrame'), $label_widget);
+}
+
+sub gtk_frame_set_label_widget (
+  N-GObject $frame, N-GObject $label_widget 
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:set-shadow-type:
+=begin pod
+=head2 set-shadow-type
+
+Sets the I<shadow-type> for I<frame>, i.e. whether it is drawn without (C<GTK_SHADOW_NONE>) or with (other values) a visible border. Values other than C<GTK_SHADOW_NONE> are treated identically by GtkFrame. The chosen type is applied by removing or adding the .flat class to the CSS node named border.
+
+  method set-shadow-type ( GtkShadowType $type )
+
+=item $type; the new B<Gnome::Gtk3::ShadowType>
+=end pod
+
+method set-shadow-type ( GtkShadowType $type ) {
+  gtk_frame_set_shadow_type( self._f('GtkFrame'), $type);
+}
+
+sub gtk_frame_set_shadow_type (
+  N-GObject $frame, GEnum $type 
+) is native(&gtk-lib)
+  { * }
+
+#-------------------------------------------------------------------------------
+#TM:1:_gtk_frame_new:
+#`{{
+=begin pod
+=head2 _gtk_frame_new
+
+Creates a new B<Gnome::Gtk3::Frame>, with optional label I<label>. If I<label> is C<undefined>, the label is omitted.
+
+Returns: a new B<Gnome::Gtk3::Frame> widget
+
+  method _gtk_frame_new ( Str $label --> N-GObject )
+
+=item $label; the text to use as the label of the frame
+=end pod
+}}
+
+sub _gtk_frame_new ( gchar-ptr $label --> N-GObject )
+  is native(&gtk-lib)
+  is symbol('gtk_frame_new')
+  { * }
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:label:
+=head2 label
+
+Text of the frame's label
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:label-widget:
+=head2 label-widget
+
+A widget to display in place of the usual frame label
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_OBJECT
+=item The type of this G_TYPE_OBJECT object is GTK_TYPE_WIDGET
+=item Parameter is readable and writable.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:label-xalign:
+=head2 label-xalign
+
+The horizontal alignment of the label
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_FLOAT
+=item Parameter is readable and writable.
+=item Minimum value is 0.0.
+=item Maximum value is 1.0.
+=item Default value is 0.0.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:label-yalign:
+=head2 label-yalign
+
+The vertical alignment of the label
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_FLOAT
+=item Parameter is readable and writable.
+=item Minimum value is 0.0.
+=item Maximum value is 1.0.
+=item Default value is 0.5.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:shadow-type:
+=head2 shadow-type
+
+Appearance of the frame border
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_ENUM
+=item The type of this G_TYPE_ENUM object is GTK_TYPE_SHADOW_TYPE
+=item Parameter is readable and writable.
+=item Default value is GTK_SHADOW_ETCHED_IN.
+
+=end pod
+
+
+
+
+
+
+
+
+
+=finish
 #-------------------------------------------------------------------------------
 #TM:2:gtk_frame_new:new():new(:label)
 =begin pod
