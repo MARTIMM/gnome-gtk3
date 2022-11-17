@@ -10,6 +10,8 @@ use Gnome::Gtk3::Label;
 
 use Gnome::Glib::List;
 
+use Gnome::GObject::Type;
+
 use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
 #use Gnome::N::X;
@@ -91,6 +93,20 @@ subtest 'Properties ...', {
     GTK_BASELINE_POSITION_CENTER.value, True.Int, 10
   ], 'baseline-position, homogeneous, spacing';
 
+#-------------------------------------------------------------------------------
+subtest 'Child properties …', {
+
+  is $b.child-get-property( $b-start, 'expand', G_TYPE_BOOLEAN),
+      False, 'child property expand';
+  is $b.child-get-property( $b-start, 'fill', G_TYPE_BOOLEAN),    
+      False, 'child property fill';
+#  is $b.child-get-property( $b-secnd-stop, 'pack-type', G_TYPE_ENUM),
+#     GTK_PACK_END.value, 'child property pack-type';
+  is $b.child-get-property( $b-secnd-stop, 'padding', G_TYPE_UINT), 22,
+     'child property padding';
+  is $b.child-get-property( $b-start, 'position', G_TYPE_INT), 2,
+     'child property position';
+}
 
 #`{{
 --- Child properties ---

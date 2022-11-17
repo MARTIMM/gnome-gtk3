@@ -33,9 +33,6 @@ B<Gnome::Gtk3::Box> uses a single CSS node with name box.
 
 In horizontal orientation, the nodes of the children are always arranged from left to right. So C<first-child> will always select the leftmost child, regardless of text direction.
 
-=head2 Implemented Interfaces
-=comment item Gnome::Atk::ImplementorIface
-=item [Gnome::Gtk3::Orientable](Orientable.html)
 
 =head2 See Also
 
@@ -213,10 +210,35 @@ submethod BUILD ( *%options ) {
 # no pod. user does not have to know about it.
 method _fallback ( $native-sub is copy --> Callable ) {
 
+  my Str $new-patt = $native-sub.subst( '_', '-', :g);
+
   my Callable $s;
   try { $s = &::("gtk_box_$native-sub"); };
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  if ?$s {
+    Gnome::N::deprecate(
+      "gtk_box_$native-sub", $new-patt, '0.47.4', '0.50.0'
+    );
+  }
+
+  else {
+    try { $s = &::("gtk_$native-sub"); } unless ?$s;
+    if ?$s {
+      Gnome::N::deprecate(
+        "gtk_$native-sub", $new-patt.subst('box-'),
+        '0.47.4', '0.50.0'
+      );
+    }
+
+    else {
+      try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+      if ?$s {
+        Gnome::N::deprecate(
+          "$native-sub", $new-patt.subst('gtk-box-'),
+          '0.47.4', '0.50.0'
+        );
+      }
+    }
+  }
 
   self._set-class-name-of-sub('GtkBox');
   $s = callsame unless ?$s;
@@ -592,6 +614,131 @@ sub _gtk_box_new ( GEnum $orientation, gint $spacing --> N-GObject )
   is native(&gtk-lib)
   is symbol('gtk_box_new')
   { * }
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:baseline-position:
+=head2 baseline-position
+
+The position of the baseline aligned widgets if extra space is available
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_ENUM
+=item The type of this G_TYPE_ENUM object is GTK_TYPE_BASELINE_POSITION
+=item Parameter is readable and writable.
+=item Default value is GTK_BASELINE_POSITION_CENTER.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:homogeneous:
+=head2 homogeneous
+
+Whether the children should all be the same size
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:spacing:
+=head2 spacing
+
+The amount of space between children
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_INT
+=item Parameter is readable and writable.
+=item Minimum value is 0.
+=item Maximum value is G_MAXINT.
+=item Default value is 0.
+
+=end pod
+
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Child Properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:expand:
+=head2 expand
+
+Whether the child should receive extra space when the parent grows
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:fill:
+=head2 fill
+
+Whether extra space given to the child should be allocated to the child or used as padding
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is TRUE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:pack-type:
+=head2 pack-type
+
+A GtkPackType indicating whether the child is packed with reference to the start or end of the parent
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_ENUM
+=item The type of this G_TYPE_ENUM object is GTK_TYPE_PACK_TYPE
+=item Parameter is readable and writable.
+=item Default value is GTK_PACK_START.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:padding:
+=head2 padding
+
+Extra space to put between the child and its neighbors, in pixels
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_UINT
+=item Parameter is readable and writable.
+=item Minimum value is 0.
+=item Maximum value is G_MAXINT.
+=item Default value is 0.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:position:
+=head2 position
+
+The index of the child in the parent
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_INT
+=item Parameter is readable and writable.
+=item Minimum value is -1.
+=item Maximum value is G_MAXINT.
+=item Default value is 0.
+
+=end pod
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=finish
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Properties
@@ -777,7 +924,7 @@ setting the child’s align property corresponding to the box’s orientation
 The B<Gnome::GObject::Value> type of property I<fill> is C<G_TYPE_BOOLEAN>.
 
 =comment -----------------------------------------------------------------------
-=comment # TP:1:pack-type:
+=comment # TP:0:pack-type:
 =head3 Pack type: pack-type
 
 A GtkPackType indicating whether the child is packed with reference to the start or end of the parent
@@ -801,9 +948,5 @@ The B<Gnome::GObject::Value> type of property I<padding> is C<G_TYPE_UINT>.
 =head3 Position: position
 
 The B<Gnome::GObject::Value> type of property I<position> is C<G_TYPE_INT>.
-
-
---- Child properties ---
-=end comment
 
 =end pod

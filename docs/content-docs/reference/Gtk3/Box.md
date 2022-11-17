@@ -29,11 +29,6 @@ Css Nodes
 
 In horizontal orientation, the nodes of the children are always arranged from left to right. So `first-child` will always select the leftmost child, regardless of text direction.
 
-Implemented Interfaces
-----------------------
-
-  * [Gnome::Gtk3::Orientable](Orientable.html)
-
 See Also
 --------
 
@@ -254,18 +249,49 @@ baseline-position
 
 The position of the baseline aligned widgets if extra space is available
 
-The **Gnome::GObject::Value** type of property *baseline-position* is `G_TYPE_ENUM`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_ENUM
+
+  * The type of this G_TYPE_ENUM object is GTK_TYPE_BASELINE_POSITION
 
   * Parameter is readable and writable.
 
   * Default value is GTK_BASELINE_POSITION_CENTER.
+
+homogeneous
+-----------
+
+Whether the children should all be the same size
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
+
+  * Parameter is readable and writable.
+
+  * Default value is FALSE.
+
+spacing
+-------
+
+The amount of space between children
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
+
+  * Parameter is readable and writable.
+
+  * Minimum value is 0.
+
+  * Maximum value is G_MAXINT.
+
+  * Default value is 0.
+
+Child Properties
+================
 
 expand
 ------
 
 Whether the child should receive extra space when the parent grows
 
-The **Gnome::GObject::Value** type of property *expand* is `G_TYPE_BOOLEAN`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
   * Parameter is readable and writable.
 
@@ -276,29 +302,20 @@ fill
 
 Whether extra space given to the child should be allocated to the child or used as padding
 
-The **Gnome::GObject::Value** type of property *fill* is `G_TYPE_BOOLEAN`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
   * Parameter is readable and writable.
 
   * Default value is TRUE.
-
-homogeneous
------------
-
-Whether the children should all be the same size
-
-The **Gnome::GObject::Value** type of property *homogeneous* is `G_TYPE_BOOLEAN`.
-
-  * Parameter is readable and writable.
-
-  * Default value is FALSE.
 
 pack-type
 ---------
 
 A GtkPackType indicating whether the child is packed with reference to the start or end of the parent
 
-The **Gnome::GObject::Value** type of property *pack-type* is `G_TYPE_ENUM`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_ENUM
+
+  * The type of this G_TYPE_ENUM object is GTK_TYPE_PACK_TYPE
 
   * Parameter is readable and writable.
 
@@ -309,7 +326,7 @@ padding
 
 Extra space to put between the child and its neighbors, in pixels
 
-The **Gnome::GObject::Value** type of property *padding* is `G_TYPE_UINT`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_UINT
 
   * Parameter is readable and writable.
 
@@ -324,26 +341,11 @@ position
 
 The index of the child in the parent
 
-The **Gnome::GObject::Value** type of property *position* is `G_TYPE_INT`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
 
   * Parameter is readable and writable.
 
   * Minimum value is -1.
-
-  * Maximum value is G_MAXINT.
-
-  * Default value is 0.
-
-spacing
--------
-
-The amount of space between children
-
-The **Gnome::GObject::Value** type of property *spacing* is `G_TYPE_INT`.
-
-  * Parameter is readable and writable.
-
-  * Minimum value is 0.
 
   * Maximum value is G_MAXINT.
 
