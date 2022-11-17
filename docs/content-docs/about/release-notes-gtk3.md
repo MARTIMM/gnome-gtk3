@@ -6,8 +6,10 @@ layout: sidebar
 ---
 # Release notes
 * 2022-11-14 0.48.13
-  * Checked **Gnome::Gtk3::Fixed**. Added two child properties.
   * Added method `child-get-property()` in **Gnome::Gtk3::Container** to get child properties of widgets added to the container.
+  * Checked **Gnome::Gtk3::Fixed**. Added two child properties. Check other modules for child properties; **Gnome::Gtk3::Box** has 5.
+  * Checked **Gnome::Gtk3::Frame**.
+
 
 * 2022-10-23 0.48.12
   * Checked **Gnome::Gtk3::FileFilter**.
