@@ -58,9 +58,9 @@ subtest 'Child properties …', {
 #  my @r = $f.get-properties( 'x', gint, 'y', gint);
 #  is-deeply @r, [ 20, 20], 'properties: ' ~ (<x y>).join(', ');
 
-  is $f.child-get-property( $b, 'x', G_TYPE_INT).get-int, 20,
+  is $f.child-get-property( $b, 'x', G_TYPE_INT), 20,
      'child property x';
-  is $f.child-get-property( $b, 'y', G_TYPE_INT).get-int, 20,
+  is $f.child-get-property( $b, 'y', G_TYPE_INT), 20,
      'child property y';
 }
 
