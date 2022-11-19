@@ -2343,15 +2343,15 @@ sub gtk_widget_get_opacity (
 ) is native(&gtk-lib)
   { * }
 
-#`{{
+
 #-------------------------------------------------------------------------------
-#TM:0:get-pango-context:
+#TM:1:get-pango-context:
 =begin pod
 =head2 get-pango-context
 
 Gets a B<PangoContext> with the appropriate font map, font description, and base direction for this widget. Unlike the context returned by C<create-pango-context()>, this context is owned by the widget (it can be used until the screen for the widget changes or the widget is removed from its toplevel), and will be updated to match any changes to the widget’s attributes. This can be tracked by using the  I<screen-changed> signal on the widget.
 
-Returns: the B<PangoContext> for the widget.
+Returns: the native object of B<Gnome::Pango::Context> for the widget.
 
   method get-pango-context ( --> N-GObject )
 
@@ -2365,7 +2365,7 @@ sub gtk_widget_get_pango_context (
   N-GObject $widget --> N-GObject
 ) is native(&gtk-lib)
   { * }
-}}
+
 
 #-------------------------------------------------------------------------------
 #TM:1:get-parent:
