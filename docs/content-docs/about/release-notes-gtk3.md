@@ -5,6 +5,9 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+* 2022-11-20 0.48.14
+  * Add `get-pango-context()` to Widget;
+   
 * 2022-11-14 0.48.13
   * Added method `child-get-property()` in **Gnome::Gtk3::Container** to get child properties of widgets added to the container.
   * Checked **Gnome::Gtk3::Fixed**. Added two child properties. Check other modules for child properties; **Gnome::Gtk3::Box** has 5.
