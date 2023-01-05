@@ -1,7 +1,23 @@
 # https://jekyllrb.com/tutorials/navigation/
 - bar_title: "Pango Classes"
   bar_menu:
+  - title: "Context"
+    url: '/content-docs/reference/Pango/Context.html'
   - title: "Direction"
     url: '/content-docs/reference/Pango/Direction.html'
+  - title: "Font"
+    url: '/content-docs/reference/Pango/Font.html'
   - title: "FontDescription"
     url: '/content-docs/reference/Pango/FontDescription.html'
+  - title: "FontFace"
+    url: '/content-docs/reference/Pango/FontFace.html'
+  - title: "Gravity"
+    url: '/content-docs/reference/Pango/Gravity.html'
+  - title: "Item"
+    url: '/content-docs/reference/Pango/Item.html'
+  - title: "Layout"
+    url: '/content-docs/reference/Pango/Layout.html'
+  - title: "Matrix"
+    url: '/content-docs/reference/Pango/Matrix.html'
+#  - title: ""
+#    url: '/content-docs/reference/Pango/.html'
