@@ -4,6 +4,10 @@ Gnome::Pango::FontDescription
 Description
 ===========
 
+A PangoFontDescription describes a font in an implementation-independent manner.
+
+PangoFontDescription structures are used both to list what fonts are available on the system and also for specifying the characteristics of a font to load.
+
 Synopsis
 ========
 
@@ -11,31 +15,10 @@ Declaration
 -----------
 
     unit class Gnome::Pango::FontDescription;
-    also is Gnome::GObject::Object;
+    also is Gnome::GObject::Boxed;
 
 Types
 =====
-
-enum PangoFontMask
-------------------
-
-The bits in a `PangoFontMask` correspond to the set fields in a `N-GObject`.
-
-  * PANGO_FONT_MASK_FAMILY: the font family is specified.
-
-  * PANGO_FONT_MASK_STYLE: the font style is specified.
-
-  * PANGO_FONT_MASK_VARIANT: the font variant is specified.
-
-  * PANGO_FONT_MASK_WEIGHT: the font weight is specified.
-
-  * PANGO_FONT_MASK_STRETCH: the font stretch is specified.
-
-  * PANGO_FONT_MASK_SIZE: the font size is specified.
-
-  * PANGO_FONT_MASK_GRAVITY: the font gravity is specified (Since: 1.16.)
-
-  * PANGO_FONT_MASK_VARIATIONS: OpenType font variations are specified (Since: 1.42)
 
 enum PangoStretch
 -----------------
@@ -153,11 +136,11 @@ The following words are understood as gravity values: “Not-Rotated”, “Sout
 
 Any one of the options may be absent. If FAMILY-LIST is absent, then the family_name field of the resulting font description will be initialized to NULL. If STYLE-OPTIONS is missing, then all style options will be set to the default values. If SIZE is missing, the size in the resulting font description will be set to 0.
 
-A typical example:
+    multi method new(:$string!)
 
-      "Cantarell Italic Light 15 \`wght`=200"
+A typical example string:
 
-      multi method new(:$string!)
+    "Cantarell Italic Light 15 \`wght`=200"
 
 ### :copy
 
