@@ -6,7 +6,7 @@ Rendering to memory buffers
 Description
 ===========
 
-Image surfaces provide the ability to render to memory buffers either allocated by cairo or by the calling code. The supported image formats are those defined in **cairo_format_t**.
+Image surfaces provide the ability to render to memory buffers either allocated by cairo or by the calling code. The supported image formats are those defined in the enum **cairo_format_t**.
 
 See Also
 --------
@@ -50,7 +50,7 @@ Creates a new image surface and initializes the contents to the given PNG file.
 
 The native object is a **cairo_surface_t** initialized with the contents of the PNG file, or a "nil" surface if any error occurred. A nil surface can be checked for with `.status()`. which may return one of the following values: `CAIRO_STATUS_NO_MEMORY` `CAIRO_STATUS_FILE_NOT_FOUND` `CAIRO_STATUS_READ_ERROR` `CAIRO_STATUS_PNG_ERROR`.
 
-Alternatively, you can allow errors to propagate through the drawing operations and check the status on the context upon completion using `cairo_status()`.
+Alternatively, you can allow errors to propagate through the drawing operations and check the status on the context upon completion using `Gnome::Cairo.status()`.
 
     multi method new ( Str:D :$png! )
 

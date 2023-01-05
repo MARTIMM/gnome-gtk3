@@ -50,6 +50,13 @@ Return the length of the data array in the `cairo_path_t` structure.
 
     method length ( --> UInt )
 
+status
+------
+
+Return status from the path structure `cairo_path_t`.
+
+    method status ( --> cairo_status_t )
+
 walk-path
 ---------
 
@@ -61,11 +68,4 @@ A convenience method to walk over the set of parts in a path. The method will go
     }
 
 `$move-to`, `$line-to`, `$curve-to` and `$close-path` are the names of the methods defined in `$user-object`.
-
-status
-------
-
-Return status from the path structure `cairo_path_t`.
-
-    method status ( --> cairo_status_t )
 

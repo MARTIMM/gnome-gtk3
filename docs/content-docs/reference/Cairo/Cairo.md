@@ -355,9 +355,9 @@ Returns the current font matrix. See `set-font-matrix()`.
 get-font-options
 ----------------
 
-Retrieves font rendering options set via **cairo_set_font_options**. Note that the returned options do not include any options derived from the underlying surface; they are literally the options passed to `set-font-options()`.
+Retrieves font rendering options set via `set-font-options()`. Note that the returned options do not include any options derived from the underlying surface; they are literally the options passed to `set-font-options()`.
 
-    method get-font-options ( cairo_font_options_t $options )
+    method get-font-options ( cairo_font_options_t $options --> N-GObject )
 
   * cairo_font_options_t $options; a **cairo_t**
 

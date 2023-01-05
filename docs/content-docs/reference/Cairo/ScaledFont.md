@@ -34,129 +34,129 @@ Create a new ScaledFont object.
 
     multi method new ( )
 
-[cairo_scaled_font_] get_type
------------------------------
+create
+------
 
-This function returns the type of the backend used to create a scaled font. See **cairo_font_type_t** for available types. However, this function never returns `CAIRO_FONT_TYPE_TOY`. Return value: The type of *scaled_font*.
+Creates a **t** object from a font face and matrices that describe the size of the font and the environment in which it will be used. Return value: a newly created **t**. Destroy with `destroy()`
 
-    method cairo_scaled_font_get_type ( --> Int )
+    method create ( cairo_font_face_t $font_face, cairo_matrix_t $font_matrix, cairo_matrix_t $ctm, cairo_font_options_t $options --> cairo_scaled_font_t )
 
-cairo_scaled_font_status
-------------------------
+  * $font_face; a **cairo-font-face-t**
 
-Checks whether an error has previously occurred for this scaled_font. Return value: `CAIRO_STATUS_SUCCESS` or another error such as `CAIRO_STATUS_NO_MEMORY`.
+  * $font_matrix; font space to user space transformation matrix for the font. In the simplest case of a N point font, this matrix is just a scale by N, but it can also be used to shear the font or stretch it unequally along the two axes. See `cairo-set-font-matrix()`.
 
-    method cairo_scaled_font_status ( --> Int )
+  * $ctm; user to device transformation matrix with which the font will be used.
 
-cairo_scaled_font_create
-------------------------
+  * $options; options to use when getting metrics for the font and rendering with it.
 
-Creates a **cairo_scaled_font_t** object from a font face and matrices that describe the size of the font and the environment in which it will be used. Return value: a newly created **cairo_scaled_font_t**. Destroy with `cairo_scaled_font_destroy()`
+destroy
+-------
 
-    method cairo_scaled_font_create ( cairo_font_face_t $font_face, cairo_matrix_t $font_matrix, cairo_matrix_t $ctm, cairo_font_options_t $options --> cairo_scaled_font_t )
+Decreases the reference count on *font* by one. If the result is zero, then *font* and all associated resources are freed. See `reference()`.
 
-  * cairo_font_face_t $font_face; cairo_scaled_font_create:
+    method destroy ( )
 
-  * cairo_matrix_t $font_matrix; a **cairo_font_face_t**
+extents
+-------
 
-  * cairo_matrix_t $ctm; font space to user space transformation matrix for the font. In the simplest case of a N point font, this matrix is just a scale by N, but it can also be used to shear the font or stretch it unequally along the two axes. See `cairo_set_font_matrix()`.
+Gets the metrics for a **t**.
 
-  * cairo_font_options_t $options; user to device transformation matrix with which the font will be used.
+    method extents ( cairo_font_extents_t $extents )
 
-cairo_scaled_font_reference
----------------------------
+  * $extents; a **cairo-font-extents-t** which to store the retrieved extents.
 
-Increases the reference count on *scaled_font* by one. This prevents *scaled_font* from being destroyed until a matching call to `cairo_scaled_font_destroy()` is made. Use `cairo_scaled_font_get_reference_count()` to get the number of references to a **cairo_scaled_font_t**. Returns: the referenced **cairo_scaled_font_t**
+get-ctm
+-------
 
-    method cairo_scaled_font_reference ( --> cairo_scaled_font_t )
+Stores the CTM with which *scaled-font* was created into *ctm*. Note that the translation offsets (x0, y0) of the CTM are ignored by `create()`. So, the matrix this function returns always has 0,0 as x0,y0.
 
-cairo_scaled_font_destroy
--------------------------
+    method get-ctm ( cairo_matrix_t $ctm )
 
-Decreases the reference count on *font* by one. If the result is zero, then *font* and all associated resources are freed. See `cairo_scaled_font_reference()`.
+  * $ctm; return value for the CTM
 
-    method cairo_scaled_font_destroy ( --> void )
+get-font-face
+-------------
 
-[cairo_scaled_font_] get_reference_count
-----------------------------------------
+Gets the font face that this scaled font uses. This might be the font face passed to `create()`, but this does not hold true for all possible cases. Return value: The **cairo-font-face-t** with which *scaled-font* was created. This object is owned by cairo. To keep a reference to it, you must call `reference()`.
 
-Returns the current reference count of *scaled_font*. Return value: the current reference count of *scaled_font*. If the object is a nil object, 0 will be returned.
+    method get-font-face ( --> cairo_font_face_t )
 
-    method cairo_scaled_font_get_reference_count ( --> UInt )
+get-font-matrix
+---------------
 
-cairo_scaled_font_extents
--------------------------
+Stores the font matrix with which *scaled-font* was created into *matrix*.
 
-Gets the metrics for a **cairo_scaled_font_t**.
+    method get-font-matrix ( cairo_matrix_t $font_matrix )
 
-    method cairo_scaled_font_extents ( cairo_font_extents_t $extents --> void )
+  * $font_matrix; return value for the matrix
 
-  * cairo_font_extents_t $extents; a **cairo_scaled_font_t**
+get-font-options
+----------------
 
-[cairo_scaled_font_] text_extents
----------------------------------
+Stores the font options with which *scaled-font* was created into *options*.
 
-Gets the extents for a string of text. The extents describe a user-space rectangle that encloses the "inked" portion of the text drawn at the origin (0,0) (as it would be drawn by `cairo_show_text()` if the cairo graphics state were set to the same font_face, font_matrix, ctm, and font_options as *scaled_font*). Additionally, the x_advance and y_advance values indicate the amount by which the current point would be advanced by `cairo_show_text()`. Note that whitespace characters do not directly contribute to the size of the rectangle (extents.width and extents.height). They do contribute indirectly by changing the position of non-whitespace characters. In particular, trailing whitespace characters are likely to not affect the size of the rectangle, though they will affect the x_advance and y_advance values.
+    method get-font-options ( cairo_font_options_t $options )
 
-    method cairo_scaled_font_text_extents ( Str $utf8, cairo_text_extents_t $extents --> void )
+  * $options; return value for the font options
 
-  * Str $utf8; a **cairo_scaled_font_t**
+get-reference-count
+-------------------
 
-  * cairo_text_extents_t $extents; a NUL-terminated string of text, encoded in UTF-8
+Returns the current reference count of *scaled-font*. Return value: the current reference count of *scaled-font*. If the object is a nil object, 0 will be returned.
 
-[cairo_scaled_font_] glyph_extents
-----------------------------------
+    method get-reference-count ( --> Int )
 
-Gets the extents for an array of glyphs. The extents describe a user-space rectangle that encloses the "inked" portion of the glyphs, (as they would be drawn by `cairo_show_glyphs()` if the cairo graphics state were set to the same font_face, font_matrix, ctm, and font_options as *scaled_font*). Additionally, the x_advance and y_advance values indicate the amount by which the current point would be advanced by `cairo_show_glyphs()`. Note that whitespace glyphs do not contribute to the size of the rectangle (extents.width and extents.height).
+get-scale-matrix
+----------------
 
-    method cairo_scaled_font_glyph_extents ( cairo_glyph_t $glyphs, Int $num_glyphs, cairo_text_extents_t $extents --> void )
+Stores the scale matrix of *scaled-font* into *matrix*. The scale matrix is product of the font matrix and the ctm associated with the scaled font, and hence is the matrix mapping from font space to device space.
 
-  * cairo_glyph_t $glyphs; a **cairo_scaled_font_t**
+    method get-scale-matrix ( cairo_matrix_t $scale_matrix )
 
-  * Int $num_glyphs; an array of glyph IDs with X and Y offsets.
+  * $scale_matrix; return value for the matrix
 
-  * cairo_text_extents_t $extents; the number of glyphs in the *glyphs* array
+get-type
+--------
 
-[cairo_scaled_font_] get_font_face
-----------------------------------
+This function returns the type of the backend used to create a scaled font. See **cairo-font-type-t** for available types. However, this function never returns `CAIRO-FONT-TYPE-TOY`. Return value: The type of *scaled-font*.
 
-Gets the font face that this scaled font uses. This might be the font face passed to `cairo_scaled_font_create()`, but this does not hold true for all possible cases. Return value: The **cairo_font_face_t** with which *scaled_font* was created. This object is owned by cairo. To keep a reference to it, you must call `cairo_scaled_font_reference()`.
+    method get-type ( --> cairo_font_type_t )
 
-    method cairo_scaled_font_get_font_face ( --> cairo_font_face_t )
+glyph-extents
+-------------
 
-[cairo_scaled_font_] get_font_matrix
-------------------------------------
+Gets the extents for an array of glyphs. The extents describe a user-space rectangle that encloses the "inked" portion of the glyphs, (as they would be drawn by `cairo-show-glyphs()` if the cairo graphics state were set to the same font-face, font-matrix, ctm, and font-options as *scaled-font*). Additionally, the x-advance and y-advance values indicate the amount by which the current point would be advanced by `cairo-show-glyphs()`. Note that whitespace glyphs do not contribute to the size of the rectangle (extents.width and extents.height).
 
-Stores the font matrix with which *scaled_font* was created into *matrix*.
+    method glyph-extents ( cairo_glyph_t $glyphs, Int $num_glyphs, cairo_text_extents_t $extents )
 
-    method cairo_scaled_font_get_font_matrix ( cairo_matrix_t $font_matrix --> void )
+  * $glyphs; an array of glyph IDs with X and Y offsets.
 
-  * cairo_matrix_t $font_matrix; a **cairo_scaled_font_t**
+  * $num_glyphs; the number of glyphs in the *glyphs* array
 
-[cairo_scaled_font_] get_ctm
-----------------------------
+  * $extents; a **cairo-text-extents-t** which to store the retrieved extents.
 
-Stores the CTM with which *scaled_font* was created into *ctm*. Note that the translation offsets (x0, y0) of the CTM are ignored by `cairo_scaled_font_create()`. So, the matrix this function returns always has 0,0 as x0,y0.
+reference
+---------
 
-    method cairo_scaled_font_get_ctm ( cairo_matrix_t $ctm --> void )
+Increases the reference count on *scaled-font* by one. This prevents *scaled-font* from being destroyed until a matching call to `destroy()` is made. Use `get-reference-count()` to get the number of references to a **t**. Returns: the referenced **t**
 
-  * cairo_matrix_t $ctm; a **cairo_scaled_font_t**
+    method reference ( --> cairo_scaled_font_t )
 
-[cairo_scaled_font_] get_scale_matrix
--------------------------------------
+status
+------
 
-Stores the scale matrix of *scaled_font* into *matrix*. The scale matrix is product of the font matrix and the ctm associated with the scaled font, and hence is the matrix mapping from font space to device space.
+Checks whether an error has previously occurred for this scaled-font. Return value: `CAIRO-STATUS-SUCCESS` or another error such as `CAIRO-STATUS-NO-MEMORY`.
 
-    method cairo_scaled_font_get_scale_matrix ( cairo_matrix_t $scale_matrix --> void )
+    method status ( --> cairo_status_t )
 
-  * cairo_matrix_t $scale_matrix; a **cairo_scaled_font_t**
+text-extents
+------------
 
-[cairo_scaled_font_] get_font_options
--------------------------------------
+Gets the extents for a string of text. The extents describe a user-space rectangle that encloses the "inked" portion of the text drawn at the origin (0,0) (as it would be drawn by `cairo-show-text()` if the cairo graphics state were set to the same font-face, font-matrix, ctm, and font-options as *scaled-font*). Additionally, the x-advance and y-advance values indicate the amount by which the current point would be advanced by `cairo-show-text()`. Note that whitespace characters do not directly contribute to the size of the rectangle (extents.width and extents.height). They do contribute indirectly by changing the position of non-whitespace characters. In particular, trailing whitespace characters are likely to not affect the size of the rectangle, though they will affect the x-advance and y-advance values.
 
-Stores the font options with which *scaled_font* was created into *options*.
+    method text-extents ( cairo_text_extents_t $extents )
 
-    method cairo_scaled_font_get_font_options ( cairo_font_options_t $options --> void )
+  * $utf8; a NUL-terminated string of text, encoded in UTF-8
 
-  * cairo_font_options_t $options; a **cairo_scaled_font_t**
+  * $extents; a **cairo-text-extents-t** which to store the retrieved extents.
 
