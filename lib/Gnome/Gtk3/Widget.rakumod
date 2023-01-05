@@ -1087,17 +1087,22 @@ sub gtk_widget_compute_expand (
 ) is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
 #TM:0:create-pango-context:
 =begin pod
 =head2 create-pango-context
 
-Creates a new B<PangoContext> with the appropriate font map, font options, font description, and base direction for drawing text for this widget. See also C<get-pango-context()>.
-
-Returns: the new B<PangoContext>
+Creates a new native B<Gnome::Pango::Context> with the appropriate font map, font options, font description, and base direction for drawing text for this widget. See also C<.get-pango-context()>.
 
   method create-pango-context ( --> N-GObject )
+
+=head3 Example
+
+  use Gnome::Gtk3::Button;
+  use Gnome::Pango::Context;
+  
+  my $button .= new(:label<start>);
+  my Gnome::Pango::Context() $pcontext = $button.create-pango-context;
 
 =end pod
 
@@ -1110,6 +1115,7 @@ sub gtk_widget_create_pango_context (
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:create-pango-layout:
 =begin pod
