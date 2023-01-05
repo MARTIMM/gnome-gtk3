@@ -1070,7 +1070,7 @@ sub substitute-in-template (
 
             # process all other options
             else {
-              my $no;
+              my N-GObject() $no;
               if ? %options<___x___> {
                 #$no = %options<___x___>;
                 #$no .= _get-native-object-no-reffing unless $no ~~ N-GObject;
