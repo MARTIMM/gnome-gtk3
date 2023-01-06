@@ -254,29 +254,35 @@ Window                    |  |  | ✓| ✓| ✓| ✓| ✓| ⅑|  |  | ✓| ✓| 
 
 <br/>
 
+No class will be inheritable
 | Gnome::Gio              |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
-Action                    |R | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ⅖| ✓| ✓| ✓|  
-ActionMap                 |R | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  
+Action                    |R | ✓| ✓| ✓| ✗| ✓| ✓| ✗| ⅖| ✓| ✓| ✓|
+ActionMap                 |R | ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
 AppInfo                   |  | ✗| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
 AppInfoManager            |  | ✗| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓|
 AppLaunchContext          |  | ✗| ✓| ✓| ✓| ✗| ✓|  | ✗| ✓| ✓| ✓|
-Application               |  | ✓| ✓| ✓| ✓| ✓| ¾| ¾| ⅔| ✓| ✓| ✓|  
+Application               |  | ✓| ✓| ✓| ✓| ✓| ¾| ¾| ⅔| ✓| ✓| ✓|
 ApplicationCommandLine    |  | ✓| ✓| ✓| ✗| ✓| ⅘| ✗|  | ✓| ✓| ✓|
-DesktopAppInfo            |  | ✓| ✓| ✓| ✗| ✓| ⅖| ✗| ✓| ✓| ✓| ✓| < fbck sg prp
-Enums                     |S |  |  |  |  |  |  |  |  |  |  |  |  
-File                      |  | ✗| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|  
-Menu                      |  | ✓| ✓| ✓| ✗|  | ⅖| ✗| ✗| ✓| ✓| ✓|  
+DesktopAppInfo            |  | ✓| ✓| ✓| ✗| ✓| ⅖| ✗| ✓| ✓| ✓| ✓|
+Emblem                    |  | ✗| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
+EmblemedIcon              |  | ✗| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
+Enums                     |S |  |  |  |  |  |  |  |  |  |  |  |
+File                      |  | ✗| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
+FileIcon                  |  | ✗| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
+Icon                      |  | ✗| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓| ✓|
+Menu                      |  | ✓| ✓| ✓| ✗|  | ⅖| ✗| ✗| ✓| ✓| ✓|
 MenuAttributeIter         |  | ✓| ✓| ✓| ✗| ✗| ⅕| ✗| ✗| ✓| ✓| ✓|
-MenuItem                  |  | ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓| < fbck sg prp
-MenuLinkIter              |  | ✓| ✓| ✓| ✗| ✗| ⅗| ✗| ✗| ✓| ✓| ✓|  
-MenuModel                 |  | ✓| ✓| ✓| ✓| ✗| ⅖|  | ✗| ✓| ✓| ✓|  
-Notification              |  | ✓| ✓| ✓| ✗| ✗| ⅖| ✗| ✗| ✓| ✓| ✓|  
-Resource                  |Bx| ✓| ✓| ✓| ✗| ✗| ½| ✗| ✗| ✓| ✓| ✓|  
-SimpleAction              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅖| ✓| ✓| ✓| < fbck sg prp
+MenuItem                  |  | ✓| ✓| ✓| ✗| ✗| ⅓| ✗| ✗| ✓| ✓| ✓|
+MenuLinkIter              |  | ✓| ✓| ✓| ✗| ✗| ⅗| ✗| ✗| ✓| ✓| ✓|
+MenuModel                 |  | ✓| ✓| ✓| ✓| ✗| ⅖|  | ✗| ✓| ✓| ✓|
+Notification              |  | ✓| ✓| ✓| ✗| ✗| ⅖| ✗| ✗| ✓| ✓| ✓|
+Resource                  |Bx| ✓| ✓| ✓| ✗| ✗| ½| ✗| ✗| ✓| ✓| ✓|
+SimpleAction              |  | ✓| ✓| ✓| ✓| ✓| ✓| ✓| ⅖| ✓| ✓| ✓|
 
 <br/>
 
+No class will be inheritable
 | Gnome::Cairo            |T |dm|db|ds|ts|12|14|so|
 |-------------------------|--|--|--|--|--|--|--|--|
 Cairo                     |TL| ✓| ✓| ✓| ⅓| ✓| ✓| ✓|
@@ -296,6 +302,7 @@ Types                     |  |  |  |  |  |  |  |  |
 <br/>
 
 <!--
+No class will be inheritable
 | Gnome::Atk              |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
 Object                    |  |  |  |  |  |  |  |  |  |  |  |  |
@@ -303,6 +310,7 @@ Object                    |  |  |  |  |  |  |  |  |  |  |  |  |
 
 <br/>
 
+No class will be inheritable
 | Gnome::Pango            |T |dm|db|ds|de|ts|te|12|14|so|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|
 Context                   |  | ✓| ✗| ✗|  | ✗|  | ✗| ✗| ✗|
@@ -318,6 +326,7 @@ Matrix                    |  | ✓| ✗| ✗|  | ✗|  | ✗| ✗| ✗|
 
 <br/>
 
+No class will be inheritable
 | Gnome::GObject          |T |dm|db|ds|de|dp|ts|te|tp|12|14|so|
 |-------------------------|--|--|--|--|--|--|--|--|--|--|--|--|
 Boxed                     |Tl| ✓| ✗| ✗| ✗| ✗| ✗| ✗| ✗| ✓| ✓| ✓| _fallback
@@ -330,6 +339,7 @@ value                     |Bx| ✓| ✓| ✓| ✗| ✗| ✓| ✗| ✗| ✓| ✓|
 
 <br/>
 
+No class will be inheritable
 | Gnome::Glib             |T |dm|db|ds|ts|12|14|so|
 |-------------------------|--|--|--|--|--|--|--|--|
 Error                     |Tl| ✓| ✓| ✓| ✓| ✓| ✓| ✓| _fallback
@@ -346,6 +356,7 @@ VariantType               |Tl| ✓| ✓| ✓| ⅘| ✓| ✓| ✓|
 
 Module Main will be deprecated after version 0.20.0
 
+No class will be inheritable
 | Gnome::N                |T |dm|db|ds|ts|12|14|so|
 |-------------------------|--|--|--|--|--|--|--|--|
 GlibToRakuTypes           |S | ✗| ✗| ✗| ✗| ✓|  |  |  _fallback

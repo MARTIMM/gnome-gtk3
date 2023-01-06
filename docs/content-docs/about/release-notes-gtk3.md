@@ -6,6 +6,8 @@ layout: sidebar
 ---
 # Release notes
 * 2022-11-20 0.48.14
+  * Extend **Gnome::Gtk3::Image** with some Gio icon manipulation methods
+
 <!--
   * Add `get-pango-context()` to Widget;
 -->
