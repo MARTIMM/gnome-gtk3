@@ -48,7 +48,7 @@ Generate a **Gnome::Gio::FileIcon** instance from a string. This function can fa
 
     method new ( Str :$string! )
 
-  * Str $string; A string obtained via `Gnome::Gio::Icon.to-string()`.
+  * $string; A string obtained via `Gnome::Gio::Icon.to-string()`.
 
 ### :native-object
 
@@ -56,15 +56,14 @@ Create a FileIcon object using a native object from elsewhere. See also **Gnome:
 
     multi method new ( N-GObject :$native-object! )
 
-get-file, get-file-rk
----------------------
+get-file
+--------
 
 Gets the **Gnome::Gio::File** associated with the given *icon*.
 
 Returns: a **Gnome::Gio::File**, or `undefined`.
 
     method get-file ( --> N-GFile )
-    method get-file-rk ( --> Gnome::Gio::File )
 
 Properties
 ==========

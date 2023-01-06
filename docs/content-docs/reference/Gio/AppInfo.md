@@ -143,8 +143,8 @@ Returns: (type filename): a string containing the *appinfo*'s commandline, or `u
 
     method get-commandline ( --> Str )
 
-get-default-for-type, get-default-for-type-rk
----------------------------------------------
+get-default-for-type
+--------------------
 
 Gets the default **Gnome::Gio::AppInfo** for a given content type.
 
@@ -153,25 +153,16 @@ Gets the default **Gnome::Gio::AppInfo** for a given content type.
       --> N-GObject
     )
 
-    method get-default-for-type-rk (
-      Str $content-type, Bool $must_support_uris
-      --> Gnome::Gio::AppInfo
-    )
-
   * Str $content-type;
 
   * Bool $must_support_uris;
 
-get-default-for-uri-scheme, get-default-for-uri-scheme-rk
----------------------------------------------------------
+get-default-for-uri-scheme
+--------------------------
 
 Gets the default application for handling URIs with the given URI scheme. A URI scheme is the initial part of the URI, up to but not including the ':', e.g. "http", "ftp" or "sip".
 
     method get-default-for-uri-scheme ( Str $uri_scheme --> N-GObject )
-
-    method get-default-for-uri-scheme-rk (
-      Str $uri_scheme --> Gnome::Gio::AppInfo
-    )
 
   * Str $uri_scheme;
 

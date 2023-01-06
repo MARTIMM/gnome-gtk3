@@ -20,7 +20,7 @@ Types
 enum GAppInfoCreateFlags
 ------------------------
 
-Flags used when creating a **GAppInfo**.
+Flags used when creating a **Gnome::Gio::AppInfo**.
 
   * G_APP_INFO_CREATE_NONE: No flags.
 
@@ -28,14 +28,12 @@ Flags used when creating a **GAppInfo**.
 
   * G_APP_INFO_CREATE_SUPPORTS_URIS: Application supports URI arguments.
 
-  * G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION: Application supports startup notification. Since 2.26
+  * G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION: Application supports startup notification.
 
 enum GConverterFlags
 --------------------
 
 Flags used when calling a `g_converter_convert()`.
-
-Since: 2.24
 
   * G_CONVERTER_NO_FLAGS: No flags.
 
@@ -132,7 +130,7 @@ Used by `g_file_set_attributes_from_info()` when setting file attributes.
 enum GFileQueryInfoFlags
 ------------------------
 
-Flags used when querying a **GFileInfo**.
+Flags used when querying a **Gnome::Gio::FileInfo**.
 
   * G_FILE_QUERY_INFO_NONE: No flags set.
 
@@ -455,8 +453,6 @@ enum GEmblemOrigin
 ------------------
 
 GEmblemOrigin is used to add information about the origin of the emblem to **GEmblem**.
-
-Since: 2.18
 
   * G_EMBLEM_ORIGIN_UNKNOWN: Emblem of unknown origin
 
@@ -1183,8 +1179,6 @@ enum GNotificationPriority
 
 Priority levels for **GNotifications**.
 
-Since: 2.42
-
   * G_NOTIFICATION_PRIORITY_LOW: for notifications that do not require immediate attention - typically used for contextual background information, such as contact birthdays or local weather
 
   * G_NOTIFICATION_PRIORITY_NORMAL: the default priority, to be used for the majority of notifications (for example email messages, software updates, completed download/sync operations)
@@ -1197,8 +1191,6 @@ enum GNetworkConnectivity
 -------------------------
 
 The host's network connectivity state, as reported by **GNetworkMonitor**.
-
-Since: 2.44
 
   * G_NETWORK_CONNECTIVITY_LOCAL: The host is not configured with a route to the Internet; it may or may not be connected to a local network.
 

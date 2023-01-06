@@ -87,7 +87,7 @@ get-filename
 
 When *info* was created from a known filename, return it. In some situations such as the **Gnome::Gio::DesktopAppInfo** returned from `new_from_keyfile()`, this function will return `undefined`.
 
-Returns: (type filename): The full path to the file for *info*, or `undefined` if not known.
+Returns: The full path to the file for *info*, or `undefined` if not known.
 
     method get-filename ( --> Str )
 

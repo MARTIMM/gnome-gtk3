@@ -96,8 +96,8 @@ Returns: (type filename) : string containing the **Gnome::Gio::File**'s base nam
 
     method get-basename ( --> Str )
 
-get-child, get-child-rk
------------------------
+get-child
+---------
 
 Gets a child of this *File* with basename equal to *name*.
 
@@ -108,39 +108,30 @@ This call does no blocking I/O.
 Returns: a **Gnome::Gio::File** to a child specified by *name*. Free the returned object with `.clear-object()`.
 
     method get-child ( Str $name --> N-GFile )
-    method get-child-rk ( Str $name --> Gnome::Gio::File )
 
-  * Str $name; (type filename): string containing the child's basename
+  * $name; (type filename): string containing the child's basename
 
-get-child-for-display-name, get-child-for-display-name-rk
----------------------------------------------------------
+get-child-for-display-name
+--------------------------
 
 Gets the child for a given *display-name* (i.e. a UTF-8 version of the name). If this function fails, it returns `undefined` and *error* will be set. This is very useful when constructing a **Gnome::Gio::File** for a new file and the user entered the filename in the user interface, for instance when you select a directory and type a filename in the file selector.
 
-This call does no blocking I/O.
-
 Returns: a native File object to the specified child, or `undefined` if the display name couldn't be converted.
 
-For the `-rk()` version, when an error takes place, an error object is set and the returned object is invalid. The error is stored in the attribute `$.last-error`. Free the returned object with `clear-object()`.
+When an error takes place, the error object is set and the returned object is invalid. The error is stored in the attribute `$.last-error`. Free the returned object with `clear-object()`.
 
-    method get-child-for-display-name (
-      Str $display_name --> N-GFile
-    )
-
-    method get-child-for-display-name-rk (
-      Str $display_name --> Gnome::Gio::File
-    )
+    method get-child-for-display-name ( Str $display-name --> N-GFile )
 
 ### Example
 
     my Gnome::Gio::File $f .= new(:path<t/data/g-resources>);
-    my Gnome::Gio::File $f2 = $f.get-child-for-display-name-rk('rtest')
+    my Gnome::Gio::File() $f2 = $f.get-child-for-display-name('rtest')
     die $f.last-error.message unless $f2.is-valid;
 
-  * Str $display_name; string to a possible child
+  * $display_name; string to a possible child
 
-get-parent, get-parent-rk
--------------------------
+get-parent
+----------
 
 Gets the parent directory for the *file*. If the *file* represents the root directory of the file system, then `undefined` will be returned.
 
@@ -149,7 +140,6 @@ This call does no blocking I/O.
 Returns: a **Gnome::Gio::File** structure to the parent of the given **Gnome::Gio::File** or `undefined` if there is no parent. Free the returned object with `clear-object()`.
 
     method get-parent ( --> N-GFile )
-    method get-parent-rk ( --> Gnome::Gio::File )
 
 get-parse-name
 --------------
@@ -188,7 +178,7 @@ Returns: string with the relative path from *descendant* to *parent*, or `undefi
 
     method get-relative-path ( N-GFile $descendant --> Str )
 
-  * N-GFile $descendant; input **Gnome::Gio::File**
+  * $descendant; input **Gnome::Gio::File**
 
 get-uri
 -------
@@ -227,7 +217,7 @@ Returns: `True` if *file* is an immediate child of *parent* (or any parent in th
 
     method has-parent ( N-GFile $parent --> Bool )
 
-  * N-GFile $parent; the parent to check for, or `undefined`
+  * $parent; the parent to check for, or `undefined`
 
 has-prefix
 ----------
@@ -246,7 +236,7 @@ Returns: `True` if the *files*'s parent, grandparent, etc is *prefix*, `False` o
 
     method has-prefix ( N-GFile $prefix --> Bool )
 
-  * N-GFile $prefix; input **Gnome::Gio::File**
+  * $prefix; input **Gnome::Gio::File**
 
 has-uri-scheme
 --------------
@@ -259,7 +249,7 @@ Returns: `True` if **Gnome::Gio::File**'s backend supports the given URI scheme,
 
     method has-uri-scheme ( Str $uri_scheme --> Bool )
 
-  * Str $uri_scheme; a string containing a URI scheme
+  * $uri_scheme; a string containing a URI scheme
 
 is-native
 ---------
@@ -289,28 +279,5 @@ Returns: a **Gnome::Gio::AppInfo** if the handle was found, `undefined` if there
       N-GObject $cancellable --> Gnome::Gio::AppInfo
     )
 
-  * N-GObject $cancellable; optional **Gnome::Gio::Cancellable** object, `undefined` to ignore. (TODO: Cancellable not defined yet)
-
-query-info
-----------
-
-Gets the requested information about specified *file*. The result is a **Gnome::Gio::FileInfo** object that contains key-value attributes (such as the type or size of the file).
-
-The *attributes* value is a string that specifies the file attributes that should be gathered. It is not an error if it's not possible to read a particular requested attribute from a file - it just won't be set. *attributes* should be a comma-separated list of attributes or attribute wildcards. The wildcard "*" means all attributes, and a wildcard like "standard::*" means all attributes in the standard namespace. An example attribute query be "standard::*,owner::user". The standard attributes are available as defines, like **Gnome::Gio::-FILE-ATTRIBUTE-STANDARD-NAME**.
-
-If *cancellable* is not `undefined`, then the operation can be cancelled by triggering the cancellable object from another thread. If the operation was cancelled, the error `G-IO-ERROR-CANCELLED` will be returned.
-
-For symlinks, normally the information about the target of the symlink is returned, rather than information about the symlink itself. However if you pass **Gnome::Gio::-FILE-QUERY-INFO-NOFOLLOW-SYMLINKS** in *flags* the information about the symlink itself will be returned. Also, for symlinks that point to non-existing files the information about the symlink itself will be returned.
-
-If the file does not exist, the `G-IO-ERROR-NOT-FOUND` error will be returned. Other errors are possible too, and depend on what kind of filesystem the file is on.
-
-Returns: a **Gnome::Gio::FileInfo** for the given *file*, or `undefined` on error. Free the returned object with `clear-object()`.
-
-    method query-info ( Str $attributes, GFileQueryInfoFlags $flags, GCancellable $cancellable, N-GError $error --> GFileInfo )
-
-  * Str $attributes; an attribute query string
-
-  * UInt $flags; a set of GFileQueryInfoFlags
-
-  * N-GObject $cancellable; optional **Gnome::Gio::Cancellable** object, `undefined` to ignore
+  * $cancellable; optional **Gnome::Gio::Cancellable** object, `undefined` to ignore. (TODO: Cancellable not defined yet)
 

@@ -37,7 +37,7 @@ Returns: a **Gnome::Gio::Icon**, or `undefined` when deserialization fails.
 
     method deserialize ( N-GObject $value --> N-GObject )
 
-  * N-GObject $value; a **Gnome::Glib::Variant** created with `serialize()`
+  * $value; a **Gnome::Glib::Variant** created with `serialize()`
 
 equal
 -----
@@ -48,7 +48,7 @@ Returns: `True` if the icon is equal to *$icon*. `False` otherwise.
 
     method equal ( N-GObject $icon --> Bool )
 
-  * N-GObject $icon; pointer to the other **Gnome::Gio::Icon**.
+  * $icon; pointer to the other **Gnome::Gio::Icon**.
 
 serialize
 ---------

@@ -42,9 +42,9 @@ Create a new Emblem object.
 
     multi method new ( N-GObject :$icon!, UInt :$origin? )
 
-  * N-GObject $icon; an object containing the icon.
+  * $icon; an object containing the icon.
 
-  * UInt $origin; a GEmblemOrigin enum defining the emblem's origin
+  * $origin; a GEmblemOrigin enum defining the emblem's origin
 
 ### :string
 
@@ -52,7 +52,7 @@ Generate a **Gnome::Gio::FileIcon** instance from a string. This function can fa
 
     method new ( Str :$string! )
 
-  * Str $string; A string obtained via `Gnome::Gio::Icon.to-string()`.
+  * $string; A string obtained via `Gnome::Gio::Icon.to-string()`.
 
 ### :native-object
 
