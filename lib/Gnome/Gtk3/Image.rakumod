@@ -144,9 +144,9 @@ Describes the image data representation used by a B<Gnome::Gtk3::Image>. If you 
 =item GTK_IMAGE_STOCK: the widget contains a [stock item name][gtkstock]
 =item GTK_IMAGE_ICON_SET: the widget contains a B<Gnome::Gtk3::IconSet>
 =item GTK_IMAGE_ANIMATION: the widget contains a B<Gnome::Gdk3::PixbufAnimation>
-=item GTK_IMAGE_ICON_NAME: the widget contains a named icon. This image type was added in GTK+ 2.6
-=item GTK_IMAGE_GICON: the widget contains a B<GIcon>. This image type was added in GTK+ 2.14
-=item GTK_IMAGE_SURFACE: the widget contains a B<cairo_surface_t>. This image type was added in GTK+ 3.10
+=item GTK_IMAGE_ICON_NAME: the widget contains a named icon.
+=item GTK_IMAGE_GICON: the widget contains a B<GIcon>.
+=item GTK_IMAGE_SURFACE: the widget contains a B<cairo_surface_t>.
 
 
 =end pod
@@ -199,18 +199,16 @@ The storage type (C<gtk_image_get_storage_type()>) of the returned image is not 
   multi method new ( Str :$file! )
 
 
-=begin comment
 =head3 :gicon, :size
 
-Creates a B<Gnome::Gtk3::Image> displaying an icon from the current icon theme. If the icon name isn’t known, a “broken image” icon will be displayed instead.  If the current icon theme is changed, the icon will be updated appropriately.
+Creates a B<Gnome::Gtk3::Image> displaying an icon created by one of the C<Gnome::Gio> icon modules.
 
   multi method new (
-    N-GObject:D :$gicon!, GtkIconSize :$size = GTK_ICON_SIZE_BUTTON
+    N-GObject():D :$gicon!, GtkIconSize :$size = GTK_ICON_SIZE_DIALOG
   )
 
-=item N-GObject $gicon; an icon from Gnome::Gio::GIcon
-=item GtkIconSize $size; a stock icon size (an enum B<GtkIconSize>)
-=end comment
+=item $gicon; an icon from Gnome::Gio::Icon
+=item $size; a stock icon size (an enum B<GtkIconSize>)
 
 
 =head3 :icon-name, :size
@@ -221,8 +219,8 @@ Creates a B<Gnome::Gtk3::Image> displaying an icon from the current icon theme. 
     Str:D :$icon-name!, GtkIconSize :$size = GTK_ICON_SIZE_BUTTON
   )
 
-=item Str $icon_name; an icon name
-=item GtkIconSize $size; a stock icon size (an enum B<GtkIconSize>)
+=item $icon_name; an icon name
+=item $size; a stock icon size (an enum B<GtkIconSize>)
 
 
 =head3 :pixbuf
@@ -231,7 +229,7 @@ Creates a new B<Gnome::Gtk3::Image> displaying I<$pixbuf>. The B<Gnome::Gtk3::Im
 
 Note that this function just creates an B<Gnome::Gtk3::Image> from the pixbuf. The B<Gnome::Gtk3::Image> created will not react to state changes. Should you want that, you should use C<gtk_image_new_from_icon_name()>.
 
-  multi method new ( N-GObject :$pixbuf! )
+  multi method new ( N-GObject() :$pixbuf! )
 
 
 =head3 :resource-path
@@ -258,7 +256,7 @@ Creates a new B<Gnome::Gtk3::Image> displaying I<surface>. The B<Gnome::Gtk3::Im
 
 Create a Image object using a native object from elsewhere. See also B<Gnome::N::TopLevelClassSupport>.
 
-  multi method new ( N-GObject :$native-object! )
+  multi method new ( N-GObject() :$native-object! )
 
 
 =head3 :build-id
@@ -273,7 +271,7 @@ Create a Image object using a native object returned from a builder. See also B<
 #TM:1:new():
 #TM:0:new(:animation):
 #TM:1:new(:file):
-#TM:0:new(:gicon,:size):
+#TM:1:new(:gicon,:size):
 #TM:1:new(:icon-name,:size):
 #TM:1:new(:pixbuf):
 #TM:0:new(:resource-path):
@@ -293,15 +291,11 @@ submethod BUILD ( *%options ) {
     elsif %options<build-id>:exists { }
 
     else {
-      my $no;
+      my N-GObject() $no;
 
-      if ?%options<filename> or ?%options<file> {
-        my $f = %options<file> // %options<filename>;
+      if ?%options<file> {
+        my $f = %options<file>;
         $no = _gtk_image_new_from_file($f);
-
-        Gnome::N::deprecate(
-          'new(:$filename)', 'new(:$file)', '0.41.0', '0.45.0'
-        ) if %options<filename>:exists;
       }
 
       elsif ?%options<resource-path> {
@@ -315,21 +309,18 @@ submethod BUILD ( *%options ) {
 
       elsif ?%options<surface> {
         $no = %options<surface>;
-        $no .= _get-native-object(:!ref) unless $no ~~ cairo_surface_t;
+        #$no .= _get-native-object(:!ref) unless $no ~~ cairo_surface_t;
         $no = _gtk_image_new_from_surface($no);
       }
 
-#`{{
       elsif ?%options<gicon> {
         $no = %options<gicon>;
-        $no .= _get-native-object(:!ref) ~~ N-GObject;
-        my GtkIconSize $size = %options<size> // GTK_ICON_SIZE_BUTTON;
-        $no = _gtk_image_new_from_icon_name( $no, $size);
+        my GtkIconSize $size = %options<size> // GTK_ICON_SIZE_DIALOG;
+        $no = _gtk_image_new_from_gicon( $no, $size);
       }
-}}
+
       elsif ?%options<pixbuf> {
         $no = %options<pixbuf>;
-        $no .= _get-native-object(:!ref) ~~ N-GObject;
         $no = _gtk_image_new_from_pixbuf($no);
       }
 
@@ -354,10 +345,35 @@ submethod BUILD ( *%options ) {
 #-------------------------------------------------------------------------------
 method _fallback ( $native-sub is copy --> Callable ) {
 
+  my Str $new-patt = $native-sub.subst( '_', '-', :g);
+
   my Callable $s;
   try { $s = &::("gtk_image_$native-sub"); };
-  try { $s = &::("gtk_$native-sub"); } unless ?$s;
-  try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+  if ?$s {
+    Gnome::N::deprecate(
+      "gtk_image_$native-sub", $new-patt, '0.47.4', '0.50.0'
+    );
+  }
+
+  else {
+    try { $s = &::("gtk_$native-sub"); } unless ?$s;
+    if ?$s {
+      Gnome::N::deprecate(
+        "gtk_$native-sub", $new-patt.subst('image-'),
+        '0.47.4', '0.50.0'
+      );
+    }
+
+    else {
+      try { $s = &::($native-sub); } if !$s and $native-sub ~~ m/^ 'gtk_' /;
+      if ?$s {
+        Gnome::N::deprecate(
+          "$native-sub", $new-patt.subst('gtk-image-'),
+          '0.47.4', '0.50.0'
+        );
+      }
+    }
+  }
 
   self._set-class-name-of-sub('GtkImage');
   $s = callsame unless ?$s;
@@ -377,10 +393,7 @@ Resets the image to be empty.
 =end pod
 
 method clear ( ) {
-
-  gtk_image_clear(
-    self._get-native-object(:!ref),
-  );
+  gtk_image_clear(self._get-native-object(:!ref));
 }
 
 sub gtk_image_clear (
@@ -415,32 +428,41 @@ sub gtk_image_get_animation (
   { * }
 }}
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:get-gicon:
+#TM:1:get-gicon:
 =begin pod
 =head2 get-gicon
 
 Gets the B<Gnome::Gtk3::Icon> and size being displayed by the B<Gnome::Gtk3::Image>. The storage type of the image must be C<GTK-IMAGE-EMPTY> or C<GTK-IMAGE-GICON> (see C<get-storage-type()>). The caller of this function does not own a reference to the returned B<Gnome::Gtk3::Icon>.
 
-  method get-gicon ( GIcon $gicon, GtkIconSize $size )
+  method get-gicon ( --> List )
 
-=item GIcon $gicon; place to store a B<Gnome::Gtk3::Icon>, or C<undefined>
-=item GtkIconSize $size;   (type int): place to store an icon size (B<Gnome::Gtk3::IconSize>), or C<undefined>
+The method returns a list consisting of;
+=item N-GObject; A native Gnome::Gio::Icon
+=item GtkIconSize; The icon size enum type
+
+Example to get the icon assuming that the icon type was a file icon;
+
+  my Gnome::Gio::FileIcon() $fi2;
+  my GtkIconSize() $size;
+  ( $fi2, $size) = $i3.get-gicon;
+
 =end pod
 
-method get-gicon ( GIcon $gicon, GtkIconSize $size ) {
-
+method get-gicon ( ) {
+  my N-GObject() $gicon .= new;
+  my GEnum $size;
   gtk_image_get_gicon(
     self._get-native-object(:!ref), $gicon, $size
   );
+
+  ( $gicon, $size)
 }
 
 sub gtk_image_get_gicon (
-  N-GObject $image, GIcon $gicon, GEnum $size
+  N-GObject $image, N-GObject $gicon is rw, GEnum $size is rw
 ) is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:1:get-icon-name:
@@ -544,7 +566,7 @@ Causes the B<Gnome::Gtk3::Image> to display the given animation (or display noth
 
   method set-from-animation ( GdkPixbufAnimation $animation )
 
-=item GdkPixbufAnimation $animation; the B<Gnome::Gtk3::PixbufAnimation>
+=item $animation; the B<Gnome::Gtk3::PixbufAnimation>
 =end pod
 
 method set-from-animation ( GdkPixbufAnimation $animation ) {
@@ -569,7 +591,7 @@ See C<new-from-file()> for details.
 
   method set-from-file ( Str $filename )
 
-=item Str $filename; a filename or C<undefined>
+=item $filename; a filename or C<undefined>
 =end pod
 
 method set-from-file ( Str $filename ) {
@@ -584,32 +606,29 @@ sub gtk_image_set_from_file (
 ) is native(&gtk-lib)
   { * }
 
-#`{{
 #-------------------------------------------------------------------------------
-#TM:0:set-from-gicon:
+#TM:1:set-from-gicon:
 =begin pod
 =head2 set-from-gicon
 
 See C<new-from-gicon()> for details.
 
-  method set-from-gicon ( GIcon $icon, GtkIconSize $size )
+  method set-from-gicon ( N-GObject() $icon, GtkIconSize $size )
 
-=item GIcon $icon; an icon
-=item GtkIconSize $size; (type int): an icon size (B<Gnome::Gtk3::IconSize>)
+=item $icon; an icon defined by one of the icon modules in B<Gnome::Gio>
+=item $size; (type int): an icon size (B<Gnome::Gtk3::IconSize>)
 =end pod
 
-method set-from-gicon ( GIcon $icon, GtkIconSize $size ) {
-
+method set-from-gicon ( N-GObject() $icon, GtkIconSize $size ) {
   gtk_image_set_from_gicon(
     self._get-native-object(:!ref), $icon, $size
   );
 }
 
 sub gtk_image_set_from_gicon (
-  N-GObject $image, GIcon $icon, GEnum $size
+  N-GObject $image, N-GObject $icon, GEnum $size
 ) is native(&gtk-lib)
   { * }
-}}
 
 #-------------------------------------------------------------------------------
 #TM:1:set-from-icon-name:
@@ -620,8 +639,8 @@ See C<new-from-icon-name()> for details.
 
   method set-from-icon-name ( Str $icon_name, GtkIconSize $size )
 
-=item Str $icon_name; an icon name or C<undefined>
-=item GtkIconSize $size; an icon size
+=item $icon_name; an icon name or C<undefined>
+=item $size; an icon size
 =end pod
 
 method set-from-icon-name ( Str $icon_name, GtkIconSize $size ) {
@@ -644,7 +663,7 @@ See C<new-from-pixbuf()> for details.
 
   method set-from-pixbuf ( N-GObject $pixbuf )
 
-=item N-GObject $pixbuf; a B<Gnome::Gtk3::Pixbuf> or C<undefined>
+=item $pixbuf; a B<Gnome::Gtk3::Pixbuf> or C<undefined>
 =end pod
 
 method set-from-pixbuf ( $pixbuf is copy ) {
@@ -669,7 +688,7 @@ See C<new-from-resource()> for details.
 
   method set-from-resource ( Str $resource_path )
 
-=item Str $resource_path; a resource path or C<undefined>
+=item $resource_path; a resource path or C<undefined>
 =end pod
 
 method set-from-resource ( Str $resource_path ) {
@@ -693,7 +712,7 @@ See C<new-from-surface()> for details.
 
   method set-from-surface ( cairo_surface_t $surface )
 
-=item cairo_surface_t $surface; a cairo-surface-t or C<undefined>
+=item $surface; a cairo-surface-t or C<undefined>
 =end pod
 
 method set-from-surface ( $surface is copy ) {
@@ -715,7 +734,7 @@ Sets the pixel size to use for named icons. If the pixel size is set to a value 
 
   method set-pixel-size ( Int() $pixel_size )
 
-=item Int() $pixel_size; the new pixel size
+=item $pixel_size; the new pixel size
 =end pod
 
 method set-pixel-size ( Int() $pixel_size ) {
@@ -765,7 +784,7 @@ Returns: a new B<Gnome::Gtk3::Image> widget
 
   method _gtk_image_new_from_animation ( GdkPixbufAnimation $animation --> N-GObject )
 
-=item GdkPixbufAnimation $animation; an animation
+=item $animation; an animation
 =end pod
 }}
 
@@ -793,7 +812,7 @@ Returns: a new B<Gnome::Gtk3::Image>
 
   method _gtk_image_new_from_file ( Str $filename --> N-GObject )
 
-=item Str $filename; (type filename): a filename
+=item $filename; (type filename): a filename
 =end pod
 }}
 
@@ -802,7 +821,7 @@ sub _gtk_image_new_from_file ( gchar-ptr $filename --> N-GObject )
   is symbol('gtk_image_new_from_file')
   { * }
 
-#`{{
+##`{{
 #-------------------------------------------------------------------------------
 #TM:1:_gtk_image_new_from_gicon:
 #`{{
@@ -813,18 +832,18 @@ Creates a B<Gnome::Gtk3::Image> displaying an icon from the current icon theme. 
 
 Returns: a new B<Gnome::Gtk3::Image> displaying the themed icon
 
-  method _gtk_image_new_from_gicon ( GIcon $icon, GtkIconSize $size --> N-GObject )
+  method _gtk_image_new_from_gicon ( N-GObject() $icon, GtkIconSize $size --> N-GObject )
 
-=item GIcon $icon; an icon
-=item GtkIconSize $size; (type int): a stock icon size (B<Gnome::Gtk3::IconSize>)
+=item $icon; an icon
+=item $size; (type int): a stock icon size (B<Gnome::Gtk3::IconSize>)
 =end pod
 }}
 
-sub _gtk_image_new_from_gicon ( GIcon $icon, GEnum $size --> N-GObject )
+sub _gtk_image_new_from_gicon ( N-GObject $icon, GEnum $size --> N-GObject )
   is native(&gtk-lib)
   is symbol('gtk_image_new_from_gicon')
   { * }
-}}
+#}}
 
 #-------------------------------------------------------------------------------
 #TM:1:_gtk_image_new_from_icon_name:
@@ -838,8 +857,8 @@ Returns: a new B<Gnome::Gtk3::Image> displaying the themed icon
 
   method _gtk_image_new_from_icon_name ( Str $icon_name, GtkIconSize $size --> N-GObject )
 
-=item Str $icon_name; an icon name or C<undefined>
-=item GtkIconSize $size; (type int): a stock icon size (B<Gnome::Gtk3::IconSize>)
+=item $icon_name; an icon name or C<undefined>
+=item $size; (type int): a stock icon size (B<Gnome::Gtk3::IconSize>)
 =end pod
 }}
 
@@ -862,7 +881,7 @@ Returns: a new B<Gnome::Gtk3::Image>
 
   method _gtk_image_new_from_pixbuf ( N-GObject $pixbuf --> N-GObject )
 
-=item N-GObject $pixbuf; a B<Gnome::Gtk3::Pixbuf>, or C<undefined>
+=item $pixbuf; a B<Gnome::Gtk3::Pixbuf>, or C<undefined>
 =end pod
 }}
 
@@ -889,7 +908,7 @@ Returns: a new B<Gnome::Gtk3::Image>
 
   method _gtk_image_new_from_resource ( Str $resource_path --> N-GObject )
 
-=item Str $resource_path; a resource path
+=item $resource_path; a resource path
 =end pod
 }}
 
@@ -910,7 +929,7 @@ Returns: a new B<Gnome::Gtk3::Image>
 
   method _gtk_image_new_from_surface ( cairo_surface_t $surface --> N-GObject )
 
-=item cairo_surface_t $surface; a B<cairo-surface-t>, or C<undefined>
+=item $surface; a B<cairo-surface-t>, or C<undefined>
 =end pod
 }}
 
@@ -923,93 +942,129 @@ sub _gtk_image_new_from_surface ( cairo_surface_t $surface --> N-GObject )
 =begin pod
 =head1 Properties
 
-An example of using a string type property of a B<Gnome::Gtk3::Label> object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use B<new(:label('my text label'))> or B<.set-text('my text label')>.
-
-  my Gnome::Gtk3::Label $label .= new;
-  my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-  $label.get-property( 'label', $gv);
-  $gv.set-string('my text label');
-
-=head2 Supported properties
-
 =comment -----------------------------------------------------------------------
 =comment #TP:1:file:
-=head3 Filename: file
+=head2 file
 
 Filename to load and display
-Default value: Any
 
-The B<Gnome::GObject::Value> type of property I<file> is C<G_TYPE_STRING>.
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
+=item Parameter is readable and writable.
+=item Default value is undefined.
 
-=begin comment
+
 =comment -----------------------------------------------------------------------
 =comment #TP:0:gicon:
-=head3 Icon: gicon
+=head2 gicon
 
-The GIcon displayed in the GtkImage. For themed icons, If the icon theme is changed, the image will be updated
-automatically.
+The GIcon being displayed
 
-   Widget type: G_TYPE_ICON
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_OBJECT
+=item The type of this G_TYPE_OBJECT object is G_TYPE_ICON
+=item Parameter is readable and writable.
 
-The B<Gnome::GObject::Value> type of property I<gicon> is C<G_TYPE_OBJECT>.
-=end comment
 
 =comment -----------------------------------------------------------------------
 =comment #TP:1:icon-name:
-=head3 Icon Name: icon-name
+=head2 icon-name
 
-The name of the icon in the icon theme. If the icon theme is changed, the image will be updated automatically.
+The name of the icon from the icon theme
 
-The B<Gnome::GObject::Value> type of property I<icon-name> is C<G_TYPE_STRING>.
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:icon-size:
+=head2 icon-size
+
+Symbolic size to use for stock icon, icon set or named icon
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_INT
+=item Parameter is readable and writable.
+=item Minimum value is 0.
+=item Maximum value is G_MAXINT.
+=item Default value is DEFAULT_ICON_SIZE.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:pixbuf:
-=head3 Pixbuf: pixbuf
+=head2 pixbuf
 
 A GdkPixbuf to display
-Widget type: GDK-TYPE-PIXBUF
 
-The B<Gnome::GObject::Value> type of property I<pixbuf> is C<G_TYPE_OBJECT>.
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_OBJECT
+=item The type of this G_TYPE_OBJECT object is GDK_TYPE_PIXBUF
+=item Parameter is readable and writable.
 
-=begin comment
+
 =comment -----------------------------------------------------------------------
 =comment #TP:0:pixbuf-animation:
-=head3 Animation: pixbuf-animation
+=head2 pixbuf-animation
 
 GdkPixbufAnimation to display
-Widget type: GDK-TYPE-PIXBUF-ANIMATION
 
-The B<Gnome::GObject::Value> type of property I<pixbuf-animation> is C<G_TYPE_OBJECT>.
-=end comment
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_OBJECT
+=item The type of this G_TYPE_OBJECT object is GDK_TYPE_PIXBUF_ANIMATION
+=item Parameter is readable and writable.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:0:pixel-size:
+=head2 pixel-size
+
+Pixel size to use for named icon
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_INT
+=item Parameter is readable and writable.
+=item Minimum value is -1.
+=item Maximum value is G_MAXINT.
+=item Default value is -1.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:resource:
-=head3 Resource: resource
+=head2 resource
 
-A path to a resource file to display.
+The resource path being displayed
 
-The B<Gnome::GObject::Value> type of property I<resource> is C<G_TYPE_STRING>.
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:storage-type:
-=head3 Storage type: storage-type
+=head2 storage-type
 
 The representation being used for image data
-Default value: False
 
-The B<Gnome::GObject::Value> type of property I<storage-type> is C<G_TYPE_ENUM>.
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_ENUM
+=item The type of this G_TYPE_ENUM object is GTK_TYPE_IMAGE_TYPE
+=item Parameter is readable.
+=item Default value is GTK_IMAGE_EMPTY.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:surface:
-=head3 Surface: surface
+=head2 surface
 
-The B<Gnome::GObject::Value> type of property I<surface> is C<G_TYPE_BOXED>.
+A cairo_surface_t to display
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOXED
+=item The type of this G_TYPE_BOXED object is CAIRO_GOBJECT_TYPE_SURFACE
+=item Parameter is readable and writable.
+
 
 =comment -----------------------------------------------------------------------
 =comment #TP:0:use-fallback:
-=head3 Use Fallback: use-fallback
+=head2 use-fallback
 
-Whether the icon displayed in the GtkImage will use standard icon names fallback. The value of this property is only relevant for images of type C<GTK-IMAGE-ICON-NAME> and C<GTK-IMAGE-GICON>.
+Whether to use icon names fallback
 
-The B<Gnome::GObject::Value> type of property I<use-fallback> is C<G_TYPE_BOOLEAN>.
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
 =end pod

@@ -116,11 +116,11 @@ Describes the image data representation used by a **Gnome::Gtk3::Image**. If you
 
   * GTK_IMAGE_ANIMATION: the widget contains a **Gnome::Gdk3::PixbufAnimation**
 
-  * GTK_IMAGE_ICON_NAME: the widget contains a named icon. This image type was added in GTK+ 2.6
+  * GTK_IMAGE_ICON_NAME: the widget contains a named icon.
 
-  * GTK_IMAGE_GICON: the widget contains a **GIcon**. This image type was added in GTK+ 2.14
+  * GTK_IMAGE_GICON: the widget contains a **GIcon**.
 
-  * GTK_IMAGE_SURFACE: the widget contains a **cairo_surface_t**. This image type was added in GTK+ 3.10
+  * GTK_IMAGE_SURFACE: the widget contains a **cairo_surface_t**.
 
 Methods
 =======
@@ -146,6 +146,18 @@ The storage type (`gtk_image_get_storage_type()`) of the returned image is not d
 
     multi method new ( Str :$file! )
 
+### :gicon, :size
+
+Creates a **Gnome::Gtk3::Image** displaying an icon created by one of the `Gnome::Gio` icon modules.
+
+    multi method new (
+      N-GObject():D :$gicon!, GtkIconSize :$size = GTK_ICON_SIZE_DIALOG
+    )
+
+  * $gicon; an icon from Gnome::Gio::Icon
+
+  * $size; a stock icon size (an enum **GtkIconSize**)
+
 ### :icon-name, :size
 
 Creates a **Gnome::Gtk3::Image** displaying an icon from the current icon theme. If the icon name isn’t known, a “broken image” icon will be displayed instead. If the current icon theme is changed, the icon will be updated appropriately. You can use the program `gtk3-icon-browser` to get the available names in the current selected theme.
@@ -154,9 +166,9 @@ Creates a **Gnome::Gtk3::Image** displaying an icon from the current icon theme.
       Str:D :$icon-name!, GtkIconSize :$size = GTK_ICON_SIZE_BUTTON
     )
 
-  * Str $icon_name; an icon name
+  * $icon_name; an icon name
 
-  * GtkIconSize $size; a stock icon size (an enum **GtkIconSize**)
+  * $size; a stock icon size (an enum **GtkIconSize**)
 
 ### :pixbuf
 
@@ -164,7 +176,7 @@ Creates a new **Gnome::Gtk3::Image** displaying *$pixbuf*. The **Gnome::Gtk3::Im
 
 Note that this function just creates an **Gnome::Gtk3::Image** from the pixbuf. The **Gnome::Gtk3::Image** created will not react to state changes. Should you want that, you should use `gtk_image_new_from_icon_name()`.
 
-    multi method new ( N-GObject :$pixbuf! )
+    multi method new ( N-GObject() :$pixbuf! )
 
 ### :resource-path
 
@@ -188,7 +200,7 @@ Creates a new **Gnome::Gtk3::Image** displaying *surface*. The **Gnome::Gtk3::Im
 
 Create a Image object using a native object from elsewhere. See also **Gnome::N::TopLevelClassSupport**.
 
-    multi method new ( N-GObject :$native-object! )
+    multi method new ( N-GObject() :$native-object! )
 
 ### :build-id
 
@@ -202,6 +214,25 @@ clear
 Resets the image to be empty.
 
     method clear ( )
+
+get-gicon
+---------
+
+Gets the **Gnome::Gtk3::Icon** and size being displayed by the **Gnome::Gtk3::Image**. The storage type of the image must be `GTK-IMAGE-EMPTY` or `GTK-IMAGE-GICON` (see `get-storage-type()`). The caller of this function does not own a reference to the returned **Gnome::Gtk3::Icon**.
+
+    method get-gicon ( --> List )
+
+The method returns a list consisting of;
+
+  * N-GObject; A native Gnome::Gio::Icon
+
+  * GtkIconSize; The icon size enum type
+
+Example to get the icon assuming that the icon type was a file icon;
+
+    my Gnome::Gio::FileIcon() $fi2;
+    my GtkIconSize() $size;
+    ( $fi2, $size) = $i3.get-gicon;
 
 get-icon-name
 -------------
@@ -248,7 +279,18 @@ See `new-from-file()` for details.
 
     method set-from-file ( Str $filename )
 
-  * Str $filename; a filename or `undefined`
+  * $filename; a filename or `undefined`
+
+set-from-gicon
+--------------
+
+See `new-from-gicon()` for details.
+
+    method set-from-gicon ( N-GObject() $icon, GtkIconSize $size )
+
+  * $icon; an icon defined by one of the icon modules in **Gnome::Gio**
+
+  * $size; (type int): an icon size (**Gnome::Gtk3::IconSize**)
 
 set-from-icon-name
 ------------------
@@ -257,9 +299,9 @@ See `new-from-icon-name()` for details.
 
     method set-from-icon-name ( Str $icon_name, GtkIconSize $size )
 
-  * Str $icon_name; an icon name or `undefined`
+  * $icon_name; an icon name or `undefined`
 
-  * GtkIconSize $size; an icon size
+  * $size; an icon size
 
 set-from-pixbuf
 ---------------
@@ -268,7 +310,7 @@ See `new-from-pixbuf()` for details.
 
     method set-from-pixbuf ( N-GObject $pixbuf )
 
-  * N-GObject $pixbuf; a **Gnome::Gtk3::Pixbuf** or `undefined`
+  * $pixbuf; a **Gnome::Gtk3::Pixbuf** or `undefined`
 
 set-from-resource
 -----------------
@@ -277,7 +319,7 @@ See `new-from-resource()` for details.
 
     method set-from-resource ( Str $resource_path )
 
-  * Str $resource_path; a resource path or `undefined`
+  * $resource_path; a resource path or `undefined`
 
 set-from-surface
 ----------------
@@ -286,7 +328,7 @@ See `new-from-surface()` for details.
 
     method set-from-surface ( cairo_surface_t $surface )
 
-  * cairo_surface_t $surface; a cairo-surface-t or `undefined`
+  * $surface; a cairo-surface-t or `undefined`
 
 set-pixel-size
 --------------
@@ -295,7 +337,7 @@ Sets the pixel size to use for named icons. If the pixel size is set to a value 
 
     method set-pixel-size ( Int() $pixel_size )
 
-  * Int() $pixel_size; the new pixel size
+  * $pixel_size; the new pixel size
 
 Properties
 ==========
