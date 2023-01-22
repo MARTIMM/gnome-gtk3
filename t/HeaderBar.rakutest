@@ -5,12 +5,16 @@ use Test;
 use Gnome::Gtk3::Label;
 use Gnome::Gtk3::Button;
 use Gnome::Gtk3::HeaderBar;
+use Gnome::Gtk3::Enums;
 
+use Gnome::N::N-GObject;
+use Gnome::N::GlibToRakuTypes;
 #use Gnome::N::X;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::HeaderBar $hb;
+
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
   $hb .= new;
@@ -29,8 +33,8 @@ unless %*ENV<raku_test_all>:exists {
 subtest 'Manipulations', {
   my Gnome::Gtk3::Label $l .= new(:text('My Title'));
   $hb.set-custom-title($l);
-  is $hb.get-custom-title-rk.get-text, 'My Title',
-      '.set-custom-title() / .get-custom-title()';
+  my Gnome::Gtk3::Label() $l2 = $hb.get-custom-title;
+  is $l2.get-text, 'My Title', '.set-custom-title() / .get-custom-title()';
 
   $hb.set-decoration-layout('menu:minimize');
   is $hb.get-decoration-layout, 'menu:minimize',
@@ -118,10 +122,15 @@ subtest 'Properties ...', {
   test-property( G_TYPE_STRING, 'title', 'get-string', 'Title');
   test-property( G_TYPE_STRING, 'subtitle', 'get-string', 'And SubTitle');
 
-  # example calls
-  #test-property( G_TYPE_BOOLEAN, 'homogeneous', 'get-boolean', False);
-  #test-property( G_TYPE_STRING, 'label', 'get-string', '...');
-  #test-property( G_TYPE_FLOAT, 'xalign', 'get-float', 23e-2, :approx);
+
+  my @r = $hb.get-properties( 'custom-title', N-GObject);
+  my Gnome::Gtk3::Label() $l2 = @r[0];
+  is $l2.get-text, 'My Title', 'property custom-title';
+
+  is $hb.child-get-property( $l2, 'pack-type', G_TYPE_INT),
+     GTK_PACK_START.value, 'child property pack-type';
+  is $hb.child-get-property( $l2, 'position', G_TYPE_INT), 0,
+     'child property pack-type';
 }
 
 #-------------------------------------------------------------------------------

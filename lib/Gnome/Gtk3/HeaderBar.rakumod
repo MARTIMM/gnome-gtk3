@@ -18,7 +18,7 @@ GtkHeaderBar is similar to a horizontal B<Gnome::Gtk3::Box>. It allows children 
 
 GtkHeaderBar can add typical window frame controls, such as minimize, maximize and close buttons, or the window icon.
 
-For these reasons, GtkHeaderBar is the natural choice for use as the custom titlebar widget of a B<Gnome::Gtk3::Window> (see C<gtk-window-set-titlebar()>), as it gives  features typical of titlebars while allowing the addition of child widgets.
+For these reasons, GtkHeaderBar is the natural choice for use as the custom titlebar widget of a B<Gnome::Gtk3::Window> (see C<Gnome::Gtk3::Window.set-titlebar()>), as it gives features typical of titlebars while allowing the addition of child widgets.
 
 
 =head2 See Also
@@ -68,11 +68,13 @@ use NativeCall;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
+
 use Gnome::Gtk3::Container;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::HeaderBar:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::HeaderBar:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Container;
+
 #-------------------------------------------------------------------------------
 
 =begin pod
@@ -161,18 +163,14 @@ submethod BUILD ( *%options ) {
 
 #-------------------------------------------------------------------------------
 #TM:1:get-custom-title:
-#TM:1:get-custom-title-rk:
 =begin pod
-=head2 get-custom-title, get-custom-title-rk
+=head2 get-custom-title
 
 Retrieves the custom title widget of the header. See C<set-custom-title()>.
 
 Returns: the custom title widget of the header, or C<undefined> if none has been set explicitly.
 
   method get-custom-title ( --> N-GObject )
-  method get-custom-title-rk ( :$child-type? --> Gnome::Gtk3::Widget )
-
-=item $child-type: This is an optional argument. You can specify a real type or a type as a string. In the latter case the type must be defined in a module which can be found by the Raku require call.
 
 =end pod
 
@@ -181,6 +179,11 @@ method get-custom-title ( --> N-GObject ) {
 }
 
 method get-custom-title-rk ( *%options --> Any ) {
+  Gnome::N::deprecate(
+    'get-custom-title-rk', 'coercing from get-custom-title',
+    '0.48.14', '0.50.0'
+  );
+
   self._wrap-native-type-from-no(
     gtk_header_bar_get_custom_title(self._get-native-object-no-reffing),
     |%options
@@ -530,6 +533,144 @@ sub _gtk_header_bar_new ( --> N-GObject )
   is symbol('gtk_header_bar_new')
   { * }
 
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:custom-title:
+=head2 custom-title
+
+Custom title widget to display
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_OBJECT
+=item The type of this G_TYPE_OBJECT object is GTK_TYPE_WIDGET
+=item Parameter is readable and writable.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:decoration-layout:
+=head2 decoration-layout
+
+The layout for window decorations
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:decoration-layout-set:
+=head2 decoration-layout-set
+
+Whether the decoration-layout property has been set
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:has-subtitle:
+=head2 has-subtitle
+
+Whether to reserve space for a subtitle
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is TRUE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:show-close-button:
+=head2 show-close-button
+
+Whether to show window decorations
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_BOOLEAN
+=item Parameter is readable and writable.
+=item Default value is FALSE.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:spacing:
+=head2 spacing
+
+The amount of space between children
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_INT
+=item Parameter is readable and writable.
+=item Minimum value is 0.
+=item Maximum value is G_MAXINT.
+=item Default value is DEFAULT_SPACING.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:subtitle:
+=head2 subtitle
+
+The subtitle to display
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:title:
+=head2 title
+
+The title to display
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_STRING
+=item Parameter is readable and writable.
+=item Default value is undefined.
+
+=end pod
+
+
+
+#-------------------------------------------------------------------------------
+=begin pod
+=head1 Child Properties
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:pack-type:
+=head2 pack-type
+
+A GtkPackType indicating whether the child is packed with reference to the start or end of the parent
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_ENUM
+=item The type of this G_TYPE_ENUM object is GTK_TYPE_PACK_TYPE
+=item Parameter is readable and writable.
+=item Default value is GTK_PACK_START.
+
+
+=comment -----------------------------------------------------------------------
+=comment #TP:1:position:
+=head2 position
+
+The index of the child in the parent
+
+=item B<Gnome::GObject::Value> type of this property is G_TYPE_INT
+=item Parameter is readable and writable.
+=item Minimum value is -1.
+=item Maximum value is G_MAXINT.
+=item Default value is 0.
+
+=end pod
+
+
+
+
+
+
+
+
+
+
+
+=finish
 #-------------------------------------------------------------------------------
 =begin pod
 =head1 Properties

@@ -12,7 +12,7 @@ GtkHeaderBar is similar to a horizontal **Gnome::Gtk3::Box**. It allows children
 
 GtkHeaderBar can add typical window frame controls, such as minimize, maximize and close buttons, or the window icon.
 
-For these reasons, GtkHeaderBar is the natural choice for use as the custom titlebar widget of a **Gnome::Gtk3::Window** (see `gtk-window-set-titlebar()`), as it gives features typical of titlebars while allowing the addition of child widgets.
+For these reasons, GtkHeaderBar is the natural choice for use as the custom titlebar widget of a **Gnome::Gtk3::Window** (see `Gnome::Gtk3::Window.set-titlebar()`), as it gives features typical of titlebars while allowing the addition of child widgets.
 
 See Also
 --------
@@ -76,15 +76,14 @@ Create a HeaderBar object using a native object returned from a builder. See als
 
     multi method new ( Str :$build-id! )
 
-get-custom-title, get-custom-title-rk
--------------------------------------
+get-custom-title
+----------------
 
 Retrieves the custom title widget of the header. See `set-custom-title()`.
 
 Returns: the custom title widget of the header, or `undefined` if none has been set explicitly.
 
     method get-custom-title ( --> N-GObject )
-    method get-custom-title-rk ( --> Gnome::Gtk3::Widget )
 
 get-decoration-layout
 ---------------------
@@ -218,63 +217,126 @@ Sets the title of the **Gnome::Gtk3::HeaderBar**. The title should help a user i
 Properties
 ==========
 
-An example of using a string type property of a **Gnome::Gtk3::Label** object. This is just showing how to set/read a property, not that it is the best way to do it. This is because a) The class initialization often provides some options to set some of the properties and b) the classes provide many methods to modify just those properties. In the case below one can use **new(:label('my text label'))** or **.set-text('my text label')**.
+custom-title
+------------
 
-    my Gnome::Gtk3::Label $label .= new;
-    my Gnome::GObject::Value $gv .= new(:init(G_TYPE_STRING));
-    $label.get-property( 'label', $gv);
-    $gv.set-string('my text label');
+Custom title widget to display
 
-Supported properties
---------------------
+  * **Gnome::GObject::Value** type of this property is G_TYPE_OBJECT
 
-### Custom Title: custom-title
+  * The type of this G_TYPE_OBJECT object is GTK_TYPE_WIDGET
 
-Custom title widget to display Widget type: GTK-TYPE-WIDGET
+  * Parameter is readable and writable.
 
-The **Gnome::GObject::Value** type of property *custom-title* is `G_TYPE_OBJECT`.
+decoration-layout
+-----------------
 
-### Decoration Layout: decoration-layout
+The layout for window decorations
 
-The decoration layout for buttons. If this property is not set, the *gtk-decoration-layout* setting is used.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
 
-See `set-decoration-layout()` for information about the format of this string.
+  * Parameter is readable and writable.
 
-The **Gnome::GObject::Value** type of property *decoration-layout* is `G_TYPE_STRING`.
+  * Default value is undefined.
 
-### Decoration Layout Set: decoration-layout-set
+decoration-layout-set
+---------------------
 
-Set to `True` if *decoration-layout* is set.
+Whether the decoration-layout property has been set
 
-The **Gnome::GObject::Value** type of property *decoration-layout-set* is `G_TYPE_BOOLEAN`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-### Has Subtitle: has-subtitle
+  * Parameter is readable and writable.
 
-If `True`, reserve space for a subtitle, even if none is currently set.
+  * Default value is FALSE.
 
-The **Gnome::GObject::Value** type of property *has-subtitle* is `G_TYPE_BOOLEAN`.
+has-subtitle
+------------
 
-### Show decorations: show-close-button
+Whether to reserve space for a subtitle
 
-Whether to show window decorations.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-Which buttons are actually shown and where, is determined by the *decoration-layout* property, and by the state of the window (e.g. a close button will not be shown if the window can't be closed).
+  * Parameter is readable and writable.
 
-The **Gnome::GObject::Value** type of property *show-close-button* is `G_TYPE_BOOLEAN`.
+  * Default value is TRUE.
 
-### Spacing: spacing
+show-close-button
+-----------------
 
-The **Gnome::GObject::Value** type of property *spacing* is `G_TYPE_INT`.
+Whether to show window decorations
 
-### Subtitle: subtitle
+  * **Gnome::GObject::Value** type of this property is G_TYPE_BOOLEAN
 
-The subtitle to display Default value: Any
+  * Parameter is readable and writable.
 
-The **Gnome::GObject::Value** type of property *subtitle* is `G_TYPE_STRING`.
+  * Default value is FALSE.
 
-### Title: title
+spacing
+-------
 
-The title to display Default value: Any
+The amount of space between children
 
-The **Gnome::GObject::Value** type of property *title* is `G_TYPE_STRING`.
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
+
+  * Parameter is readable and writable.
+
+  * Minimum value is 0.
+
+  * Maximum value is G_MAXINT.
+
+  * Default value is DEFAULT_SPACING.
+
+subtitle
+--------
+
+The subtitle to display
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
+
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
+
+title
+-----
+
+The title to display
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_STRING
+
+  * Parameter is readable and writable.
+
+  * Default value is undefined.
+
+Child Properties
+================
+
+pack-type
+---------
+
+A GtkPackType indicating whether the child is packed with reference to the start or end of the parent
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_ENUM
+
+  * The type of this G_TYPE_ENUM object is GTK_TYPE_PACK_TYPE
+
+  * Parameter is readable and writable.
+
+  * Default value is GTK_PACK_START.
+
+position
+--------
+
+The index of the child in the parent
+
+  * **Gnome::GObject::Value** type of this property is G_TYPE_INT
+
+  * Parameter is readable and writable.
+
+  * Minimum value is -1.
+
+  * Maximum value is G_MAXINT.
+
+  * Default value is 0.
 
