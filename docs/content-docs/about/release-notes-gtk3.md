@@ -5,18 +5,20 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
-* 2022-11-20 0.48.14
+* 2023-01-22 0.48.15
+  * HeaderBar module reviewed. get-custom-title-rk() deprecated. Changed documentation and added child properties info.
+
+* 2023-01-13 0.48.14
   * Extend **Gnome::Gtk3::Image** with some Gio icon manipulation methods
 
 <!--
   * Add `get-pango-context()` to Widget;
 -->
-   
+
 * 2022-11-14 0.48.13
   * Added method `child-get-property()` in **Gnome::Gtk3::Container** to get child properties of widgets added to the container.
   * Checked **Gnome::Gtk3::Fixed**. Added two child properties. Check other modules for child properties; **Gnome::Gtk3::Box** has 5.
   * Checked **Gnome::Gtk3::Frame**.
-
 
 * 2022-10-23 0.48.12
   * Checked **Gnome::Gtk3::FileFilter**.
