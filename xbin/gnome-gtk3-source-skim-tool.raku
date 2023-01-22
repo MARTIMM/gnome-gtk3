@@ -1740,417 +1740,6 @@ sub modify-newbody-for-signals ( Hash $signal-classes ) {
 #  note "add signal information to $output-file";
 }
 
-#`{{
-#-------------------------------------------------------------------------------
-sub get-signals ( Str:D $source-content is copy ) {
-
-  return unless $source-content;
-
-  my Array $items-src-doc;
-  my Str $signal-name;
-  my Str $signal-doc = '';
-  my Hash $signal-classes = %();
-
-  print "Find signals ";
-  my Hash $signal-doc-entries = %();
-  loop {
-    print ".";
-    $*OUT.flush;
-
-    $items-src-doc = [];
-    $signal-name = '';
-
-    $source-content ~~ m/
-      $<signal-doc> = [ '/**' \s+ '*' \s+ $*lib-class-name '::'  .*? '*/' ]
-    /;
-
-    # save doc and remove from source but stop if none left
-    my Str $sdoc = ~($<signal-doc> // '');
-#note "SDoc 0 $*lib-class-name: ", ?$sdoc;
-    my Bool $has-doc = ($sdoc ~~ m/ '/**' / ?? True !! False);
-
-    # possibly no documentation
-    if $has-doc {
-      $source-content ~~ s/$sdoc//;
-
-      # get lib class name and remove line from source
-      $sdoc ~~ m/
-        ^^ \s+ '*' \s+ $*lib-class-name '::' $<signal-name> = [ [<alnum> || '-']+ ]
-      /;
-      $signal-name = ~($<signal-name> // '');
-      $sdoc ~~ s/ ^^ \s+ '*' \s+ $*lib-class-name '::' $signal-name '::'? //;
-#note "SDoc 1 ", $sdoc;
-    }
-
-    # get some more info from the function call
-    $source-content ~~ m/
-      'g_signal_new' '_class_handler'? \s* '('
-      $<signal-args> = [
-        [ <[A..Z]> '_('                     || # gtk sources
-          'g_intern_static_string' \s* '('     # gdk sources
-        ]
-        '"' <-[\"]>+ '"' .*?
-      ] ');'
-    /;
-#note "SDoc 2 ",  ~($<signal-args>//'-');
-
-    # save and remove from source but stop if there isn't any left
-    my Str $sig-args = ~($<signal-args>//'');
-    if !$sig-args {
-      $sdoc = '';
-      last;
-    }
-    $source-content ~~
-       s/ 'g_signal_new' '_class_handler'? \s* '(' $sig-args ');' //;
-
-#note "sig args: ", $sig-args;
-    # when there's no doc, signal name must be retrieved from function argument
-    unless $signal-name {
-      $sig-args ~~ m/ '"' $<signal-name> = [ <-[\"]>+ ] '"' /;
-      $signal-name = ($<signal-name>//'').Str;
-    }
-
-#note "SA $signal-name: ", $sig-args;
-
-    # start pod doc
-    $signal-doc = Q:qq:to/EOSIG/;
-
-      =comment -----------------------------------------------------------------------
-      =comment #TS:0:$signal-name:
-      =head3 $signal-name
-      EOSIG
-
-note "get signal $signal-name";
-
-    # process g_signal_new arguments, remove commas from specific macro
-    # by removing the complete argument list. it's not needed.
-    $sig-args ~~ s/ 'G_STRUCT_OFFSET' \s* \( <-[\)]>+ \) /G_STRUCT_OFFSET/;
-    my @args = ();
-    for $sig-args.split(/ \s* ',' \s* /) -> $arg is copy {
-#note "  arg: '$arg'";
-      @args.push($arg);
-    }
-
-note "  Args: ", @args[*];
-    # get a return type from arg 7
-    my Str $return-type = '';
-    given @args[7] {
-      # most of the time it is a boolean ( == c int32)
-      when 'G_TYPE_BOOLEAN' { $return-type = 'Int'; }
-      when 'G_TYPE_INT' { $return-type = 'Int'; }
-      when 'G_TYPE_UINT' { $return-type = 'Int'; }
-      when 'G_TYPE_STRING' { $return-type = 'Str'; }
-      when 'G_TYPE_NONE' { $return-type = ''; }
-      when 'GTK_TYPE_TREE_ITER' { $return-type = 'N-GtkTreeIter'; }
-
-      # show that there is something if return type not recognized
-      default { $return-type = "Unknown type @args[7]"; }
-    }
-
-    my Int $item-count = 0;
-
-    # create proper variable name when not available from the doc
-    my Str $iname = $*lib-class-name;
-    $iname ~~ s:i/^ [ gtk || gdk || g ] //;
-    $iname .= lc;
-    $items-src-doc.push: %(
-      :item-type<Gnome::GObject::Object>, :item-name($iname),
-      :item-doc('')
-    );
-
-    # process handler argument types. nbr args at 8, types at 9 and further
-    my Array $signal-args = ['N-GObject'];
-    my Int $arg-count = @args[8].Int;
-#    loop ( my $i = 0; $i < $arg-count; $i++ ) {
-    for ^$arg-count -> $i {
-
-#note "  A[9 + $i]: @args[9 + $i]";
-
-      my Str $arg-type = '';
-      given @args[9 + $i] {
-        when 'G_TYPE_BOOLEAN' { $arg-type = 'Int'; }
-        when 'G_TYPE_INT' { $arg-type = 'Int'; }
-        when 'G_TYPE_UINT' { $arg-type = 'UInt'; }
-        when 'G_TYPE_LONG' { $arg-type = 'glong #`{ use Gnome::N::GlibToRakuTypes }'; }
-        when 'G_TYPE_FLOAT' { $arg-type = 'Num'; }
-        when 'G_TYPE_DOUBLE' { $arg-type = 'gdouble #`{ use Gnome::N::GlibToRakuTypes }'; }
-        when 'G_TYPE_STRING' { $arg-type = 'Str'; }
-        when 'G_TYPE_ERROR' { $arg-type = 'N-GError'; }
-
-        when 'GTK_TYPE_OBJECT' { $arg-type = 'N-GObject #`{ is object }'; }
-        when 'GTK_TYPE_WIDGET' { $arg-type = 'N-GObject #`{ is widget }'; }
-
-        when 'GTK_TYPE_TEXT_ITER' {
-          $arg-type = 'N-GObject #`{ native Gnome::Gtk3::TextIter }';
-        }
-        when 'GTK_TYPE_TREE_ITER' {
-          $arg-type = 'N-GtkTreeIter #`{ native Gnome::Gtk3::TreeIter }';
-        }
-        when 'GDK_TYPE_DISPLAY' {
-          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Display }';
-        }
-        when 'GDK_TYPE_DEVICE' {
-          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Device }';
-        }
-        when 'GDK_TYPE_DEVICE_TOOL' {
-          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::DeviceTool }';
-        }
-        when 'GDK_TYPE_MONITOR' {
-          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Monitor }';
-        }
-        when 'GDK_TYPE_SCREEN' {
-          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Screen }';
-        }
-        when 'GDK_TYPE_SEAT' {
-          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Seat }';
-        }
-        when 'GDK_TYPE_MODIFIER_TYPE' {
-          $arg-type = 'GdkModifierType #`{ from Gnome::Gdk3::Window }';
-        }
-        default { $arg-type = "Unknown type @args[{9 + $i}]"; }
-      }
-
-      my Str $item-name = $arg-type.lc;
-      $item-name ~~ s/ 'gnome::gtk3::' //;
-      $items-src-doc.push: %(
-        :item-type($arg-type), :$item-name,
-        :item-doc('')
-      );
-
-note "  A Type: $i, $arg-type, $item-name";
-      $signal-args.push: $arg-type;
-    }
-
-    # we know the number of extra arguments and signal name
-    my Str $sig-class = "w$arg-count";
-    $signal-classes{$sig-class} = [] unless $signal-classes{$sig-class}:exists;
-    $signal-classes{$sig-class}.push: $signal-name;
-
-    # get arguments for this signal handler
-    my Str ( $item-doc, $item-name, $spart-doc) = ( '', '', '');
-    my Bool $item-scan = True;
-    #my Bool $first-arg = True;
-
-    $item-count = 0;
-    if $has-doc {
-#      $items-src-doc = [];
-      for $sdoc.lines -> $line {
-note "L: $line";
-
-        # argument doc start
-        if $item-scan and $line ~~ m/^ \s* '*' \s+ '@' / {
-
-          # push when 2nd arg is found
-#note "ISD 0: $item-count, $item-name, $signal-args[$item-count]" if ?$item-name;
-          $items-src-doc.push: %(
-            :item-type($signal-args[$item-count++]), :$item-name, :$item-doc
-          ) if ?$item-name;
-
-          # get the info from the current line
-          $line ~~ m/ '*' \s+ '@' $<item-name> = [<alnum>+] ':'
-                      \s* $<item-doc> = [ .* ]
-                    /;
-
-          $item-name = ~($<item-name> // '');
-          $item-doc = primary-doc-changes(~($<item-doc> // '')) ~ "\n";
-note "n, d: $item-name, $item-doc";
-        }
-
-        # continue previous argument doc
-        elsif $item-scan and
-              $line ~~ m/^ \s* '*' \s ** 2..* $<item-doc> = [ .* ] / {
-          my Str $s = ~($<item-doc> // '');
-          $item-doc ~= primary-doc-changes($s);
-note "d: $item-doc";
-        }
-
-        # on empty line after '*' start sub doc
-        elsif $line ~~ m/^ \s* '*' \s* $/ {
-          # push last arg
-#note "ISD 1: $item-count, $item-name, $signal-args[$item-count]"
-#if $item-scan and ?$item-name;
-          $items-src-doc.push: %(
-            :item-type($signal-args[$item-count]), :$item-name, :$item-doc
-          ) if $item-scan and ?$item-name;
-
-          $spart-doc ~= "\n";
-          $item-scan = False;
-        }
-
-        # rest is sub doc
-        elsif !$item-scan {
-          # skip end of document
-          next if $line ~~ m/ '*/' /;
-
-          my Str $l = $line;
-          $l ~~ s/^ \s* '*' \s* //;
-          $spart-doc ~= $l ~ "\n";
-        }
-      }
-
-      # when there is no sub doc, it might end a bit abdrupt
-      #note "ISD 2: $item-count, $item-name, $signal-args[$item-count]"
-      #if $item-scan and ?$item-name;
-
-      $items-src-doc.push: %(
-        :item-type($signal-args[$item-count]), :$item-name, :$item-doc
-      ) if $item-scan and ?$item-name;
-
-      $signal-doc ~= primary-doc-changes($spart-doc);
-      $signal-doc ~~ s/^^ 'Since:' \s+ \d+ \. \d+ <-[\n]>* \n? //;
-    }
-
-
-    $signal-doc ~= "\n  method handler (\n";
-    $item-count = 0;
-    my Str $first-arg = '';
-    my Str $widget-var-name = '';
-#    my Str $first-arg = "Int :\$_handle_id,\n    $idoc<item-type>" ~
-#           "\:_widget\(\$$idoc<item-name>\)";
-    for @$items-src-doc -> $idoc {
-note "  IDoc1: $item-count, ", $idoc;
-      if $item-count == 0 {
-        $widget-var-name = $idoc<item-name>;
-        $first-arg = [~]
-          "Int :\$_handle_id,\n",
-          "    N-GObject :\$_native-object"
-          ;
-      }
-
-      else {
-        $signal-doc ~= "    {$idoc<item-type>//'-'} \$$idoc<item-name>,\n";
-      }
-
-      $item-count++;
-    }
-
-    $signal-doc ~= "    $first-arg,\n    \*\%user-options\n";
-    $signal-doc ~= "    --> $return-type\n" if ?$return-type;
-    $signal-doc ~= "  );\n\n";
-
-    for @$items-src-doc -> $idoc {
-note "  IDoc2: $idoc<item-name> eq $widget-var-name";
-      next if $idoc<item-name> eq $widget-var-name;
-#      $signal-doc ~= "=item \$$idoc<item-name>; $idoc<item-doc>\n";
-      $signal-doc ~= "=item \$$widget-var-name; $idoc<item-doc>\n";
-    }
-    # add an item
-#    $signal-doc ~= "=item \$_handle_id; the registered event handler id\n";
-    $signal-doc ~= "=item \$_handler-id; The handler id which is returned from the registration\n";
-    $signal-doc ~= "=item \$_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.\n";
-
-    $signal-doc-entries{$signal-name} = $signal-doc;
-
-note "next signal";
-  }
-note "last signal";
-  print "\n";
-
-  my Str $bool-signals-added = '';
-  my Str $build-add-signals = '';
-  if ?$signal-doc-entries {
-#    $signal-doc = Q:q:to/EOSIGDOC/ ~ $signal-doc ~ "\n=end pod\n\n";
-    note "add signal information to $output-file";
-    $output-file.IO.spurt( Q:q:to/EOSIGDOC/, :append);
-
-      #-------------------------------------------------------------------------------
-      =begin pod
-      =head1 Signals
-
-      There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
-
-      =head2 First method
-
-      The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
-
-        # handler method
-        method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
-
-        # connect a signal on window object
-        my Gnome::Gtk3::Window $w .= new( ... );
-        $w.register-signal( self, 'mouse-event', 'button-press-event');
-
-      =head2 Second method
-
-        my Gnome::Gtk3::Window $w .= new( ... );
-        my Callable $handler = sub (
-          N-GObject $native, N-GdkEvent $event, OpaquePointer $data
-        ) {
-          ...
-        }
-
-        $w.connect-object( 'button-press-event', $handler);
-
-      Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<connect-object()> are using the signatures of the handler routines to setup the native call interface.
-
-      =head2 Supported signals
-
-      EOSIGDOC
-
-    for $signal-doc-entries.keys.sort -> $signal {
-      note "save signal $signal";
-      $output-file.IO.spurt( $signal-doc-entries{$signal}, :append);
-    }
-
-    $output-file.IO.spurt( "\n=end pod\n\n", :append);
-
-
-
-    # create the class string to substitute in the source
-    my Str $sig-class-str = '';
-    for $signal-classes.kv -> $class, $signals {
-      $sig-class-str ~= "\:$class\<";
-      $sig-class-str ~= $signals.join(' ');
-      $sig-class-str ~= '>, ';
-    }
-
-    $bool-signals-added = Q:q:to/EOBOOL/;
-      my Bool $signals-added = False;
-      #-------------------------------------------------------------------------------
-      EOBOOL
-
-    if $class-is-role {
-      $build-add-signals = Q:q:to/EOBUILD/;
-          # add signal info in the form of w*<signal-name>.
-          self.add-signal-types( $?CLASS.^name,
-            SIG_CLASS_STR
-          );
-        EOBUILD
-        $build-add-signals ~~ s/SIG_CLASS_STR/$sig-class-str/;
-    }
-
-    else {
-      $build-add-signals = Q:q:to/EOBUILD/;
-          # add signal info in the form of w*<signal-name>.
-          unless $signals-added {
-            $signals-added = self.add-signal-types( $?CLASS.^name,
-              SIG_CLASS_STR
-            );
-
-            # signals from interfaces
-            #_add_..._signal_types($?CLASS.^name);
-          }
-        EOBUILD
-        $build-add-signals ~~ s/SIG_CLASS_STR/$sig-class-str/;
-    }
-
-    # and append signal data to result module
-    #$output-file.IO.spurt( $signal-doc, :append);
-  }
-
-  # load the module for substitutions
-  my Str $module = $output-file.IO.slurp;
-
-  # substitute
-  $module ~~ s/ 'BOOL-SIGNALS-ADDED' /$bool-signals-added/;
-  $module ~~ s/ 'BUILD-ADD-SIGNALS' /$build-add-signals/;
-
-  # rewrite
-  $output-file.IO.spurt($module);
-#  note "add signal information to $output-file";
-}
-}}
-
 #-------------------------------------------------------------------------------
 sub get-properties ( Str:D $source-content is copy ) {
 
@@ -3760,3 +3349,422 @@ sub generate-test ( ) {
   "xt/NewModules/$*raku-class-name.rakutest".IO.spurt($test-content);
   note "generate tests in xt/NewModules/$*raku-class-name.rakutest";
 }
+
+
+
+
+
+
+
+=finish
+
+#`{{
+#-------------------------------------------------------------------------------
+sub get-signals ( Str:D $source-content is copy ) {
+
+  return unless $source-content;
+
+  my Array $items-src-doc;
+  my Str $signal-name;
+  my Str $signal-doc = '';
+  my Hash $signal-classes = %();
+
+  print "Find signals ";
+  my Hash $signal-doc-entries = %();
+  loop {
+    print ".";
+    $*OUT.flush;
+
+    $items-src-doc = [];
+    $signal-name = '';
+
+    $source-content ~~ m/
+      $<signal-doc> = [ '/**' \s+ '*' \s+ $*lib-class-name '::'  .*? '*/' ]
+    /;
+
+    # save doc and remove from source but stop if none left
+    my Str $sdoc = ~($<signal-doc> // '');
+#note "SDoc 0 $*lib-class-name: ", ?$sdoc;
+    my Bool $has-doc = ($sdoc ~~ m/ '/**' / ?? True !! False);
+
+    # possibly no documentation
+    if $has-doc {
+      $source-content ~~ s/$sdoc//;
+
+      # get lib class name and remove line from source
+      $sdoc ~~ m/
+        ^^ \s+ '*' \s+ $*lib-class-name '::' $<signal-name> = [ [<alnum> || '-']+ ]
+      /;
+      $signal-name = ~($<signal-name> // '');
+      $sdoc ~~ s/ ^^ \s+ '*' \s+ $*lib-class-name '::' $signal-name '::'? //;
+#note "SDoc 1 ", $sdoc;
+    }
+
+    # get some more info from the function call
+    $source-content ~~ m/
+      'g_signal_new' '_class_handler'? \s* '('
+      $<signal-args> = [
+        [ <[A..Z]> '_('                     || # gtk sources
+          'g_intern_static_string' \s* '('     # gdk sources
+        ]
+        '"' <-[\"]>+ '"' .*?
+      ] ');'
+    /;
+#note "SDoc 2 ",  ~($<signal-args>//'-');
+
+    # save and remove from source but stop if there isn't any left
+    my Str $sig-args = ~($<signal-args>//'');
+    if !$sig-args {
+      $sdoc = '';
+      last;
+    }
+    $source-content ~~
+       s/ 'g_signal_new' '_class_handler'? \s* '(' $sig-args ');' //;
+
+#note "sig args: ", $sig-args;
+    # when there's no doc, signal name must be retrieved from function argument
+    unless $signal-name {
+      $sig-args ~~ m/ '"' $<signal-name> = [ <-[\"]>+ ] '"' /;
+      $signal-name = ($<signal-name>//'').Str;
+    }
+
+#note "SA $signal-name: ", $sig-args;
+
+    # start pod doc
+    $signal-doc = Q:qq:to/EOSIG/;
+
+      =comment -----------------------------------------------------------------------
+      =comment #TS:0:$signal-name:
+      =head3 $signal-name
+      EOSIG
+
+note "get signal $signal-name";
+
+    # process g_signal_new arguments, remove commas from specific macro
+    # by removing the complete argument list. it's not needed.
+    $sig-args ~~ s/ 'G_STRUCT_OFFSET' \s* \( <-[\)]>+ \) /G_STRUCT_OFFSET/;
+    my @args = ();
+    for $sig-args.split(/ \s* ',' \s* /) -> $arg is copy {
+#note "  arg: '$arg'";
+      @args.push($arg);
+    }
+
+note "  Args: ", @args[*];
+    # get a return type from arg 7
+    my Str $return-type = '';
+    given @args[7] {
+      # most of the time it is a boolean ( == c int32)
+      when 'G_TYPE_BOOLEAN' { $return-type = 'Int'; }
+      when 'G_TYPE_INT' { $return-type = 'Int'; }
+      when 'G_TYPE_UINT' { $return-type = 'Int'; }
+      when 'G_TYPE_STRING' { $return-type = 'Str'; }
+      when 'G_TYPE_NONE' { $return-type = ''; }
+      when 'GTK_TYPE_TREE_ITER' { $return-type = 'N-GtkTreeIter'; }
+
+      # show that there is something if return type not recognized
+      default { $return-type = "Unknown type @args[7]"; }
+    }
+
+    my Int $item-count = 0;
+
+    # create proper variable name when not available from the doc
+    my Str $iname = $*lib-class-name;
+    $iname ~~ s:i/^ [ gtk || gdk || g ] //;
+    $iname .= lc;
+    $items-src-doc.push: %(
+      :item-type<Gnome::GObject::Object>, :item-name($iname),
+      :item-doc('')
+    );
+
+    # process handler argument types. nbr args at 8, types at 9 and further
+    my Array $signal-args = ['N-GObject'];
+    my Int $arg-count = @args[8].Int;
+#    loop ( my $i = 0; $i < $arg-count; $i++ ) {
+    for ^$arg-count -> $i {
+
+#note "  A[9 + $i]: @args[9 + $i]";
+
+      my Str $arg-type = '';
+      given @args[9 + $i] {
+        when 'G_TYPE_BOOLEAN' { $arg-type = 'Int'; }
+        when 'G_TYPE_INT' { $arg-type = 'Int'; }
+        when 'G_TYPE_UINT' { $arg-type = 'UInt'; }
+        when 'G_TYPE_LONG' { $arg-type = 'glong #`{ use Gnome::N::GlibToRakuTypes }'; }
+        when 'G_TYPE_FLOAT' { $arg-type = 'Num'; }
+        when 'G_TYPE_DOUBLE' { $arg-type = 'gdouble #`{ use Gnome::N::GlibToRakuTypes }'; }
+        when 'G_TYPE_STRING' { $arg-type = 'Str'; }
+        when 'G_TYPE_ERROR' { $arg-type = 'N-GError'; }
+
+        when 'GTK_TYPE_OBJECT' { $arg-type = 'N-GObject #`{ is object }'; }
+        when 'GTK_TYPE_WIDGET' { $arg-type = 'N-GObject #`{ is widget }'; }
+
+        when 'GTK_TYPE_TEXT_ITER' {
+          $arg-type = 'N-GObject #`{ native Gnome::Gtk3::TextIter }';
+        }
+        when 'GTK_TYPE_TREE_ITER' {
+          $arg-type = 'N-GtkTreeIter #`{ native Gnome::Gtk3::TreeIter }';
+        }
+        when 'GDK_TYPE_DISPLAY' {
+          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Display }';
+        }
+        when 'GDK_TYPE_DEVICE' {
+          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Device }';
+        }
+        when 'GDK_TYPE_DEVICE_TOOL' {
+          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::DeviceTool }';
+        }
+        when 'GDK_TYPE_MONITOR' {
+          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Monitor }';
+        }
+        when 'GDK_TYPE_SCREEN' {
+          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Screen }';
+        }
+        when 'GDK_TYPE_SEAT' {
+          $arg-type = 'N-GObject #`{ native Gnome::Gdk3::Seat }';
+        }
+        when 'GDK_TYPE_MODIFIER_TYPE' {
+          $arg-type = 'GdkModifierType #`{ from Gnome::Gdk3::Window }';
+        }
+        default { $arg-type = "Unknown type @args[{9 + $i}]"; }
+      }
+
+      my Str $item-name = $arg-type.lc;
+      $item-name ~~ s/ 'gnome::gtk3::' //;
+      $items-src-doc.push: %(
+        :item-type($arg-type), :$item-name,
+        :item-doc('')
+      );
+
+note "  A Type: $i, $arg-type, $item-name";
+      $signal-args.push: $arg-type;
+    }
+
+    # we know the number of extra arguments and signal name
+    my Str $sig-class = "w$arg-count";
+    $signal-classes{$sig-class} = [] unless $signal-classes{$sig-class}:exists;
+    $signal-classes{$sig-class}.push: $signal-name;
+
+    # get arguments for this signal handler
+    my Str ( $item-doc, $item-name, $spart-doc) = ( '', '', '');
+    my Bool $item-scan = True;
+    #my Bool $first-arg = True;
+
+    $item-count = 0;
+    if $has-doc {
+#      $items-src-doc = [];
+      for $sdoc.lines -> $line {
+note "L: $line";
+
+        # argument doc start
+        if $item-scan and $line ~~ m/^ \s* '*' \s+ '@' / {
+
+          # push when 2nd arg is found
+#note "ISD 0: $item-count, $item-name, $signal-args[$item-count]" if ?$item-name;
+          $items-src-doc.push: %(
+            :item-type($signal-args[$item-count++]), :$item-name, :$item-doc
+          ) if ?$item-name;
+
+          # get the info from the current line
+          $line ~~ m/ '*' \s+ '@' $<item-name> = [<alnum>+] ':'
+                      \s* $<item-doc> = [ .* ]
+                    /;
+
+          $item-name = ~($<item-name> // '');
+          $item-doc = primary-doc-changes(~($<item-doc> // '')) ~ "\n";
+note "n, d: $item-name, $item-doc";
+        }
+
+        # continue previous argument doc
+        elsif $item-scan and
+              $line ~~ m/^ \s* '*' \s ** 2..* $<item-doc> = [ .* ] / {
+          my Str $s = ~($<item-doc> // '');
+          $item-doc ~= primary-doc-changes($s);
+note "d: $item-doc";
+        }
+
+        # on empty line after '*' start sub doc
+        elsif $line ~~ m/^ \s* '*' \s* $/ {
+          # push last arg
+#note "ISD 1: $item-count, $item-name, $signal-args[$item-count]"
+#if $item-scan and ?$item-name;
+          $items-src-doc.push: %(
+            :item-type($signal-args[$item-count]), :$item-name, :$item-doc
+          ) if $item-scan and ?$item-name;
+
+          $spart-doc ~= "\n";
+          $item-scan = False;
+        }
+
+        # rest is sub doc
+        elsif !$item-scan {
+          # skip end of document
+          next if $line ~~ m/ '*/' /;
+
+          my Str $l = $line;
+          $l ~~ s/^ \s* '*' \s* //;
+          $spart-doc ~= $l ~ "\n";
+        }
+      }
+
+      # when there is no sub doc, it might end a bit abdrupt
+      #note "ISD 2: $item-count, $item-name, $signal-args[$item-count]"
+      #if $item-scan and ?$item-name;
+
+      $items-src-doc.push: %(
+        :item-type($signal-args[$item-count]), :$item-name, :$item-doc
+      ) if $item-scan and ?$item-name;
+
+      $signal-doc ~= primary-doc-changes($spart-doc);
+      $signal-doc ~~ s/^^ 'Since:' \s+ \d+ \. \d+ <-[\n]>* \n? //;
+    }
+
+
+    $signal-doc ~= "\n  method handler (\n";
+    $item-count = 0;
+    my Str $first-arg = '';
+    my Str $widget-var-name = '';
+#    my Str $first-arg = "Int :\$_handle_id,\n    $idoc<item-type>" ~
+#           "\:_widget\(\$$idoc<item-name>\)";
+    for @$items-src-doc -> $idoc {
+note "  IDoc1: $item-count, ", $idoc;
+      if $item-count == 0 {
+        $widget-var-name = $idoc<item-name>;
+        $first-arg = [~]
+          "Int :\$_handle_id,\n",
+          "    N-GObject :\$_native-object"
+          ;
+      }
+
+      else {
+        $signal-doc ~= "    {$idoc<item-type>//'-'} \$$idoc<item-name>,\n";
+      }
+
+      $item-count++;
+    }
+
+    $signal-doc ~= "    $first-arg,\n    \*\%user-options\n";
+    $signal-doc ~= "    --> $return-type\n" if ?$return-type;
+    $signal-doc ~= "  );\n\n";
+
+    for @$items-src-doc -> $idoc {
+note "  IDoc2: $idoc<item-name> eq $widget-var-name";
+      next if $idoc<item-name> eq $widget-var-name;
+#      $signal-doc ~= "=item \$$idoc<item-name>; $idoc<item-doc>\n";
+      $signal-doc ~= "=item \$$widget-var-name; $idoc<item-doc>\n";
+    }
+    # add an item
+#    $signal-doc ~= "=item \$_handle_id; the registered event handler id\n";
+    $signal-doc ~= "=item \$_handler-id; The handler id which is returned from the registration\n";
+    $signal-doc ~= "=item \$_native-object; The native object provided by the caller wrapped in the Raku object which registered the signal.\n";
+
+    $signal-doc-entries{$signal-name} = $signal-doc;
+
+note "next signal";
+  }
+note "last signal";
+  print "\n";
+
+  my Str $bool-signals-added = '';
+  my Str $build-add-signals = '';
+  if ?$signal-doc-entries {
+#    $signal-doc = Q:q:to/EOSIGDOC/ ~ $signal-doc ~ "\n=end pod\n\n";
+    note "add signal information to $output-file";
+    $output-file.IO.spurt( Q:q:to/EOSIGDOC/, :append);
+
+      #-------------------------------------------------------------------------------
+      =begin pod
+      =head1 Signals
+
+      There are two ways to connect to a signal. The first option you have is to use C<register-signal()> from B<Gnome::GObject::Object>. The second option is to use C<connect-object()> directly from B<Gnome::GObject::Signal>.
+
+      =head2 First method
+
+      The positional arguments of the signal handler are all obligatory as well as their types. The named attributes C<:$widget> and user data are optional.
+
+        # handler method
+        method mouse-event ( N-GdkEvent $event, :$widget ) { ... }
+
+        # connect a signal on window object
+        my Gnome::Gtk3::Window $w .= new( ... );
+        $w.register-signal( self, 'mouse-event', 'button-press-event');
+
+      =head2 Second method
+
+        my Gnome::Gtk3::Window $w .= new( ... );
+        my Callable $handler = sub (
+          N-GObject $native, N-GdkEvent $event, OpaquePointer $data
+        ) {
+          ...
+        }
+
+        $w.connect-object( 'button-press-event', $handler);
+
+      Also here, the types of positional arguments in the signal handler are important. This is because both methods C<register-signal()> and C<connect-object()> are using the signatures of the handler routines to setup the native call interface.
+
+      =head2 Supported signals
+
+      EOSIGDOC
+
+    for $signal-doc-entries.keys.sort -> $signal {
+      note "save signal $signal";
+      $output-file.IO.spurt( $signal-doc-entries{$signal}, :append);
+    }
+
+    $output-file.IO.spurt( "\n=end pod\n\n", :append);
+
+
+
+    # create the class string to substitute in the source
+    my Str $sig-class-str = '';
+    for $signal-classes.kv -> $class, $signals {
+      $sig-class-str ~= "\:$class\<";
+      $sig-class-str ~= $signals.join(' ');
+      $sig-class-str ~= '>, ';
+    }
+
+    $bool-signals-added = Q:q:to/EOBOOL/;
+      my Bool $signals-added = False;
+      #-------------------------------------------------------------------------------
+      EOBOOL
+
+    if $class-is-role {
+      $build-add-signals = Q:q:to/EOBUILD/;
+          # add signal info in the form of w*<signal-name>.
+          self.add-signal-types( $?CLASS.^name,
+            SIG_CLASS_STR
+          );
+        EOBUILD
+        $build-add-signals ~~ s/SIG_CLASS_STR/$sig-class-str/;
+    }
+
+    else {
+      $build-add-signals = Q:q:to/EOBUILD/;
+          # add signal info in the form of w*<signal-name>.
+          unless $signals-added {
+            $signals-added = self.add-signal-types( $?CLASS.^name,
+              SIG_CLASS_STR
+            );
+
+            # signals from interfaces
+            #_add_..._signal_types($?CLASS.^name);
+          }
+        EOBUILD
+        $build-add-signals ~~ s/SIG_CLASS_STR/$sig-class-str/;
+    }
+
+    # and append signal data to result module
+    #$output-file.IO.spurt( $signal-doc, :append);
+  }
+
+  # load the module for substitutions
+  my Str $module = $output-file.IO.slurp;
+
+  # substitute
+  $module ~~ s/ 'BOOL-SIGNALS-ADDED' /$bool-signals-added/;
+  $module ~~ s/ 'BUILD-ADD-SIGNALS' /$build-add-signals/;
+
+  # rewrite
+  $output-file.IO.spurt($module);
+#  note "add signal information to $output-file";
+}
+}}
