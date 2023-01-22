@@ -37,12 +37,12 @@ subtest 'Manipulations', {
   $g.remove-row(0);
   nok $g.get-children, '.remove-row()';
 #  $gl .= new(:native-object($g.get-children));
-#  is $gl.g-list-length, 0, '.remove-row()';
+#  is $gl.length, 0, '.remove-row()';
 
   $button .= new(:label('press here'));
   $g.attach( $button, 0, 0, 1, 1);
   $gl .= new(:native-object($g.get-children));
-  is $gl.g-list-length, 1, '.grid-attach() testing _fallback()';
+  is $gl.length, 1, '.grid-attach() testing _fallback()';
   $gl.clear-object;
   $g.remove-row(0);
   $button .= new(:label('press here'));
@@ -55,13 +55,13 @@ subtest 'Manipulations', {
   $button .= new(:label('press here'));
   $g.attach( $button, 0, 0, 1, 1);
   $gl .= new(:native-object($g.get-children));
-  is $gl.g-list-length, 1, '.attach() testing _fallback()';
+  is $gl.length, 1, '.attach() testing _fallback()';
   $gl.clear-object;
 
   my Gnome::Gtk3::Label $label .= new(:text('note'));
   $g.attach-next-to( $label, $button, GTK_POS_RIGHT, 1, 1);
   $gl .= new(:native-object($g.get-children));
-  is $gl.g-list-length, 2, '.attach-next-to()';
+  is $gl.length, 2, '.attach-next-to()';
   $gl.clear-object;
 
   my Gnome::Gtk3::Label $label-widget .= new(:native-object($g.get-child-at( 1, 0)));
@@ -83,7 +83,7 @@ subtest 'Manipulations', {
 subtest 'Inherit from Container', {
 
   $gl .= new(:native-object($g.get-children));
-  is $gl.g-list-length, 2, '.get-children()';
+  is $gl.length, 2, '.get-children()';
 
 #note $gl.nth-data(1);
   my Gnome::Gtk3::Label $label-widget .= new(:native-object($gl.nth-data(0)));
