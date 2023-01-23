@@ -53,7 +53,7 @@ Used to specify options for `.lookup-icon()`
 
   * GTK_ICON_LOOKUP_FORCE_SVG: Get SVG icons, even if gdk-pixbuf doesn’t support them. Cannot be used together with `GTK_ICON_LOOKUP_NO_SVG`.
 
-  * GTK_ICON_LOOKUP_USE_BUILTIN: When passed to `.lookup-icon()` includes builtin icons as well as files. For a builtin icon, `Gnome::Gtk3::IconInfo.get-filename()` is `Any` and you need to call `Gnome::Gtk3::IconInfo.get_builtin_pixbuf()`.
+  * GTK_ICON_LOOKUP_USE_BUILTIN: When passed to `.lookup-icon()` includes builtin icons as well as files. For a builtin icon, `Gnome::Gtk3::IconInfo.get-filename()` is `Any` and you need to call `Gnome::Gtk3::IconInfo.get-builtin-pixbuf()`.
 
   * GTK_ICON_LOOKUP_GENERIC_FALLBACK: Try to shorten icon name at '-' characters before looking at inherited themes. This flag is only supported in functions that take a single icon name. For more general fallback, see `.choose-icon()`.
 
@@ -150,7 +150,7 @@ has-icon
 
 Checks whether an icon theme includes an icon for a particular name.
 
-Returns: `True` if *icon_theme* includes an icon for *icon_name*.
+Returns: `True` if *icon_theme* includes an icon for *icon-name*.
 
     method has-icon ( Str $icon_name --> Bool )
 
@@ -159,18 +159,18 @@ Returns: `True` if *icon_theme* includes an icon for *icon_name*.
 list-contexts
 -------------
 
-Gets the list of contexts available within the current hierarchy of icon themes. See `list_icons()` for details about contexts.
+Gets the list of contexts available within the current hierarchy of icon themes. See `list-icons()` for details about contexts.
 
-Returns: (element-type utf8) : a **Gnome::Gio::List** list holding the names of all the contexts in the theme. You must first free each element in the list with `g_free()`, then free the list itself with `g_list_free()`.
+Returns: (element-type utf8) : a **Gnome::Gio::List** list holding the names of all the contexts in the theme.
 
     method list-contexts ( --> N-GList )
 
 list-icons
 ----------
 
-Lists the icons in the current icon theme. Only a subset of the icons can be listed by providing a context string. The set of values for the context string is system dependent, but will typically include such values as “Applications” and “MimeTypes”. Contexts are explained in the [Icon Theme Specification](http://www.freedesktop.org/wiki/Specifications/icon-theme-spec). The standard contexts are listed in the [Icon Naming Specification](http://www.freedesktop.org/wiki/Specifications/icon-naming-spec). Also see `list_contexts()`.
+Lists the icons in the current icon theme. Only a subset of the icons can be listed by providing a context string. The set of values for the context string is system dependent, but will typically include such values as “Applications” and “MimeTypes”. Contexts are explained in the [Icon Theme Specification](http://www.freedesktop.org/wiki/Specifications/icon-theme-spec). The standard contexts are listed in the [Icon Naming Specification](http://www.freedesktop.org/wiki/Specifications/icon-naming-spec). Also see `list-contexts()`.
 
-Returns: (element-type utf8) : a **Gnome::Gio::List** list holding the names of all the icons in the theme. You must first free each element in the list with `g_free()`, then free the list itself with `g_list_free()`.
+Returns: (element-type utf8) : a **Gnome::Gio::List** list holding the names of all the icons in the theme.
 
     method list-icons ( Str $context --> N-GList )
 
@@ -192,7 +192,7 @@ Returns: the rendered icon (a native **Gnome::Gdk3::Pixbuf**); this may be a new
 
   * $icon_name; the name of the icon to lookup
 
-  * $size; the desired icon size. The resulting icon may not be exactly this size; see `gtk_icon_info_load_icon()`.
+  * $size; the desired icon size. The resulting icon may not be exactly this size; see `Gnome::Gtk3::IconInfo.load-icon()`.
 
   * $flags; flags from GtkIconLookupFlags modifying the behavior of the icon lookup
 
@@ -236,7 +236,7 @@ Looks up an icon in an icon theme for a particular window scale, scales it to th
 
 Note that you probably want to listen for icon theme changes and update the icon. This is usually done by connecting to the GtkWidget::style-set signal.
 
-Returns: the rendered icon (a cairo surface_t); this may be a newly created icon or a new reference to an internal icon, so you must not modify the icon. Use `cairo_surface_destroy()` to release your reference to the icon. `undefined` if the icon isn’t found.
+Returns: the rendered icon (a cairo surface_t); this may be a newly created icon or a new reference to an internal icon, so you must not modify the icon. Use `cairo-surface-destroy()` to release your reference to the icon. `undefined` if the icon isn’t found.
 
     method load-surface (
       Str $icon_name, Int() $size, Int() $scale,
@@ -246,7 +246,7 @@ Returns: the rendered icon (a cairo surface_t); this may be a newly created icon
 
   * $icon_name; the name of the icon to lookup
 
-  * $size; the desired icon size. The resulting icon may not be exactly this size; see `Gnome::Gtk3::Info.load_icon()`.
+  * $size; the desired icon size. The resulting icon may not be exactly this size; see `Gnome::Gtk3::Info.load-icon()`.
 
   * $scale; desired scale
 
@@ -257,11 +257,11 @@ Returns: the rendered icon (a cairo surface_t); this may be a newly created icon
 lookup-by-gicon
 ---------------
 
-Looks up an icon and returns a native **Gnome::Gtk3::IconInfo** containing information such as the filename of the icon. The icon can then be rendered into a pixbuf using `gtk_icon_info_load_icon()`.
+Looks up an icon and returns a native **Gnome::Gtk3::IconInfo** containing information such as the filename of the icon. The icon can then be rendered into a pixbuf using `Gnome::Gtk3::IconInfo.load-icon()`.
 
-When rendering on displays with high pixel densities you should not use a *size* multiplied by the scaling factor returned by functions like `gdk_window_get_scale_factor()`. Instead, you should use `lookup_by_gicon_for_scale()`, as the assets loaded for a given scaling factor may be different.
+When rendering on displays with high pixel densities you should not use a *size* multiplied by the scaling factor returned by functions like `gdk-window-get-scale-factor()`. Instead, you should use `lookup-by-gicon-for-scale()`, as the assets loaded for a given scaling factor may be different.
 
-Returns: a native **Gnome::Gtk3::IconInfo** containing information about the icon, or `undefined` if the icon wasn’t found. Unref with `g_object_unref()`
+Returns: a native **Gnome::Gtk3::IconInfo** containing information about the icon, or `undefined` if the icon wasn’t found.
 
     method lookup-by-gicon (
       N-GObject() $icon, Int() $size, UInt() $flags
@@ -277,9 +277,9 @@ Returns: a native **Gnome::Gtk3::IconInfo** containing information about the ico
 lookup-by-gicon-for-scale
 -------------------------
 
-Looks up an icon and returns a native **Gnome::Gtk3::IconInfo** containing information such as the filename of the icon. The icon can then be rendered into a pixbuf using `gtk_icon_info_load_icon()`.
+Looks up an icon and returns a native **Gnome::Gtk3::IconInfo** containing information such as the filename of the icon. The icon can then be rendered into a pixbuf using `Gnome::Gtk3::IconInfo.load-icon()`.
 
-Returns: a native **Gnome::Gtk3::IconInfo** containing information about the icon, or `undefined` if the icon wasn’t found. Unref with `g_object_unref()`
+Returns: a native **Gnome::Gtk3::IconInfo** containing information about the icon, or `undefined` if the icon wasn’t found.
 
     method lookup-by-gicon-for-scale (
       N-GObject() $icon, Int() $size, Int() $scale, UInt $flags
@@ -297,9 +297,9 @@ Returns: a native **Gnome::Gtk3::IconInfo** containing information about the ico
 lookup-icon
 -----------
 
-Looks up a named icon and returns a native **Gnome::Gtk3::IconInfo** containing information such as the filename of the icon. The icon can then be rendered into a pixbuf using `gtk_icon_info_load_icon()`. (`load_icon()` combines these two steps if all you need is the pixbuf.)
+Looks up a named icon and returns a native **Gnome::Gtk3::IconInfo** containing information such as the filename of the icon. The icon can then be rendered into a pixbuf using `Gnome::Gtk3::IconInfo.load-icon()`. (`.load-icon()` combines these two steps if all you need is the pixbuf.)
 
-When rendering on displays with high pixel densities you should not use a *size* multiplied by the scaling factor returned by functions like `gdk_window_get_scale_factor()`. Instead, you should use `lookup_icon_for_scale()`, as the assets loaded for a given scaling factor may be different.
+When rendering on displays with high pixel densities you should not use a *size* multiplied by the scaling factor returned by functions like `gdk-window-get-scale-factor()`. Instead, you should use `lookup-icon-for-scale()`, as the assets loaded for a given scaling factor may be different.
 
 Returns: a native **Gnome::Gtk3::IconInfo** object containing information about the icon, or `undefined` if the icon wasn’t found.
 
@@ -316,7 +316,7 @@ Returns: a native **Gnome::Gtk3::IconInfo** object containing information about 
 lookup-icon-for-scale
 ---------------------
 
-Looks up a named icon for a particular window scale and returns a native **Gnome::Gtk3::IconInfo** containing information such as the filename of the icon. The icon can then be rendered into a pixbuf using `gtk_icon_info_load_icon()`. (`load_icon()` combines these two steps if all you need is the pixbuf.)
+Looks up a named icon for a particular window scale and returns a native **Gnome::Gtk3::IconInfo** containing information such as the filename of the icon. The icon can then be rendered into a pixbuf using `Gnome::Gtk3::IconInfo.load-icon()`. (`load-icon()` combines these two steps if all you need is the pixbuf.)
 
 Returns: a native **Gnome::Gtk3::IconInfo** object containing information about the icon, or `undefined` if the icon wasn’t found.
 
@@ -336,7 +336,7 @@ Returns: a native **Gnome::Gtk3::IconInfo** object containing information about 
 prepend-search-path
 -------------------
 
-Prepends a directory to the search path. See `set_search_path()`.
+Prepends a directory to the search path. See `set-search-path()`.
 
     method prepend-search-path ( Str $path )
 
@@ -354,7 +354,7 @@ Returns: `True` if the icon theme has changed and needed to be reloaded.
 set-custom-theme
 ----------------
 
-Sets the name of the icon theme that the **Gnome::Gtk3::IconTheme** object uses overriding system configuration. This function cannot be called on the icon theme objects returned from `get_default()` and `get_for_screen()`.
+Sets the name of the icon theme that the **Gnome::Gtk3::IconTheme** object uses overriding system configuration. This function cannot be called on the icon theme objects returned from `get-default()` and `get-for-screen()`.
 
     method set-custom-theme ( Str $theme_name )
 
