@@ -74,6 +74,7 @@
     "Gnome::Gtk3::Grid": "lib/Gnome/Gtk3/Grid.rakumod",
     "Gnome::Gtk3::HeaderBar": "lib/Gnome/Gtk3/HeaderBar.rakumod",
     "Gnome::Gtk3::Image": "lib/Gnome/Gtk3/Image.rakumod",
+    "Gnome::Gtk3::IconInfo": "lib/Gnome/Gtk3/IconInfo.rakumod",
     "Gnome::Gtk3::IconTheme": "lib/Gnome/Gtk3/IconTheme.rakumod",
     "Gnome::Gtk3::IconView": "lib/Gnome/Gtk3/IconView.rakumod",
     "Gnome::Gtk3::Label": "lib/Gnome/Gtk3/Label.rakumod",

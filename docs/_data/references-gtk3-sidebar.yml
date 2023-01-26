@@ -243,7 +243,11 @@
     url: /content-docs/reference/Gtk3/Image.html
     type: widget
 
-  - title: "IconTheme"
+  - title: IconInfo
+    url: "/content-docs/reference/Gtk3/IconInfo.html"
+    type: object
+
+  - title: IconTheme
     url: "/content-docs/reference/Gtk3/IconTheme.html"
     type: object
 
