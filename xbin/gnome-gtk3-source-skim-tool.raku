@@ -14,6 +14,7 @@ my @gobjectdirlist = ();
 my @glibdirlist = ();
 my @pangodirlist = ();
 my @giodirlist = ();
+my %gnome-names-map = %();
 
 my @enum-list = ();
 
@@ -833,6 +834,11 @@ sub load-dir-lists ( ) {
   @pangodirlist = "$root-dir/Design-docs/pango-list.txt".IO.slurp.lines;
 
   @enum-list = "$root-dir/Design-docs/skim-tool-enum-list".IO.slurp.lines;
+
+  for "$root-dir/Design-docs/gnome-names-map.txt".IO.lines -> $l {
+    my Str ( $g, $m ) = $l.split(': ');
+    %gnome-names-map{$g} = $m;
+  }
 }
 
 #-------------------------------------------------------------------------------
@@ -3007,6 +3013,8 @@ sub primary-doc-changes ( Str:D $text is copy --> Str ) {
   $text = adjust-image-path($text);
 #note "\nprimary-doc-changes image path: $text";
 
+$text ~~ s:g/ '=item' /\n=item/;
+
   $text
 }
 
@@ -3086,18 +3094,50 @@ sub podding-property ( Str:D $text is copy --> Str ) {
 # change;
 #   #class::signal to I<signal>
 #   #class:property to I<property>
-#   #class to B<Gnome::xyz::class>
+#   #class to B<Gnome::Xyz::Class>
 sub podding-class ( Str:D $text is copy --> Str ) {
 
   loop {
-    $text ~~ m/ '#' $<gtk-classname> = [<alnum>+] /;
-    my Str $gtk-classname = ~($<gtk-classname>//'');
-    last unless ?$gtk-classname;
+    $text ~~ m/ '#' $<classname> = [<alnum>+] /;
+    my Str $classname = ~($<classname>//'');
+    last unless ?$classname;
 
-    my Str $raku-classname = make-raku-classname($gtk-classname);
+    my Str $raku-classname = make-raku-classname($classname);
+#`{{    my Str $raku-classname = $classname;
+    $raku-classname ~~ s/ (<[A..Z]>) /$0.lc()/;
+    $raku-classname ~~ s:g/ (<[A..Z]>) /_$0.lc()/;
+    my @parts = $raku-classname.split('_');
+    my Str $class = '';
+    for @parts -> $p {
+      $class ~= ?$class ?? "_$p" !! $p;
+note "$?LINE '$class', '$raku-classname', {%gnome-names-map{$class} // '-'}";
+
+      # If class name is found in the map, substitute it with the Raku classname
+      if ?%gnome-names-map{$class} {
+        $raku-classname = %gnome-names-map{$class};
+note "$?LINE, $raku-classname";
+        last;
+      }
+    }
+}}
 
     # replace changed part in text
-    $text ~~ s/ '#' $gtk-classname /B<$raku-classname>/;
+    if $raku-classname eq 'Deprecated' {
+      $text ~~ s/ '#' $classname /B<Deprecated gnome class $classname>/;
+    }
+
+#`{{
+    elsif $raku-classname ~~ m:s/ Not implemented / {
+      $text ~~ s/ '#' $classname /B<$raku-classname>/;
+    }
+}}
+
+    else {
+      $text ~~ s/ '#' $classname /B<$raku-classname>/;
+    }
+
+#note "$?LINE, $text";
+#exit(0);
   }
 
   $text
@@ -3107,12 +3147,81 @@ sub podding-class ( Str:D $text is copy --> Str ) {
 # change any function() to C<function()>
 sub podding-function ( Str:D $text is copy --> Str ) {
 
+  loop {
+    $text ~~ m/ $<function> = ( \s+ <[a..z \_]>+ \s* '()' \s+ ) /;
+    my Str $function = ~($<function>//'').Str;
+    last unless ?$function;
+
+    $function ~~ s:g/ \s //;
+    my Str $rk-function = $function;
+    my @parts = $rk-function.split('_');
+    my Str $class = '';
+    for @parts -> $p {
+      $class ~= ?$class ?? "_$p" !! $p;
+#note "$?LINE '$class', '$function', {%gnome-names-map{$class} // '-'}";
+
+      # If class name is found in the map, substitute it with the Raku classname
+      # and replace the _ for -
+      if ?%gnome-names-map{$class} {
+#        $rk-function ~~ s/ $class '_' /%gnome-names-map{$class}./;
+note "$?LINE, $rk-function";
+
+        my Str $raku-classname = %gnome-names-map{$class};
+
+        # replace changed part in text
+        if $raku-classname eq 'Deprecated' {
+          $rk-function ~~ s/ $class '_' /Deprecated gnome class {$class}_/;
+        }
+#`{{
+        elsif $raku-classname ~~ m:s/ Not implemented / {
+          $rk-function ~~ s/ $class '_' /$raku-classname./;
+        }
+}}
+
+        else {
+          $rk-function ~~ s/ $class '_' /$raku-classname./;
+        }
+
+        last;
+      }
+    }
+
+    # replace the _ for -
+    $rk-function ~~ s:g/ '_' /-/;
+
+    # Substitute text for next lookup but remove class name when
+    # in the same module
+note "$?LINE, $function, $rk-function, $*base-sub-name";
+    $rk-function ~~ s/ $*base-sub-name //
+      if $rk-function ~~ m/^ $*base-sub-name /;
+
+    $text ~~ s:g/ $function /C<$rk-function>/;
+
+#note "$?LINE, $rk-function";
+#note $text;
+#exit 0;
+  }
+
+#`{{
+#note "$?LINE $classname";
+#  my Str $raku-classname = %gnome-names-map{$classname};
+
+
+
   # change any function() to C<function()>. first change to [[function]] to
   # prevent nested substitutions.
   $text ~~ s:g/ ( <[\w\d\-\_]>+ ) \s* '()' /\[\[$/[0]\]\]/;
-  $text ~~ s:g/ $*base-sub-name '_' //;
-#  $text ~~ s:g/ '_' /-/;
+
+  # Remove the classname when it is the current class and start with a dot
+  $text ~~ s:g/ $*base-sub-name '_' /./;
+
+  #TODO
+  # 'g_' prefix can be from Glib, GObject or Gio
+  # A sub in a class can have 0 or more dashes. so, what part is the class name?
+
   $text ~~ s:g/ '[[' ( <[\w\d\-\_]>+ )']]' /C<$/[0]\()>/;
+  $text ~~ s:g/ '_' /-/;
+}}
 
   $text
 }
@@ -3146,14 +3255,39 @@ sub adjust-image-path ( Str:D $text is copy --> Str ) {
 }
 
 #-------------------------------------------------------------------------------
-sub make-raku-classname ( Str $gtk-classname --> Str ) {
+sub make-raku-classname ( Str $classname --> Str ) {
 
+  my Str $raku-classname = $classname;
+  $raku-classname ~~ s/ (<[A..Z]>) /$0.lc()/;
+  $raku-classname ~~ s:g/ (<[A..Z]>) /_$0.lc()/;
+  my @parts = $raku-classname.split('_');
+  my Str $class = '';
+  for @parts -> $p {
+    $class ~= ?$class ?? "_$p" !! $p;
+#note "$?LINE '$class', '$raku-classname', {%gnome-names-map{$class} // '-'}";
+
+    # If class name is found in the map, substitute it with the Raku classname
+    if ?%gnome-names-map{$class} {
+      $raku-classname = %gnome-names-map{$class};
+#note "$?LINE, $raku-classname";
+      last;
+    }
+  }
+
+  $raku-classname
+}
+
+
+#`{{
   my Str $raku-classname;
 #  $gtk-classname ~~ m/ '#' $<raku-classname> = (<alnum>+) /;
 #  $raku-classname = ~($<raku-classname> // '');
 #  return '' unless ?$raku-classname;
 
   return '' unless ?$gtk-classname;
+
+#note "$?LINE $gtk-classname";
+#  $raku-classname = %gnome-names-map{$gtk-classname};
 
 #  $gtk-classname ~~ m/ '#' $<raku-classname> = (<alnum>+) /;
 
@@ -3190,7 +3324,8 @@ sub make-raku-classname ( Str $gtk-classname --> Str ) {
   #$text ~~ s/ '#' $part /B\<$oct\>/;
 
   $raku-classname
-}
+}}
+
 
 #-------------------------------------------------------------------------------
 sub generate-test ( ) {
