@@ -62,8 +62,7 @@ This example shows how to load an icon and check for errors
   );
 
   unless $pixbuf.is-valid {
-    my Gnome::Glib::Error() $e = $icon-theme.last-error;
-    die "Couldn’t load icon: " ~ $e.message;
+    die "Couldn’t load icon: " ~ $icon-theme.last-error.message;
   }
 
 =end pod
@@ -86,7 +85,7 @@ use Gnome::GObject::Object;
 unit class Gnome::Gtk3::IconTheme:auth<github:MARTIMM>;
 also is Gnome::GObject::Object;
 
-has N-GError $.last-error;
+has Gnome::Glib::Error() $.last-error .= new(:native-object(N-GError));
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -348,17 +347,17 @@ sub gtk_icon_theme_error_quark ( --> GQuark )
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:last-error:
+#TM:1:last-error:
 =begin pod
 =head2 
 
 Get the last error code for icon theme errors
 
-  method last-error ( --> N-GError )
+  method last-error ( --> Gnome::Glib::Error )
 
 =end pod
 
-#method last-error ( --> N-GError) {
+#method last-error ( --> Gnome::Glib::Error) {
 #  $!last-error;
 #}
 
@@ -695,8 +694,7 @@ When an error occurs, check the last error attribute;
   my Gnome::Gdk3::Pixbuf() $pixbuf;
   $pixbuf = $icon-theme.load-icon( 'server-database', 32, 0);
   unless $pixbuf.is-valid {
-    my Gnome::Glib::Error() $e = $icon-theme.last-error;
-    die "Couldn’t load icon: " ~ $e.message;
+    die "Couldn’t load icon: " ~ $icon-theme.last-error.message;
   }
 
 
@@ -714,6 +712,10 @@ method load-icon (
   if $error[0].defined {
     $!last-error = $error[0];
     $no = N-GObject;
+  }
+
+  else {
+    $!last-error = N-GError;
   }
 
   $no;
@@ -761,6 +763,10 @@ method load-icon-for-scale (
   if $error[0].defined {
     $!last-error = $error[0];
     $no = N-GObject;
+  }
+
+  else {
+    $!last-error = N-GError;
   }
 
   $no;
@@ -811,6 +817,10 @@ method load-surface (
   if $error[0].defined {
     $!last-error = $error[0];
     $no = N-GObject;
+  }
+
+  else {
+    $!last-error = N-GError;
   }
 
   $no;
@@ -899,7 +909,7 @@ sub gtk_icon_theme_lookup_by_gicon_for_scale (
 
 Looks up a named icon and returns a native B<Gnome::Gtk3::IconInfo> containing information such as the filename of the icon. The icon can then be rendered into a pixbuf using C<Gnome::Gtk3::IconInfo.load-icon()>. (C<.load-icon()> combines these two steps if all you need is the pixbuf.)
 
-When rendering on displays with high pixel densities you should not use a I<size> multiplied by the scaling factor returned by functions like C<gdk-window-get-scale-factor()>. Instead, you should use C<lookup-icon-for-scale()>, as the assets loaded for a given scaling factor may be different.
+When rendering on displays with high pixel densities you should not use a I<size> multiplied by the scaling factor returned by functions like C<Gnome::Gdk3::Window.get-scale-factor()>. Instead, you should use C<.lookup-icon-for-scale()>, as the assets loaded for a given scaling factor may be different.
 
 Returns: a native B<Gnome::Gtk3::IconInfo> object containing information about the icon, or C<undefined> if the icon wasn’t found.
 
@@ -932,7 +942,7 @@ sub gtk_icon_theme_lookup_icon (
 =begin pod
 =head2 lookup-icon-for-scale
 
-Looks up a named icon for a particular window scale and returns a native B<Gnome::Gtk3::IconInfo> containing information such as the filename of the icon. The icon can then be rendered into a pixbuf using C<Gnome::Gtk3::IconInfo.load-icon()>. (C<load-icon()> combines these two steps if all you need is the pixbuf.)
+Looks up a named icon for a particular window scale and returns a native B<Gnome::Gtk3::IconInfo> containing information such as the filename of the icon. The icon can then be rendered into a pixbuf using C<Gnome::Gtk3::IconInfo.load-icon()>. (C<Gnome::Gtk3::IconInfo.load-icon()> combines these two steps if all you need is the pixbuf.)
 
 Returns: a native  B<Gnome::Gtk3::IconInfo> object containing information about the icon, or C<undefined> if the icon wasn’t found.
 
