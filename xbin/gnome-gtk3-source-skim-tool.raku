@@ -3258,8 +3258,15 @@ sub adjust-image-path ( Str:D $text is copy --> Str ) {
 sub make-raku-classname ( Str $classname --> Str ) {
 
   my Str $raku-classname = $classname;
-  $raku-classname ~~ s/ (<[A..Z]>) /$0.lc()/;
-  $raku-classname ~~ s:g/ (<[A..Z]>) /_$0.lc()/;
+  if $classname eq 'GdkRGBA' {
+    $raku-classname = 'gdk_rgba';
+  }
+
+  else {
+    $raku-classname ~~ s/ (<[A..Z]>) /$0.lc()/;
+    $raku-classname ~~ s:g/ (<[A..Z]>) /_$0.lc()/;
+  }
+
   my @parts = $raku-classname.split('_');
   my Str $class = '';
   for @parts -> $p {
