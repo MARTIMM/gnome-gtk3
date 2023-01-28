@@ -3,6 +3,9 @@ use NativeCall;
 use Test;
 
 use Gnome::Gtk3::IconInfo;
+use Gnome::Gtk3::IconTheme;
+
+use Gnome::Gdk3::Pixbuf;
 
 #use Gnome::N::GlibToRakuTypes;
 #use Gnome::N::N-GObject;
@@ -10,11 +13,16 @@ use Gnome::Gtk3::IconInfo;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-my Gnome::Gtk3::IconInfo $ii;
+my Gnome::Gtk3::IconInfo() $ii;
+my Gnome::Gtk3::IconTheme $icon-theme .= new(:default);
+my Gnome::Gdk3::Pixbuf() $pixbuf;
+
 #-------------------------------------------------------------------------------
 subtest 'ISA test', {
-  $ii .= new;
-  isa-ok $ii, Gnome::Gtk3::IconInfo, '.new()';
+  $icon-theme .= new(:default);
+  $pixbuf = $icon-theme.load-icon( 'server-database', 48, 0);
+  $ii .= new( :theme($icon-theme), :$pixbuf);
+  isa-ok $ii, Gnome::Gtk3::IconInfo, '.new( :theme, :pixbuf)';
 }
 
 #-------------------------------------------------------------------------------

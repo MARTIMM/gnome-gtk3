@@ -25,12 +25,12 @@ In many cases, named themes are used indirectly, via B<Gnome::Gtk3::Image> or st
 =head2 Declaration
 
   unit class Gnome::Gtk3::IconInfo;
- 
+  also is Gnome::GObject::Object;
 
 
-=comment head2 Uml Diagram
+=head2 Uml Diagram
 
-=comment ![](plantuml/IconInfo.svg)
+![](plantuml/IconInfo.svg)
 
 
 =begin comment
@@ -72,13 +72,14 @@ use NativeCall;
 use Gnome::N::NativeLib;
 use Gnome::N::N-GObject;
 use Gnome::N::GlibToRakuTypes;
-use Gnome::N::TopLevelClassSupport;
+
+use Gnome::GObject::Object;
 
 use Gnome::Glib::Error;
 
 #-------------------------------------------------------------------------------
 unit class Gnome::Gtk3::IconInfo:auth<github:MARTIMM>;
-also is Gnome::N::TopLevelClassSupport;
+also is Gnome::GObject::Object;
 
 has Gnome::Glib::Error() $.last-error .= new(:native-object(N-GError));
 
@@ -129,10 +130,11 @@ submethod BUILD ( *%options ) {
 
     # process all other options
     else {
-      my N-GObject() $no;
-      if ? %options<pixbuf> {
-        $no = %options<pixbuf>;
-        $no = _gtk_icon_info_new_for_pixbuf($no);
+      my N-GObject() ( $no, $pb, $th);
+      if ? %options<pixbuf> and ? %options<theme> {
+        $pb = %options<pixbuf>;
+        $th = %options<theme>;
+        $no = _gtk_icon_info_new_for_pixbuf( $th, $pb);
       }
 
       ##`{{ use this when the module is not made inheritable
@@ -167,16 +169,6 @@ submethod BUILD ( *%options ) {
     # only after creating the native-object, the gtype is known
     self._set-class-info('GtkIconInfo');
   }
-}
-
-#-------------------------------------------------------------------------------
-method native-object-ref ( $n-native-object ) {
-  $n-native-object
-}
-
-#-------------------------------------------------------------------------------
-method native-object-unref ( $n-native-object ) {
-  _gtk_icon_info_free($n-native-object)
 }
 
 #-------------------------------------------------------------------------------
@@ -411,6 +403,10 @@ method load-surface ( N-GObject() $for_window --> N-GObject ) {
     $no = N-GObject;
   }
 
+  else {
+    $!last-error = N-GError;
+  }
+
   $no;
 }
 
@@ -429,7 +425,7 @@ Loads an icon, modifying it to match the system colours for the foreground, succ
 
 This allows loading symbolic icons that will match the system theme.
 
-Unless you are implementing a widget, you will want to use C<Gnome::Gio::ThemedIcon.new-with-default-fallbacks()> to load the icon.
+=comment #TODO; Unless you are implementing a widget, you will want to use C<Gnome::Gio::ThemedIcon.new-with-default-fallbacks()> to load the icon.
 
 As implementation details, the icon loaded needs to be of SVG type, contain the “symbolic” term as the last component of the icon name, and use the “fg”, “success”, “warning” and “error” CSS styles in the SVG file itself.
 
@@ -437,26 +433,51 @@ See the L<Symbolic Icons Specification|http://www.freedesktop.org/wiki/SymbolicI
 
 Returns: a B<Gnome::Gdk3::Pixbuf> representing the loaded icon
 
-  method load-symbolic ( N-GObject() $fg, N-GObject() $success_color, N-GObject() $warning_color, N-GObject() $error_color, Bool $was_symbolic, N-GError $error --> N-GObject )
+  method load-symbolic (
+    N-GObject() $fg, N-GObject() $success_color,
+    N-GObject() $warning_color, N-GObject() $error_color,
+    Bool $was_symbolic
+    --> N-GObject )
 
 =item $fg; a B<Gnome::Gdk3::RGBA> representing the foreground color of the icon
-=item $success_color; a B<gdk_r_g_b_a> representing the warning color of the icon or C<undefined> to use the default color
+=item $success_color; a B<Gnome::Gdk3::RGBA> representing the warning color of the icon or C<undefined> to use the default color
 =item $warning_color; a B<Gnome::Gdk3::RGBA> representing the warning color of the icon or C<undefined> to use the default color
 =item $error_color; a B<Gnome::Gdk3::RGBA> representing the error color of the icon or C<undefined> to use the default color 
 =item $was_symbolic; a B<gboolean>, returns whether the loaded icon was a symbolic one and whether the I<fg> color was applied to it.
 =item $error; location to store error information on failure, or C<undefined>.
+
+When an error occurs, check the last error attribute;
 =end pod
 
-method load-symbolic ( N-GObject() $fg, N-GObject() $success_color, N-GObject() $warning_color, N-GObject() $error_color, Bool $was_symbolic, $error is copy --> N-GObject ) {
-  $error .= _get-native-object-no-reffing unless $error ~~ N-GError;
-  gtk_icon_info_load_symbolic( self._get-native-object-no-reffing, $fg, $success_color, $warning_color, $error_color, $was_symbolic, $error)
+method load-symbolic (
+  N-GObject() $fg, N-GObject() $success_color, N-GObject() $warning_color, 
+  N-GObject() $error_color, Bool $was_symbolic
+  --> N-GObject
+) {
+  my $error = CArray[N-GError].new(N-GError);
+  my N-GObject $no = gtk_icon_info_load_symbolic(
+    self._get-native-object-no-reffing, $fg, $success_color, $warning_color,
+    $error_color, $was_symbolic, $error
+  );
+
+  if $error[0].defined {
+    $!last-error = $error[0];
+    $no = N-GObject;
+  }
+
+  else {
+    $!last-error = N-GError;
+  }
+
+  $no;
 }
 
 sub gtk_icon_info_load_symbolic (
-  N-GObject $icon_info, N-GObject $fg, N-GObject $success_color, N-GObject $warning_color, N-GObject $error_color, gboolean $was_symbolic, N-GError $error --> N-GObject
+  N-GObject $icon_info, N-GObject $fg, N-GObject $success_color, N-GObject $warning_color, N-GObject $error_color, gboolean $was_symbolic, CArray[N-GError] $error --> N-GObject
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:load-symbolic-async:
 =begin pod
@@ -511,6 +532,7 @@ sub gtk_icon_info_load_symbolic_finish (
   N-GObject $icon_info, N-GObject $res, gboolean $was_symbolic, N-GError $error --> N-GObject
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:0:load-symbolic-for-context:
@@ -521,27 +543,49 @@ Loads an icon, modifying it to match the system colors for the foreground, succe
 
 This allows loading symbolic icons that will match the system theme.
 
-See C<Gnome::Gtk3::IconInfo.load-symbolic()> for more details.
+See C<.load-symbolic()> for more details.
 
 Returns: a B<Gnome::Gdk3::Pixbuf> representing the loaded icon
 
-  method load-symbolic-for-context ( N-GObject() $context, Bool $was_symbolic, N-GError $error --> N-GObject )
+  method load-symbolic-for-context (
+    N-GObject() $context, Bool $was_symbolic
+    --> N-GObject
+  )
 
 =item $context; a B<Gnome::Gtk3::StyleContext>
 =item $was_symbolic; a B<gboolean>, returns whether the loaded icon was a symbolic one and whether the I<fg> color was applied to it.
 =item $error; location to store error information on failure, or C<undefined>.
+
+When an error occurs, check the last error attribute;
 =end pod
 
-method load-symbolic-for-context ( N-GObject() $context, Bool $was_symbolic, $error is copy --> N-GObject ) {
-  $error .= _get-native-object-no-reffing unless $error ~~ N-GError;
-  gtk_icon_info_load_symbolic_for_context( self._get-native-object-no-reffing, $context, $was_symbolic, $error)
+method load-symbolic-for-context (
+  N-GObject() $context, Bool $was_symbolic, --> N-GObject
+) {
+  my $error = CArray[N-GError].new(N-GError);
+  my N-GObject $no = gtk_icon_info_load_symbolic_for_context(
+    self._get-native-object-no-reffing, $context, $was_symbolic, $error
+  );
+
+  if $error[0].defined {
+    $!last-error = $error[0];
+    $no = N-GObject;
+  }
+
+  else {
+    $!last-error = N-GError;
+  }
+
+  $no;
 }
 
 sub gtk_icon_info_load_symbolic_for_context (
-  N-GObject $icon_info, N-GObject $context, gboolean $was_symbolic, N-GError $error --> N-GObject
+  N-GObject $icon_info, N-GObject $context, gboolean $was_symbolic,
+  CArray[N-GError] $error --> N-GObject
 ) is native(&gtk-lib)
   { * }
 
+#`{{
 #-------------------------------------------------------------------------------
 #TM:0:load-symbolic-for-context-async:
 =begin pod
@@ -593,6 +637,7 @@ sub gtk_icon_info_load_symbolic_for_context_finish (
   N-GObject $icon_info, N-GObject $res, gboolean $was_symbolic, N-GError $error --> N-GObject
 ) is native(&gtk-lib)
   { * }
+}}
 
 #-------------------------------------------------------------------------------
 #TM:1:_gtk_icon_info_new_for_pixbuf:

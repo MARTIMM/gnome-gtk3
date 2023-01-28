@@ -5,6 +5,7 @@ use Gnome::Gtk3::Image;
 use Gnome::Gtk3::Main;
 use Gnome::Gtk3::Enums;
 use Gnome::Gtk3::IconTheme;
+use Gnome::Gtk3::IconInfo;
 
 use Gnome::Gio::File;
 use Gnome::Gio::FileIcon;
