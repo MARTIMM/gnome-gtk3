@@ -37,8 +37,7 @@ This example shows how to load an icon and check for errors
     );
 
     unless $pixbuf.is-valid {
-      my Gnome::Glib::Error() $e = $icon-theme.last-error;
-      die "Couldn’t load icon: " ~ $e.message;
+      die "Couldn’t load icon: " ~ $icon-theme.last-error.message;
     }
 
 Types
@@ -112,7 +111,7 @@ Get the error code for icon theme errors
 
 Get the last error code for icon theme errors
 
-    method last-error ( --> N-GError )
+    method last-error ( --> Gnome::Glib::Error )
 
 add-resource-path
 -----------------
@@ -203,8 +202,7 @@ When an error occurs, check the last error attribute;
     my Gnome::Gdk3::Pixbuf() $pixbuf;
     $pixbuf = $icon-theme.load-icon( 'server-database', 32, 0);
     unless $pixbuf.is-valid {
-      my Gnome::Glib::Error() $e = $icon-theme.last-error;
-      die "Couldn’t load icon: " ~ $e.message;
+      die "Couldn’t load icon: " ~ $icon-theme.last-error.message;
     }
 
 load-icon-for-scale
@@ -299,7 +297,7 @@ lookup-icon
 
 Looks up a named icon and returns a native **Gnome::Gtk3::IconInfo** containing information such as the filename of the icon. The icon can then be rendered into a pixbuf using `Gnome::Gtk3::IconInfo.load-icon()`. (`.load-icon()` combines these two steps if all you need is the pixbuf.)
 
-When rendering on displays with high pixel densities you should not use a *size* multiplied by the scaling factor returned by functions like `gdk-window-get-scale-factor()`. Instead, you should use `lookup-icon-for-scale()`, as the assets loaded for a given scaling factor may be different.
+When rendering on displays with high pixel densities you should not use a *size* multiplied by the scaling factor returned by functions like `Gnome::Gdk3::Window.get-scale-factor()`. Instead, you should use `.lookup-icon-for-scale()`, as the assets loaded for a given scaling factor may be different.
 
 Returns: a native **Gnome::Gtk3::IconInfo** object containing information about the icon, or `undefined` if the icon wasn’t found.
 
@@ -316,7 +314,7 @@ Returns: a native **Gnome::Gtk3::IconInfo** object containing information about 
 lookup-icon-for-scale
 ---------------------
 
-Looks up a named icon for a particular window scale and returns a native **Gnome::Gtk3::IconInfo** containing information such as the filename of the icon. The icon can then be rendered into a pixbuf using `Gnome::Gtk3::IconInfo.load-icon()`. (`load-icon()` combines these two steps if all you need is the pixbuf.)
+Looks up a named icon for a particular window scale and returns a native **Gnome::Gtk3::IconInfo** containing information such as the filename of the icon. The icon can then be rendered into a pixbuf using `Gnome::Gtk3::IconInfo.load-icon()`. (`Gnome::Gtk3::IconInfo.load-icon()` combines these two steps if all you need is the pixbuf.)
 
 Returns: a native **Gnome::Gtk3::IconInfo** object containing information about the icon, or `undefined` if the icon wasn’t found.
 
