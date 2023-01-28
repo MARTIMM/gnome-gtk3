@@ -5,10 +5,8 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
-* 2023-01-26 0.49.0
-  * New module **Gnome::Gtk3::IconInfo**
-
-* 2023-01-22 0.48.15
+* 2023-01-28 0.48.15
+  * New module **Gnome::Gtk3::IconInfo**.
   * HeaderBar module reviewed. get-custom-title-rk() deprecated. Changed documentation and added child properties info.
 
 * 2023-01-13 0.48.14
