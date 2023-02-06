@@ -747,7 +747,7 @@ method connect-signals-full ( Hash $handlers ) {
       Str $handler-name, N-GObject $ignore-d0, int32 $ignore-d1,
       OpaquePointer $ignore-d2
     ) {
-      my Str $oname = Gnome::GObject::Type.g_type_name_from_instance($object);
+      my Str $oname = Gnome::GObject::Type.name-from-instance($object);
       if $oname ~~ /^ Gtk / and $handlers{$handler-name}:exists {
         $oname ~~ s/^ Gtk /Gnome::Gtk3::/;
         my $handler-object = $handlers{$handler-name}[0];
@@ -1827,7 +1827,7 @@ sub gtk_builder_connect_signals_full ( N-GObject $builder, Hash $handlers ) {
       Str $handler-name, N-GObject $ignore-d0, int32 $ignore-d1,
       OpaquePointer $ignore-d2
     ) {
-      my Str $oname = Gnome::GObject::Type.g_type_name_from_instance($object);
+      my Str $oname = Gnome::GObject::Type.name-from-instance($object);
       if $oname ~~ /^ Gtk / and $handlers{$handler-name}:exists {
         $oname ~~ s/^ Gtk /Gnome::Gtk3::/;
         my $handler-object = $handlers{$handler-name}[0];
