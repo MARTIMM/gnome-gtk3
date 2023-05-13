@@ -100,7 +100,7 @@ $grid.gtk-grid-attach( $second, 0, 1, 1, 1);
 # Instantiate the event handler class and register signals
 my AppSignalHandlers $ash .= new;
 $button.register-signal(
-  $ash, 'first-button-click', 'clicked',  :other-button($second)
+  $ash, 'first-button-click', 'clicked', :widget($button),  :other-button($second)
 );
 $second.register-signal( $ash, 'second-button-click', 'clicked');
 
