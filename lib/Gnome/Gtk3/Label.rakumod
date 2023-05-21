@@ -169,7 +169,7 @@ use Gnome::Gtk3::Enums;
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtklabel.h
 # https://developer.gnome.org/gtk3/stable/GtkLabel.html
-unit class Gnome::Gtk3::Label:auth<github:MARTIMM>:ver<0.2.1>;
+unit class Gnome::Gtk3::Label:auth<github:MARTIMM>;
 also is Gnome::Gtk3::Misc;
 
 #-------------------------------------------------------------------------------
