@@ -658,12 +658,12 @@ sub setup-names ( Str:D $base-name --> List ) {
 
   my $source-root = '/home/marcel/Software/Packages/Sources/Gnome';
   my @source-list = (
-    "$source-root/gtk+-3.24.24/gtk",
+    "$source-root/gtk+-3.24.36/gtk",
     "$source-root/gdk-pixbuf-2.42.8/gdk-pixbuf",
-    "$source-root/gtk+-3.24.24/gdk",
-    "$source-root/glib-2.72.1/gio",
-    "$source-root/glib-2.72.1/glib",
-    "$source-root/glib-2.72.1/gobject",
+    "$source-root/gtk+-3.24.36/gdk",
+    "$source-root/glib-2.74.5/gio",
+    "$source-root/glib-2.74.5/glib",
+    "$source-root/glib-2.74.5/gobject",
     "$source-root/pango-1.50.7/pango",
   );
 
@@ -2691,7 +2691,7 @@ sub get-enumerations ( Str:D $include-content is copy ) {
 #note "Item: $items-doc";
       }
 
-      # on empty line swith from item to enum doc
+      # on empty line switch from item to enum doc
       elsif $line ~~ m/ ^ \s+ '*' \s* $ / {
         $get-item-doc = False;
         $get-enum-doc = True;
