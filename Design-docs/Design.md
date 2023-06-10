@@ -6,6 +6,9 @@ Robert Alen Zimmerman: Bob Dylan
 Farrokh Bulsara: Freddy Mercury
 Stefani Germanotta: Lady Gaga
 
+Anna Bullock: Tina Turner
+
+
 ## rename files
 rename -o .pm6 .rakumod *.pm6
 rename -o .t .rakutest *.t
@@ -26,6 +29,12 @@ See https://www.systutorials.com/docs/linux/man/7-gtk-options/
     )
   }
   ```
+
+# Stack info
+```
+say Backtrace.new.nice;
+```
+
 # Catching exeptions
 in callbacks the errors sometime fail to throw properly so insert next code to
 trap it.
