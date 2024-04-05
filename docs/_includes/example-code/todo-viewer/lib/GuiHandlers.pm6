@@ -2,15 +2,15 @@ use v6;
 
 unit class GuiHandlers;
 
-use Gnome::N::N-GObject;
+use Gnome::N::N-GObject:api<1>;
 
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::ListStore;
-use Gnome::Gtk3::TreeStore;
-use Gnome::Gtk3::TreeIter;
-use Gnome::Gtk3::TreePath;
-use Gnome::Gtk3::TreeView;
-use Gnome::Gtk3::TreeViewColumn;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::ListStore:api<1>;
+use Gnome::Gtk3::TreeStore:api<1>;
+use Gnome::Gtk3::TreeIter:api<1>;
+use Gnome::Gtk3::TreePath:api<1>;
+use Gnome::Gtk3::TreeView:api<1>;
+use Gnome::Gtk3::TreeViewColumn:api<1>;
 
 #-------------------------------------------------------------------------------
 class Application {

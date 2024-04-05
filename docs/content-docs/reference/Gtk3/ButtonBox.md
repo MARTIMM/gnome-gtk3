@@ -40,7 +40,7 @@ Inheriting this class
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-    use Gnome::Gtk3::ButtonBox;
+    use Gnome::Gtk3::ButtonBox:api<1>;
 
     unit class MyGuiClass;
     also is Gnome::Gtk3::ButtonBox;

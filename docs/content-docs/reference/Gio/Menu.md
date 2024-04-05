@@ -29,7 +29,7 @@ Inheriting this class
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-    use Gnome::Gio::Menu;
+    use Gnome::Gio::Menu:api<1>;
 
     unit class MyGuiClass;
     also is Gnome::Gio::Menu;

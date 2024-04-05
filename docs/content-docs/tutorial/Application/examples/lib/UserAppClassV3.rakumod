@@ -3,13 +3,13 @@
 use v6;
 use Getopt::Long;
 
-use Gnome::N::N-GObject;                                                # ①
+use Gnome::N::N-GObject:api<1>;                                                # ①
 
-use Gnome::Gio::Enums;
-use Gnome::Gio::ApplicationCommandLine;
+use Gnome::Gio::Enums:api<1>;
+use Gnome::Gio::ApplicationCommandLine:api<1>;
 
-use Gnome::Gtk3::Application;
-use Gnome::Gtk3::ApplicationWindow;
+use Gnome::Gtk3::Application:api<1>;
+use Gnome::Gtk3::ApplicationWindow:api<1>;
 
 #-------------------------------------------------------------------------------
 unit class UserAppClassV3 is Gnome::Gtk3::Application;

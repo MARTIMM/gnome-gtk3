@@ -1,7 +1,7 @@
 use v6;
 
-use Gnome::Gtk3::Frame;
-use Gnome::Gtk3::Label;
+use Gnome::Gtk3::Frame:api<1>;
+use Gnome::Gtk3::Label:api<1>;
 
 #-------------------------------------------------------------------------------
 unit class ExDND::Frame is Gnome::Gtk3::Frame;

@@ -17,16 +17,16 @@ use v6;
 use NativeCall;
 
 use Gnome::X;
-use Gnome::N::NativeLib;
-#use Gnome::N::N-GObject;
-#use Gnome::Glib::GObject;
-use Gnome::LIBRARY::PARENT;
+use Gnome::N::NativeLib:api<1>;
+#use Gnome::N::N-GObject:api<1>;
+#use Gnome::Glib::GObject:api<1>;
+use Gnome::LIBRARY::PARENT:api<1>;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # /usr/include/glib-2.0/gobject/INCLUDE
 # https://developer.gnome.org/WWW
-unit class Gnome::LIBRARY::MODULE:auth<github:MARTIMM>;
+unit class Gnome::LIBRARY::MODULE:auth<github:MARTIMM>:api<1>;
 also is Gnome::LIBRARY::PARENT;
 
 #-------------------------------------------------------------------------------

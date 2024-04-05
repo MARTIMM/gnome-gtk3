@@ -26,14 +26,14 @@ The following example is translated from [the example here](https://github.com/b
 
     use v6;
 
-    use Gnome::GObject::Closure;
+    use Gnome::GObject::Closure:api<1>;
 
-    use Gnome::Gtk3::Window;
-    use Gnome::Gtk3::Main;
-    use Gnome::Gtk3::AccelGroup;
+    use Gnome::Gtk3::Window:api<1>;
+    use Gnome::Gtk3::Main:api<1>;
+    use Gnome::Gtk3::AccelGroup:api<1>;
 
-    use Gnome::Gdk3::Types;
-    use Gnome::Gdk3::Keysyms;
+    use Gnome::Gdk3::Types:api<1>;
+    use Gnome::Gdk3::Keysyms:api<1>;
 
 
     class CTest {

@@ -24,9 +24,9 @@ The examples you will get to see in the tutorial are kept to the minimum of what
 ```
 use v6.d;
 
-use Gnome::Cairo::ImageSurface;                                     # 1
-use Gnome::Cairo::Types;
-use Gnome::Cairo::Enums;
+use Gnome::Cairo::ImageSurface:api<1>;                                     # 1
+use Gnome::Cairo::Types:api<1>;
+use Gnome::Cairo::Enums:api<1>;
 use Gnome::Cairo;
 
 my Gnome::Cairo::ImageSurface $surface .= new(                      # 2
@@ -57,16 +57,16 @@ $surface.write-to-png('stroke.png');                                # 5
 ```
 use v6.d;
 
-use Gnome::Cairo::ImageSurface;
-use Gnome::Cairo::Types;
-use Gnome::Cairo::Enums;
+use Gnome::Cairo::ImageSurface:api<1>;
+use Gnome::Cairo::Types:api<1>;
+use Gnome::Cairo::Enums:api<1>;
 use Gnome::Cairo;
 
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::DrawingArea;                                       # 1
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::DrawingArea:api<1>;                                       # 1
 
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
 class DA {
   method draw-callback (                                            # 2

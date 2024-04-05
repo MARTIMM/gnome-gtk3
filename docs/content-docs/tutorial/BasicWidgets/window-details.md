@@ -27,9 +27,9 @@ We are going to replace it with this icon shown on the left using the following 
 
 
 ```raku
-use Gnome::Gtk3::Window;
-use Gnome::Glib::Error;                                               # 1
-use Gnome::Gdk3::Pixbuf;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Glib::Error:api<1>;                                               # 1
+use Gnome::Gdk3::Pixbuf:api<1>;
 
 my Gnome::Gtk3::Window $window .= new;                                # 2
 $window.set-title('Window');
@@ -87,9 +87,9 @@ To keep modal dialogs on top of the main application windows, use `$dialog.set-t
 Your program may now look something like this;
 
 ```raku
-use Gnome::Gtk3::Window;
-use Gnome::Glib::Error;
-use Gnome::Gdk3::Pixbuf;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Glib::Error:api<1>;
+use Gnome::Gdk3::Pixbuf:api<1>;
 
 my Gnome::Gdk3::Pixbuf $win-icon .= new(:file<icons8-invoice-100.png>);
 my Gnome::Glib::Error $e = $win-icon.last-error;

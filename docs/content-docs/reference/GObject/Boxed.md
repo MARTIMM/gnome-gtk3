@@ -16,7 +16,7 @@ Synopsis
 Declaration
 -----------
 
-    unit class Gnome::GObject::Boxed:auth<github:MARTIMM>;
+    unit class Gnome::GObject::Boxed:auth<github:MARTIMM>:api<1>;
     also is Gnome::N::TopLevelClassSupport;
 
 Uml Diagram

@@ -136,8 +136,8 @@ Example
 
 An example using builder
 
-    use Gnome::Gtk3::Dialog;
-    use Gnome::Gtk3::FileChooserDialog;
+    use Gnome::Gtk3::Dialog:api<1>;
+    use Gnome::Gtk3::FileChooserDialog:api<1>;
 
     my Gnome::Gtk3::FileChooserDialog $fchoose .= new(:build-id<save-dialog>);
 

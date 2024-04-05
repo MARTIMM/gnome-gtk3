@@ -1,7 +1,7 @@
 use v6;
 
-use Gnome::Gtk3::Main;                                          # ①
-use Gnome::Gtk3::Window;
+use Gnome::Gtk3::Main:api<1>;                                          # ①
+use Gnome::Gtk3::Window:api<1>;
 
 my Gnome::Gtk3::Main $m .= new;                                 # ②
 

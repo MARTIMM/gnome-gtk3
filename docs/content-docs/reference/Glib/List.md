@@ -136,8 +136,8 @@ Note that the return value is the new start of the list, if *list* was empty; ma
 
 ### Example
 
-    use Gnome::N::GlibToRakuTypes;
-    use Gnome::Glib::List;
+    use Gnome::N::GlibToRakuTypes:api<1>;
+    use Gnome::Glib::List:api<1>;
 
     class IntList {
 

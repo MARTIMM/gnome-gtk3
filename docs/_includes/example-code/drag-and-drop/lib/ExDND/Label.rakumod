@@ -1,7 +1,7 @@
 use v6;
 
-use Gnome::Gtk3::Label;
-use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::Label:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
 
 #-------------------------------------------------------------------------------
 unit class ExDND::Label is Gnome::Gtk3::Label;

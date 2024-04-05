@@ -30,10 +30,10 @@ This widget is used to show messages of some sort. It is possible to add buttons
 
 An example below shows a message dialog displaying a message and two buttons 'Yes' and 'No'. The class inherits from the MessageDialog to change little things such as adding a second message.
 ```
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::Dialog;
-use Gnome::Gtk3::MessageDialog;
-use Gnome::Gtk3::Window;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::Dialog:api<1>;
+use Gnome::Gtk3::MessageDialog:api<1>;
+use Gnome::Gtk3::Window:api<1>;
 
 unit class YNMsgDialog is Gnome::Gtk3::MessageDialog;           # ①
 

@@ -25,7 +25,7 @@ Given an atom, this returns a newly-allocated string containing the string corre
 
 #### Example usage
 ```
-use Gnome::Gdk3::Atom;
+use Gnome::Gdk3::Atom:api<1>;
 
 my Gnome::Gdk3::Atom $text-type .= new(:intern<text/plain>);
 my Gnome::Gdk3::Atom $number-type .= new(:intern<number>);

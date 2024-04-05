@@ -41,7 +41,7 @@ Inheriting this class
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-    use Gnome::Gtk3::FileChooserButton;
+    use Gnome::Gtk3::FileChooserButton:api<1>;
 
     unit class MyGuiClass;
     also is Gnome::Gtk3::FileChooserButton;
@@ -60,8 +60,8 @@ Example
 
 Create a button to let the user select a file in /etc
 
-    use Gnome::Gtk3::FileChooser;
-    use Gnome::Gtk3::FileChooserButton;
+    use Gnome::Gtk3::FileChooser:api<1>;
+    use Gnome::Gtk3::FileChooserButton:api<1>;
 
     my Gnome::Gtk3::FileChooserButton $button .= new(
       :title('Select a file'), :action(GTK_FILE_CHOOSER_ACTION_OPEN)

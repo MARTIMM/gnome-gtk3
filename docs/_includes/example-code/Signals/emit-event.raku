@@ -1,10 +1,10 @@
 use v6;
 
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Button;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::CheckButton;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::Button:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::CheckButton:api<1>;
 
 #--------------------------------------------------------------------------
 class X {

@@ -60,10 +60,10 @@ An example of its use comes from the testing programs where some of the events a
 use Test;
 use NativeCall;
 
-use Gnome::N::GlibToRakuTypes;
-use Gnome::Gtk3::AboutDialog;
-use Gnome::Gdk3::Pixbuf;
-use Gnome::Gtk3::Main;
+use Gnome::N::GlibToRakuTypes:api<1>;
+use Gnome::Gtk3::AboutDialog:api<1>;
+use Gnome::Gdk3::Pixbuf:api<1>;
+use Gnome::Gtk3::Main:api<1>;
 
 my Gnome::Gtk3::Main $main .= new;
 

@@ -33,7 +33,7 @@ Then the `BUILD()` must do the additional steps to let the new label type be wha
 
 The code for it could look like the example below;
 ```
-use Gnome::Gtk3::Label;
+use Gnome::Gtk3::Label:api<1>;
 
 unit class VerticalHeaderLabel is Gnome::Gtk3::Label;
 

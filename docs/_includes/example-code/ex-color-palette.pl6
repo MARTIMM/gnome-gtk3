@@ -2,15 +2,15 @@ use v6;
 
 my $t0 = now;
 
-use Gnome::Gtk3::Window;
-use Gnome::Gdk3::RGBA;
-use Gnome::Gtk3::ColorChooserWidget;
-use Gnome::Gtk3::ColorButton;
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::Grid;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gdk3::RGBA:api<1>;
+use Gnome::Gtk3::ColorChooserWidget:api<1>;
+use Gnome::Gtk3::ColorButton:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 # Instantiate main module for UI control
@@ -91,7 +91,7 @@ for .5, .6 ... 1.0 -> $rgb-gray {
   );
 }
 
-use Gnome::N::X;
+use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 $ccw.add-palette( GTK_ORIENTATION_HORIZONTAL, 10, 20, $palette1);

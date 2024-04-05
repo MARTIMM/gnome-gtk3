@@ -1,10 +1,10 @@
 use v6.d;
 
-use Gnome::Cairo::ImageSurface;
-use Gnome::Cairo::Pattern;
+use Gnome::Cairo::ImageSurface:api<1>;
+use Gnome::Cairo::Pattern:api<1>;
 use Gnome::Cairo;
-use Gnome::Cairo::Types;
-use Gnome::Cairo::Enums;
+use Gnome::Cairo::Types:api<1>;
+use Gnome::Cairo::Enums:api<1>;
 
 my Gnome::Cairo::ImageSurface $surface;
 my Gnome::Cairo $context;

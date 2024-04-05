@@ -29,7 +29,7 @@ To summarize a few of the measures implemented to prevent problems, the followin
 * CATCH blocks are inserted in code when there are calls from C to the users callback handlers.
 * To see the original exception and messages leading up to the crash a debug flag in the class **Gnome::N** can be set to show these messages which might help solving your problems. To use it write;
   ```
-  use Gnome::N::X;
+  use Gnome::N::X:api<1>;
   ...
   Gnome::N::debug(:on);
   ... lines leading up to crash ...

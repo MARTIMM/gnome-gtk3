@@ -25,9 +25,9 @@ Example
 -------
 
     use NativeCall;
-    use Gnome::N::N-GObject;
-    use Gnome::Gdk3::Events;
-    use Gnome::Gtk3::Window;
+    use Gnome::N::N-GObject:api<1>;
+    use Gnome::Gdk3::Events:api<1>;
+    use Gnome::Gtk3::Window:api<1>;
 
     # Create a window object
     my Gnome::Gtk3::Window $w .= new( … );
@@ -45,8 +45,8 @@ Example
 
 The other option to connect a signal is to use the `register-signal()` method defined in **Gnome::GObject::Object**. It all depends on how elaborate things are or your taste.
 
-    use Gnome::Gdk3::Events;
-    use Gnome::Gtk3::Window;
+    use Gnome::Gdk3::Events:api<1>;
+    use Gnome::Gtk3::Window:api<1>;
 
     class MyClass {
       # Define handler method. The handler API must describe all positional
@@ -100,7 +100,7 @@ Emits a signal. Note that `g_signal_emit_by_name()` resets the return value to t
 
 ### An example
 
-      use Gnome::N::GlibToRakuTypes;
+      use Gnome::N::GlibToRakuTypes:api<1>;
       ...
 
       # The extra argument here is $toggle

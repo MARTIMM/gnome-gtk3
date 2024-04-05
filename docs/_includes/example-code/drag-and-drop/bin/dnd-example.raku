@@ -4,12 +4,12 @@ use v6;
 use lib '/home/marcel/Languages/Raku/Projects/gnome-gtk3/lib';
 
 
-use Gnome::Gtk3::EventBox;
-use Gnome::Gtk3::Image;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::Window;
-#use Gnome::Gtk3::Main;
-#use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::EventBox:api<1>;
+use Gnome::Gtk3::Image:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Gtk3::Window:api<1>;
+#use Gnome::Gtk3::Main:api<1>;
+#use Gnome::Gtk3::Enums:api<1>;
 
 use ExDND::AppHandlers;
 use ExDND::Label;

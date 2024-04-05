@@ -1,21 +1,21 @@
 
 use v6;
 
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
-#use Gnome::N::X;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
-use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::Enums:api<1>;
 
-use Gnome::Gtk3::TargetEntry;
-use Gnome::Gtk3::DragSource;
-use Gnome::Gtk3::SelectionData;
+use Gnome::Gtk3::TargetEntry:api<1>;
+use Gnome::Gtk3::DragSource:api<1>;
+use Gnome::Gtk3::SelectionData:api<1>;
 
-use Gnome::Gdk3::Atom;
-use Gnome::Gdk3::DragContext;
-use Gnome::Gdk3::Types;
-use Gnome::Gdk3::Pixbuf;
+use Gnome::Gdk3::Atom:api<1>;
+use Gnome::Gdk3::DragContext:api<1>;
+use Gnome::Gdk3::Types:api<1>;
+use Gnome::Gdk3::Pixbuf:api<1>;
 
 use ExDND::Types;
 

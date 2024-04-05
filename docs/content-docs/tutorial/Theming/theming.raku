@@ -10,21 +10,21 @@ The purpose of this program is to demonstrate theming of widgets and change them
 
 use v6;
 
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::StyleContext;
-use Gnome::Gtk3::StyleProvider;
-use Gnome::Gtk3::CssProvider;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::StyleContext:api<1>;
+use Gnome::Gtk3::StyleProvider:api<1>;
+use Gnome::Gtk3::CssProvider:api<1>;
 
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::Entry;
-use Gnome::Gtk3::Label;
-use Gnome::Gtk3::Button;
-use Gnome::Gtk3::CheckButton;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Gtk3::Entry:api<1>;
+use Gnome::Gtk3::Label:api<1>;
+use Gnome::Gtk3::Button:api<1>;
+use Gnome::Gtk3::CheckButton:api<1>;
 
-use Gnome::Gdk3::Screen;
+use Gnome::Gdk3::Screen:api<1>;
 
-use Gnome::N::X;
+use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------

@@ -65,8 +65,8 @@ The class becomes larger than this if it has to do something useful.
 
 ```
 use v6;
-use Gnome::Gtk3::Application;
-use Gnome::Gtk3::ApplicationWindow;
+use Gnome::Gtk3::Application:api<1>;
+use Gnome::Gtk3::ApplicationWindow:api<1>;
 
 
 unit class UserAppClass is Gnome::Gtk3::Application;

@@ -28,7 +28,7 @@ Example
 -------
 
     use Test;
-    use Gnome::Glib::Quark;
+    use Gnome::Glib::Quark:api<1>;
 
     my Gnome::Glib::Quark $quark .= new;
     my UInt $q = $quark.try-string('my string'); # 0

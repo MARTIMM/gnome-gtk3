@@ -26,7 +26,7 @@ So adding the following will give us a way to process arguments. I've taken the 
 
 ```
 use Getopt::Long;                                                 # 1
-use Gnome::N::N-GObject;
+use Gnome::N::N-GObject:api<1>;
 …
 unit class UserAppClass is Gnome::Gtk3::Application;
 …
@@ -83,9 +83,9 @@ To get this to work we must turn on another signal and we must also add an initi
 
 ```
 use Getopt::Long;
-use Gnome::N::N-GObject;                                          # 1
-use Gnome::Gio::Enums;
-use Gnome::Gio::ApplicationCommandLine;
+use Gnome::N::N-GObject:api<1>;                                          # 1
+use Gnome::Gio::Enums:api<1>;
+use Gnome::Gio::ApplicationCommandLine:api<1>;
 …
 unit class UserAppClass is Gnome::Gtk3::Application;
 …

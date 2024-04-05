@@ -3,16 +3,16 @@ use v6;
 
 use NativeCall;
 
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::MenuBar;
-use Gnome::Gtk3::Menu;
-#use Gnome::Gtk3::MenuShell;
-use Gnome::Gtk3::MenuItem;
-use Gnome::Gtk3::MenuButton;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Gtk3::MenuBar:api<1>;
+use Gnome::Gtk3::Menu:api<1>;
+#use Gnome::Gtk3::MenuShell:api<1>;
+use Gnome::Gtk3::MenuItem:api<1>;
+use Gnome::Gtk3::MenuButton:api<1>;
 
-use Gnome::N::X;
+use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 # This example is translated from C shown on the site at

@@ -11,35 +11,35 @@ use lib '/home/marcel/Languages/Raku/Projects/gnome-gtk3/lib';
 use NativeCall;
 use Getopt::Long;
 
-use Gnome::N::N-GObject;
-#use Gnome::N::GlibToRakuTypes;
+use Gnome::N::N-GObject:api<1>;
+#use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::Glib::Variant;
-use Gnome::Glib::VariantType;
-#use Gnome::Glib::VariantDict;
+use Gnome::Glib::Variant:api<1>;
+use Gnome::Glib::VariantType:api<1>;
+#use Gnome::Glib::VariantDict:api<1>;
 
-#use Gnome::GObject::Value;
-#use Gnome::GObject::Type;
+#use Gnome::GObject::Value:api<1>;
+#use Gnome::GObject::Type:api<1>;
 
-use Gnome::Gio::Enums;
-use Gnome::Gio::Resource;
-use Gnome::Gio::ApplicationCommandLine;
-use Gnome::Gio::MenuModel;
-#use Gnome::Gio::SimpleAction;
-use Gnome::Gio::Notification;
+use Gnome::Gio::Enums:api<1>;
+use Gnome::Gio::Resource:api<1>;
+use Gnome::Gio::ApplicationCommandLine:api<1>;
+use Gnome::Gio::MenuModel:api<1>;
+#use Gnome::Gio::SimpleAction:api<1>;
+use Gnome::Gio::Notification:api<1>;
 
-#use Gnome::Gtk3::MenuBar;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::Button;
-use Gnome::Gtk3::Application;
-use Gnome::Gtk3::ApplicationWindow;
-use Gnome::Gtk3::Builder;
+#use Gnome::Gtk3::MenuBar:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Gtk3::Button:api<1>;
+use Gnome::Gtk3::Application:api<1>;
+use Gnome::Gtk3::ApplicationWindow:api<1>;
+use Gnome::Gtk3::Builder:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
-class AppSignalHandlers:ver<0.4.3> is Gnome::Gtk3::Application {
+class AppSignalHandlers:api<1> is Gnome::Gtk3::Application {
 
   constant APP-ID = 'io.github.martimm.tutorial';
 
