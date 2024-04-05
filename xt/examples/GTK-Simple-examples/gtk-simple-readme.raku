@@ -21,5 +21,5 @@ $second.sensitive = False;
 $button.clicked.tap({ .sensitive = False; $second.sensitive = True });
 $second.clicked.tap({ $app.exit; });
 
-note "Set up time: ", now - $t0;
+note "Set up time: ", now - $t0;                # 0.063437273
 $app.run;

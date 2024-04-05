@@ -2,10 +2,10 @@ use v6;
 #use lib '../gnome-native/lib';
 #use lib '../gnome-test/lib';
 
-use Gnome::T::Benchmark;
-use Gnome::Gtk3::AboutDialog;
-#use Gnome::Gdk3::Pixbuf;
-#use Gnome::N::GlibToRakuTypes;
+use Gnome::T::Benchmark:api<1>;
+use Gnome::Gtk3::AboutDialog:api<1>;
+#use Gnome::Gdk3::Pixbuf:api<1>;
+#use Gnome::N::GlibToRakuTypes:api<1>;
 
 my Gnome::Gtk3::AboutDialog $a .= new;
 

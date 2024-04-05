@@ -5,18 +5,18 @@ use v6;
   https://github.com/bstpierre/gtk-examples/blob/master/c/accel.c
 }}
 
-use Gnome::GObject::Closure;
+use Gnome::GObject::Closure:api<1>;
 
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::AccelGroup;
-use Gnome::Gtk3::AccelMap;
-#use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::AccelGroup:api<1>;
+use Gnome::Gtk3::AccelMap:api<1>;
+#use Gnome::Gtk3::Enums:api<1>;
 
-use Gnome::Gdk3::Types;
-use Gnome::Gdk3::Keysyms;
+use Gnome::Gdk3::Types:api<1>;
+use Gnome::Gdk3::Keysyms:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------

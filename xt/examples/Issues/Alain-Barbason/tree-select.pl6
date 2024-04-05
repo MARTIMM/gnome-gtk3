@@ -2,23 +2,23 @@
 
 use v6;
 
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::MenuBar;
-use Gnome::Gtk3::Menu;
-use Gnome::Gtk3::MenuItem;
-use Gnome::Gtk3::TreePath;
-use Gnome::Gtk3::TreeStore;
-use Gnome::Gtk3::CellRendererText;
-use Gnome::Gtk3::TreeView;
-use Gnome::Gtk3::TreeViewColumn;
-use Gnome::Gtk3::TreeIter;
-use Gnome::Gtk3::TreeSelection;
-use Gnome::GObject::Type;
-use Gnome::GObject::Value;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Gtk3::MenuBar:api<1>;
+use Gnome::Gtk3::Menu:api<1>;
+use Gnome::Gtk3::MenuItem:api<1>;
+use Gnome::Gtk3::TreePath:api<1>;
+use Gnome::Gtk3::TreeStore:api<1>;
+use Gnome::Gtk3::CellRendererText:api<1>;
+use Gnome::Gtk3::TreeView:api<1>;
+use Gnome::Gtk3::TreeViewColumn:api<1>;
+use Gnome::Gtk3::TreeIter:api<1>;
+use Gnome::Gtk3::TreeSelection:api<1>;
+use Gnome::GObject::Type:api<1>;
+use Gnome::GObject::Value:api<1>;
 
-use Gnome::N::N-GObject;
+use Gnome::N::N-GObject:api<1>;
 #Gnome::N::debug(:on);
 
 my Gnome::Gtk3::Main $m .= new;

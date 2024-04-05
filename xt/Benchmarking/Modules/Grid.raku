@@ -1,13 +1,13 @@
 use v6;
 
-use Gnome::T::Benchmark;
+use Gnome::T::Benchmark:api<1>;
 
-use Gnome::N::N-GObject;
-#use Gnome::N::X;
+use Gnome::N::N-GObject:api<1>;
+#use Gnome::N::X:api<1>;
 
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::Label;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Gtk3::Label:api<1>;
 
 my Gnome::Gtk3::Grid $*grid;
 my Gnome::Gtk3::Label $l1;

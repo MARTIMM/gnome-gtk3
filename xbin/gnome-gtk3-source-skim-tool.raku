@@ -882,14 +882,14 @@ sub substitute-in-template (
       #-------------------------------------------------------------------------------
       use NativeCall;
 
-      #use Gnome::N::X;
-      use Gnome::N::NativeLib;
-      use Gnome::N::N-GObject;
-      use Gnome::N::GlibToRakuTypes;
+      #use Gnome::N::X:api<1>;
+      use Gnome::N::NativeLib:api<1>;
+      use Gnome::N::N-GObject:api<1>;
+      use Gnome::N::GlibToRakuTypes:api<1>;
       USE-LIBRARY-PARENT
 
       #-------------------------------------------------------------------------------
-      unit role Gnome::LIBRARYMODULE:auth<github:MARTIMM>;
+      unit role Gnome::LIBRARYMODULE:auth<github:MARTIMM>:api<1>;
       ALSO-IS-LIBRARY-PARENT
       EOTEMPLATE
   }
@@ -934,26 +934,26 @@ sub substitute-in-template (
       #-------------------------------------------------------------------------------
       use NativeCall;
 
-      #use Gnome::N::X;
-      use Gnome::N::NativeLib;
-      use Gnome::N::N-GObject;
-      use Gnome::N::GlibToRakuTypes;
+      #use Gnome::N::X:api<1>;
+      use Gnome::N::NativeLib:api<1>;
+      use Gnome::N::N-GObject:api<1>;
+      use Gnome::N::GlibToRakuTypes:api<1>;
       USE-LIBRARY-PARENT
 
       #-------------------------------------------------------------------------------
-      unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>;
+      unit class Gnome::LIBRARYMODULE:auth<github:MARTIMM>:api<1>;
       ALSO-IS-LIBRARY-PARENT
       EOTEMPLATE
   }
 
   my Str ( $t1, $t2) = ( '', '');
   if $class-is-top {
-    $t1 = "use Gnome::N::TopLevelClassSupport;";
+    $t1 = "use Gnome::N::TopLevelClassSupport:api<1>;";
     $t2 = "also is Gnome::N::TopLevelClassSupport;";
   }
 
   elsif $*raku-parentlib-name and $*raku-parentclass-name {
-    $t1 = "use Gnome::{$*raku-parentlib-name}::{$*raku-parentclass-name};";
+    $t1 = "use Gnome::{$*raku-parentlib-name}::{$*raku-parentclass-name}:api<1>;";
     $t2 = "also is Gnome::{$*raku-parentlib-name}::{$*raku-parentclass-name};";
   }
 
@@ -1625,11 +1625,11 @@ sub raku-sig-type ( Str $native-type --> Str ) {
     when 'G_TYPE_STRING' { $raku-type = 'Str'; }
     when 'GTK_TYPE_TREE_ITER' { $raku-type = 'N-GtkTreeIter'; }
     when 'G_TYPE_LONG' {
-      $raku-type = 'glong #`{ use Gnome::N::GlibToRakuTypes }';
+      $raku-type = 'glong #`{ use Gnome::N::GlibToRakuTypes }':api<1>;
     }
     when 'G_TYPE_FLOAT' { $raku-type = 'Num'; }
     when 'G_TYPE_DOUBLE' {
-      $raku-type = 'gdouble #`{ use Gnome::N::GlibToRakuTypes }';
+      $raku-type = 'gdouble #`{ use Gnome::N::GlibToRakuTypes }':api<1>;
     }
 
     when 'G_TYPE_ERROR' {
@@ -3347,9 +3347,9 @@ sub generate-test ( ) {
 
     use $class;
 
-    #use Gnome::N::GlibToRakuTypes;
-    #use Gnome::N::N-GObject;
-    #use Gnome::N::X;
+    #use Gnome::N::GlibToRakuTypes:api<1>;
+    #use Gnome::N::N-GObject:api<1>;
+    #use Gnome::N::X:api<1>;
     #Gnome::N::debug(:on);
 
     #-------------------------------------------------------------------------------
@@ -3408,8 +3408,8 @@ sub generate-test ( ) {
 
     #-------------------------------------------------------------------------------
     subtest 'Signals …', {
-      use Gnome::Gtk3::Main;
-      use Gnome::N::GlibToRakuTypes;
+      use Gnome::Gtk3::Main:api<1>;
+      use Gnome::N::GlibToRakuTypes:api<1>;
 
       my Gnome::Gtk3::Main \$main .= new;
 
@@ -3631,9 +3631,9 @@ note "  Args: ", @args[*];
         when 'G_TYPE_BOOLEAN' { $arg-type = 'Int'; }
         when 'G_TYPE_INT' { $arg-type = 'Int'; }
         when 'G_TYPE_UINT' { $arg-type = 'UInt'; }
-        when 'G_TYPE_LONG' { $arg-type = 'glong #`{ use Gnome::N::GlibToRakuTypes }'; }
+        when 'G_TYPE_LONG' { $arg-type = 'glong #`{ use Gnome::N::GlibToRakuTypes }':api<1>; }
         when 'G_TYPE_FLOAT' { $arg-type = 'Num'; }
-        when 'G_TYPE_DOUBLE' { $arg-type = 'gdouble #`{ use Gnome::N::GlibToRakuTypes }'; }
+        when 'G_TYPE_DOUBLE' { $arg-type = 'gdouble #`{ use Gnome::N::GlibToRakuTypes }':api<1>; }
         when 'G_TYPE_STRING' { $arg-type = 'Str'; }
         when 'G_TYPE_ERROR' { $arg-type = 'N-GError'; }
 

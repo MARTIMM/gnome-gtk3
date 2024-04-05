@@ -1,9 +1,9 @@
 use v6;
 
-use Gnome::T::Benchmark;
-use Gnome::Gtk3::Widget;
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::Button;
+use Gnome::T::Benchmark:api<1>;
+use Gnome::Gtk3::Widget:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::Button:api<1>;
 
 my Gnome::Gtk3::Button $*button;
 

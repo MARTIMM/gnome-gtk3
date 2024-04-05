@@ -3,10 +3,10 @@ use v6;
 
 sub cairo-lib2 ( --> Str ) is export { 'libcairo.so.2'; }
 
-use Gnome::T::Benchmark;
+use Gnome::T::Benchmark:api<1>;
 
-use Gnome::N::NativeLib;
-#use Gnome::N::X;
+use Gnome::N::NativeLib:api<1>;
+#use Gnome::N::X:api<1>;
 
 my Str $project-version = 'Gnome::N-0.18.5.3';
 my Str $sub-project = 'NativeLib-0.2.1.1';

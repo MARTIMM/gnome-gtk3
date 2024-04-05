@@ -2,9 +2,9 @@ use v6;
 #use lib '../gnome-native/lib';
 #use lib '../gnome-test/lib';
 
-use Gnome::T::Benchmark;
-use Gnome::Gtk3::Statusbar;
-use Gnome::Gtk3::Box;
+use Gnome::T::Benchmark:api<1>;
+use Gnome::Gtk3::Statusbar:api<1>;
+use Gnome::Gtk3::Box:api<1>;
 
 my Gnome::Gtk3::Statusbar $s .= new;
 

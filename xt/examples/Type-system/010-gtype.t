@@ -2,8 +2,8 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::GObject::Type;
-use Gnome::Gtk3::Builder;
+use Gnome::GObject::Type:api<1>;
+use Gnome::Gtk3::Builder:api<1>;
 
 #-------------------------------------------------------------------------------
 my $dir = 't/ui';

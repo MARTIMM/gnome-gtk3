@@ -1,8 +1,8 @@
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Widget;
-use Gnome::Gtk3::Label;
-use Gnome::Gtk3::Notebook;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::Widget:api<1>;
+use Gnome::Gtk3::Label:api<1>;
+use Gnome::Gtk3::Notebook:api<1>;
 
 my Gnome::Gtk3::Main $m .= new;
 my Gnome::Gtk3::Window $w .= new;

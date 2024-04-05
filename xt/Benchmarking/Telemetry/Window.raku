@@ -1,9 +1,9 @@
 use v6;
 use System::Stats::MEMUsage;
 
-use Gnome::Gtk3::Window;
+use Gnome::Gtk3::Window:api<1>;
 
-use Gnome::Glib::MainLoop;
+use Gnome::Glib::MainLoop:api<1>;
 
 
 class Timeout {

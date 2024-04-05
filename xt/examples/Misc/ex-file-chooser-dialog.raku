@@ -1,15 +1,15 @@
 use v6;
 
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::Button;
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Dialog;
-use Gnome::Gtk3::FileChooser;
-use Gnome::Gtk3::FileChooserDialog;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::Button:api<1>;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::Dialog:api<1>;
+use Gnome::Gtk3::FileChooser:api<1>;
+use Gnome::Gtk3::FileChooserDialog:api<1>;
 
 my Gnome::Gtk3::Main $m .= new;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 

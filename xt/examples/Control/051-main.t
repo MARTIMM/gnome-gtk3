@@ -2,8 +2,8 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Glib::Main;
-use Gnome::Gtk3::Main;
+use Gnome::Glib::Main:api<1>;
+use Gnome::Gtk3::Main:api<1>;
 
 diag "\nGTK main loop test";
 

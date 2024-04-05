@@ -2,9 +2,9 @@ use v6;
 use NativeCall;
 #use lib '/home/marcel/Languages/Raku/Projects/gnome-native/lib';
 
-use Gnome::Gtk3::Window;
-use Gnome::GObject::Object;
-use Gnome::N::N-GObject;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::GObject::Object:api<1>;
+use Gnome::N::N-GObject:api<1>;
 
 #-------------------------------------------------------------------------------
 class X {
@@ -35,7 +35,9 @@ $x3.print;
 #  }
 #}
 
-my Gnome::Gtk3::Window $w .= new;
-my N-GObject() $no = $w;
-
+my Gnome::Gtk3::Window $w1 .= new;
+my N-GObject() $no = $w1;
 say $no.gist;
+
+my Gnome::Gtk3::Window() $w2 = $no;
+say $w2.gist;

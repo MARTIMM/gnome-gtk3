@@ -5,27 +5,27 @@
 use v6.d;
 #use lib '../gnome-glib/lib';
 
-use Gnome::N::N-GObject;
+use Gnome::N::N-GObject:api<1>;
 
-use Gnome::Glib::Source;
-use Gnome::Glib::MainContext;
+use Gnome::Glib::Source:api<1>;
+use Gnome::Glib::MainContext:api<1>;
 
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::ProgressBar;
-use Gnome::Gtk3::Assistant;
-use Gnome::Gtk3::Label;
-use Gnome::Gtk3::Entry;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::CheckButton;
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::CssProvider;
-use Gnome::Gtk3::StyleContext;
-use Gnome::Gtk3::StyleProvider;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::ProgressBar:api<1>;
+use Gnome::Gtk3::Assistant:api<1>;
+use Gnome::Gtk3::Label:api<1>;
+use Gnome::Gtk3::Entry:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Gtk3::CheckButton:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::CssProvider:api<1>;
+use Gnome::Gtk3::StyleContext:api<1>;
+use Gnome::Gtk3::StyleProvider:api<1>;
 
-use Gnome::Gdk3::Screen;
+use Gnome::Gdk3::Screen:api<1>;
 
-use Gnome::N::X;
+use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 
@@ -73,8 +73,8 @@ apply_changes_gradually (gpointer data)
 }
 }}
 use NativeCall;
-use Gnome::N::GlibToRakuTypes;
-use Gnome::N::NativeLib;
+use Gnome::N::GlibToRakuTypes:api<1>;
+use Gnome::N::NativeLib:api<1>;
 
 method apply-changes-gradually (
   Gnome::Gtk3::ProgressBar :$progress-bar

@@ -1,14 +1,14 @@
 use v6;
 use NativeCall;
 
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Builder;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::Builder:api<1>;
 
-use Gnome::GObject::Type;
+use Gnome::GObject::Type:api<1>;
 
-use Gnome::N::N-GObject;
+use Gnome::N::N-GObject:api<1>;
 
-use Gnome::Glib::SList;
+use Gnome::Glib::SList:api<1>;
 
 my Str $design = Q:q:to/EODESIGN/;
     <interface>

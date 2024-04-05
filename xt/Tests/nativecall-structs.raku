@@ -1,6 +1,6 @@
 use v6;
 use NativeCall;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
 #-------------------------------------------------------------------------------
 class N-GValue is repr('CStruct') is export {

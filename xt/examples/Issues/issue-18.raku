@@ -1,12 +1,12 @@
 use v6.d;
 
 #use Gnome::Cairo;
-use Gnome::Cairo::Types;
+use Gnome::Cairo::Types:api<1>;
 
-use Gnome::Gtk3::DrawingArea;
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Fixed;
+use Gnome::Gtk3::DrawingArea:api<1>;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::Fixed:api<1>;
 
 my Gnome::Gtk3::Main $m .= new;
 

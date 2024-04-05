@@ -1,5 +1,5 @@
 use v6;
-use Gnome::Gtk3::AboutDialog;
+use Gnome::Gtk3::AboutDialog:api<1>;
 
 my Gnome::Gtk3::AboutDialog $a .= new;
 

@@ -1,18 +1,18 @@
 use v6;
 #use lib '../gnome-gobject/lib';
 
-use Gnome::GObject::Type;
-use Gnome::GObject::Value;
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::ListStore;
-use Gnome::Gtk3::CellRendererText;
-use Gnome::Gtk3::TreeView;
-use Gnome::Gtk3::TreeViewColumn;
-use Gnome::Gtk3::TreeIter;
+use Gnome::GObject::Type:api<1>;
+use Gnome::GObject::Value:api<1>;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Gtk3::ListStore:api<1>;
+use Gnome::Gtk3::CellRendererText:api<1>;
+use Gnome::Gtk3::TreeView:api<1>;
+use Gnome::Gtk3::TreeViewColumn:api<1>;
+use Gnome::Gtk3::TreeIter:api<1>;
 
-use Gnome::N::X;
+use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 

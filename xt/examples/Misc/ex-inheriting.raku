@@ -1,10 +1,10 @@
 use v6.d;
 
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::Label;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::Window;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::Label:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Gtk3::Window:api<1>;
 
 unit class VerticalHeaderLabel is Gnome::Gtk3::Label;
 

@@ -1,18 +1,18 @@
 use v6.d;
 
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::DrawingArea;
-use Gnome::Gtk3::StyleContext;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::DrawingArea:api<1>;
+use Gnome::Gtk3::StyleContext:api<1>;
 
 use Gnome::Cairo;
-use Gnome::Cairo::Types;
-use Gnome::Cairo::Enums;
+use Gnome::Cairo::Types:api<1>;
+use Gnome::Cairo::Enums:api<1>;
 
-use Gnome::Gdk3::Events;
-use Gnome::Gdk3::RGBA;
+use Gnome::Gdk3::Events:api<1>;
+use Gnome::Gdk3::RGBA:api<1>;
 
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
 
 class Events {

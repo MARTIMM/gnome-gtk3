@@ -2,13 +2,13 @@
 
 use v6;
 
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Button;
-use Gnome::Gtk3::Grid;
-use Gnome::Glib::List;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::Button:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Glib::List:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #instantiate main module for UI control

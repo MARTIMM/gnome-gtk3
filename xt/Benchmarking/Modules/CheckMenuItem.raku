@@ -1,15 +1,15 @@
 use v6;
 use lib './lib';
 
-use Gnome::T::Benchmark;
+use Gnome::T::Benchmark:api<1>;
 
-use Gnome::N::N-GObject;
-use Gnome::N::X;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::CheckMenuItem;
-#use Gnome::Gtk3::Entry;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::CheckMenuItem:api<1>;
+#use Gnome::Gtk3::Entry:api<1>;
 
 #my Gnome::Gtk3::Entry $entry .= new;
 my Gnome::Gtk3::CheckMenuItem $*menu-item .= new(:label(Str));

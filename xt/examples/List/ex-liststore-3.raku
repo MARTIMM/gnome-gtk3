@@ -1,27 +1,27 @@
 use v6;
 #use lib '../gnome-gobject/lib';
 
-use Gnome::GObject::Type;
-use Gnome::GObject::Value;
+use Gnome::GObject::Type:api<1>;
+use Gnome::GObject::Value:api<1>;
 
-use Gnome::Gdk3::Pixbuf;
+use Gnome::Gdk3::Pixbuf:api<1>;
 
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::ListStore;
-use Gnome::Gtk3::CellRenderer;
-use Gnome::Gtk3::CellRendererText;
-use Gnome::Gtk3::CellRendererPixbuf;
-use Gnome::Gtk3::CellRendererProgress;
-use Gnome::Gtk3::CellRendererToggle;
-use Gnome::Gtk3::TreeView;
-use Gnome::Gtk3::TreeViewColumn;
-use Gnome::Gtk3::TreeIter;
-use Gnome::Gtk3::Tooltip;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Gtk3::ListStore:api<1>;
+use Gnome::Gtk3::CellRenderer:api<1>;
+use Gnome::Gtk3::CellRendererText:api<1>;
+use Gnome::Gtk3::CellRendererPixbuf:api<1>;
+use Gnome::Gtk3::CellRendererProgress:api<1>;
+use Gnome::Gtk3::CellRendererToggle:api<1>;
+use Gnome::Gtk3::TreeView:api<1>;
+use Gnome::Gtk3::TreeViewColumn:api<1>;
+use Gnome::Gtk3::TreeIter:api<1>;
+use Gnome::Gtk3::Tooltip:api<1>;
 
-use Gnome::N::N-GObject;
-use Gnome::N::X;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 

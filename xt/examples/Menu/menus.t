@@ -4,14 +4,14 @@ use v6;
 use NativeCall;
 use Test;
 
-#use Gnome::GObject::Type;
-use Gnome::Gtk3::MenuBar;
-use Gnome::Gtk3::Menu;
-use Gnome::Gtk3::MenuShell;
-use Gnome::Gtk3::MenuItem;
-use Gnome::Gtk3::MenuButton;
+#use Gnome::GObject::Type:api<1>;
+use Gnome::Gtk3::MenuBar:api<1>;
+use Gnome::Gtk3::Menu:api<1>;
+use Gnome::Gtk3::MenuShell:api<1>;
+use Gnome::Gtk3::MenuItem:api<1>;
+use Gnome::Gtk3::MenuButton:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 

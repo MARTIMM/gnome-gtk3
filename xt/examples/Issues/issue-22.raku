@@ -1,9 +1,9 @@
 use v6.d;
 
-use Gnome::N::GlibToRakuTypes;
-use Gnome::Gdk3::Events;
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::Window;
+use Gnome::N::GlibToRakuTypes:api<1>;
+use Gnome::Gdk3::Events:api<1>;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::Window:api<1>;
 
 class Handlers {
 	method on-close ( N-GdkEvent $event --> gboolean ) {

@@ -1,19 +1,19 @@
 use v6.d;
 
-use Gnome::Gtk3::Main;
+use Gnome::Gtk3::Main:api<1>;
 
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::MenuButton;
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::Popover;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::MenuButton:api<1>;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Gtk3::Popover:api<1>;
 
-use Gnome::Gio::Menu;
-use Gnome::Gio::MenuItem;
-use Gnome::Gio::SimpleAction;
-use Gnome::Gio::SimpleActionGroup;
+use Gnome::Gio::Menu:api<1>;
+use Gnome::Gio::MenuItem:api<1>;
+use Gnome::Gio::SimpleAction:api<1>;
+use Gnome::Gio::SimpleActionGroup:api<1>;
 
-use Gnome::N::N-GObject;
+use Gnome::N::N-GObject:api<1>;
 
 class HC {
   method exit ( ) {
