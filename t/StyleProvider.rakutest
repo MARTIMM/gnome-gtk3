@@ -2,11 +2,11 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::StyleProvider;
+use Gnome::Gtk3::StyleProvider:api<1>;
 
 ok True, 'No tests, only to see if module loads well';
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #`{{

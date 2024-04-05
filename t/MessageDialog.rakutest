@@ -2,15 +2,15 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::GObject::Type;
-use Gnome::GObject::Value;
-use Gnome::Glib::List;
-use Gnome::Gtk3::Box;
-use Gnome::Gtk3::Label;
-use Gnome::Gtk3::MessageDialog;
-use Gnome::Gtk3::Enums;
+use Gnome::GObject::Type:api<1>;
+use Gnome::GObject::Value:api<1>;
+use Gnome::Glib::List:api<1>;
+use Gnome::Gtk3::Box:api<1>;
+use Gnome::Gtk3::Label:api<1>;
+use Gnome::Gtk3::MessageDialog:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -47,8 +47,8 @@ subtest 'Manipulations', {
 
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
-  use Gnome::GObject::Value;
-  use Gnome::GObject::Type;
+  use Gnome::GObject::Value:api<1>;
+  use Gnome::GObject::Type:api<1>;
 
   #my Gnome::Gtk3::MessageDialog $md .= new;
 

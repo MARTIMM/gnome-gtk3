@@ -2,7 +2,7 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::CellRenderer;
+use Gnome::Gtk3::CellRenderer:api<1>;
 ok 1, 'loads ok';
 
 # rest is tested using CellRendererText and friends
@@ -52,8 +52,8 @@ subtest 'Interface ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
-  use Gnome::GObject::Value;
-  use Gnome::GObject::Type;
+  use Gnome::GObject::Value:api<1>;
+  use Gnome::GObject::Type:api<1>;
 
   #my Gnome::Gtk3::CellRenderer $cr .= new;
 
@@ -99,8 +99,8 @@ subtest 'Themes ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
-  use Gnome::Gtk3::Main;
-  use Gnome::N::GlibToRakuTypes;
+  use Gnome::Gtk3::Main:api<1>;
+  use Gnome::N::GlibToRakuTypes:api<1>;
 
   my Gnome::Gtk3::Main $main .= new;
 

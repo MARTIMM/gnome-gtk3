@@ -3,15 +3,15 @@ use NativeCall;
 use Test;
 #use lib '../gnome-gdk3/lib';
 
-use Gnome::Gdk3::RGBA;
-use Gnome::Gtk3::ColorChooser;
-use Gnome::Gtk3::ColorChooserDialog;
-use Gnome::Gtk3::ColorButton;
-use Gnome::Gtk3::Enums;
+use Gnome::Gdk3::RGBA:api<1>;
+use Gnome::Gtk3::ColorChooser:api<1>;
+use Gnome::Gtk3::ColorChooserDialog:api<1>;
+use Gnome::Gtk3::ColorButton:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
 
-use Gnome::N::GlibToRakuTypes;
-use Gnome::N::N-GObject;
-#use Gnome::N::X;
+use Gnome::N::GlibToRakuTypes:api<1>;
+use Gnome::N::N-GObject:api<1>;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -91,8 +91,8 @@ subtest 'Properties Color Chooser Dialog', {
 
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
-  use Gnome::Gtk3::Main;
-  use Gnome::N::GlibToRakuTypes;
+  use Gnome::Gtk3::Main:api<1>;
+  use Gnome::N::GlibToRakuTypes:api<1>;
 
   my Gnome::Gtk3::Main $main .= new;
   $ccd .= new(:title('my color chooser dialog'));

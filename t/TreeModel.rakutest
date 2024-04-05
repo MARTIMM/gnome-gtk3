@@ -4,10 +4,10 @@ use lib '../gnome-gobject/lib';
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::TreeModel;
+use Gnome::Gtk3::TreeModel:api<1>;
 ok 1, 'loads ok';
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #`{{

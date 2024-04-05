@@ -3,21 +3,21 @@ use NativeCall;
 use Test;
 
 #use Gnome::Cairo;
-#use Gnome::Cairo::Enums;
-use Gnome::Cairo::Types;
-use Gnome::Cairo::ImageSurface;
+#use Gnome::Cairo::Enums:api<1>;
+use Gnome::Cairo::Types:api<1>;
+use Gnome::Cairo::ImageSurface:api<1>;
 
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::Image;
-#use Gnome::Gtk3::EventBox;
-use Gnome::Gtk3::Window;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::Image:api<1>;
+#use Gnome::Gtk3::EventBox:api<1>;
+use Gnome::Gtk3::Window:api<1>;
 
-use Gnome::Gdk3::Pixbuf;
+use Gnome::Gdk3::Pixbuf:api<1>;
 
-use Gnome::Gio::File;
-use Gnome::Gio::FileIcon;
+use Gnome::Gio::File:api<1>;
+use Gnome::Gio::FileIcon:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -134,8 +134,8 @@ subtest 'Inherit Gnome::Gtk3::Image', {
 
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
-  use Gnome::GObject::Value;
-  use Gnome::GObject::Type;
+  use Gnome::GObject::Value:api<1>;
+  use Gnome::GObject::Type:api<1>;
 
   #my Gnome::Gtk3::Image $i .= new;
 

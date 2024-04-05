@@ -8,13 +8,13 @@ use Test;
 #  @*ARGS = < --geometry 300x200+10+10 >;
 #}
 
-use Gnome::Gdk3::Types;
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::Range;
-use Gnome::Gtk3::Scale;
-use Gnome::Gtk3::Window;
+use Gnome::Gdk3::Types:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::Range:api<1>;
+use Gnome::Gtk3::Scale:api<1>;
+use Gnome::Gtk3::Window:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------

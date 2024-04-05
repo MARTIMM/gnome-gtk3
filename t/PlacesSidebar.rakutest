@@ -2,11 +2,11 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gio::File;
+use Gnome::Gio::File:api<1>;
 
-use Gnome::Gtk3::PlacesSidebar;
+use Gnome::Gtk3::PlacesSidebar:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #`{{

@@ -2,12 +2,12 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::TreeSelection;
+use Gnome::Gtk3::TreeSelection:api<1>;
 ok 1, 'loads ok';
 done-testing;
 =finish
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #`{{

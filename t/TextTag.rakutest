@@ -2,12 +2,12 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::TextTag;
-use Gnome::Gtk3::TextTagTable;
-#use Gnome::Gtk3::TextBuffer;
-#use Gnome::Gtk3::TextIter;
+use Gnome::Gtk3::TextTag:api<1>;
+use Gnome::Gtk3::TextTagTable:api<1>;
+#use Gnome::Gtk3::TextBuffer:api<1>;
+#use Gnome::Gtk3::TextIter:api<1>;
 
-use Gnome::N::X;
+use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------

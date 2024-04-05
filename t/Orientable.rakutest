@@ -2,10 +2,10 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::LevelBar;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::LevelBar:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------

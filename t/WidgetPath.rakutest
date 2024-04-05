@@ -5,16 +5,16 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::N::N-GObject;
-use Gnome::GObject::Type;
-use Gnome::Gtk3::Button;
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::Widget;
-use Gnome::Gtk3::WidgetPath;
-use Gnome::Gtk3::Window;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::GObject::Type:api<1>;
+use Gnome::Gtk3::Button:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Gtk3::Widget:api<1>;
+use Gnome::Gtk3::WidgetPath:api<1>;
+use Gnome::Gtk3::Window:api<1>;
 
-use Gnome::N::X;
+use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------

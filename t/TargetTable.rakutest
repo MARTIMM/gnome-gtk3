@@ -2,11 +2,11 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::TargetTable;
-use Gnome::Gtk3::TargetEntry;
-use Gnome::Gtk3::TargetList;
+use Gnome::Gtk3::TargetTable:api<1>;
+use Gnome::Gtk3::TargetEntry:api<1>;
+use Gnome::Gtk3::TargetList:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -82,8 +82,8 @@ subtest 'Interface ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
-  use Gnome::GObject::Value;
-  use Gnome::GObject::Type;
+  use Gnome::GObject::Value:api<1>;
+  use Gnome::GObject::Type:api<1>;
 
   #my Gnome::Gtk3::TargetTable $tt .= new;
 
@@ -129,8 +129,8 @@ subtest 'Themes ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
-  use Gnome::Gtk3::Main;
-  use Gnome::N::GlibToRakuTypes;
+  use Gnome::Gtk3::Main:api<1>;
+  use Gnome::N::GlibToRakuTypes:api<1>;
 
   my Gnome::Gtk3::Main $main .= new;
 

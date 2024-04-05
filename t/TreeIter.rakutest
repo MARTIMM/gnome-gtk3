@@ -2,10 +2,10 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::TreeIter;
+use Gnome::Gtk3::TreeIter:api<1>;
 ok 1, 'loads ok';
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------

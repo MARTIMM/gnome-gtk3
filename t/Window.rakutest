@@ -4,9 +4,9 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::Window;
+use Gnome::Gtk3::Window:api<1>;
 
-use Gnome::N::X;
+use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -83,8 +83,8 @@ subtest 'Inherit Gnome::Gtk3::Window', {
 #`{{
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
-  use Gnome::GObject::Value;
-  use Gnome::GObject::Type;
+  use Gnome::GObject::Value:api<1>;
+  use Gnome::GObject::Type:api<1>;
 
   my Gnome::Gtk3::Window $w .= new;
   $w.set-title('new title');
@@ -99,8 +99,8 @@ subtest 'Properties ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
-  use Gnome::GObject::Value;
-  use Gnome::GObject::Type;
+  use Gnome::GObject::Value:api<1>;
+  use Gnome::GObject::Type:api<1>;
 
   my Gnome::Gtk3::Window $w .= new;
   $w.set-title('new title');
@@ -145,8 +145,8 @@ subtest 'Properties ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
-  #use Gnome::Glib::Main;
-  use Gnome::Gtk3::Main;
+  #use Gnome::Glib::Main:api<1>;
+  use Gnome::Gtk3::Main:api<1>;
   my Gnome::Gtk3::Main $main .= new;
 
   class SignalHandlers {

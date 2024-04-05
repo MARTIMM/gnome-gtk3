@@ -2,15 +2,15 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::Menu;
-use Gnome::Gtk3::MenuItem;
-#use Gnome::Gtk3::AccelMap;
+use Gnome::Gtk3::Menu:api<1>;
+use Gnome::Gtk3::MenuItem:api<1>;
+#use Gnome::Gtk3::AccelMap:api<1>;
 
-#use Gnome::Gdk3::Types;
-#use Gnome::Gdk3::Keysyms;
+#use Gnome::Gdk3::Types:api<1>;
+#use Gnome::Gdk3::Keysyms:api<1>;
 
-use Gnome::N::GlibToRakuTypes;
-#use Gnome::N::X;
+use Gnome::N::GlibToRakuTypes:api<1>;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -93,8 +93,8 @@ subtest 'Interface ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
-  use Gnome::GObject::Value;
-  use Gnome::GObject::Type;
+  use Gnome::GObject::Value:api<1>;
+  use Gnome::GObject::Type:api<1>;
 
   #my Gnome::Gtk3::MenuItem $mi .= new;
 
@@ -140,8 +140,8 @@ subtest 'Themes ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
-  use Gnome::Gtk3::Main;
-  use Gnome::N::GlibToRakuTypes;
+  use Gnome::Gtk3::Main:api<1>;
+  use Gnome::N::GlibToRakuTypes:api<1>;
 
   my Gnome::Gtk3::Main $main .= new;
 

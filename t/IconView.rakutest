@@ -2,17 +2,17 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::N::N-GObject;
-use Gnome::GObject::Type;
-use Gnome::GObject::Value;
-use Gnome::Gtk3::TreeStore;
-use Gnome::Gtk3::TreeModel;
-use Gnome::Gtk3::TreeIter;
-use Gnome::Gtk3::TreePath;
-use Gnome::Gtk3::IconView;
-use Gnome::Gtk3::IconTheme;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::GObject::Type:api<1>;
+use Gnome::GObject::Value:api<1>;
+use Gnome::Gtk3::TreeStore:api<1>;
+use Gnome::Gtk3::TreeModel:api<1>;
+use Gnome::Gtk3::TreeIter:api<1>;
+use Gnome::Gtk3::TreePath:api<1>;
+use Gnome::Gtk3::IconView:api<1>;
+use Gnome::Gtk3::IconTheme:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -125,8 +125,8 @@ subtest 'Interface ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
-  use Gnome::GObject::Value;
-  use Gnome::GObject::Type;
+  use Gnome::GObject::Value:api<1>;
+  use Gnome::GObject::Type:api<1>;
 
   #my Gnome::Gtk3::IconView $iv .= new;
 
@@ -148,8 +148,8 @@ subtest 'Themes ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
-  #use Gnome::Glib::Main;
-  use Gnome::Gtk3::Main;
+  #use Gnome::Glib::Main:api<1>;
+  use Gnome::Gtk3::Main:api<1>;
 
   my Gnome::Gtk3::Main $main .= new;
 

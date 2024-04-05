@@ -2,7 +2,7 @@ use v6;
 
 use Test;
 
-use Gnome::Gtk3::ColorChooser;
+use Gnome::Gtk3::ColorChooser:api<1>;
 ok 1, 'loads ok';
 
 

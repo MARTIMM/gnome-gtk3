@@ -2,14 +2,14 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::FileFilter;
+use Gnome::Gtk3::FileFilter:api<1>;
 
-use Gnome::Glib::Variant;
+use Gnome::Glib::Variant:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::FileFilter ( $ff, $ff2);
@@ -78,8 +78,8 @@ subtest 'Properties …', {
 
 #-------------------------------------------------------------------------------
 subtest 'Signals …', {
-  use Gnome::Gtk3::Main;
-  use Gnome::N::GlibToRakuTypes;
+  use Gnome::Gtk3::Main:api<1>;
+  use Gnome::N::GlibToRakuTypes:api<1>;
 
   my Gnome::Gtk3::Main $main .= new;
 

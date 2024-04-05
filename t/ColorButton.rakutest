@@ -2,13 +2,13 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gdk3::RGBA;
+use Gnome::Gdk3::RGBA:api<1>;
 
-use Gnome::Gtk3::ColorButton;
+use Gnome::Gtk3::ColorButton:api<1>;
 
-use Gnome::N::GlibToRakuTypes;
-use Gnome::N::N-GObject;
-#use Gnome::N::X;
+use Gnome::N::GlibToRakuTypes:api<1>;
+use Gnome::N::N-GObject:api<1>;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------

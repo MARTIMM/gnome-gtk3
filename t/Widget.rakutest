@@ -3,28 +3,28 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Glib::List;
+use Gnome::Glib::List:api<1>;
 
-use Gnome::Gdk3::Window;
-use Gnome::Gdk3::Display;
-#use Gnome::Gdk3::Device;
-use Gnome::Gdk3::Types;
-use Gnome::Gdk3::Screen;
+use Gnome::Gdk3::Window:api<1>;
+use Gnome::Gdk3::Display:api<1>;
+#use Gnome::Gdk3::Device:api<1>;
+use Gnome::Gdk3::Types:api<1>;
+use Gnome::Gdk3::Screen:api<1>;
 
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::Button;
-use Gnome::Gtk3::Label;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::Widget;
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::WidgetPath;
-use Gnome::Gtk3::StyleContext;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::Button:api<1>;
+use Gnome::Gtk3::Label:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Gtk3::Widget:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::WidgetPath:api<1>;
+use Gnome::Gtk3::StyleContext:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
-use Gnome::N::GlibToRakuTypes;
-use Gnome::N::N-GObject;
+use Gnome::N::GlibToRakuTypes:api<1>;
+use Gnome::N::N-GObject:api<1>;
 
 #-------------------------------------------------------------------------------
 subtest 'Widget ISA test', {
@@ -448,8 +448,8 @@ subtest 'Requisitions ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
-  use Gnome::GObject::Value;
-  use Gnome::GObject::Type;
+  use Gnome::GObject::Value:api<1>;
+  use Gnome::GObject::Type:api<1>;
 
   #my Gnome::Gtk3::Widget $w .= new;
   $b .= new(:label<abc>);
@@ -511,8 +511,8 @@ subtest 'Properties ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
-  use Gnome::Gtk3::Main;
-  use Gnome::N::GlibToRakuTypes;
+  use Gnome::Gtk3::Main:api<1>;
+  use Gnome::N::GlibToRakuTypes:api<1>;
 
   my Gnome::Gtk3::Main $main .= new;
 

@@ -2,10 +2,10 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::CheckButton;
-use Gnome::Gtk3::ToggleButton;
+use Gnome::Gtk3::CheckButton:api<1>;
+use Gnome::Gtk3::ToggleButton:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------

@@ -2,12 +2,12 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Gtk3::FileChooser;
-use Gnome::Gtk3::FileChooserButton;
+use Gnome::Gtk3::FileChooser:api<1>;
+use Gnome::Gtk3::FileChooserButton:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::FileChooserButton $fcb;
@@ -87,8 +87,8 @@ subtest 'Themes ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
-  #use Gnome::Glib::Main;
-  use Gnome::Gtk3::Main;
+  #use Gnome::Glib::Main:api<1>;
+  use Gnome::Gtk3::Main:api<1>;
 
   my Gnome::Gtk3::Main $main .= new;
 

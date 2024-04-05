@@ -2,10 +2,10 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::N::N-GObject;
-use Gnome::Gtk3::Menu;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::Gtk3::Menu:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------

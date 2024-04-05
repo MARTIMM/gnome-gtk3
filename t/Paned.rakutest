@@ -2,10 +2,10 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::N::N-GObject;
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::Paned;
-use Gnome::Gtk3::ListBox;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::Paned:api<1>;
+use Gnome::Gtk3::ListBox:api<1>;
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::Paned $p;

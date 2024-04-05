@@ -3,12 +3,12 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::Glib::List;
-use Gnome::Gtk3::Container;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::Button;
-use Gnome::Gtk3::Label;
-use Gnome::Gtk3::Enums;
+use Gnome::Glib::List:api<1>;
+use Gnome::Gtk3::Container:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Gtk3::Button:api<1>;
+use Gnome::Gtk3::Label:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
 
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::Grid $g;

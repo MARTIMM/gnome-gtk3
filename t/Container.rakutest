@@ -2,20 +2,20 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::N::N-GObject;
+use Gnome::N::N-GObject:api<1>;
 
-use Gnome::Glib::List;
+use Gnome::Glib::List:api<1>;
 
-use Gnome::Gtk3::Adjustment;
-use Gnome::Gtk3::Widget;
-use Gnome::Gtk3::WidgetPath;
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::Container;
-use Gnome::Gtk3::Button;
-use Gnome::Gtk3::Label;
+use Gnome::Gtk3::Adjustment:api<1>;
+use Gnome::Gtk3::Widget:api<1>;
+use Gnome::Gtk3::WidgetPath:api<1>;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Gtk3::Container:api<1>;
+use Gnome::Gtk3::Button:api<1>;
+use Gnome::Gtk3::Label:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 
 #-------------------------------------------------------------------------------
@@ -72,7 +72,7 @@ subtest 'Manipulations1', {
 #note $w.get-path-for-child($g).(Gnome::Gtk3::WidgetPath).to-string;
 #note $?LINE;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 #note $w.get-path-for-child($g).();
 #note $?LINE;
@@ -137,8 +137,8 @@ subtest 'Manipulations2', {
 
 #-------------------------------------------------------------------------------
 subtest 'Signals ...', {
-  use Gnome::Gtk3::Main;
-  use Gnome::N::GlibToRakuTypes;
+  use Gnome::Gtk3::Main:api<1>;
+  use Gnome::N::GlibToRakuTypes:api<1>;
 
   my Gnome::Gtk3::Main $main .= new;
 
@@ -226,8 +226,8 @@ subtest 'Signals ...', {
 
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
-  use Gnome::GObject::Value;
-  use Gnome::GObject::Type;
+  use Gnome::GObject::Value:api<1>;
+  use Gnome::GObject::Type:api<1>;
 
   #my Gnome::Gtk3::Container $c .= new;
   my Gnome::Gtk3::Window $w .= new;

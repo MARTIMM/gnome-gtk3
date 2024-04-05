@@ -2,13 +2,13 @@ use v6;
 use NativeCall;
 use Test;
 
-use Gnome::N::N-GObject;
-use Gnome::Gdk3::Keysyms;
-use Gnome::Gtk3::Widget;
-use Gnome::Gtk3::Builder;
-use Gnome::Gtk3::Label;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::Gdk3::Keysyms:api<1>;
+use Gnome::Gtk3::Widget:api<1>;
+use Gnome::Gtk3::Builder:api<1>;
+use Gnome::Gtk3::Label:api<1>;
 
-#use Gnome::N::X;
+#use Gnome::N::X:api<1>;
 #Gnome::N::debug(:on);
 #-------------------------------------------------------------------------------
 my Gnome::Gtk3::Label $l;
@@ -88,8 +88,8 @@ subtest 'Manipulations 1', {
 
 #-------------------------------------------------------------------------------
 subtest 'Properties ...', {
-  use Gnome::GObject::Value;
-  use Gnome::GObject::Type;
+  use Gnome::GObject::Value:api<1>;
+  use Gnome::GObject::Type:api<1>;
 
   $l.set-text('Search filename');
   $l.set-xalign(0.23);
