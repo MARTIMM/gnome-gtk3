@@ -1,12 +1,18 @@
 {
-  "description": "Raku - Gnome GTK+ Interface",
   "name": "Gnome::Gtk3",
-  "version": "0.48.16",
+  "description": "Raku - Gnome GTK+ Interface",
+
+  "note": "Version of release of :api<2> starts at 0.50.0, do not pass!",
+  "version": "0.49.0",
+
   "auth": "cpan:MARTIMM",
   "authors": [ "Marcel Timmerman"],
-  "tags": [ "gnome", "gtk", "gdk", "glib", "gobject", "gio", "cairo"],
+  "tags": [ "gnome", "gtk+", "gtk3", "gdk3", "glib", "gobject", "gio"],
+  "api": "1",
 
+  "meta-version": "2",
   "perl": "6.d",
+  "raku": "6.d",
   "license": "Artistic-2.0",
 
   "provides": {
@@ -160,8 +166,12 @@
   "source-url": "git://github.com/MARTIMM/gnome-gtk3.git",
 
   "depends": [
-    "Gnome::N", "Gnome::Glib", "Gnome::GObject", "Gnome::Gio", "Gnome::Gdk3",
-    "Gnome::Cairo"
+    "Gnome::N:api<1>",
+    "Gnome::Glib:api<1>",
+    "Gnome::GObject:api<1>",
+    "Gnome::Gio:api<1>",
+    "Gnome::Gdk3:api<1>",
+    "Gnome::Cairo:api<1>"
   ],
 
   "test-depends": [ ],

@@ -1,20 +1,11 @@
 ![gtk logo][logo]
-<!--
-[![License](http://martimm.github.io/label/License-label.svg)](http://www.perlfoundation.org/artistic_license_2_0)
--->
+
 # Gnome Gtk3 - Widget toolkit for graphical interfaces
 
-![Travis][travis-svg] ![Appveyor][appveyor-svg] ![artistic-2.0][license-svg]
-
-[travis-svg]: https://travis-ci.org/MARTIMM/gnome-gtk3.svg?branch=master
-[travis-run]: https://travis-ci.org/MARTIMM/gnome-gtk3
-
-[appveyor-svg]: https://ci.appveyor.com/api/projects/status/github/MARTIMM/gnome-gtk3?branch=master&passingText=Windows%20-%20OK&failingText=Windows%20-%20FAIL&pendingText=Windows%20-%20pending&svg=true
-[appveyor-run]: https://ci.appveyor.com/project/MARTIMM/gnome-gtk3/branch/master
+![artistic-2.0][license-svg]
 
 [license-svg]: http://martimm.github.io/label/License-label.svg
 [licence-lnk]: http://www.perlfoundation.org/artistic_license_2_0
-
 
 Documentation at [this site](http://martimm.github.io/gnome-gtk3) has the ![GNU Free Documentation License](http://martimm.github.io/label/License-label-docs.svg).
 
@@ -23,8 +14,12 @@ Documentation at [this site](http://martimm.github.io/gnome-gtk3) has the ![GNU 
 
 The purpose of this project is to create an interface to the **GTK+** version 3 library.
 
+
 # History
+
 There is already a bit of history for this package. It started off building the `GTK::Glade` package which soon became too big. So a part was separated into `GTK::V3`. After some working with the library I felt that the class names were a bit too long and that the words `gtk` and `gdk` were repeated too many times in the class path. E.g. there was `GTK::V3::Gtk::GtkButton` and `GTK::V3::Gdk::GdkScreen` to name a few. So, finally it was split into several other packages named, `Gnome::N` for the native linkup on behalf of any other Gnome modules, `Gnome::Glib`, `Gnome::GObject`, `Gnome::Gdk3` and `Gnome::Gtk3` according to what is shown [on the developers page here][devel refs]. The classes in these packages are now renamed into e.g. `Gnome::Gtk3::Button`, `Gnome::Gdk3::Screen`, `Gnome::GObject::Object` and `Gnome::Glib::List`.
+
+Note that all modules are now in `:api<1>` (as of 2024/4/5). This is done to prevent clashes with future distributions having the same class names only differing in this api string. So, add this string to your import statements and dependency modules of these classes in META6.json. Furthermore add this api string also when installing with zef.
 
 
 # Example
@@ -33,14 +28,15 @@ This example does the same as the example from `GTK::Simple` to show you the dif
 
 ### Pros
   * The defaults of GTK+ are kept.
-  * Separation of callbacks from other code. Callbacks are always given to the routines as an object where the callback method is defined and the method name. User data can be provided using named arguments to the callback setup. An example of such a method is `register-signal()`.
   * No fancy stuff like tapping into channels to run signal handlers.
-  * `register-signal()` is a method to register callback methods to process signals like button clicks as well as events like keyboard input and mouse clicks. Not all signal handlers can be written yet because the provided native objects can not be imported into a Raku object because of its missing class.
+  * Separation of callbacks from other code. Callbacks are always given to the routines as an object and a name. The name is the callback method which is defined in that object. Extra user data can be provided using named arguments to the callback setup. 
+  * The most common use of callback routines is for responding to events resulting from signals like button clicks, keyboard input and mouse events. To set a callback to handle events is by calling the `register-signal()` method.
 
 ### Cons
   * The code is larger because it is more low level, that is, closer to the GTK+ api.
   * Code is somewhat slower. The setup of the example shown next is about 0.05 sec slower. That isn't much seen in the light that a user interface is mostly set up and drawn once.
   * More worrying is the compile time of a sufficient large application.
+
 
 |![][screenshot-1a]|![][screenshot-1b]|
 |:--:|:--:|
@@ -49,15 +45,16 @@ This example does the same as the example from `GTK::Simple` to show you the dif
 The code can be found down on the [Getting Started](https://martimm.github.io/gnome-gtk3/content-docs/tutorial/getting-started.html) page.
 
 ```raku
-use v6;
+use v6.d;
 
-use Gnome::Gtk3::Main;
-use Gnome::Gtk3::Window;
-use Gnome::Gtk3::Grid;
-use Gnome::Gtk3::Button;
+use Gnome::Gtk3::Main:api<1>;
+use Gnome::Gtk3::Window:api<1>;
+use Gnome::Gtk3::Grid:api<1>;
+use Gnome::Gtk3::Button:api<1>;
 
 # Instantiate main module for UI control
 my Gnome::Gtk3::Main $m .= new;
+
 
 # Class to handle signals
 class AppSignalHandlers {
@@ -71,7 +68,7 @@ class AppSignalHandlers {
   # Handle 'Goodbye' button click
   method second-button-click ( ) {
     $m.gtk-main-quit;
-  }
+ }
 
   # Handle window managers 'close app' button
   method exit-program ( ) {
@@ -79,36 +76,43 @@ class AppSignalHandlers {
   }
 }
 
-# Create a top level window and set a title
-my Gnome::Gtk3::Window $top-window .= new;
-$top-window.set-title('Hello GTK!');
-$top-window.set-border-width(20);
-
-# Create a grid and add it to the window
-my Gnome::Gtk3::Grid $grid .= new;
-$top-window.add($grid);
-
-# Create buttons and disable the second one
-my Gnome::Gtk3::Button $button .= new(:label('Hello World'));
-my Gnome::Gtk3::Button $second .= new(:label('Goodbye'));
-$second.set-sensitive(False);
-
-# Add buttons to the grid
-$grid.gtk-grid-attach( $button, 0, 0, 1, 1);
-$grid.gtk-grid-attach( $second, 0, 1, 1, 1);
-
 # Instantiate the event handler class and register signals
 my AppSignalHandlers $ash .= new;
-$button.register-signal(
-  $ash, 'first-button-click', 'clicked', :other-button($second)
-);
-$second.register-signal( $ash, 'second-button-click', 'clicked');
 
-$top-window.register-signal( $ash, 'exit-program', 'destroy');
 
-# Show everything and activate all
-$top-window.show-all;
+# Create buttons and disable the second one
+with my Gnome::Gtk3::Button $second .= new(:label('Goodbye')) {
+  .set-sensitive(False);
+  .register-signal( $ash, 'second-button-click', 'clicked');
+}
 
+with my Gnome::Gtk3::Button $button .= new(:label('Hello World')) {
+  .register-signal(
+    $ash, 'first-button-click', 'clicked',  :other-button($second)
+  );
+}
+
+# Create grid and add buttons to the grid
+with my Gnome::Gtk3::Grid $grid .= new {
+  .attach( $button, 0, 0, 1, 1);
+  .attach( $second, 0, 1, 1, 1);
+}
+
+# Create a top level window and set a title among other things
+with my Gnome::Gtk3::Window $top-window .= new {
+  .set-title('Hello GTK!');
+  .set-border-width(20);
+
+  # Create a grid and add it to the window
+  .add($grid);
+
+  .register-signal( $ash, 'exit-program', 'destroy');
+
+  # Show everything and activate all
+  .show-all;
+}
+
+# Start the event loop
 $m.gtk-main;
 ```
 
@@ -154,7 +158,7 @@ The version of Raku must be at least 2020.10, otherwise a few tests will not run
 
 There are several dependencies from one package to the other because it was one package in the past. To get all packages, just install the *Gnome::Gtk3* package and the rest will be installed with it.
 ```
-zef install Gnome::Gtk3
+zef install 'Gnome::Gtk3:api<1>'
 ```
 
 # Issues

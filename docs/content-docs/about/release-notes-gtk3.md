@@ -5,6 +5,9 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+* 2024-04-04 0.49.0
+  * Add `:api<1>` to all class names. Use statements loading the gnome libs have also the api<1> added. Api 1 is also added the 'META6.json' as well as to the dependencies of other gnome modules.
+
 * 2023-02-06 0.48.16
   * Call in Builder changed to remove deprecation message
 
