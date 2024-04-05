@@ -52,16 +52,16 @@ Since: 3.6
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::N-GObject;
-use Gnome::N::NativeLib;
-use Gnome::Gdk3::Events;
-use Gnome::Gtk3::Entry;
+use Gnome::N::X:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::Gdk3::Events:api<1>;
+use Gnome::Gtk3::Entry:api<1>;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtksearchentry.h
 # https://developer.gnome.org/gtk3/stable/GtkSearchEntry.html
-unit class Gnome::Gtk3::SearchEntry:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::SearchEntry:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Entry;
 
 #-------------------------------------------------------------------------------

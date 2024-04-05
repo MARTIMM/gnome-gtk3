@@ -60,7 +60,7 @@ B<Gnome::Gtk3::Window> adds the .titlebar and .default-decoration style classes 
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::Window;
+  use Gnome::Gtk3::Window:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::Window;
@@ -89,24 +89,24 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::N-GObject;
-use Gnome::N::NativeLib;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::X:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::Glib::Error;
-use Gnome::Glib::List;
+use Gnome::Glib::Error:api<1>;
+use Gnome::Glib::List:api<1>;
 
-use Gnome::Gdk3::Window;
-use Gnome::Gdk3::Events;
-use Gnome::Gdk3::Types;
+use Gnome::Gdk3::Window:api<1>;
+use Gnome::Gdk3::Events:api<1>;
+use Gnome::Gdk3::Types:api<1>;
 
-use Gnome::Gtk3::Bin;
+use Gnome::Gtk3::Bin:api<1>;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkwindow.h
 # https://developer.gnome.org/gtk3/stable/GtkWindow.html
-unit class Gnome::Gtk3::Window:auth<github:MARTIMM>:ver<0.2.0>;
+unit class Gnome::Gtk3::Window:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Bin;
 
 #-------------------------------------------------------------------------------

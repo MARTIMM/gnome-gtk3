@@ -30,16 +30,16 @@ Note that B<HBox>/B<VBox> or B<HScale>/B<VScale> are not implemented in this Rak
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::N-GObject;
-use Gnome::N::NativeLib;
+use Gnome::N::X:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::NativeLib:api<1>;
 
-use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::Enums:api<1>;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkorientable.h
 # https://developer.gnome.org/gtk3/stable/gtk3-Orientable.html
-unit role Gnome::Gtk3::Orientable:auth<github:MARTIMM>;
+unit role Gnome::Gtk3::Orientable:auth<github:MARTIMM>:api<1>;
 
 #-------------------------------------------------------------------------------
 =begin pod

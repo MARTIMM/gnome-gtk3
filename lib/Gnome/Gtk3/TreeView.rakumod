@@ -98,7 +98,7 @@ B<Gnome::Gtk3::TreeViewColumn>, B<Gnome::Gtk3::TreeSelection>, B<Gnome::Gtk3::Tr
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::TreeView;
+  use Gnome::Gtk3::TreeView:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::TreeView;
@@ -118,20 +118,20 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::Glib::List;
-use Gnome::Gdk3::Types;
-use Gnome::Gtk3::TreeViewColumn;
-use Gnome::Gtk3::Container;
-use Gnome::Gtk3::TreePath;
-use Gnome::Gtk3::Scrollable;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::Glib::List:api<1>;
+use Gnome::Gdk3::Types:api<1>;
+use Gnome::Gtk3::TreeViewColumn:api<1>;
+use Gnome::Gtk3::Container:api<1>;
+use Gnome::Gtk3::TreePath:api<1>;
+use Gnome::Gtk3::Scrollable:api<1>;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
-unit class Gnome::Gtk3::TreeView:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::TreeView:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Container;
 also does Gnome::Gtk3::Scrollable;
 

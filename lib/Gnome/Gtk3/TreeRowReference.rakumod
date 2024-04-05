@@ -23,18 +23,18 @@ A class that keeps a reference to a row in a list or tree. When set, this refere
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::GObject::Boxed;
-use Gnome::Gtk3::TreeIter;
-use Gnome::Gtk3::TreePath;
-#use Gnome::Gtk3::TreeModel;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::GObject::Boxed:api<1>;
+use Gnome::Gtk3::TreeIter:api<1>;
+use Gnome::Gtk3::TreePath:api<1>;
+#use Gnome::Gtk3::TreeModel:api<1>;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
-unit class Gnome::Gtk3::TreeRowReference:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::TreeRowReference:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::Boxed;
 
 #-------------------------------------------------------------------------------

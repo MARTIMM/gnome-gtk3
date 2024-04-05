@@ -74,24 +74,24 @@ https://developer.gnome.org/glib/stable/glib-The-Main-Event-Loop.html
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::N-GObject;
-use Gnome::N::NativeLib;
-use Gnome::N::GlibToRakuTypes;
-use Gnome::N::TopLevelClassSupport;
+use Gnome::N::X:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
+use Gnome::N::TopLevelClassSupport:api<1>;
 
-#use Gnome::Glib::OptionContext;
+#use Gnome::Glib::OptionContext:api<1>;
 
-use Gnome::Gdk3::Events;
-use Gnome::Gdk3::Types;
-use Gnome::Gdk3::Device;
+use Gnome::Gdk3::Events:api<1>;
+use Gnome::Gdk3::Types:api<1>;
+use Gnome::Gdk3::Device:api<1>;
 
-use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::Enums:api<1>;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkmain.h
 # https://developer.gnome.org/gtk3/stable/gtk3-General.html
-unit class Gnome::Gtk3::Main:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::Main:auth<github:MARTIMM>:api<1>;
 also is Gnome::N::TopLevelClassSupport;
 
 #-------------------------------------------------------------------------------

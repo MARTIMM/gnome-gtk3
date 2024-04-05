@@ -68,17 +68,17 @@ B<Gnome::Gtk3::StyleContext>
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
-use Gnome::Glib::SList;
-use Gnome::GObject::Boxed;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
+use Gnome::Glib::SList:api<1>;
+use Gnome::GObject::Boxed:api<1>;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
-unit class Gnome::Gtk3::WidgetPath:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::WidgetPath:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::Boxed;
 
 #-------------------------------------------------------------------------------

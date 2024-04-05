@@ -98,7 +98,7 @@ B<Gnome::Gtk3::MenuButton> has a single CSS node with name button. To differenti
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::MenuButton;
+  use Gnome::Gtk3::MenuButton:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::MenuButton;
@@ -142,20 +142,20 @@ Setting up a simple popup menu on a button placed on an ApplicationWindow $windo
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::Gio::MenuModel;
+use Gnome::Gio::MenuModel:api<1>;
 
-use Gnome::Gtk3::ToggleButton;
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::Popover;
-use Gnome::Gtk3::Menu;
+use Gnome::Gtk3::ToggleButton:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::Popover:api<1>;
+use Gnome::Gtk3::Menu:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::MenuButton:auth<github:MARTIMM>:ver<0.2.0>;
+unit class Gnome::Gtk3::MenuButton:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::ToggleButton;
 
 #-------------------------------------------------------------------------------

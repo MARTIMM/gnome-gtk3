@@ -41,7 +41,7 @@ B<Gnome::Gtk3::Grid> uses a single CSS node with name grid.
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::Grid;
+  use Gnome::Gtk3::Grid:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::Grid;
@@ -61,21 +61,21 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::N-GObject;
-use Gnome::N::NativeLib;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::X:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::GObject::Object;
+use Gnome::GObject::Object:api<1>;
 
-use Gnome::Gtk3::Container;
-use Gnome::Gtk3::Orientable;
-use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::Container:api<1>;
+use Gnome::Gtk3::Orientable:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtklabel.h
 # https://developer.gnome.org/gtk3/stable/GtkGrid.html
-unit class Gnome::Gtk3::Grid:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::Grid:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Container;
 also does Gnome::Gtk3::Orientable;
 

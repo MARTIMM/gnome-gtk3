@@ -85,18 +85,18 @@ Gnome::Gtk3::Paned implements
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::N-GObject;
-use Gnome::N::NativeLib;
-use Gnome::Gtk3::Container;
+use Gnome::N::X:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::Gtk3::Container:api<1>;
 
-use Gnome::Gtk3::Buildable;
-use Gnome::Gtk3::Orientable;
+use Gnome::Gtk3::Buildable:api<1>;
+use Gnome::Gtk3::Orientable:api<1>;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkpaned.h
 # https://developer.gnome.org/gtk3/stable/GtkPaned.html
-unit class Gnome::Gtk3::Paned:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::Paned:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Container;
 also does Gnome::Gtk3::Orientable;
 

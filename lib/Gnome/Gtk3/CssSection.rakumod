@@ -49,15 +49,15 @@ Defines a part of a CSS document. Because sections are nested into one another, 
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-#use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+#use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::GObject::Boxed;
+use Gnome::GObject::Boxed:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::CssSection:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::CssSection:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::Boxed;
 
 #-------------------------------------------------------------------------------

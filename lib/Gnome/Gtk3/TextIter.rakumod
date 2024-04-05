@@ -24,18 +24,18 @@ You may wish to begin by reading the [text widget conceptual overview](https://d
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::N-GObject;
-use Gnome::N::NativeLib;
-use Gnome::Glib::SList;
-use Gnome::GObject::Boxed;
-#use Gnome::Gtk3::TextBuffer;
+use Gnome::N::X:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::Glib::SList:api<1>;
+use Gnome::GObject::Boxed:api<1>;
+#use Gnome::Gtk3::TextBuffer:api<1>;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtktextiter.h
 # https://developer.gnome.org/gtk3/stable/GtkTextIter.html
 # https://developer.gnome.org/gtk3/stable/TextWidget.html
-unit class Gnome::Gtk3::TextIter:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::TextIter:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::Boxed;
 
 #-------------------------------------------------------------------------------

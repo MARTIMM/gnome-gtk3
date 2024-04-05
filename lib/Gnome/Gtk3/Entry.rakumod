@@ -74,7 +74,7 @@ B<Gnome::Gtk3::TextView>, B<Gnome::Gtk3::EntryCompletion>
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::Entry;
+  use Gnome::Gtk3::Entry:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::Entry;
@@ -95,24 +95,24 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::Gdk3::Events;
-use Gnome::Gdk3::DragContext;
+use Gnome::Gdk3::Events:api<1>;
+use Gnome::Gdk3::DragContext:api<1>;
 
-use Gnome::Gtk3::Image;
-use Gnome::Gtk3::Widget;
-use Gnome::Gtk3::Editable;
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::TargetList;
+use Gnome::Gtk3::Image:api<1>;
+use Gnome::Gtk3::Widget:api<1>;
+use Gnome::Gtk3::Editable:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::TargetList:api<1>;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
-unit class Gnome::Gtk3::Entry:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::Entry:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Widget;
 also does Gnome::Gtk3::Editable;
 

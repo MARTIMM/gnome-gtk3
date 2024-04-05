@@ -38,7 +38,7 @@ In many cases, named themes are used indirectly, via B<Gnome::Gtk3::Image> or st
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::IconInfo;
+  use Gnome::Gtk3::IconInfo:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::IconInfo;
@@ -68,17 +68,17 @@ To get information from a theme, do the following;
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-#use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+#use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::GObject::Object;
+use Gnome::GObject::Object:api<1>;
 
-use Gnome::Glib::Error;
+use Gnome::Glib::Error:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::IconInfo:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::IconInfo:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::Object;
 
 has Gnome::Glib::Error() $.last-error .= new(:native-object(N-GError));

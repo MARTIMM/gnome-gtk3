@@ -55,14 +55,14 @@ insert-text-handler (GtkEditable *editable,
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-#use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+#use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
 
 #-------------------------------------------------------------------------------
-unit role Gnome::Gtk3::Editable:auth<github:MARTIMM>:ver<0.1.0>;
+unit role Gnome::Gtk3::Editable:auth<github:MARTIMM>:api<1>;
 
 #-------------------------------------------------------------------------------
 =begin pod

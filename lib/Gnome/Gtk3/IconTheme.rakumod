@@ -34,7 +34,7 @@ The B<Gnome::Gtk3::IconTheme> object acts as a database of all the icons in the 
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::IconTheme;
+  use Gnome::Gtk3::IconTheme:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::IconTheme;
@@ -69,20 +69,20 @@ This example shows how to load an icon and check for errors
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::Glib::Error;
-use Gnome::Glib::List;
+use Gnome::Glib::Error:api<1>;
+use Gnome::Glib::List:api<1>;
 
-use Gnome::GObject::Object;
+use Gnome::GObject::Object:api<1>;
 
-#use Gnome::Cairo::Types;
+#use Gnome::Cairo::Types:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::IconTheme:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::IconTheme:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::Object;
 
 has Gnome::Glib::Error() $.last-error .= new(:native-object(N-GError));

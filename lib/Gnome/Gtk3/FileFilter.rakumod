@@ -62,7 +62,7 @@ B<Gnome::Gtk3::FileChooser>
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::FileFilter;
+  use Gnome::Gtk3::FileFilter:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::FileFilter;
@@ -85,19 +85,19 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::N-GObject;
-use Gnome::N::NativeLib;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::X:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::GObject::InitiallyUnowned;
+use Gnome::GObject::InitiallyUnowned:api<1>;
 
-use Gnome::Gtk3::Buildable;
+use Gnome::Gtk3::Buildable:api<1>;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkfilefilter.h
 # https://developer.gnome.org/gtk3/stable/GtkFileFilter.html
-unit class Gnome::Gtk3::FileFilter:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::FileFilter:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::InitiallyUnowned;
 also does Gnome::Gtk3::Buildable;
 

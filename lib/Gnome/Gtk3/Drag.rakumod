@@ -37,13 +37,13 @@ As well as the functions listed here, applications may need to use some faciliti
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-#use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+#use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::Drag:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::Drag:auth<github:MARTIMM>:api<1>;
 
 #-------------------------------------------------------------------------------
 =begin pod

@@ -41,15 +41,15 @@ B<Gnome::Gtk3::MenuShell>, B<Gnome::Gtk3::Menu>, B<Gnome::Gtk3::MenuItem>
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::Gtk3::MenuShell;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::Gtk3::MenuShell:api<1>;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
-unit class Gnome::Gtk3::MenuBar:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::MenuBar:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::MenuShell;
 
 #-------------------------------------------------------------------------------

@@ -26,12 +26,12 @@ The B<Gnome::Gtk3::Buildable> interface is implemented by all widgets and many o
 =end pod
 #-------------------------------------------------------------------------------
 use NativeCall;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
 #-------------------------------------------------------------------------------
-unit role Gnome::Gtk3::Buildable:auth<github:MARTIMM>;
+unit role Gnome::Gtk3::Buildable:auth<github:MARTIMM>:api<1>;
 
 #-------------------------------------------------------------------------------
 =begin pod

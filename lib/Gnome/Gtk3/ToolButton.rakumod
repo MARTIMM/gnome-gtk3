@@ -44,14 +44,14 @@ B<Gnome::Gtk3::Toolbar>, B<Gnome::Gtk3::MenuToolButton>, B<Gnome::Gtk3::ToggleTo
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::Gtk3::ToolItem;
-use Gnome::Gtk3::Actionable;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::Gtk3::ToolItem:api<1>;
+use Gnome::Gtk3::Actionable:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::ToolButton:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::ToolButton:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::ToolItem;
 also does Gnome::Gtk3::Actionable;
 

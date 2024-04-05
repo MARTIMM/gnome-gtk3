@@ -135,8 +135,8 @@ B<Gnome::Gtk3::FileChooser>, B<Gnome::Gtk3::Dialog>.
 
 An example using builder
 
-  use Gnome::Gtk3::Dialog;
-  use Gnome::Gtk3::FileChooserDialog;
+  use Gnome::Gtk3::Dialog:api<1>;
+  use Gnome::Gtk3::FileChooserDialog:api<1>;
 
   my Gnome::Gtk3::FileChooserDialog $fchoose .= new(:build-id<save-dialog>);
 
@@ -154,16 +154,16 @@ An example using builder
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::N-GObject;
-use Gnome::N::NativeLib;
-use Gnome::Gtk3::Dialog;
-use Gnome::Gtk3::FileChooser;
+use Gnome::N::X:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::Gtk3::Dialog:api<1>;
+use Gnome::Gtk3::FileChooser:api<1>;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkfilechooserdialog.h
 # https://developer.gnome.org/gtk3/stable/GtkFileChooserDialog.html
-unit class Gnome::Gtk3::FileChooserDialog:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::FileChooserDialog:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Dialog;
 also does Gnome::Gtk3::FileChooser;
 

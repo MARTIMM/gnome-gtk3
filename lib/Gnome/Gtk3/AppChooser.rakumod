@@ -41,15 +41,15 @@ B<Gnome::Gio::AppInfo>
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-#use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+#use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::Gio::AppInfo;
+use Gnome::Gio::AppInfo:api<1>;
 
 #-------------------------------------------------------------------------------
-unit role Gnome::Gtk3::AppChooser:auth<github:MARTIMM>;
+unit role Gnome::Gtk3::AppChooser:auth<github:MARTIMM>:api<1>;
 
 #-------------------------------------------------------------------------------
 =begin pod

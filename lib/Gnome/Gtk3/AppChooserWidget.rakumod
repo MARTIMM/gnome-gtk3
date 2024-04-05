@@ -44,7 +44,7 @@ GtkAppChooserWidget has a single CSS node with name appchooser.
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::AppChooserWidget;
+  use Gnome::Gtk3::AppChooserWidget:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::AppChooserWidget;
@@ -65,16 +65,16 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-#use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+#use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::Gtk3::Box;
-use Gnome::Gtk3::AppChooser;
+use Gnome::Gtk3::Box:api<1>;
+use Gnome::Gtk3::AppChooser:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::AppChooserWidget:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::AppChooserWidget:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Box;
 also does Gnome::Gtk3::AppChooser;
 

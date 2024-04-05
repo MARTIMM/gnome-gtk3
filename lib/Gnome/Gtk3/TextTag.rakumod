@@ -30,16 +30,16 @@ For each property of B<Gnome::Gtk3::TextTag>, there is a “set” property, e.g
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::GObject::Object;
-use Gnome::Gdk3::Events;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::GObject::Object:api<1>;
+use Gnome::Gdk3::Events:api<1>;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
-unit class Gnome::Gtk3::TextTag:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::TextTag:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::Object;
 
 #-------------------------------------------------------------------------------

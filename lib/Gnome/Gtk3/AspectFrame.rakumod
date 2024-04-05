@@ -46,16 +46,16 @@ Gnome::Gtk3::AspectFrame implements
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::Gtk3::Frame;
-use Gnome::Gtk3::Buildable;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::Gtk3::Frame:api<1>;
+use Gnome::Gtk3::Buildable:api<1>;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
-unit class Gnome::Gtk3::AspectFrame:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::AspectFrame:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Frame;
 
 #-------------------------------------------------------------------------------

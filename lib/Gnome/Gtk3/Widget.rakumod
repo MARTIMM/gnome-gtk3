@@ -281,35 +281,35 @@ You can also use C<gtk_widget_class_bind_template_callback()> to connect a signa
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::GObject::InitiallyUnowned;
-use Gnome::GObject::Type;
+use Gnome::GObject::InitiallyUnowned:api<1>;
+use Gnome::GObject::Type:api<1>;
 
-use Gnome::Glib::List;
+use Gnome::Glib::List:api<1>;
 
-use Gnome::Gdk3::Device;
-use Gnome::Gdk3::Display;
-use Gnome::Gdk3::Types;
-use Gnome::Gdk3::Events;
-use Gnome::Gdk3::Screen;
-use Gnome::Gdk3::Visual;
+use Gnome::Gdk3::Device:api<1>;
+use Gnome::Gdk3::Display:api<1>;
+use Gnome::Gdk3::Types:api<1>;
+use Gnome::Gdk3::Events:api<1>;
+use Gnome::Gdk3::Screen:api<1>;
+use Gnome::Gdk3::Visual:api<1>;
 
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::Buildable;
-use Gnome::Gtk3::WidgetPath;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::Buildable:api<1>;
+use Gnome::Gtk3::WidgetPath:api<1>;
 
 use Gnome::Cairo;
-use Gnome::Cairo::Enums;
-use Gnome::Cairo::Types;
-#use Gnome::Cairo::FontOptions;
+use Gnome::Cairo::Enums:api<1>;
+use Gnome::Cairo::Types:api<1>;
+#use Gnome::Cairo::FontOptions:api<1>;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/gtkwidget.h
 # https://developer.gnome.org/gtk3/stable/GtkWidget.html
-unit class Gnome::Gtk3::Widget:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::Widget:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::InitiallyUnowned;
 also does Gnome::Gtk3::Buildable;
 
@@ -1098,8 +1098,8 @@ Creates a new native B<Gnome::Pango::Context> with the appropriate font map, fon
 
 =head3 Example
 
-  use Gnome::Gtk3::Button;
-  use Gnome::Pango::Context;
+  use Gnome::Gtk3::Button:api<1>;
+  use Gnome::Pango::Context:api<1>;
   
   my $button .= new(:label<start>);
   my Gnome::Pango::Context() $pcontext = $button.create-pango-context;

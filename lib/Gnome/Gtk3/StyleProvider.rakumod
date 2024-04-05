@@ -27,9 +27,9 @@ B<Gnome::Gtk3::StyleContext>, B<Gnome::Gtk3::CssProvider>
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
 
 #-------------------------------------------------------------------------------
 # Note that enums must be kept outside roles
@@ -85,7 +85,7 @@ enum GtkStyleProviderPriority is export (
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
-unit role Gnome::Gtk3::StyleProvider:auth<github:MARTIMM>;
+unit role Gnome::Gtk3::StyleProvider:auth<github:MARTIMM>:api<1>;
 
 #-------------------------------------------------------------------------------
 #TM:1:new():interfacing

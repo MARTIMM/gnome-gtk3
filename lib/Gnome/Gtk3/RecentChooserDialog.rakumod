@@ -66,7 +66,7 @@ B<Gnome::Gtk3::RecentChooser>, B<Gnome::Gtk3::Dialog>
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::RecentChooserDialog;
+  use Gnome::Gtk3::RecentChooserDialog:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::RecentChooserDialog;
@@ -86,16 +86,16 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::Gtk3::Dialog;
-use Gnome::Gtk3::RecentChooser;
+use Gnome::Gtk3::Dialog:api<1>;
+use Gnome::Gtk3::RecentChooser:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::RecentChooserDialog:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::RecentChooserDialog:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Dialog;
 also does Gnome::Gtk3::RecentChooser;
 

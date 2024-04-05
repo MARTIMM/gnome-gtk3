@@ -91,7 +91,7 @@ Just like normal popovers, B<Gnome::Gtk3::PopoverMenu> instances have a single c
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::PopoverMenu;
+  use Gnome::Gtk3::PopoverMenu:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::PopoverMenu;
@@ -112,13 +112,13 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::Gtk3::Popover;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::Gtk3::Popover:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::PopoverMenu:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::PopoverMenu:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Popover;
 #-------------------------------------------------------------------------------
 

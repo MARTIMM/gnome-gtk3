@@ -69,7 +69,7 @@ An example of a UI definition fragment specifying B<Gnome::Gtk3::RecentFilter> r
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::RecentFilter;
+  use Gnome::Gtk3::RecentFilter:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::RecentFilter;
@@ -90,17 +90,17 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::GObject::InitiallyUnowned;
+use Gnome::GObject::InitiallyUnowned:api<1>;
 
-use Gnome::Gtk3::Buildable;
+use Gnome::Gtk3::Buildable:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::RecentFilter:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::RecentFilter:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::InitiallyUnowned;
 also does Gnome::Gtk3::Buildable;
 

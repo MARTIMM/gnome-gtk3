@@ -133,16 +133,16 @@ I<Gnome::Gtk3::FileChooserDialog>, I<Gnome::Gtk3::FileChooserWidget>, I<Gnome::G
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-#use Gnome::N::X;
-use Gnome::N::N-GObject;
-use Gnome::N::NativeLib;
-use Gnome::N::GlibToRakuTypes;
+#use Gnome::N::X:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::Glib::Error;
-use Gnome::Glib::SList;
+use Gnome::Glib::Error:api<1>;
+use Gnome::Glib::SList:api<1>;
 
-use Gnome::GObject::Object;
-#use Gnome::Gtk3::FileFilter;
+use Gnome::GObject::Object:api<1>;
+#use Gnome::Gtk3::FileFilter:api<1>;
 
 #-------------------------------------------------------------------------------
 # Note that enums must be kept outside roles
@@ -215,7 +215,7 @@ enum GtkFileChooserError is export (
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkfilechooser.h
 # https://developer.gnome.org/gtk3/stable/GtkFileChooser.html
-unit role Gnome::Gtk3::FileChooser:auth<github:MARTIMM>;
+unit role Gnome::Gtk3::FileChooser:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::Object;
 
 #-------------------------------------------------------------------------------

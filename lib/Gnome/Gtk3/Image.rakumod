@@ -66,7 +66,7 @@ B<Gnome::Gtk3::Image> has a single CSS node with the name image.
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::Image;
+  use Gnome::Gtk3::Image:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::Image;
@@ -112,21 +112,21 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::N-GObject;
-use Gnome::N::NativeLib;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::X:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::Misc;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::Misc:api<1>;
 
-use Gnome::Cairo::Types;
-use Gnome::Cairo::Surface;
+use Gnome::Cairo::Types:api<1>;
+use Gnome::Cairo::Surface:api<1>;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkimage.h
 # https://developer.gnome.org/gtk3/stable/GtkImage.html
-unit class Gnome::Gtk3::Image:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::Image:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Misc;
 
 #-------------------------------------------------------------------------------

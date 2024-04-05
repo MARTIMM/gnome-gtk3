@@ -59,16 +59,16 @@ B<Gnome::Gtk3::Widget> - Much of the operation of selections happens via
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-#use Gnome::N::X;
-use Gnome::N::NativeLib;
-#use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
-use Gnome::N::TopLevelClassSupport;
+#use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+#use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
+use Gnome::N::TopLevelClassSupport:api<1>;
 
-use Gnome::GObject::Boxed;
+use Gnome::GObject::Boxed:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::TargetEntry:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::TargetEntry:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::Boxed;
 
 #-------------------------------------------------------------------------------

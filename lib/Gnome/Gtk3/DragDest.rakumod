@@ -31,21 +31,21 @@ This module defines the drag destination manipulations
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-#use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+#use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::GObject::Object;
+use Gnome::GObject::Object:api<1>;
 
-use Gnome::Gdk3::Atom;
+use Gnome::Gdk3::Atom:api<1>;
 
-use Gnome::Gtk3::TargetEntry;
-use Gnome::Gtk3::TargetTable;
-use Gnome::Gtk3::TargetList;
+use Gnome::Gtk3::TargetEntry:api<1>;
+use Gnome::Gtk3::TargetTable:api<1>;
+use Gnome::Gtk3::TargetList:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::DragDest:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::DragDest:auth<github:MARTIMM>:api<1>;
 
 #-------------------------------------------------------------------------------
 =begin pod

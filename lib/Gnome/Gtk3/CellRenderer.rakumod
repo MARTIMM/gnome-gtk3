@@ -45,7 +45,7 @@ B<Gnome::Gtk3::CellRendererText>, B<Gnome::Gtk3::CellRendererPixbuf>, B<Gnome::G
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::CellRenderer;
+  use Gnome::Gtk3::CellRenderer:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::CellRenderer;
@@ -67,25 +67,25 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::GObject::InitiallyUnowned;
+use Gnome::GObject::InitiallyUnowned:api<1>;
 
-use Gnome::Gdk3::Events;
-use Gnome::Gdk3::Types;
+use Gnome::Gdk3::Events:api<1>;
+use Gnome::Gdk3::Types:api<1>;
 
-#use Gnome::Gtk3::Widget;
-use Gnome::Gtk3::Enums;
+#use Gnome::Gtk3::Widget:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
 
-use Gnome::Cairo::Types;
+use Gnome::Cairo::Types:api<1>;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
-unit class Gnome::Gtk3::CellRenderer:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::CellRenderer:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::InitiallyUnowned;
 
 #-------------------------------------------------------------------------------

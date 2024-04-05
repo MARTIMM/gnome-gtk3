@@ -37,20 +37,20 @@ B<Gnome::Gtk3::ColorChooserDialog>, B<Gnome::Gtk3::ColorChooserWidget>, B<Gnome:
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::Gdk3::RGBA;
+use Gnome::Gdk3::RGBA:api<1>;
 
-use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::Enums:api<1>;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # /usr/include/glib-2.0/gobject/INCLUDE
 # https://developer.gnome.org/WWW
-unit role Gnome::Gtk3::ColorChooser:auth<github:MARTIMM>;
+unit role Gnome::Gtk3::ColorChooser:auth<github:MARTIMM>:api<1>;
 
 #-------------------------------------------------------------------------------
 my Bool $signals-added = False;
@@ -136,8 +136,8 @@ If I<$colors> is undefined, the method removes all previously added palettes.
 According to the documentation, an array of N-GdkRGBA Structures should be given. Raku however, turns a CArray[N-GdkRGBA] into references to the structure so it becomes an array of pointers. The sub is modified in such a way that either Array[N-GdkRGBA] or Array[Num] can be given. The latter one must always have elems % 4 == 0.
 
   use NativeCall;
-  use Gnome::Gdk3::RGBA;
-  use Gnome::Gtk3::ColorChooser;
+  use Gnome::Gdk3::RGBA:api<1>;
+  use Gnome::Gtk3::ColorChooser:api<1>;
 
   my Array $palette = [
     .0e0, .0e0, .0e0, 1e0, # color1: red, green, blue, opacity

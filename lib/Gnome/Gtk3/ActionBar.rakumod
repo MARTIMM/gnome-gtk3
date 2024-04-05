@@ -44,7 +44,7 @@ B<Gnome::Gtk3::Box>
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::ActionBar;
+  use Gnome::Gtk3::ActionBar:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::ActionBar;
@@ -65,14 +65,14 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-#use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
-use Gnome::Gtk3::Bin;
+#use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
+use Gnome::Gtk3::Bin:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::ActionBar:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::ActionBar:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Bin;
 #-------------------------------------------------------------------------------
 

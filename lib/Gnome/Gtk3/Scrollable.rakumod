@@ -38,17 +38,17 @@ All scrollable widgets should do the following.
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-#use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+#use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::Border;
-use Gnome::Gtk3::Adjustment;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::Border:api<1>;
+use Gnome::Gtk3::Adjustment:api<1>;
 
 #-------------------------------------------------------------------------------
-unit role Gnome::Gtk3::Scrollable:auth<github:MARTIMM>:ver<0.1.0>;
+unit role Gnome::Gtk3::Scrollable:auth<github:MARTIMM>:api<1>;
 
 #-------------------------------------------------------------------------------
 =begin pod

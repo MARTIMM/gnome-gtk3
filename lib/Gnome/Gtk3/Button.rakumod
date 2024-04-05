@@ -43,7 +43,7 @@ Button-like widgets like B<Gnome::Gtk3::ToggleButton>, B<Gnome::Gtk3::MenuButton
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::Button;
+  use Gnome::Gtk3::Button:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::Button;
@@ -66,19 +66,19 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::Gtk3::Bin;
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::Actionable;
-use Gnome::Gtk3::Image;
+use Gnome::Gtk3::Bin:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::Actionable:api<1>;
+use Gnome::Gtk3::Image:api<1>;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkbutton.h
 # https://developer.gnome.org/gtk3/stable/GtkButton.html
-unit class Gnome::Gtk3::Button:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::Button:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Bin;
 also does Gnome::Gtk3::Actionable;
 

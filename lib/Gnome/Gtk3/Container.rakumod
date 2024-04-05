@@ -159,7 +159,7 @@ An example of these properties in UI definitions:
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::Container;
+  use Gnome::Gtk3::Container:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::Container;
@@ -183,26 +183,26 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::NativeLib;
-use Gnome::N::GlibToRakuTypes;
-use Gnome::N::N-GObject;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
+use Gnome::N::N-GObject:api<1>;
 
-use Gnome::Glib::List;
+use Gnome::Glib::List:api<1>;
 
-use Gnome::GObject::Object;
-use Gnome::GObject::Value;
-use Gnome::GObject::Type;
+use Gnome::GObject::Object:api<1>;
+use Gnome::GObject::Value:api<1>;
+use Gnome::GObject::Type:api<1>;
 
-use Gnome::Gtk3::Widget;
-use Gnome::Gtk3::WidgetPath;
-use Gnome::Gtk3::Adjustment;
+use Gnome::Gtk3::Widget:api<1>;
+use Gnome::Gtk3::WidgetPath:api<1>;
+use Gnome::Gtk3::Adjustment:api<1>;
 
 use Gnome::Cairo;
-use Gnome::Cairo::Enums;
-use Gnome::Cairo::Types;
+use Gnome::Cairo::Enums:api<1>;
+use Gnome::Cairo::Types:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::Container:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::Container:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Widget;
 
 #-------------------------------------------------------------------------------

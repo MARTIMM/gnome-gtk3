@@ -34,16 +34,16 @@ B<Gnome::Gtk3::RecentChooserWidget>, B<Gnome::Gtk3::RecentChooserMenu>
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::Glib::Error;
-use Gnome::Glib::List;
-use Gnome::Glib::SList;
+use Gnome::Glib::Error:api<1>;
+use Gnome::Glib::List:api<1>;
+use Gnome::Glib::SList:api<1>;
 
-use Gnome::Gtk3::RecentInfo;
+use Gnome::Gtk3::RecentInfo:api<1>;
 
 #-------------------------------------------------------------------------------
 =begin pod
@@ -120,7 +120,7 @@ class N-GtkRecentChooserIface is export is repr('CStruct') {
 }}
 
 #-------------------------------------------------------------------------------
-unit role Gnome::Gtk3::RecentChooser:auth<github:MARTIMM>:ver<0.1.0>;
+unit role Gnome::Gtk3::RecentChooser:auth<github:MARTIMM>:api<1>;
 
 #-------------------------------------------------------------------------------
 =begin pod

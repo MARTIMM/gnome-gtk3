@@ -117,25 +117,25 @@ An example to create a simple list store:
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::GObject::Object;
-use Gnome::GObject::Type;
-use Gnome::GObject::Value;
-use Gnome::Gtk3::TreeIter;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::GObject::Object:api<1>;
+use Gnome::GObject::Type:api<1>;
+use Gnome::GObject::Value:api<1>;
+use Gnome::Gtk3::TreeIter:api<1>;
 
-use Gnome::Gtk3::Buildable;
-use Gnome::Gtk3::TreeModel;
-#use Gnome::Gtk3::TreeDragSource;
-#use Gnome::Gtk3::TreeDragDest;
-#use Gnome::Gtk3::TreeSortable;
+use Gnome::Gtk3::Buildable:api<1>;
+use Gnome::Gtk3::TreeModel:api<1>;
+#use Gnome::Gtk3::TreeDragSource:api<1>;
+#use Gnome::Gtk3::TreeDragDest:api<1>;
+#use Gnome::Gtk3::TreeSortable:api<1>;
 
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
-unit class Gnome::Gtk3::ListStore:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::ListStore:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::Object;
 also does Gnome::Gtk3::Buildable;
 also does Gnome::Gtk3::TreeModel;

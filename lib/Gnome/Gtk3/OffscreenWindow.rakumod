@@ -38,7 +38,7 @@ When contained offscreen widgets are redrawn, GtkOffscreenWindow will emit a  I<
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::OffscreenWindow;
+  use Gnome::Gtk3::OffscreenWindow:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::OffscreenWindow;
@@ -96,20 +96,20 @@ The result of the png and jpg file;
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-#use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+#use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::Gtk3::Window;
+use Gnome::Gtk3::Window:api<1>;
 
-use Gnome::Gdk3::Pixbuf;
+use Gnome::Gdk3::Pixbuf:api<1>;
 
-use Gnome::Cairo::Types;
-use Gnome::Cairo::ImageSurface;
+use Gnome::Cairo::Types:api<1>;
+use Gnome::Cairo::ImageSurface:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::OffscreenWindow:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::OffscreenWindow:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Window;
 
 #-------------------------------------------------------------------------------

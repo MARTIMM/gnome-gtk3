@@ -183,16 +183,16 @@ B<Gnome::Gtk3::TreeView>, B<Gnome::Gtk3::TreeStore>, B<Gnome::Gtk3::ListStore>,
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
-#use Gnome::GObject::Object;
-use Gnome::GObject::Type;
-use Gnome::GObject::Value;
-use Gnome::Gtk3::TreeIter;
-use Gnome::Gtk3::TreePath;
-use Gnome::Gtk3::TreeRowReference;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
+#use Gnome::GObject::Object:api<1>;
+use Gnome::GObject::Type:api<1>;
+use Gnome::GObject::Value:api<1>;
+use Gnome::Gtk3::TreeIter:api<1>;
+use Gnome::Gtk3::TreePath:api<1>;
+use Gnome::Gtk3::TreeRowReference:api<1>;
 
 
 #-------------------------------------------------------------------------------
@@ -285,7 +285,7 @@ class N-GtkTreeModelIface is export is repr('CStruct') {
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
-unit role Gnome::Gtk3::TreeModel:auth<github:MARTIMM>;
+unit role Gnome::Gtk3::TreeModel:auth<github:MARTIMM>:api<1>;
 
 
 #-------------------------------------------------------------------------------

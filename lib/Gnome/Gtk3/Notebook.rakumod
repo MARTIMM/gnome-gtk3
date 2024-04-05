@@ -93,7 +93,7 @@ B<Gnome::Gtk3::Container>
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::Notebook;
+  use Gnome::Gtk3::Notebook:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::Notebook;
@@ -115,18 +115,18 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-#use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+#use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::GObject::Object;
+use Gnome::GObject::Object:api<1>;
 
-use Gnome::Gtk3::Container;
-use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::Container:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::Notebook:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::Notebook:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Container;
 
 #-------------------------------------------------------------------------------

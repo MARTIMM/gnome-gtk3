@@ -39,21 +39,21 @@ B<Gnome::Gtk3::Widget> - Much of the operation of selections happens via signals
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-#use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
-use Gnome::N::TopLevelClassSupport;
+#use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
+use Gnome::N::TopLevelClassSupport:api<1>;
 
-use Gnome::GObject::Boxed;
+use Gnome::GObject::Boxed:api<1>;
 
-use Gnome::Gdk3::Atom;
-use Gnome::Gdk3::Pixbuf;
+use Gnome::Gdk3::Atom:api<1>;
+use Gnome::Gdk3::Pixbuf:api<1>;
 
-#use Gnome::Gtk3::TargetEntry;
+#use Gnome::Gtk3::TargetEntry:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::SelectionData:auth<github:MARTIMM>:ver<0.1.0>;
+unit class Gnome::Gtk3::SelectionData:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::Boxed;
 
 #-------------------------------------------------------------------------------

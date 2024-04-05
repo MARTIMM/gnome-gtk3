@@ -52,7 +52,7 @@ The border node can be given the style class “.flat”, which is used by theme
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::Frame;
+  use Gnome::Gtk3::Frame:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::Frame;
@@ -72,18 +72,18 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-#use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::N::GlibToRakuTypes;
+#use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::Gtk3::Bin;
-use Gnome::Gtk3::Enums;
+use Gnome::Gtk3::Bin:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
 
 #-------------------------------------------------------------------------------
 # /usr/include/gtk-3.0/gtk/INCLUDE
 # https://developer.gnome.org/WWW
-unit class Gnome::Gtk3::Frame:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::Frame:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Bin;
 
 #-------------------------------------------------------------------------------

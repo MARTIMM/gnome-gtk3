@@ -60,7 +60,7 @@ B<Gnome::Gtk3::Entry>
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::SpinButton;
+  use Gnome::Gtk3::SpinButton:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::SpinButton;
@@ -143,15 +143,15 @@ The second example shows a B<Gnome::Gtk3::SpinButton> which provides a method to
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
 
-use Gnome::Gtk3::Entry;
-use Gnome::Gtk3::Orientable;
+use Gnome::Gtk3::Entry:api<1>;
+use Gnome::Gtk3::Orientable:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::SpinButton:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::SpinButton:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Entry;
 also does Gnome::Gtk3::Orientable;
 

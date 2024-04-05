@@ -33,17 +33,17 @@ A struct that specifies a TreePath.
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
-use Gnome::GObject::Boxed;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::GObject::Boxed:api<1>;
 
 # next use statement is a bogus line needed to prevent Raku issuing
 # 'Object does not exist in serialization context' when testing TreeSelection
-use Gnome::GObject::Object;
+use Gnome::GObject::Object:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::TreePath:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::TreePath:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::Boxed;
 #also is Gnome::GObject::Object;
 

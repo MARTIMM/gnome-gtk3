@@ -44,7 +44,7 @@ B<Gnome::Gtk3::IconView> has a single CSS node with name iconview and style clas
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::IconView;
+  use Gnome::Gtk3::IconView:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::IconView;
@@ -65,22 +65,22 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::NativeLib;
-use Gnome::N::N-GObject;
+use Gnome::N::X:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::N-GObject:api<1>;
 
-use Gnome::Glib::List;
+use Gnome::Glib::List:api<1>;
 
-use Gnome::Gtk3::Container;
-use Gnome::Gtk3::TreeIter;
-use Gnome::Gtk3::TreePath;
-use Gnome::Gtk3::CellLayout;
-use Gnome::Gtk3::Scrollable;
+use Gnome::Gtk3::Container:api<1>;
+use Gnome::Gtk3::TreeIter:api<1>;
+use Gnome::Gtk3::TreePath:api<1>;
+use Gnome::Gtk3::CellLayout:api<1>;
+use Gnome::Gtk3::Scrollable:api<1>;
 
-use Gnome::Cairo::Types;
+use Gnome::Cairo::Types:api<1>;
 
 #-------------------------------------------------------------------------------
-unit class Gnome::Gtk3::IconView:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::IconView:auth<github:MARTIMM>:api<1>;
 also is Gnome::Gtk3::Container;
 also does Gnome::Gtk3::CellLayout;
 also does Gnome::Gtk3::Scrollable;

@@ -28,19 +28,19 @@ B<Gnome::Gtk3::TextView>, B<Gnome::Gtk3::TextIter>, B<Gnome::Gtk3::TextMark>
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::N-GObject;
-use Gnome::N::NativeLib;
-use Gnome::GObject::Object;
-use Gnome::Gtk3::TextTag;
-use Gnome::Gtk3::TextTagTable;
-use Gnome::Gtk3::TextIter;
+use Gnome::N::X:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::GObject::Object:api<1>;
+use Gnome::Gtk3::TextTag:api<1>;
+use Gnome::Gtk3::TextTagTable:api<1>;
+use Gnome::Gtk3::TextIter:api<1>;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtktextbuffer.h
 # https://developer.gnome.org/gtk3/stable/GtkTextBuffer.html
 # https://developer.gnome.org/gtk3/stable/TextWidget.html
-unit class Gnome::Gtk3::TextBuffer:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::TextBuffer:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::Object;
 
 #-------------------------------------------------------------------------------

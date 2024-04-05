@@ -54,7 +54,7 @@ If you are using custom styling on an application, you probably want then to mak
 
 Inheriting is done in a special way in that it needs a call from new() to get the native object created by the class you are inheriting from.
 
-  use Gnome::Gtk3::StyleContext;
+  use Gnome::Gtk3::StyleContext:api<1>;
 
   unit class MyGuiClass;
   also is Gnome::Gtk3::StyleContext;
@@ -75,31 +75,31 @@ Inheriting is done in a special way in that it needs a call from new() to get th
 #-------------------------------------------------------------------------------
 use NativeCall;
 
-use Gnome::N::X;
-use Gnome::N::N-GObject;
-use Gnome::N::NativeLib;
-use Gnome::N::GlibToRakuTypes;
+use Gnome::N::X:api<1>;
+use Gnome::N::N-GObject:api<1>;
+use Gnome::N::NativeLib:api<1>;
+use Gnome::N::GlibToRakuTypes:api<1>;
 
-use Gnome::GObject::Object;
-use Gnome::GObject::Value;
+use Gnome::GObject::Object:api<1>;
+use Gnome::GObject::Value:api<1>;
 
-use Gnome::Glib::List;
+use Gnome::Glib::List:api<1>;
 
-use Gnome::Gdk3::Screen;
-use Gnome::Gdk3::RGBA;
-use Gnome::Gdk3::Types;
+use Gnome::Gdk3::Screen:api<1>;
+use Gnome::Gdk3::RGBA:api<1>;
+use Gnome::Gdk3::Types:api<1>;
 
-use Gnome::Gtk3::Border;
-use Gnome::Gtk3::Enums;
-use Gnome::Gtk3::WidgetPath;
+use Gnome::Gtk3::Border:api<1>;
+use Gnome::Gtk3::Enums:api<1>;
+use Gnome::Gtk3::WidgetPath:api<1>;
 
-use Gnome::Cairo::Types;
+use Gnome::Cairo::Types:api<1>;
 use Gnome::Cairo;
 
 #-------------------------------------------------------------------------------
 # See /usr/include/gtk-3.0/gtk/gtkstylecontext.h
 # https://developer.gnome.org/gtk3/stable/GtkStyleContext.html
-unit class Gnome::Gtk3::StyleContext:auth<github:MARTIMM>;
+unit class Gnome::Gtk3::StyleContext:auth<github:MARTIMM>:api<1>;
 also is Gnome::GObject::Object;
 
 #-------------------------------------------------------------------------------
