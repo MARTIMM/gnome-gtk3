@@ -78,7 +78,7 @@ subtest 'Manipulations', {
     :native-object($ow.get-surface)
   );
 
-  $image-surface.write_to_png("xt/data/Layout.png");
+  $image-surface.write-to-png("xt/data/Layout.png");
   $image-surface.clear-object;
 }
 

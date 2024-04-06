@@ -128,7 +128,7 @@ subtest 'Manipulations', {
 
 #  ok $wp.gtk_widget_path_iter_has_class( 0, 'GtkWindow'), 'top class is a Window';
 
-  my Int $quark-name = Gnome::GObject::Type.new().g_type_from_name('GtkButton');
+  my Int $quark-name = Gnome::GObject::Type.new().from-name('GtkButton');
 }
 
 #`{{

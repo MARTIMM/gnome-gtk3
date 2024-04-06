@@ -54,7 +54,7 @@ subtest 'Manipulations', {
     my Gnome::Cairo::ImageSurface $image-surface .= new(
       :native-object($ow.get-surface)
     );
-    $image-surface.write_to_png("xt/data/OffscreenWindow-surface.png");
+    $image-surface.write-to-png("xt/data/OffscreenWindow-surface.png");
     $image-surface.clear-object;
   }, '.get-surface()';
 
