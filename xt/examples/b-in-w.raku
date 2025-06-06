@@ -11,7 +11,7 @@ my Gnome::Gtk3::Button $b .= new(:label('The Button'));
 $w.add($b);
 $w.show-all;
 
-$w.set-interactive-debugging(1);
+$w.set-interactive-debugging(True);
 
 my Gnome::Gtk3::Main $m .= new;
 $m.gtk-main;
