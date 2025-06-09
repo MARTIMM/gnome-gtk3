@@ -5,6 +5,9 @@ sidebar_menu: about-sidebar
 layout: sidebar
 ---
 # Release notes
+* 2025-06-09 0.49.1
+  * Many functions in the Window class had a bug. Most of them were not noticeble and most of them were hardly used.
+
 * 2024-04-04 0.49.0
   * Add `:api<1>` to all class names. Use statements loading the gnome libs have also the api<1> added. Api 1 is also added the 'META6.json' as well as to the dependencies of other gnome modules.
 
