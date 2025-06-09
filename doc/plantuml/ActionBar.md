@@ -12,6 +12,7 @@ class Gnome::N::TopLevelClassSupport < Catch all class >
 Interface Gnome::GObject::Signal <Interface>
 class Gnome::GObject::Signal <<(R,#80ffff)>>
 
+
 Interface Gnome::Gtk3::Buildable <Interface>
 class Gnome::Gtk3::Buildable <<(R,#80ffff)>>
 
