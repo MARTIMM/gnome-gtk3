@@ -147,17 +147,17 @@ subtest 'Signals ...', {
 
     method add-h (
       N-GObject $no-widget,
-      Gnome::Gtk3::Container() :_native-object($_widget), gulong :$_handler-id
+      Gnome::Gtk3::Container() :$_native-object, gulong :$_handler-id
     ) {
-      isa-ok $_widget, Gnome::Gtk3::Container;
+      isa-ok $_native-object, Gnome::Gtk3::Container;
       $!signal-processed = True;
     }
 
     method remove-h (
       N-GObject $no-widget,
-      Gnome::Gtk3::Container() :_native-object($_widget), gulong :$_handler-id
+      Gnome::Gtk3::Container() :$_native-object, gulong :$_handler-id
     ) {
-      isa-ok $_widget, Gnome::Gtk3::Container;
+      isa-ok $_native-object, Gnome::Gtk3::Container;
       $!signal-processed = True;
     }
 
