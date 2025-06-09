@@ -45,7 +45,7 @@ To get more detailed information of each module, there is also a reference secti
 
 Installing all packages is simple, just run the following command;
 ```
-zef install Gnome::Gtk3
+zef install Gnome::Gtk3:api<1>
 ```
 
 Assuming that Raku and zef is installed properly
