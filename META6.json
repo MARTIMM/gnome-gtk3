@@ -3,7 +3,7 @@
   "description": "Raku - Gnome GTK+ Interface",
 
   "note": "Version of release of :api<2> starts at 0.50.0, do not pass!",
-  "version": "0.49.0",
+  "version": "0.49.1",
 
   "auth": "cpan:MARTIMM",
   "authors": [ "Marcel Timmerman"],
