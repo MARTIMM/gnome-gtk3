@@ -29,3 +29,4 @@ xt/data/Layout.png
 xt/data/OffscreenWindow-surface.png
 xt/data/OffscreenWindow.png
 *.code-workspace
+**.tgz
