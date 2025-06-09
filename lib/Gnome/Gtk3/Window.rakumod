@@ -2551,9 +2551,8 @@ Opens or closes the [interactive debugger][interactive-debugging], which offers 
 
 method set-interactive-debugging ( Bool $enable ) {
 
-  gtk_window_set_interactive_debugging(
-    self._f('GtkWindow'), $enable
-  );
+  # Calling a function, not a method
+  gtk_window_set_interactive_debugging($enable);
 }
 
 sub gtk_window_set_interactive_debugging (
