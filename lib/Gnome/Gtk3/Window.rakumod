@@ -2519,7 +2519,7 @@ sub gtk_window_set_icon_name (
   { * }
 
 #-------------------------------------------------------------------------------
-#TM:0:set-interactive-debugging:
+#TM:1:set-interactive-debugging:
 =begin pod
 =head2 set-interactive-debugging
 
