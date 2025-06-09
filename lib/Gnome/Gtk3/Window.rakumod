@@ -653,9 +653,7 @@ Returns: (element-type GdkPixbuf) (transfer container): copy of default icon lis
 
 method get-default-icon-list ( --> N-GList ) {
 
-  gtk_window_get_default_icon_list(
-    self._f('GtkWindow'),
-  )
+  gtk_window_get_default_icon_list
 }
 
 sub gtk_window_get_default_icon_list (
@@ -678,9 +676,7 @@ Returns: the fallback icon name for windows
 
 method get-default-icon-name ( --> Str ) {
 
-  gtk_window_get_default_icon_name(
-    self._f('GtkWindow'),
-  )
+  gtk_window_get_default_icon_name
 }
 
 sub gtk_window_get_default_icon_name (
@@ -1602,9 +1598,7 @@ Returns: (element-type GtkWidget) (transfer container): list of toplevel widgets
 
 method list-toplevels ( --> N-GList ) {
 
-  gtk_window_list_toplevels(
-    self._f('GtkWindow'),
-  )
+  gtk_window_list_toplevels
 }
 
 sub gtk_window_list_toplevels (
@@ -1963,9 +1957,7 @@ In that example, you would disable startup notification temporarily, show your s
 
 method set-auto-startup-notification ( Bool $setting ) {
 
-  gtk_window_set_auto_startup_notification(
-    self._f('GtkWindow'), $setting
-  );
+  gtk_window_set_auto_startup_notification($setting);
 }
 
 sub gtk_window_set_auto_startup_notification (
@@ -2039,10 +2031,7 @@ Sets an icon to be used as fallback for windows that haven't had C<set-icon()> c
 
 method set-default-icon ( $icon is copy ) {
   $icon .= _get-native-object-no-reffing unless $icon ~~ N-GObject;
-
-  gtk_window_set_default_icon(
-    self._f('GtkWindow'),
-  );
+  gtk_window_set_default_icon($icon);
 }
 
 sub gtk_window_set_default_icon (
@@ -2068,9 +2057,7 @@ Returns: a invalid error object if setting the icon succeeded. If it fails, the 
 method set-default-icon-from-file ( Str $filename --> Gnome::Glib::Error ) {
   my CArray[N-GError] $e .= new(N-GError);
 
-  my Int $r = gtk_window_set_default_icon_from_file(
-    self._f('GtkWindow'), $filename, $e
-  );
+  my Bool $r = gtk_window_set_default_icon_from_file( $filename, $e);
 
   if $r {
     Gnome::Glib::Error.new(:native-object(N-GError))
@@ -2102,10 +2089,7 @@ See C<set-icon-list()> for more details.
 
 method set-default-icon-list ( $list is copy ) {
   $list .= _get-native-object-no-reffing unless $list ~~ N-GList;
-
-  gtk_window_set_default_icon_list(
-    self._f('GtkWindow'),
-  );
+  gtk_window_set_default_icon_list($list)
 }
 
 sub gtk_window_set_default_icon_list (
@@ -2126,10 +2110,7 @@ Sets an icon to be used as fallback for windows that haven't had C<set-icon-list
 =end pod
 
 method set-default-icon-name ( Str $name ) {
-
-  gtk_window_set_default_icon_name(
-    self._f('GtkWindow'), $name
-  );
+  gtk_window_set_default_icon_name($name);
 }
 
 sub gtk_window_set_default_icon_name (
