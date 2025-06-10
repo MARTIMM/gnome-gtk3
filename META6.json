@@ -5,7 +5,7 @@
   "note": "Version of release of :api<2> starts at 0.50.0, do not pass!",
   "version": "0.49.1",
 
-  "auth": "cpan:MARTIMM",
+  "auth": "zef:martimm",
   "authors": [ "Marcel Timmerman"],
   "tags": [ "gnome", "gtk+", "gtk3", "gdk3", "glib", "gobject", "gio"],
   "api": "1",
