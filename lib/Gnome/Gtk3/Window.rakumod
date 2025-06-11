@@ -2537,7 +2537,7 @@ method set-interactive-debugging ( Bool $enable ) {
 }
 
 sub gtk_window_set_interactive_debugging (
-  gboolean $enable
+  N-GObject $window, gboolean $enable
 ) is native(&gtk-lib)
   { * }
 
