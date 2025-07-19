@@ -263,18 +263,6 @@ sub gtk_action_bar_set_center_widget (
 
 #-------------------------------------------------------------------------------
 #TM:1:_gtk_action_bar_new:
-#`{{
-=begin pod
-=head2 _gtk_action_bar_new
-
-Creates a new B<Gnome::Gtk3::ActionBar> widget.
-
-Returns: a new B<Gnome::Gtk3::ActionBar>
-
-  method _gtk_action_bar_new ( --> N-GObject )
-
-=end pod
-}}
 
 sub _gtk_action_bar_new ( --> N-GObject )
   is native(&gtk-lib)

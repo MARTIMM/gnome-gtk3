@@ -891,7 +891,6 @@ The B<Gnome::GObject::Value> type of property I<spacing> is C<G_TYPE_INT>.
 
 
 
-=begin comment
 --- Child properties ---
 =comment -----------------------------------------------------------------------
 =comment # TP:1:expand:
